@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "lasttime": "2022年8月10日14:21:56",
+  "author": "申龙",
+  "className": "mobile",
+  "module": [
+    {
+      "classId": "idm.component.mobile.text",
+      "comName": "文本",
+      "className": "IText",
+      "comType": "common",
+      "comLangue": "vue"
+    }
+  ]
+}
