@@ -31,6 +31,83 @@
       "className": "IContentList",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.itab",
+      "comName": "tab列表",
+      "className": "ITab",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.iranking",
+      "comName": "排行榜",
+      "className": "IRanking",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.iheadlist",
+      "comName": "头像列表",
+      "className": "IHeadList",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.idealist",
+      "comName": "意见列表",
+      "className": "IdeaList",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.imgupload",
+      "comName": "图片上传",
+      "className": "ImgUpload",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.inputs",
+      "comName": "输入框",
+      "className": "IHeadList",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.itips",
+      "comName": "标签选择器",
+      "className": "ITips",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.itime",
+      "comName": "日期选择器",
+      "className": "ITime",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.icalender",
+      "comName": "日历",
+      "className": "Icalender",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.Ishowform",
+      "comName": "数据展示表单",
+      "className": "IshowForm",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.Idialog",
+      "comName": "弹窗",
+      "className": "IDialog",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }
