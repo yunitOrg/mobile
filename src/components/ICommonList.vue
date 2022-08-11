@@ -12,24 +12,8 @@
       :pageData="pageData"
     >
       <template #list>
-        <div
-          v-for="(item, index) in pageData.value"
-          :key="index"
-          class="box-line"
-        >
-          <div class="d-flex just-b">
-            <div class="flex-1 common-list-title"><div class="text-o-e-2">{{item.title}}</div></div>
-            <img v-if="item.images.length === 1" class="one-img" :src="IDM.url.getWebPath(item.images[0])" alt="tu" />
-          </div>
-          <van-row gutter="10" v-if="item.images.length > 1">
-            <van-col :span="item.images.length == 2 ? 12 : 8" v-for="(items,indexs) in item.images" class="flex-1" :key="indexs">
-              <img :src="IDM.url.getWebPath(items)" alt="" class="image-list"/>
-            </van-col>
-          </van-row>
-          <div class="d-flex just-b content-list-bottom">
-            <div><span v-if="item.origin">来源：{{item.origin}}</span></div>
-            <div><span v-if="item.time">发布时间： {{item.time}}</span></div>
-          </div>
+        <div v-for="(item, index) in pageData.value" :key="index" class="box-line">
+          <span class="module-name" :style="getModuleStyle(item)">[{{ item.moduleName }}]</span>{{ item.title }}
         </div>
       </template>
     </ICommonListContainer>
@@ -74,7 +58,7 @@ function getDefault() {
   };
 }
 export default {
-  name: "IContentList",
+  name: "ICommonList",
   components: {
     ICommonListContainer,
   },
@@ -92,6 +76,17 @@ export default {
     this.convertThemeListAttrToStyleObject();
   },
   methods: {
+    //
+    getModuleStyle(item){
+      if(Array.isArray(this.propData.moduleStyleList) && this.propData.moduleStyleList.length > 0){
+        const currentMoudle = this.propData.moduleStyleList.find(el => el.moduleName === item.moduleName), styleObj = {}
+        if(currentMoudle && currentMoudle.moduleFont){
+          IDM.style.setFontStyle(styleObj, currentMoudle.moduleFont)
+          return styleObj
+        }
+      }
+      return {}
+    },
     propDataWatchHandle(propData) {
       this.propData = propData.compositeAttr || {};
       this.convertAttrToStyleObject();
@@ -99,7 +94,7 @@ export default {
     },
 
     convertAttrToStyleObject() {
-      var boxLineStyleObj = {}, lineTitleObj={}, lineImageObj = {}, lineBottomTitleObj = {}, lineTitleClampObj = {};
+      var boxLineStyleObj = {};
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
           const element = this.propData[key];
@@ -107,62 +102,25 @@ export default {
             continue;
           }
           switch (key) {
+            case "messageFontStyle":
+              IDM.style.setFontStyle(boxLineStyleObj, element)
+              break;
             case "lineBox":
-              IDM.style.setBoxStyle(boxLineStyleObj, element);
+              IDM.style.setBoxStyle(boxLineStyleObj, element)
               break;
             case "lineBorder":
-              IDM.style.setBorderStyle(boxLineStyleObj, element);
+              IDM.style.setBorderStyle(boxLineStyleObj, element)
               break;
-            case 'lineTitleFont':
-              IDM.style.setFontStyle(lineTitleObj, element)
-              break;
-            case 'lineTitleBox':
-              IDM.style.setBoxStyle(lineTitleObj, element);
-              break;
-            case 'lineBottomTitleFont':
-              IDM.style.setFontStyle(lineBottomTitleObj, element)
-              break;
-            case 'lineBottomBox':
-              IDM.style.setBoxStyle(lineBottomTitleObj, element);
-              break;
-            case 'lineImageRadius':
-              lineImageObj['border-radius'] = element + 'px'
-              break
-            case 'lineTitleClamp':
-              lineTitleClampObj['-webkit-line-clamp'] = element
-              lineTitleClampObj['line-clamp'] = element
-              break
           }
         }
       }
-      window.IDM.setStyleToPageHead(
-        this.moduleObject.id + " .box-line",
-        boxLineStyleObj
-      );
-      window.IDM.setStyleToPageHead(
-        this.moduleObject.id + " .common-list-title",
-        lineTitleObj
-      );
-      window.IDM.setStyleToPageHead(
-        this.moduleObject.id + " .common-list-title .text-o-e-2",
-        lineTitleClampObj
-      );
-      window.IDM.setStyleToPageHead(
-        this.moduleObject.id + " .content-list-bottom",
-        lineBottomTitleObj
-      );
-      window.IDM.setStyleToPageHead(
-        IDM.style.generateClassName('#' + this.moduleObject.id, [
-          " .one-img",
-          " .image-list"
-        ]),
-        lineImageObj
-      );
+      window.IDM.setStyleToPageHead(this.moduleObject.id + ' .box-line', boxLineStyleObj);
       this.$nextTick(() => {
         this.$refs[
           "listContainerRef-" + this.moduleObject.id
         ].convertAttrToStyleObject();
       });
+      
       this.initData();
     },
     /**
@@ -186,12 +144,7 @@ export default {
             ? IDM.hex8ToRgbaString(item.mainColor.hex8)
             : "",
         };
-        IDM.setStyleToPageHead(
-          "." +
-            themeNamePrefix +
-            item.key +
-            (` #${this.moduleObject.id}-common-list` || "module_demo") +
-            " .module-name",
+        IDM.setStyleToPageHead("." + themeNamePrefix + item.key + (` #${this.moduleObject.id}-common-list` || "module_demo") + " .module-name",
           moduleColorObj
         );
       }
@@ -323,16 +276,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.box-line:last-child {
+.box-line:last-child{
   border-bottom: 0 !important;
-}
-.one-img{
-  width: 40%;
-  height: 80px;
-  margin: 0 0 0 10px;
-}
-.image-list{
-  width: 100%;
-  height: 80px;
 }
 </style>

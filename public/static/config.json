@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lasttime": "2022-08-10 14:39:29",
+  "lasttime": "2022-08-11 21:05:54",
   "author": "申龙",
   "className": "mobile",
   "module": [
@@ -106,6 +106,13 @@
       "classId": "idm.component.mobile.Idialog",
       "comName": "弹窗",
       "className": "IDialog",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.icommonlist",
+      "comName": "通用列表",
+      "className": "ICommonList",
       "comType": "common",
       "comLangue": "vue"
     }
