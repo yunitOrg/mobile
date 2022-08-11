@@ -70,7 +70,7 @@
     {
       "classId": "idm.component.mobile.inputs",
       "comName": "输入框",
-      "className": "IHeadList",
+      "className": "Inputs",
       "comType": "common",
       "comLangue": "vue"
     },
