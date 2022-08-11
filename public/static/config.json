@@ -13,15 +13,15 @@
     },
     {
       "classId": "idm.component.mobile.ibanner",
-      "comName": "广告轮播",
+      "comName": "轮播图",
       "className": "IBanner",
       "comType": "common",
       "comLangue": "vue"
     },
     {
-      "classId": "idm.component.mobile.iunifiedtodo",
-      "comName": "代办列表",
-      "className": "IUnifiedTodo",
+      "classId": "idm.component.mobile.itodolist",
+      "comName": "待办列表",
+      "className": "ITodoList",
       "comType": "common",
       "comLangue": "vue"
     },

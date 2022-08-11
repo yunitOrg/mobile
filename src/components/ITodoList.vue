@@ -12,24 +12,8 @@
       :pageData="pageData"
     >
       <template #list>
-        <div
-          v-for="(item, index) in pageData.value"
-          :key="index"
-          class="box-line"
-        >
-          <div class="d-flex just-b">
-            <div class="flex-1 common-list-title"><div class="text-o-e-2">{{item.title}}</div></div>
-            <img v-if="item.images.length === 1" class="one-img" :src="item.images[0]" alt="tu" />
-          </div>
-          <van-row gutter="10" v-if="item.images.length > 1">
-            <van-col :span="item.images.length == 2 ? 12 : 8" v-for="(items,indexs) in item.images" class="flex-1" :key="indexs">
-              <img :src="items" alt="" class="image-list"/>
-            </van-col>
-          </van-row>
-          <div class="d-flex just-b content-list-bottom">
-            <div>来源：{{item.origin}}</div>
-            <div>发布时间： {{item.time}}</div>
-          </div>
+        <div v-for="(item, index) in pageData.value" :key="index" class="box-line">
+          <span class="module-name" :style="getModuleStyle(item)">[{{ item.moduleName }}]</span>{{ item.title }}
         </div>
       </template>
     </ICommonListContainer>
@@ -37,44 +21,26 @@
 </template>
 <script>
 import ICommonListContainer from "../commonComponents/ICommonListContainer";
-function getDefault() {
-  const _this = this;
-  return {
-    value: [
-      {
-        jumpUrl: "",
-        title: "黄浦区半淞园路街道：党员先锋我先行，助力进博添风采",
-        origin: "黄埔区委组织部",
-        time: "2022-07-22",
-        images: [],
-      },
-      {
-        jumpUrl: "",
-        title: "深入学习贯彻党的十九届六中全会精神",
-        origin: "上海发布",
-        time: "2021-12-22",
-        images: [
-          IDM.url.getModuleAssetsWebPath(require("../assets/banner1.jpg"), _this.moduleObject)
-        ],
-      },
-      {
-        jumpUrl: "",
-        title: "闵行莘庄：“莘长征路上” 再出发  深化“两新”党员学党史, 闵行莘庄：“莘长征路上” 再出发  深化“两新”党员学党史, 闵行莘庄：“莘长征路上” 再出发  深化“两新”党员学党史",
-        origin: "闵行区委组织部",
-        time: "2022-01-22",
-        images: [
-          IDM.url.getModuleAssetsWebPath(require("../assets/banner3.jpg"), _this.moduleObject),
-          IDM.url.getModuleAssetsWebPath(require("../assets/banner2.jpg"), _this.moduleObject),
-          IDM.url.getModuleAssetsWebPath(require("../assets/banner1.jpg"), _this.moduleObject)
-        ],
-      },
-    ],
-    count: 3,
-    moreUrl: "",
-  };
-}
+const todoData = {
+  value: [
+    {
+      jumpUrl: "",
+      readStatus: "0",
+      moduleName: "党费缴纳",
+      title: "您已经连续两个月没有交党费了",
+    },
+    {
+      jumpUrl: "",
+      moduleName: "组织生活",
+      readStatus: "1",
+      title: "您已经连续两个月没有参加活动了",
+    },
+  ],
+  count: 2,
+  moreUrl: "",
+};
 export default {
-  name: "IContentList",
+  name: "ITodoList",
   components: {
     ICommonListContainer,
   },
@@ -92,6 +58,17 @@ export default {
     this.convertThemeListAttrToStyleObject();
   },
   methods: {
+    //
+    getModuleStyle(item){
+      if(Array.isArray(this.propData.moduleStyleList) && this.propData.moduleStyleList.length > 0){
+        const currentMoudle = this.propData.moduleStyleList.find(el => el.moduleName === item.moduleName), styleObj = {}
+        if(currentMoudle && currentMoudle.moduleFont){
+          IDM.style.setFontStyle(styleObj, currentMoudle.moduleFont)
+          return styleObj
+        }
+      }
+      return {}
+    },
     propDataWatchHandle(propData) {
       this.propData = propData.compositeAttr || {};
       this.convertAttrToStyleObject();
@@ -99,7 +76,7 @@ export default {
     },
 
     convertAttrToStyleObject() {
-      var boxLineStyleObj = {}, lineTitleObj={}, lineImageObj = {}, lineBottomTitleObj = {}, lineTitleClampObj = {};
+      var boxLineStyleObj = {};
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
           const element = this.propData[key];
@@ -107,62 +84,25 @@ export default {
             continue;
           }
           switch (key) {
+            case "messageFontStyle":
+              IDM.style.setFontStyle(boxLineStyleObj, element)
+              break;
             case "lineBox":
-              IDM.style.setBoxStyle(boxLineStyleObj, element);
+              IDM.style.setBoxStyle(boxLineStyleObj, element)
               break;
             case "lineBorder":
-              IDM.style.setBorderStyle(boxLineStyleObj, element);
+              IDM.style.setBorderStyle(boxLineStyleObj, element)
               break;
-            case 'lineTitleFont':
-              IDM.style.setFontStyle(lineTitleObj, element)
-              break;
-            case 'lineTitleBox':
-              IDM.style.setBoxStyle(lineTitleObj, element);
-              break;
-            case 'lineBottomTitleFont':
-              IDM.style.setFontStyle(lineBottomTitleObj, element)
-              break;
-            case 'lineBottomBox':
-              IDM.style.setBoxStyle(lineBottomTitleObj, element);
-              break;
-            case 'lineImageRadius':
-              lineImageObj['border-radius'] = element + 'px'
-              break
-            case 'lineTitleClamp':
-              lineTitleClampObj['-webkit-line-clamp'] = element
-              lineTitleClampObj['line-clamp'] = element
-              break
           }
         }
       }
-      window.IDM.setStyleToPageHead(
-        this.moduleObject.id + " .box-line",
-        boxLineStyleObj
-      );
-      window.IDM.setStyleToPageHead(
-        this.moduleObject.id + " .common-list-title",
-        lineTitleObj
-      );
-      window.IDM.setStyleToPageHead(
-        this.moduleObject.id + " .common-list-title .text-o-e-2",
-        lineTitleClampObj
-      );
-      window.IDM.setStyleToPageHead(
-        this.moduleObject.id + " .content-list-bottom",
-        lineBottomTitleObj
-      );
-      window.IDM.setStyleToPageHead(
-        IDM.style.generateClassName('#' + this.moduleObject.id, [
-          " .one-img",
-          " .image-list"
-        ]),
-        lineImageObj
-      );
+      window.IDM.setStyleToPageHead(this.moduleObject.id + ' .box-line', boxLineStyleObj);
       this.$nextTick(() => {
         this.$refs[
           "listContainerRef-" + this.moduleObject.id
         ].convertAttrToStyleObject();
       });
+      
       this.initData();
     },
     /**
@@ -186,12 +126,7 @@ export default {
             ? IDM.hex8ToRgbaString(item.mainColor.hex8)
             : "",
         };
-        IDM.setStyleToPageHead(
-          "." +
-            themeNamePrefix +
-            item.key +
-            (` #${this.moduleObject.id}-common-list` || "module_demo") +
-            " .module-name",
+        IDM.setStyleToPageHead("." + themeNamePrefix + item.key + (` #${this.moduleObject.id}-common-list` || "module_demo") + " .module-name",
           moduleColorObj
         );
       }
@@ -212,7 +147,7 @@ export default {
     initData() {
       let that = this;
       if(this.moduleObject.env === 'develop') {
-          this.pageData = getDefault.call(this)
+          this.pageData = todoData
           return
       }
       //所有地址的url参数转换
@@ -323,16 +258,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.box-line:last-child {
+.box-line:last-child{
   border-bottom: 0 !important;
-}
-.one-img{
-  width: 40%;
-  height: 80px;
-  margin: 0 0 0 10px;
-}
-.image-list{
-  width: 100%;
-  height: 80px;
 }
 </style>
