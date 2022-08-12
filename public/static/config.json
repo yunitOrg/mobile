@@ -108,6 +108,13 @@
       "className": "IDialog",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.selectPieChart",
+      "comName": "饼状统计图",
+      "className": "ISelectPieChart",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }
