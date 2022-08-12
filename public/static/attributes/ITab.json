@@ -20,7 +20,156 @@
         "text": "基本属性",
         "desc": "提供设置组件能达到展示效果的基本属性设置信息",
         "children": [
-          
+          {
+            "type": "radio",
+            "layoutType": "inline",
+            "text": "加载模式",
+            "bindKey": "isDrag",
+            "dictionary": [
+              {
+                  "label": "正常加载",
+                  "value": "normal"
+              },
+              {
+                  "label": "加载容器",
+                  "value": "container"
+              }
+            ],
+            "default": "normal"
+          },
+          {
+            "type": "radio",
+            "layoutType": "inline",
+            "text": "风格样式",
+            "bindKey": "type",
+            "dictionary": [
+                {
+                    "label": "line",
+                    "value": "line"
+                },
+                {
+                    "label": "card",
+                    "value": "card"
+                }
+            ],
+            "default": "line"
+          },
+          {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "切换动画",
+            "desc":"是否开启切换标签内容时的转场动画",
+            "bindKey": "animated",
+            "default": true
+          },
+          {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "粘性布局",
+            "desc":"是否使用固定顶部 是否使用粘性布局",
+            "bindKey": "sticky",
+            "default": true
+          },
+          {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "滑动切换",
+            "desc":"是否开启手势左右滑动切换",
+            "bindKey": "swipeable",
+            "default": false
+          },
+          {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "滚动导航",
+            "desc":"是否开启滚动导航",
+            "bindKey": "scrollspy",
+            "default": false
+          },
+          {
+            "type": "inputNumberUnit",
+            "layoutType": "inline",
+            "text": "粘性布局下吸顶时与顶部的距离",
+            "desc":"粘性布局下吸顶时与顶部的距离",
+            "bindKey": "offsetTop",
+            "display": "@[sticky]",
+            "dictionary": [
+                {
+                    "label": "px",
+                    "value": "px"
+                },
+                {
+                    "label": "vh",
+                    "value": "vh"
+                },
+                {
+                    "label": "rem",
+                    "value": "rem"
+                }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "text": "页签选项设置",
+        "bindKey": "staticTabPaneList",
+        "tabText": "页签[index]",
+        "children": [
+          {
+            "type": "input",
+            "layoutType": "inline",
+            "text": "tab标识",
+            "bindKey": "key"
+          },
+          {
+            "type": "input",
+            "layoutType": "inline",
+            "text": "tab文字",
+            "bindKey": "tab"
+          },
+          {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "禁用标签",
+            "bindKey": "disable"
+          },
+          {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "默认选中",
+            "bindKey": "defaultActiveKey",
+            "default": false
+          },
+          {
+            "type": "font",
+            "layoutType": "block",
+            "text": "文字",
+            "bindKey": "tableFont"
+          }
+        ]
+      },
+      {
+        "type": "group",
+        "text": "高级",
+        "desc": "点击？查看高级设置用法指南",
+        "children": [
+          {
+            "type": "actionSelect",
+            "layoutType": "block",
+            "text": "切换面板的回调自定义函数",
+            "bindKey": "changeFunction",
+            "desc": "切换面板的回调，接收参数为格式为{...url参数,customParam:自定义的,activeKey,allKey}",
+            "multiple": true
+          },
+          {
+            "type": "actionSelect",
+            "layoutType": "block",
+            "text": "切换标签前的回调函数",
+            "desc": "切换标签前的回调函数，返回 false 可阻止切换，支持返回 Promise",
+            "bindKey": "beforChange",
+            "multiple": false
+          }
         ]
       }
   ]

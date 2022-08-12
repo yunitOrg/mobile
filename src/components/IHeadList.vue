@@ -130,6 +130,7 @@ export default {
       align-items: center;
       border-bottom: 1px solid #ccc;
       .iheadlist-center{
+        width: 100%;
         display: flex;
         flex-wrap: wrap;
         .iheadlist-line{
