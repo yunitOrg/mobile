@@ -1,338 +1,308 @@
 <template>
-  <div
-    idm-ctrl="idm_module"
-    :id="moduleObject.id"
-    :idm-ctrl-id="moduleObject.id"
-    :title="propData.htmlTitle"
-  >
-    <ICommonListContainer
-      :moduleObject="moduleObject"
-      :ref="'listContainerRef-' + moduleObject.id"
-      :propData="propData"
-      :pageData="pageData"
-    >
-      <template #list>
-        <div
-          v-for="(item, index) in pageData.value"
-          :key="index"
-          class="box-line"
+    <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id" :title="propData.htmlTitle">
+        <ICommonListContainer
+            :moduleObject="moduleObject"
+            :ref="'listContainerRef-' + moduleObject.id"
+            :propData="propData"
+            :pageData="pageData"
+            @handleClickMore="handleClickMore"
         >
-          <div class="d-flex just-b">
-            <div class="flex-1 common-list-title"><div class="text-o-e-2">{{item.title}}</div></div>
-            <img v-if="item.images.length === 1" class="one-img" :src="IDM.url.getWebPath(item.images[0])" alt="tu" />
-          </div>
-          <van-row gutter="10" v-if="item.images.length > 1">
-            <van-col :span="item.images.length == 2 ? 12 : 8" v-for="(items,indexs) in item.images" class="flex-1" :key="indexs">
-              <img :src="IDM.url.getWebPath(items)" alt="" class="image-list"/>
-            </van-col>
-          </van-row>
-          <div class="d-flex just-b content-list-bottom">
-            <div><span v-if="item.origin">来源：{{item.origin}}</span></div>
-            <div><span v-if="item.time">发布时间： {{item.time}}</span></div>
-          </div>
-        </div>
-      </template>
-    </ICommonListContainer>
-  </div>
+            <template #list>
+                <div
+                    v-for="(item, index) in pageData.value"
+                    :key="index"
+                    class="box-line"
+                    @click="handleItemClick(item)"
+                >
+                    <div class="d-flex just-b">
+                        <div class="flex-1 common-list-title">
+                            <div class="text-o-e-2">{{ getDataField(propData.titleField, item) }}</div>
+                        </div>
+                        <img
+                            v-if="item.images.length === 1"
+                            class="one-img"
+                            :src="
+                                IDM.url.getWebPath(
+                                    getDataField(propData.imageField, item) &&
+                                        getDataField(propData.imageField, item)[0]
+                                )
+                            "
+                            alt="图片加载失败"
+                        />
+                    </div>
+                    <van-row gutter="10" v-if="item.images.length > 1">
+                        <van-col
+                            :span="item.images.length == 2 ? 12 : 8"
+                            v-for="(items, indexs) in getDataField(propData.imageField, item) || []"
+                            class="flex-1"
+                            :key="indexs"
+                        >
+                            <img :src="IDM.url.getWebPath(items)" alt="图片加载失败" class="image-list" />
+                        </van-col>
+                    </van-row>
+                    <div class="d-flex just-b content-list-bottom">
+                        <span v-if="getDataField(propData.originField, item)"
+                            >来源：{{ getDataField(propData.originField, item) }}</span
+                        >
+                        <span v-if="getDataField(propData.originField, item)"
+                            >发布时间：{{ getDataField(propData.timeField, item) }}</span
+                        >
+                    </div>
+                </div>
+            </template>
+        </ICommonListContainer>
+    </div>
 </template>
 <script>
-import ICommonListContainer from "../commonComponents/ICommonListContainer";
-function getDefault() {
-  const _this = this;
-  return {
-    value: [
-      {
-        jumpUrl: "",
-        title: "黄浦区半淞园路街道：党员先锋我先行，助力进博添风采",
-        origin: "黄埔区委组织部",
-        time: "2022-07-22",
-        images: [],
-      },
-      {
-        jumpUrl: "",
-        title: "深入学习贯彻党的十九届六中全会精神",
-        origin: "上海发布",
-        time: "2021-12-22",
-        images: [
-          IDM.url.getModuleAssetsWebPath(require("../assets/banner1.jpg"), _this.moduleObject)
-        ],
-      },
-      {
-        jumpUrl: "",
-        title: "闵行莘庄：“莘长征路上” 再出发  深化“两新”党员学党史, 闵行莘庄：“莘长征路上” 再出发  深化“两新”党员学党史, 闵行莘庄：“莘长征路上” 再出发  深化“两新”党员学党史",
-        origin: "闵行区委组织部",
-        time: "2022-01-22",
-        images: [
-          IDM.url.getModuleAssetsWebPath(require("../assets/banner3.jpg"), _this.moduleObject),
-          IDM.url.getModuleAssetsWebPath(require("../assets/banner2.jpg"), _this.moduleObject),
-          IDM.url.getModuleAssetsWebPath(require("../assets/banner1.jpg"), _this.moduleObject)
-        ],
-      },
-    ],
-    count: 3,
-    moreUrl: "",
-  };
-}
+import ICommonListContainer from '../commonComponents/ICommonListContainer'
+import commonListMixin from '../mixins/commonList'
+import { getContentListData } from '../mock/mockData'
 export default {
-  name: "IContentList",
-  components: {
-    ICommonListContainer,
-  },
-  data() {
-    return {
-      moduleObject: {},
-      propData: this.$root.propData.compositeAttr || {},
-      pageWidth: null,
-      pageData: { value: []},
-    };
-  },
-  created() {
-    this.moduleObject = this.$root.moduleObject;
-    this.convertAttrToStyleObject();
-    this.convertThemeListAttrToStyleObject();
-  },
-  methods: {
-    propDataWatchHandle(propData) {
-      this.propData = propData.compositeAttr || {};
-      this.convertAttrToStyleObject();
-      this.convertThemeListAttrToStyleObject();
+    name: 'IContentList',
+    components: {
+        ICommonListContainer
     },
-
-    convertAttrToStyleObject() {
-      var boxLineStyleObj = {}, lineTitleObj={}, lineImageObj = {}, lineBottomTitleObj = {}, lineTitleClampObj = {};
-      for (const key in this.propData) {
-        if (this.propData.hasOwnProperty.call(this.propData, key)) {
-          const element = this.propData[key];
-          if (!element && element !== false && element != 0) {
-            continue;
-          }
-          switch (key) {
-            case "lineBox":
-              IDM.style.setBoxStyle(boxLineStyleObj, element);
-              break;
-            case "lineBorder":
-              IDM.style.setBorderStyle(boxLineStyleObj, element);
-              break;
-            case 'lineTitleFont':
-              IDM.style.setFontStyle(lineTitleObj, element)
-              break;
-            case 'lineTitleBox':
-              IDM.style.setBoxStyle(lineTitleObj, element);
-              break;
-            case 'lineBottomTitleFont':
-              IDM.style.setFontStyle(lineBottomTitleObj, element)
-              break;
-            case 'lineBottomBox':
-              IDM.style.setBoxStyle(lineBottomTitleObj, element);
-              break;
-            case 'lineImageRadius':
-              lineImageObj['border-radius'] = element + 'px'
-              break
-            case 'lineTitleClamp':
-              lineTitleClampObj['-webkit-line-clamp'] = element
-              lineTitleClampObj['line-clamp'] = element
-              break
-          }
+    data() {
+        return {
+            moduleObject: {},
+            propData: this.$root.propData.compositeAttr || {},
+            pageWidth: null,
+            pageData: { value: [], count: 0, moreUrl: '' }
         }
-      }
-      window.IDM.setStyleToPageHead(
-        this.moduleObject.id + " .box-line",
-        boxLineStyleObj
-      );
-      window.IDM.setStyleToPageHead(
-        this.moduleObject.id + " .common-list-title",
-        lineTitleObj
-      );
-      window.IDM.setStyleToPageHead(
-        this.moduleObject.id + " .common-list-title .text-o-e-2",
-        lineTitleClampObj
-      );
-      window.IDM.setStyleToPageHead(
-        this.moduleObject.id + " .content-list-bottom",
-        lineBottomTitleObj
-      );
-      window.IDM.setStyleToPageHead(
-        IDM.style.generateClassName('#' + this.moduleObject.id, [
-          " .one-img",
-          " .image-list"
-        ]),
-        lineImageObj
-      );
-      this.$nextTick(() => {
-        this.$refs[
-          "listContainerRef-" + this.moduleObject.id
-        ].convertAttrToStyleObject();
-      });
-      this.initData();
     },
-    /**
-     * 主题颜色
-     */
-    convertThemeListAttrToStyleObject() {
-      var themeList = this.propData.themeList;
-      if (!themeList) {
-        return;
-      }
-      const themeNamePrefix =
-        IDM.setting &&
-        IDM.setting.applications &&
-        IDM.setting.applications.themeNamePrefix
-          ? IDM.setting.applications.themeNamePrefix
-          : "idm-theme-";
-      for (var i = 0; i < themeList.length; i++) {
-        var item = themeList[i];
-        let moduleColorObj = {
-          "font-size": item.mainColor
-            ? IDM.hex8ToRgbaString(item.mainColor.hex8)
-            : "",
-        };
-        IDM.setStyleToPageHead(
-          "." +
-            themeNamePrefix +
-            item.key +
-            (` #${this.moduleObject.id}-common-list` || "module_demo") +
-            " .module-name",
-          moduleColorObj
-        );
-      }
-      // 通用样式
-      this.$nextTick(() => {
-        this.$refs[
-          "listContainerRef-" + this.moduleObject.id
-        ].convertThemeListAttrToStyleObject();
-      });
+    mixins: [commonListMixin],
+    created() {
+        this.moduleObject = this.$root.moduleObject
+        this.convertAttrToStyleObject()
+        this.convertThemeListAttrToStyleObject()
     },
-    reload() {
-      //请求数据源
-      this.initData();
-    },
-    //点击更多
-    handleClickMore() {},
+    methods: {
+        propDataWatchHandle(propData) {
+            this.propData = propData.compositeAttr || {}
+            this.convertAttrToStyleObject()
+            this.convertThemeListAttrToStyleObject()
+        },
 
-    initData() {
-      let that = this;
-      if(this.moduleObject.env === 'develop') {
-          this.pageData = getDefault.call(this)
-          return
-      }
-      //所有地址的url参数转换
-      var params = that.commonParam();
-      switch (this.propData.dataSourceType) {
-        case "customInterface":
-          this.propData.customInterfaceUrl &&
-            window.IDM.http
-              .get(this.propData.customInterfaceUrl, params)
-              .then((res) => {
-                //res.data
-                that.$set(
-                  that.propData,
-                  "fontContent",
-                  that.getExpressData(
-                    "resultData",
-                    that.propData.dataFiled,
-                    res.data
-                  )
-                );
-                // that.propData.fontContent = ;
-              })
-              .catch(function (error) {});
-          break;
-        case "pageCommonInterface":
-          //使用通用接口直接跳过，在setContextValue执行
-          break;
-        case "customFunction":
-          if (
-            this.propData.customFunction &&
-            this.propData.customFunction.length > 0
-          ) {
-            var resValue = "";
-            try {
-              resValue =
-                window[this.propData.customFunction[0].name] &&
-                window[this.propData.customFunction[0].name].call(this, {
-                  ...params,
-                  ...this.propData.customFunction[0].param,
-                  moduleObject: this.moduleObject,
-                });
-            } catch (error) {}
-            that.propData.fontContent = resValue;
-          }
-          break;
-      }
-    },
-    receiveBroadcastMessage(messageObject){
-      switch(messageObject.type) {
-        case 'websocket':
-          if(this.propData.messageRefreshKey && messageObject.message){
-            const messageData = typeof messageObject.message === 'string' && JSON.parse(messageObject.message) || messageObject.message
-            const arr = Array.isArray(this.propData.messageRefreshKey) ? this.propData.messageRefreshKey : [this.propData.messageRefreshKey]
-            if(messageData.badgeType && arr.includes(messageData.badgeType)){
-              this.initData()
+        convertAttrToStyleObject() {
+            var boxLineStyleObj = {},
+                lineTitleObj = {},
+                lineImageObj = {},
+                lineBottomTitleObj = {},
+                lineTitleClampObj = {},
+                oneImageObj = {}
+            for (const key in this.propData) {
+                if (this.propData.hasOwnProperty.call(this.propData, key)) {
+                    const element = this.propData[key]
+                    if (!element && element !== false && element != 0) {
+                        continue
+                    }
+                    switch (key) {
+                        // 盒子样式
+                        case 'lineBox':
+                            IDM.style.setBoxStyle(boxLineStyleObj, element)
+                            break
+                        case 'lineBorder':
+                            IDM.style.setBorderStyle(boxLineStyleObj, element)
+                            break
+                        case 'lineTitleFont':
+                            IDM.style.setFontStyle(lineTitleObj, element)
+                            break
+                        // 标题样式
+                        case 'lineTitleBox':
+                            IDM.style.setBoxStyle(lineTitleObj, element)
+                            break
+                        case 'lineTitleClamp':
+                            lineTitleClampObj['-webkit-line-clamp'] = element
+                            lineTitleClampObj['line-clamp'] = element
+                            break
+                        // 底部样式
+                        case 'lineBottomTitleFont':
+                            IDM.style.setFontStyle(lineBottomTitleObj, element)
+                            break
+                        case 'lineBottomBox':
+                            IDM.style.setBoxStyle(lineBottomTitleObj, element)
+                            break
+                        // 图片样式
+                        case 'imageBorder':
+                            IDM.style.setBorderStyle(lineImageObj, element)
+                            break
+                        case 'imageWidth':
+                            oneImageObj['width'] = element + 'px'
+                            break
+                        case 'imageHeight':
+                            lineImageObj['height'] = element + 'px'
+                    }
+                }
             }
-          }
-          break;
-        case 'linkageReload':
-          this.initData()
-          break;
-        case 'pageResize':
-          this.pageWidth = messageObject.message.width
-          this.convertAttrToStyleObject()
-          break;
-      }
-      console.log("组件收到消息",messageObject)
-    },
-    setContextValue(object) {
-      console.log("统一接口设置的值", object);
-      if (object.type != "pageCommonInterface") {
-        return;
-      }
-      //这里使用的是子表，所以要循环匹配所有子表的属性然后再去设置修改默认值
-      if (object.key == this.propData.dataName) {
-        // this.propData.fontContent = this.getExpressData(this.propData.dataName,this.propData.dataFiled,object.data);
-        this.$set(
-          this.propData,
-          "fontContent",
-          this.getExpressData(
-            this.propData.dataName,
-            this.propData.dataFiled,
-            object.data
-          )
-        );
-      }
-    },
-    sendBroadcastMessage(object) {
-      window.IDM.broadcast && window.IDM.broadcast.send(object);
-    },
-    /**
-     * 通用的url参数对象
-     * 所有地址的url参数转换
-     */
-    commonParam() {
-      let urlObject = IDM.url.queryObject();
-      var params = {
-        pageId:
-          window.IDM.broadcast && window.IDM.broadcast.pageModule
-            ? window.IDM.broadcast.pageModule.id
-            : "",
-        urlData: JSON.stringify(urlObject),
-      };
-      return params;
-    },
-  },
-};
+            // 盒子样式
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .box-line', boxLineStyleObj)
+            // 标题样式
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .common-list-title', lineTitleObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .common-list-title .text-o-e-2', lineTitleClampObj)
+            // 底部样式
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .content-list-bottom', lineBottomTitleObj)
+            // 图片样式
+            window.IDM.setStyleToPageHead(
+                IDM.style.generateClassName('#' + this.moduleObject.id, [' .one-img', ' .image-list']),
+                lineImageObj
+            )
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .one-img', oneImageObj)
+
+            this.$nextTick(() => {
+                this.$refs['listContainerRef-' + this.moduleObject.id].convertAttrToStyleObject()
+            })
+            this.initData()
+        },
+        /**
+         * 主题颜色
+         */
+        convertThemeListAttrToStyleObject() {
+            var themeList = this.propData.themeList
+            if (!themeList) {
+                return
+            }
+            const themeNamePrefix =
+                IDM.setting && IDM.setting.applications && IDM.setting.applications.themeNamePrefix
+                    ? IDM.setting.applications.themeNamePrefix
+                    : 'idm-theme-'
+            for (var i = 0; i < themeList.length; i++) {
+                var item = themeList[i]
+                let moduleColorObj = {
+                    'font-size': item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : ''
+                }
+                IDM.setStyleToPageHead(
+                    '.' +
+                        themeNamePrefix +
+                        item.key +
+                        (` #${this.moduleObject.id}-common-list` || 'module_demo') +
+                        ' .module-name',
+                    moduleColorObj
+                )
+            }
+            // 通用样式
+            this.$nextTick(() => {
+                this.$refs['listContainerRef-' + this.moduleObject.id].convertThemeListAttrToStyleObject()
+            })
+        },
+        reload() {
+            //请求数据源
+            this.initData()
+        },
+        //点击更多
+        handleClickMore() {},
+
+        initData() {
+            let that = this
+            if (this.moduleObject.env === 'develop') {
+                this.pageData = getContentListData.call(this)
+                return
+            }
+            //所有地址的url参数转换
+            var params = that.commonParam()
+            switch (this.propData.dataSourceType) {
+                case 'customInterface':
+                    this.propData.customInterfaceUrl &&
+                        window.IDM.http
+                            .get(this.propData.customInterfaceUrl, params)
+                            .then((res) => {
+                                //res.data
+                                that.$set(
+                                    that.propData,
+                                    'fontContent',
+                                    that.getExpressData('resultData', that.propData.dataFiled, res.data)
+                                )
+                                // that.propData.fontContent = ;
+                            })
+                            .catch(function (error) {})
+                    break
+                case 'pageCommonInterface':
+                    //使用通用接口直接跳过，在setContextValue执行
+                    break
+                case 'customFunction':
+                    if (this.propData.customFunction && this.propData.customFunction.length > 0) {
+                        var resValue = ''
+                        try {
+                            resValue =
+                                window[this.propData.customFunction[0].name] &&
+                                window[this.propData.customFunction[0].name].call(this, {
+                                    ...params,
+                                    ...this.propData.customFunction[0].param,
+                                    moduleObject: this.moduleObject
+                                })
+                        } catch (error) {}
+                        that.propData.fontContent = resValue
+                    }
+                    break
+            }
+        },
+        receiveBroadcastMessage(messageObject) {
+            switch (messageObject.type) {
+                case 'websocket':
+                    if (this.propData.messageRefreshKey && messageObject.message) {
+                        const messageData =
+                            (typeof messageObject.message === 'string' && JSON.parse(messageObject.message)) ||
+                            messageObject.message
+                        const arr = Array.isArray(this.propData.messageRefreshKey)
+                            ? this.propData.messageRefreshKey
+                            : [this.propData.messageRefreshKey]
+                        if (messageData.badgeType && arr.includes(messageData.badgeType)) {
+                            this.initData()
+                        }
+                    }
+                    break
+                case 'linkageReload':
+                    this.initData()
+                    break
+                case 'pageResize':
+                    this.pageWidth = messageObject.message.width
+                    this.convertAttrToStyleObject()
+                    break
+            }
+            console.log('组件收到消息', messageObject)
+        },
+        setContextValue(object) {
+            console.log('统一接口设置的值', object)
+            if (object.type != 'pageCommonInterface') {
+                return
+            }
+            //这里使用的是子表，所以要循环匹配所有子表的属性然后再去设置修改默认值
+            if (object.key == this.propData.dataName) {
+                // this.propData.fontContent = this.getExpressData(this.propData.dataName,this.propData.dataFiled,object.data);
+                this.$set(
+                    this.propData,
+                    'fontContent',
+                    this.getExpressData(this.propData.dataName, this.propData.dataFiled, object.data)
+                )
+            }
+        },
+        sendBroadcastMessage(object) {
+            window.IDM.broadcast && window.IDM.broadcast.send(object)
+        },
+        /**
+         * 通用的url参数对象
+         * 所有地址的url参数转换
+         */
+        commonParam() {
+            let urlObject = IDM.url.queryObject()
+            var params = {
+                pageId:
+                    window.IDM.broadcast && window.IDM.broadcast.pageModule ? window.IDM.broadcast.pageModule.id : '',
+                urlData: JSON.stringify(urlObject)
+            }
+            return params
+        }
+    }
+}
 </script>
 
 <style lang="scss" scoped>
 .box-line:last-child {
-  border-bottom: 0 !important;
+    border-bottom: 0 !important;
 }
-.one-img{
-  width: 40%;
-  height: 80px;
-  margin: 0 0 0 10px;
+.one-img {
+    margin: 0 0 0 10px;
 }
-.image-list{
-  width: 100%;
-  height: 80px;
+.image-list {
+    width: 100%;
 }
 </style>

@@ -226,20 +226,6 @@
                             "value": "em"
                         }
                     ]
-                },
-                {
-                    "type": "font",
-                    "layoutType": "block",
-                    "text": "标题字体",
-                    "bindKey": "titleFontStyle",
-                    "desc":"设置轮播图片下方字体",
-                    "default": {
-                        "fontColors": {
-                            "hex": "#ffffff"
-                        },
-                        "fontSize": 14,
-                        "fontSizeUnit": "px"
-                    }
                 }
             ]
         },
