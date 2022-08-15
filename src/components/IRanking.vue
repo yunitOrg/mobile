@@ -6,7 +6,7 @@
     idm-ctrl-id：组件的id，这个必须不能为空
   -->
   <div idm-ctrl="idm_module"
-  :id="moduleObject.id" 
+  :id="moduleObject.id"
   :idm-ctrl-id="moduleObject.id" 
   >
     <div class="idm-iranking">
