@@ -50,17 +50,28 @@
                     </div>
                 </div>
             </template>
+            <ICommonMask :moduleObject="moduleObject" :propData="propData"></ICommonMask>
+            <template #loading v-if="isLoading">
+                <van-loading size="24px" vertical>加载中...</van-loading>
+            </template>
+            <template #empty v-if="!isFirst && !isLoading && pageData.value.length === 0">
+                <ICommonEmpty :moduleObject="moduleObject" :propData="propData"></ICommonEmpty>
+            </template>
         </ICommonListContainer>
     </div>
 </template>
 <script>
 import ICommonListContainer from '../commonComponents/ICommonListContainer'
+import ICommonMask from '../commonComponents/ICommonMask'
+import ICommonEmpty from '../commonComponents/ICommonEmpty'
 import commonListMixin from '../mixins/commonList'
 import { getContentListData } from '../mock/mockData'
 export default {
     name: 'IContentList',
     components: {
-        ICommonListContainer
+        ICommonListContainer,
+        ICommonMask,
+        ICommonEmpty
     },
     data() {
         return {
@@ -188,8 +199,6 @@ export default {
             //请求数据源
             this.initData()
         },
-        //点击更多
-        handleClickMore() {},
 
         initData() {
             let that = this

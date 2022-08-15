@@ -52,9 +52,6 @@ export default {
         }
     },
     mixins: [adaptationScreen],
-    data() {
-        return {}
-    },
     computed: {
         isShowText() {
             return ['text', 'textAndIcon'].includes(this.propData.titleRightContent)
@@ -68,5 +65,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss" scoped></style>

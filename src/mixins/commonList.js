@@ -1,7 +1,8 @@
 export default {
     data() {
         return {
-            isLoading: true
+            isLoading: false,
+            isFirst: true
         }
     },
     methods: {

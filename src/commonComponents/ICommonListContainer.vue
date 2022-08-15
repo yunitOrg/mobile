@@ -1,5 +1,5 @@
 <template>
-    <div :id="`${moduleObject.id}-common-list`" class="over-h">
+    <div :id="`${moduleObject.id}-common-list`" class="over-h position-r">
         <i-common-header
             v-if="propData.isShowTitle"
             @handleClickMore="$emit('handleClickMore')"
@@ -9,7 +9,10 @@
         ></i-common-header>
         <div class="common-list-container">
             <slot name="list"></slot>
+            <slot name="loading"></slot>
+            <slot name="empty"></slot>
         </div>
+        <slot></slot>
     </div>
 </template>
 <script>
@@ -180,5 +183,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss" scoped></style>

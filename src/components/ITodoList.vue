@@ -25,17 +25,25 @@
                     </div>
                 </div>
             </template>
+            <ICommonMask :moduleObject="moduleObject" :propData="propData"></ICommonMask>
+            <template #empty v-if="!isFirst && !isLoading && pageData.value.length === 0">
+                <ICommonEmpty :moduleObject="moduleObject" :propData="propData"></ICommonEmpty>
+            </template>
         </ICommonListContainer>
     </div>
 </template>
 <script>
 import ICommonListContainer from '../commonComponents/ICommonListContainer'
+import ICommonMask from '../commonComponents/ICommonMask'
+import ICommonEmpty from '../commonComponents/ICommonEmpty'
 import commonListMixin from '../mixins/commonList'
 import { todoData } from '../mock/mockData'
 export default {
     name: 'ITodoList',
     components: {
-        ICommonListContainer
+        ICommonListContainer,
+        ICommonMask,
+        ICommonEmpty
     },
     mixins: [commonListMixin],
     data() {

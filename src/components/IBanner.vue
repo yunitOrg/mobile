@@ -700,7 +700,7 @@ li {
     }
 
     .swiper-pagination {
-        :v-deep(.swiper-pagination-bullet.swiper-pagination-bullet-active) {
+        ::v-deep(.swiper-pagination-bullet.swiper-pagination-bullet-active) {
             background-color: #fff;
         }
     }

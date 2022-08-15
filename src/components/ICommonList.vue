@@ -61,7 +61,11 @@
                                 </div>
                                 <span class="text-o-e"> {{ getDataField(propData.personField, item) }}人参与</span>
                             </div>
-                            <div v-if="handleShowButton(item)" class="common-list-person-button">
+                            <div
+                                v-if="handleShowButton(item)"
+                                @click="handleClickButton"
+                                class="common-list-person-button"
+                            >
                                 {{ propData.buttonText }}
                             </div>
                         </div>
@@ -82,17 +86,25 @@
                     </div>
                 </div>
             </template>
+            <ICommonMask :moduleObject="moduleObject" :propData="propData"></ICommonMask>
+            <template #empty v-if="!isFirst && !isLoading && pageData.value.length === 0">
+                <ICommonEmpty :moduleObject="moduleObject" :propData="propData"></ICommonEmpty>
+            </template>
         </ICommonListContainer>
     </div>
 </template>
 <script>
 import ICommonListContainer from '../commonComponents/ICommonListContainer'
+import ICommonMask from '../commonComponents/ICommonMask'
+import ICommonEmpty from '../commonComponents/ICommonEmpty'
 import commonListMixin from '../mixins/commonList'
 import { getCommonListData } from '../mock/mockData'
 export default {
     name: 'ICommonList',
     components: {
-        ICommonListContainer
+        ICommonListContainer,
+        ICommonMask,
+        ICommonEmpty
     },
     data() {
         return {
@@ -113,11 +125,11 @@ export default {
             if (this.propData.isShowButtonFunction && this.propData.isShowButtonFunction.length > 0) {
                 let resValue = ''
                 try {
-                    const funcName = this.propData.customFunction[0].name
+                    const funcName = this.propData.isShowButtonFunction[0].name
                     resValue =
                         window[funcName] &&
                         window[funcName].call(this, {
-                            ...this.propData.customFunction[0].param,
+                            ...this.propData.isShowButtonFunction[0].param,
                             moduleObject: this.moduleObject,
                             ...item
                         })
@@ -131,7 +143,6 @@ export default {
             this.convertAttrToStyleObject()
             this.convertThemeListAttrToStyleObject()
         },
-
         convertAttrToStyleObject() {
             var boxLineStyleObj = {},
                 lineTitleFontStyleObj = {},
@@ -319,8 +330,23 @@ export default {
             //请求数据源
             this.initData()
         },
-        //点击更多
-        handleClickMore() {},
+
+        /**
+         * 自定义按钮点击函数
+         * @param {} item 当前列表项数据
+         */
+        handleClickButton(item) {
+            if (this.propData.customButtonFunction && this.propData.customButtonFunction.length > 0) {
+                this.propData.customButtonFunction.forEach((func) => {
+                    window[func.name] &&
+                        window[func.name].call(this, {
+                            ...func.param,
+                            moduleObject: this.moduleObject,
+                            ...item
+                        })
+                })
+            }
+        },
 
         initData() {
             let that = this

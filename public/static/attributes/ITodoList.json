@@ -228,6 +228,15 @@
                     "text": "右侧字体",
                     "desc": "文本颜色默认为主题色,如果设置了颜色,会覆盖主题色",
                     "bindKey": "rightTitleFontStyle",
+                    "default": {
+                        "fontColors": {
+                            "hex": "",
+                            "hex8": ""
+                        },
+                        "fontSize": 15,
+                        "fontSizeUnit": "px",
+                        "fontWeight": "400"
+                    },
                     "display": "@[isShowTitle == true && (titleRightContent == 'textAndIcon' || titleRightContent == 'text')]"
                 },
                 {
@@ -634,6 +643,19 @@
                 {
                     "type": "select",
                     "layoutType": "inline",
+                    "text": "刷新KEY",
+                    "bindKey": "messageRefreshKey",
+                    "desc": "根据组件接收到消息的刷新KEY来刷新数据",
+                    "multiple": true,
+                    "placeholder": "请选择刷新KEY",
+                    "ctrlAttrObject": {
+                        "mode": "tags"
+                    },
+                    "dictionary": []
+                },
+                {
+                    "type": "select",
+                    "layoutType": "inline",
                     "text": "已读判断",
                     "bindKey": "hasReadJudge",
                     "default": "express",
@@ -724,19 +746,6 @@
                             "default": "moreUrl"
                         }
                     ]
-                },
-                {
-                    "type": "select",
-                    "layoutType": "inline",
-                    "text": "刷新KEY",
-                    "bindKey": "messageRefreshKey",
-                    "desc": "根据组件接收到消息的刷新KEY来刷新数据",
-                    "multiple": true,
-                    "placeholder": "请选择刷新KEY",
-                    "ctrlAttrObject": {
-                        "mode": "tags"
-                    },
-                    "dictionary": []
                 }
             ]
         }
