@@ -24,7 +24,7 @@
                     "type": "radio",
                     "styleType": "radio",
                     "layoutType": "inline",
-                    "text": "组件标题",
+                    "text": "显示标题",
                     "bindKey": "isShowTitle",
                     "desc": "设置是否显示组件标题",
                     "default": true,
@@ -226,6 +226,7 @@
                     "type": "font",
                     "layoutType": "block",
                     "text": "右侧字体",
+                    "desc": "文本颜色默认为主题色,如果设置了颜色,会覆盖主题色",
                     "bindKey": "rightTitleFontStyle",
                     "display": "@[isShowTitle == true && (titleRightContent == 'textAndIcon' || titleRightContent == 'text')]"
                 },
@@ -273,7 +274,7 @@
                     "text": "阴影",
                     "desc": "填写格式如下：10px 10px 5px #888888，更多请点击查看详细填写说明",
                     "bindKey": "boxShadow",
-                    "default": ""
+                    "default": "0 0 3px 2px #F2F2F2"
                 },
                 {
                     "type": "colorPicker",
@@ -723,6 +724,19 @@
                             "default": "moreUrl"
                         }
                     ]
+                },
+                {
+                    "type": "select",
+                    "layoutType": "inline",
+                    "text": "刷新KEY",
+                    "bindKey": "messageRefreshKey",
+                    "desc": "根据组件接收到消息的刷新KEY来刷新数据",
+                    "multiple": true,
+                    "placeholder": "请选择刷新KEY",
+                    "ctrlAttrObject": {
+                        "mode": "tags"
+                    },
+                    "dictionary": []
                 }
             ]
         }

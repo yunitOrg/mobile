@@ -34,7 +34,7 @@
                             </div>
                             <span class="text-o-e"> {{ getDataField(propData.timeField, item) }}</span>
                         </div>
-                        <div class="d-flex common-list-style-one-location-box">
+                        <div class="d-flex align-c common-list-style-one-location-box">
                             <div class="d-flex align-c common-list-icon-container" v-if="propData.isShowLocationIcon">
                                 <svg
                                     v-if="propData.locationIcon && propData.locationIcon.length"
@@ -372,61 +372,11 @@ export default {
                     break
             }
         },
-        receiveBroadcastMessage(messageObject) {
-            switch (messageObject.type) {
-                case 'websocket':
-                    if (this.propData.messageRefreshKey && messageObject.message) {
-                        const messageData =
-                            (typeof messageObject.message === 'string' && JSON.parse(messageObject.message)) ||
-                            messageObject.message
-                        const arr = Array.isArray(this.propData.messageRefreshKey)
-                            ? this.propData.messageRefreshKey
-                            : [this.propData.messageRefreshKey]
-                        if (messageData.badgeType && arr.includes(messageData.badgeType)) {
-                            this.initData()
-                        }
-                    }
-                    break
-                case 'linkageReload':
-                    this.initData()
-                    break
-                case 'pageResize':
-                    this.pageWidth = messageObject.message.width
-                    this.convertAttrToStyleObject()
-                    break
-            }
-            console.log('组件收到消息', messageObject)
-        },
         setContextValue(object) {
             console.log('统一接口设置的值', object)
             if (object.type != 'pageCommonInterface') {
                 return
             }
-            //这里使用的是子表，所以要循环匹配所有子表的属性然后再去设置修改默认值
-            if (object.key == this.propData.dataName) {
-                // this.propData.fontContent = this.getExpressData(this.propData.dataName,this.propData.dataFiled,object.data);
-                this.$set(
-                    this.propData,
-                    'fontContent',
-                    this.getExpressData(this.propData.dataName, this.propData.dataFiled, object.data)
-                )
-            }
-        },
-        sendBroadcastMessage(object) {
-            window.IDM.broadcast && window.IDM.broadcast.send(object)
-        },
-        /**
-         * 通用的url参数对象
-         * 所有地址的url参数转换
-         */
-        commonParam() {
-            let urlObject = IDM.url.queryObject()
-            var params = {
-                pageId:
-                    window.IDM.broadcast && window.IDM.broadcast.pageModule ? window.IDM.broadcast.pageModule.id : '',
-                urlData: JSON.stringify(urlObject)
-            }
-            return params
         }
     }
 }

@@ -1,0 +1,406 @@
+<template>
+    <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id" :title="propData.htmlTitle">
+        <ICommonListContainer
+            :moduleObject="moduleObject"
+            :ref="'listContainerRef-' + moduleObject.id"
+            :propData="propData"
+            :pageData="pageData"
+            @handleClickMore="handleClickMore"
+        >
+            <template #list>
+                <div
+                    v-for="(item, index) in pageData.value"
+                    :key="index"
+                    class="box-line d-flex just-b"
+                    @click="handleItemClick(item)"
+                >
+                    <!-- 左侧内容 -->
+                    <div class="d-flex flex-d-c just-c align-c activity-list-left">
+                        <div class="activity-list-time">{{ getDataField(propData.timeField, item) }}</div>
+                        <div class="activity-list-week">{{ getDataField(propData.weekField, item) }}</div>
+                        <div
+                            class="activity-list-status"
+                            v-if="getDataField(propData.activityField, item)"
+                            :style="getActivityStatusStyle(getDataField(propData.activityField, item))"
+                        >
+                            {{ getDataField(propData.activityField, item) }}
+                        </div>
+                    </div>
+                    <!-- 右侧内容 -->
+                    <div class="flex-1">
+                        <div class="activity-list-title-line d-flex align-c">
+                            <span class="activity-list-title">{{ getDataField(propData.titleField, item) }}</span>
+                            <span
+                                class="activity-list-user-status"
+                                v-if="getDataField(propData.activityField, item)"
+                                :style="getUserStatusStyle(getDataField(propData.userField, item))"
+                                >{{ getDataField(propData.userField, item) }}</span
+                            >
+                        </div>
+                        <div class="activity-list-tags">
+                            <span
+                                class="activity-list-tag"
+                                v-for="(tag, indexs) in getDataField(propData.tagField, item)"
+                                :key="indexs"
+                                >{{ tag }}</span
+                            >
+                        </div>
+                        <div class="d-flex align-c activity-list-style-one-location-box">
+                            <div class="d-flex align-c activity-list-icon-container" v-if="propData.isShowLocationIcon">
+                                <svg
+                                    v-if="propData.locationIcon && propData.locationIcon.length"
+                                    class="activity-list-location-icon"
+                                    aria-hidden="true"
+                                >
+                                    <use :xlink:href="`#${propData.locationIcon[0]}`"></use>
+                                </svg>
+                                <svg-icon
+                                    v-else
+                                    icon-class="location"
+                                    className="activity-list-location-icon"
+                                ></svg-icon>
+                            </div>
+                            <span class="text-o-e"> {{ getDataField(propData.locationField, item) }}</span>
+                        </div>
+                        <div class="d-flex align-c activity-list-style-one-person-box">
+                            <div class="d-flex align-c activity-list-icon-container" v-if="propData.isShowPersonIcon">
+                                <svg
+                                    v-if="propData.personIcon && propData.personIcon.length"
+                                    class="activity-list-person-icon"
+                                    aria-hidden="true"
+                                >
+                                    <use :xlink:href="`#${propData.personIcon[0]}`"></use>
+                                </svg>
+                                <svg-icon v-else icon-class="ren" className="activity-list-person-icon"></svg-icon>
+                            </div>
+                            <span class="text-o-e">参与人数：{{ getDataField(propData.personNumberField, item) }}</span>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </ICommonListContainer>
+    </div>
+</template>
+<script>
+import ICommonListContainer from '../commonComponents/ICommonListContainer'
+import commonListMixin from '../mixins/commonList'
+import { activityData } from '../mock/mockData'
+export default {
+    name: 'IActivityList',
+    components: {
+        ICommonListContainer
+    },
+    mixins: [commonListMixin],
+    data() {
+        return {
+            moduleObject: {},
+            propData: this.$root.propData.compositeAttr || {},
+            pageWidth: null,
+            pageData: { value: [], count: 0, moreUrl: '' }
+        }
+    },
+    created() {
+        this.moduleObject = this.$root.moduleObject
+        this.convertAttrToStyleObject()
+        this.convertThemeListAttrToStyleObject()
+    },
+    methods: {
+        propDataWatchHandle(propData) {
+            this.propData = propData.compositeAttr || {}
+            this.convertAttrToStyleObject()
+            this.convertThemeListAttrToStyleObject()
+        },
+        getUserStatusStyle(text) {
+            if (Array.isArray(this.propData.userStatusList) && this.propData.userStatusList.length > 0) {
+                const currentUserStatus = this.propData.userStatusList.find((el) => el.statusText === text),
+                    styleObj = {}
+                if (currentUserStatus) {
+                    if (Object.keys(currentUserStatus.userStatusFont).length > 0) {
+                        IDM.style.setFontStyle(styleObj, currentUserStatus.userStatusFont)
+                    }
+                    if (Object.keys(currentUserStatus.userBorder).length > 0) {
+                        IDM.style.setBorderStyle(styleObj, currentUserStatus.userBorder)
+                    }
+                    return styleObj
+                }
+            }
+            return {}
+        },
+        getActivityStatusStyle(text) {
+            if (Array.isArray(this.propData.activityList) && this.propData.activityList.length > 0) {
+                const currentActivityStatus = this.propData.activityList.find((el) => el.statusText === text),
+                    styleObj = {}
+                if (currentActivityStatus) {
+                    if (Object.keys(currentActivityStatus.activityStatusFont).length > 0) {
+                        IDM.style.setFontStyle(styleObj, currentActivityStatus.activityStatusFont)
+                    }
+                    if (
+                        currentActivityStatus.activityStatusBgColor &&
+                        currentActivityStatus.activityStatusBgColor.hex8
+                    ) {
+                        styleObj['background-color'] = IDM.hex8ToRgbaString(
+                            currentActivityStatus.activityStatusBgColor.hex8
+                        )
+                    }
+                    return styleObj
+                }
+            }
+            return {}
+        },
+
+        convertAttrToStyleObject() {
+            var boxLineStyleObj = {},
+                timeBoxStyleObj = {},
+                weekBoxStyleObj = {},
+                activityStatusBoxStyleObj = {},
+                titleBoxStyleObj = {},
+                titleFontObj = {},
+                tagStyleObj = {},
+                locationIconObj = {},
+                locationLineObj = {},
+                personIconObj = {},
+                personLineObj = {},
+                userStyleObj = {}
+            for (const key in this.propData) {
+                if (this.propData.hasOwnProperty.call(this.propData, key)) {
+                    const element = this.propData[key]
+                    if (!element && element !== false && element != 0) {
+                        continue
+                    }
+                    switch (key) {
+                        case 'lineBgColor':
+                            if (element && element.hex8) {
+                                boxLineStyleObj['background-color'] = IDM.hex8ToRgbaString(element.hex8)
+                            }
+                            break
+                        case 'lineBox':
+                            IDM.style.setBoxStyle(boxLineStyleObj, element)
+                            break
+                        case 'lineBorder':
+                            IDM.style.setBorderStyle(boxLineStyleObj, element)
+                            break
+                        case 'lineBoxShadow':
+                            boxLineStyleObj['box-shadow'] = element
+                            break
+                        // 时间样式
+                        case 'timeBox':
+                            IDM.style.setBoxStyle(timeBoxStyleObj, element)
+                            break
+                        case 'timeFont':
+                            IDM.style.setFontStyle(timeBoxStyleObj, element)
+                            break
+                        // 星期样式
+                        case 'weekBox':
+                            IDM.style.setBoxStyle(weekBoxStyleObj, element)
+                            break
+                        case 'weekFont':
+                            IDM.style.setFontStyle(weekBoxStyleObj, element)
+                            break
+                        // 活动状态
+                        case 'activityStatusBox':
+                            IDM.style.setBoxStyle(activityStatusBoxStyleObj, element)
+                            break
+                        case 'activityStatusBorder':
+                            IDM.style.setBorderStyle(activityStatusBoxStyleObj, element)
+                            break
+                        // 标题样式
+                        case 'titleBorder':
+                            IDM.style.setBorderStyle(titleBoxStyleObj, element)
+                            break
+                        case 'titleBox':
+                            IDM.style.setBoxStyle(titleBoxStyleObj, element)
+                            break
+                        case 'titleFont':
+                            IDM.style.setFontStyle(titleFontObj, element)
+                            break
+                        // 标签样式
+                        case 'tagBox':
+                            IDM.style.setBoxStyle(tagStyleObj, element)
+                            break
+                        case 'tagFont':
+                            IDM.style.setFontStyle(tagStyleObj, element)
+                            break
+                        case 'tagBorder':
+                            IDM.style.setBorderStyle(tagStyleObj, element)
+                            break
+                        case 'tagBgColor':
+                            if (element && element.hex8) {
+                                tagStyleObj['background-color'] = IDM.hex8ToRgbaString(element.hex8) + ' !important'
+                            }
+                            break
+                        //地点行样式
+                        case 'locationIconColor':
+                            if (element && element.hex8) {
+                                locationIconObj['fill'] = IDM.hex8ToRgbaString(element.hex8)
+                                locationIconObj['color'] = IDM.hex8ToRgbaString(element.hex8)
+                            }
+                            break
+                        case 'locationIconSize':
+                            locationIconObj['width'] = element + 'px'
+                            locationIconObj['height'] = element + 'px'
+                            locationIconObj['font-size'] = element + 'px'
+                            break
+                        case 'locationBox':
+                            IDM.style.setBoxStyle(locationLineObj, element)
+                            break
+                        case 'locationFontStyle':
+                            IDM.style.setFontStyle(locationLineObj, element)
+                            break
+
+                        //人物行样式
+                        case 'personIconColor':
+                            if (element && element.hex8) {
+                                personIconObj['fill'] = IDM.hex8ToRgbaString(element.hex8)
+                                personIconObj['color'] = IDM.hex8ToRgbaString(element.hex8)
+                            }
+                            break
+                        case 'personIconSize':
+                            personIconObj['width'] = element + 'px'
+                            personIconObj['height'] = element + 'px'
+                            personIconObj['font-size'] = element + 'px'
+                            break
+                        case 'personBox':
+                            IDM.style.setBoxStyle(personLineObj, element)
+                            break
+                        case 'personFont':
+                            IDM.style.setFontStyle(personLineObj, element)
+                            break
+                        //人物状态
+                        case 'userStatusBox':
+                            IDM.style.setBoxStyle(userStyleObj, element)
+                            break
+                    }
+                }
+            }
+            // 单列总体样式
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .box-line', boxLineStyleObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .activity-list-left', {
+                'margin-right': boxLineStyleObj['padding-left']
+            })
+            // 时间样式
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .activity-list-time', timeBoxStyleObj)
+            // 星期样式
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .activity-list-week', weekBoxStyleObj)
+            // 活动状态
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .activity-list-status', activityStatusBoxStyleObj)
+            // 标题样式
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .activity-list-title-line', titleBoxStyleObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .activity-list-title', titleFontObj)
+            // 标签样式
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .activity-list-tag', tagStyleObj)
+            // 地点行样式
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .activity-list-location-icon', locationIconObj)
+            window.IDM.setStyleToPageHead(
+                this.moduleObject.id + ' .activity-list-style-one-location-box',
+                locationLineObj
+            )
+            // 人物行样式
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .activity-list-person-icon', personIconObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .activity-list-style-one-person-box', personLineObj)
+            //icon样式
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .activity-list-icon-container', {
+                'margin-right': '6px'
+            })
+            //人物状态
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .activity-list-user-status', userStyleObj)
+
+            this.$nextTick(() => {
+                this.$refs['listContainerRef-' + this.moduleObject.id].convertAttrToStyleObject()
+            })
+            this.initData()
+        },
+        /**
+         * 主题颜色
+         */
+        convertThemeListAttrToStyleObject() {
+            var themeList = this.propData.themeList
+            if (!themeList) {
+                return
+            }
+            const themeNamePrefix =
+                IDM.setting && IDM.setting.applications && IDM.setting.applications.themeNamePrefix
+                    ? IDM.setting.applications.themeNamePrefix
+                    : 'idm-theme-'
+            for (var i = 0; i < themeList.length; i++) {
+                var item = themeList[i]
+                let bgColorObj = {
+                    'background-color': item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : ''
+                }
+                IDM.setStyleToPageHead(
+                    '.' +
+                        themeNamePrefix +
+                        item.key +
+                        (` #${this.moduleObject.id}-common-list` || 'module_demo') +
+                        ' .activity-list-tag',
+                    bgColorObj
+                )
+            }
+            // 通用样式
+            this.$nextTick(() => {
+                this.$refs['listContainerRef-' + this.moduleObject.id].convertThemeListAttrToStyleObject()
+            })
+        },
+        reload() {
+            //请求数据源
+            this.initData()
+        },
+
+        initData() {
+            let that = this
+            if (this.moduleObject.env === 'develop') {
+                this.pageData = activityData
+                return
+            }
+            //所有地址的url参数转换
+            var params = that.commonParam()
+            switch (this.propData.dataSourceType) {
+                case 'customInterface':
+                    this.propData.customInterfaceUrl &&
+                        window.IDM.http
+                            .get(this.propData.customInterfaceUrl, params)
+                            .then((res) => {
+                                //res.data
+                                that.$set(
+                                    that.propData,
+                                    'fontContent',
+                                    that.getExpressData('resultData', that.propData.dataFiled, res.data)
+                                )
+                                // that.propData.fontContent = ;
+                            })
+                            .catch(function (error) {})
+                    break
+                case 'pageCommonInterface':
+                    //使用通用接口直接跳过，在setContextValue执行
+                    break
+                case 'customFunction':
+                    if (this.propData.customFunction && this.propData.customFunction.length > 0) {
+                        var resValue = ''
+                        try {
+                            resValue =
+                                window[this.propData.customFunction[0].name] &&
+                                window[this.propData.customFunction[0].name].call(this, {
+                                    ...params,
+                                    ...this.propData.customFunction[0].param,
+                                    moduleObject: this.moduleObject
+                                })
+                        } catch (error) {}
+                        that.propData.fontContent = resValue
+                    }
+                    break
+            }
+        },
+        setContextValue(object) {
+            console.log('统一接口设置的值', object)
+            if (object.type != 'pageCommonInterface') {
+                return
+            }
+        }
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+.box-line:last-child {
+    border-bottom: 0 !important;
+}
+</style>

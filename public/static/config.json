@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lasttime": "2022-08-11 21:05:54",
+  "lasttime": "2022-08-15 09:19:34",
   "author": "申龙",
   "className": "mobile",
   "module": [
@@ -120,6 +120,13 @@
       "classId": "idm.component.mobile.selectPieChart",
       "comName": "饼状统计图",
       "className": "ISelectPieChart",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.iactivitylist",
+      "comName": "活动列表",
+      "className": "IActivityList",
       "comType": "common",
       "comLangue": "vue"
     }

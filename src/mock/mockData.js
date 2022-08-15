@@ -128,3 +128,49 @@ export const todoData = {
     count: 2,
     moreUrl: ''
 }
+
+export const activityData = {
+    value: [
+        {
+            time: '10.12',
+            weekDay: '周三',
+            title: '第三次党员大会',
+            tags: ['党员大会', '组织生活会'],
+            location: '控江路街道社区党群服务中心',
+            jumpUrl: '',
+            activityStatus: '1',
+            activityText: '活动中',
+            userStatus: '',
+            userStatusText: '',
+            personNumber: 65
+        },
+        {
+            time: '10.12',
+            weekDay: '周三',
+            title: '第三次党员大会',
+            tags: ['党员大会', '组织生活会'],
+            location: '控江路街道社区党群服务中心',
+            jumpUrl: '',
+            activityStatus: '0',
+            activityText: '未开始',
+            userStatus: '0',
+            userStatusText: '请假中',
+            personNumber: 65
+        },
+        {
+            time: '10.12',
+            weekDay: '周三',
+            title: '第三次党员大会',
+            tags: ['党员大会', '组织生活会'],
+            location: '控江路街道社区党群服务中心',
+            jumpUrl: '',
+            activityStatus: '2',
+            activityText: '已结束',
+            userStatus: '1',
+            userStatusText: '缺席',
+            personNumber: 65
+        }
+    ],
+    count: 3,
+    moreUrl: ''
+}
