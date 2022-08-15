@@ -28,7 +28,7 @@
             :idm-container-index="item.key"
           ></div>
         </template>
-        <!-- <div class="tab-conent">{{item.tab}}</div> -->
+        <!-- <div v-else>{{item.key}}</div> -->
       </van-tab>
     </van-tabs>
   </div>
@@ -42,47 +42,7 @@ export default{
       activeTab: '',
       allTabList: [],
       moduleObject:{},
-      propData:this.$root.propData.compositeAttr||{
-        isDrag: "normal",
-        type: 'line',
-        animated: true,
-        sticky: true,
-        swipeable: false,
-        scrollspy: false,
-        offsetTop: {
-          inputVal: 11,
-          selectVal: 'px'
-        },
-        staticTabPaneList: [
-          {
-            key: "1",
-            opened: true,
-            tab: "全部",
-            defaultActiveKey: true
-          },
-          {
-            key: "2",
-            opened: false,
-            tab: "第一步",
-            tableFont: {
-              fontColors: {
-                hex8: "#792828FF"
-              },
-              fontDecoration: "line-through",
-              fontFamily: "arial, helvetica, 'microsoft yahei'",
-              fontLetterSpacing: 4,
-              fontLetterSpacingUnit: 'px',
-              fontLineHeight: 4,
-              fontLineHeightUnit: 'px',
-              fontSize: 3,
-              fontSizeUnit: 'px',
-              fontTextAlign: 'left',
-              fontWeight: "100 Thin"
-            }
-          }
-        ],
-        beforChange: []
-      }
+      propData:this.$root.propData.compositeAttr||{}
     }
   },
   created () {
@@ -110,10 +70,16 @@ export default{
       this.convertAttrToStyleObject();
     },
     setFontStyle (item) {
-      console.log(item)
       let obj = {};
       if (item) {
         item.fontColors && (obj['color'] = item.fontColors.hex8);
+        item.fontFamily && (obj['font-family'] = item.fontFamily);
+        item.fontWeight && (obj['font-weight'] = item.fontWeight.split(" ")[0]);
+        item.fontStyle && (obj['font-style'] = item.fontStyle);
+        item.fontSize && (obj['font-size'] = item.fontSize + item.fontSizeUnit);
+        item.fontLineHeight && (obj['line-height'] = item.fontLineHeight + (item.fontLineHeightUnit == "-" ? "" : item.fontLineHeightUnit));
+        item.fontTextAlign && (obj['text-align'] = item.fontTextAlign);
+        item.fontDecoration && (obj['text-decoration'] = item.fontDecoration);
       }
       return obj
     },
@@ -209,3 +175,9 @@ export default{
   }
 }
 </script>
+
+<style scoped>
+.tab-conent{
+  min-height: 200px;
+}
+</style>

@@ -21,74 +21,162 @@
         "desc": "提供设置组件能达到展示效果的基本属性设置信息",
         "children": [
           {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "图片显示",
+            "desc":"图片是否显示",
+            "bindKey": "showImg",
+            "default": true
+          },
+          {
             "type": "uploadImage",
             "layoutType": "inline",
-            "text": "图片",
+            "text": "图片地址",
             "bindKey": "topImgUrl",
             "placeholder": "可输入图片地址或直接上传"
           },
           {
-            "type": "radio",
+            "type": "inlineGroup",
+            "text": "图片宽高",
+            "children": [
+                {
+                    "type": "input",
+                    "layoutType": "block",
+                    "text": "宽",
+                    "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
+                    "bindKey": "imgWidth",
+                    "width": "100%",
+                    "default": "100%"
+                },
+                {
+                    "type": "input",
+                    "layoutType": "block",
+                    "text": "高",
+                    "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
+                    "bindKey": "imgHeight",
+                    "width": "200px",
+                    "default": "200px"
+                }
+            ]
+          },
+          {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "个人页签",
+            "desc":"个人页签是否显示",
+            "bindKey": "selfShow",
+            "default": true
+          }
+        ]
+      },
+      {
+        "type": "group",
+        "text": "样式设置",
+        "desc": "点击？查看样式设置用法指南",
+        "helpUrl": "",
+        "children": [
+          {
+            "type": "box",
             "layoutType": "block",
-            "text": "背景大小",
-            "bindKey": "bgSize",
-            "dictionary": [
-                {
-                    "label": "裁切显示",
-                    "value": "cover"
-                },
-                {
-                    "label": "完全显示",
-                    "value": "contain"
-                },
-                {
-                    "label": "自定义",
-                    "value": "custom"
-                }
-            ],
-            "display": "@[topImgUrl]"
+            "text": "列表边距",
+            "bindKey": "ulbox",
+            "default": {
+                "marginTopVal": "-20px",
+                "marginRightVal": "20px",
+                "marginBottomVal": "",
+                "marginLeftVal": "20px",
+                "paddingTopVal": "",
+                "paddingRightVal": "",
+                "paddingBottomVal": "",
+                "paddingLeftVal": ""
+            }
           },
           {
-            "type": "inputNumberUnit",
-            "layoutType": "inline",
-            "text": "宽度",
-            "bindKey": "bgSizeWidth",
-            "dictionary": [
-                {
-                    "label": "px",
-                    "value": "px"
+            "type": "font",
+            "layoutType": "block",
+            "text": "字体名称",
+            "bindKey": "itemFontStyle",
+            "default": {
+                "fontColors": {
+                    "hex": "#000000"
                 },
-                {
-                    "label": "%",
-                    "value": "%"
-                },
-                {
-                    "label": "em",
-                    "value": "em"
-                }
-            ],
-            "display": "@[bgSize=='custom']"
+                "fontSize": 20,
+                "fontSizeUnit": "px"
+            }
           },
           {
-            "type": "inputNumberUnit",
-            "layoutType": "inline",
-            "text": "高度",
-            "bindKey": "bgSizeHeight",
-            "dictionary": [
-                {
-                    "label": "px",
-                    "value": "px"
+            "type": "font",
+            "layoutType": "block",
+            "text": "字体描述",
+            "bindKey": "descFontStyle",
+            "default": {
+                "fontColors": {
+                    "hex": "#000000"
                 },
-                {
-                    "label": "%",
-                    "value": "%"
+                "fontSize": 16,
+                "fontSizeUnit": "px"
+            }
+          },
+          {
+            "type": "font",
+            "layoutType": "block",
+            "text": "金额字体",
+            "bindKey": "moneyFontStyle",
+            "default": {
+                "fontColors": {
+                    "hex": "#f00"
                 },
-                {
-                    "label": "em",
-                    "value": "em"
+                "fontSize": 16,
+                "fontSizeUnit": "px"
+            }
+          },
+          {
+            "type": "border",
+            "layoutType": "block",
+            "text": "分割线",
+            "bindKey": "border",
+            "default": {
+              "border": {
+                "bottom": {
+                  "colors": {
+                    "hex": "#ccc"
+                  },
+                  "style": "solid",
+                  "visible": true,
+                  "width": 1,
+                  "widthUnit": "px"
+                },
+                "left": {
+                  "colors": {}
+                },
+                "right": {
+                  "colors": {}
+                },
+                "top": {
+                  "colors": {}
                 }
-            ],
-            "display": "@[bgSize=='custom']"
+              },
+              "radius": {
+                "leftBottom": {},
+                "leftTop": {},
+                "rightBottom": {},
+                "rightTop": {}
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "group",
+        "text": "高级",
+        "desc": "点击？查看高级设置用法指南",
+        "children": [
+          {
+            "type": "treeSelect",
+            "layoutType": "inline",
+            "text": "数据源",
+            "bindKey": "dataSource",
+            "dataSourceUrl":"/ctrl/dataSource/getDatasourceByGroup"
           }
         ]
       }
