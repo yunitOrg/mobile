@@ -615,7 +615,6 @@ $scale: var(--i-articleDetails-scale);
         display: flex;
         align-items: center;
         letter-spacing: 0;
-        white-space: nowrap;
         margin-top: 14px;
         .i-articleDetails-author-item {
           flex-grow: 1;
