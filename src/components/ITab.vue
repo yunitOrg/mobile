@@ -9,7 +9,8 @@
   :id="moduleObject.id" 
   :idm-ctrl-id="moduleObject.id" 
   >
-    <van-tabs v-model="activeTab"
+    <van-tabs class="tab-ul" v-model="activeTab"
+    :background="(propData.bgColor || {}).hex"
     :animated="propData.animated !== false ? true : false"
     :sticky="propData.sticky !== false ? true : false"
     :swipeable="propData.swipeable !== false ? true : false"
@@ -42,7 +43,20 @@ export default{
       activeTab: '',
       allTabList: [],
       moduleObject:{},
-      propData:this.$root.propData.compositeAttr||{}
+      propData:this.$root.propData.compositeAttr||{
+        staticTabPaneList: [
+          {
+            key: '1',
+            opened: true,
+            tab: '支部简介'
+          },
+          {
+            key: '2',
+            opened: true,
+            tab: '支部党员'
+          }
+        ]
+      }
     }
   },
   created () {
@@ -59,10 +73,15 @@ export default{
       if (this.propData.offsetTop && this.propData.offsetTop.inputVal + "" && this.propData.offsetTop.selectVal) {
         styleObject["margin-top"] = this.propData.offsetTop.inputVal + this.propData.offsetTop.selectVal;
       }
-      window.IDM.setStyleToPageHead(
-        this.moduleObject.id + " .tab-conent",
-        styleObject
-      );
+      let styleHeight = {};
+      if (this.propData.width) {
+        styleHeight['width'] = this.propData.width;
+      }
+      if (this.propData.height) {
+        styleHeight['height'] = this.propData.height;
+      }
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .tab-conent", styleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .tab-ul .van-tabs__wrap", styleHeight);
     },
     initAttrToModule () {
       console.log(this.propData, '数据源');

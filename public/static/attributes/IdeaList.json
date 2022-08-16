@@ -85,11 +85,66 @@
             }
           },
           {
+            "type": "box",
+            "layoutType": "block",
+            "text": "列表边距",
+            "bindKey": "liBox",
+            "default": {
+              "marginTopVal": "",
+              "marginRightVal": "",
+              "marginBottomVal": "",
+              "marginLeftVal": "",
+              "paddingTopVal": "20px",
+              "paddingRightVal": "20px",
+              "paddingBottomVal": "20px",
+              "paddingLeftVal": "20px"
+            }
+          },
+          {
             "type": "input",
             "layoutType": "inline",
             "text": "分割距离",
             "bindKey": "liSplitHeight",
             "default": "10px"
+          },
+          {
+            "type": "font",
+            "layoutType": "block",
+            "text": "字体名称",
+            "bindKey": "titleStyle",
+            "default": {
+                "fontColors": {
+                    "hex": "#000000"
+                },
+                "fontSize": 14,
+                "fontSizeUnit": "px"
+            }
+          },
+          {
+            "type": "font",
+            "layoutType": "block",
+            "text": "字体日期",
+            "bindKey": "timeStyle",
+            "default": {
+                "fontColors": {
+                    "hex": "#000000"
+                },
+                "fontSize": 14,
+                "fontSizeUnit": "px"
+            }
+          },
+          {
+            "type": "font",
+            "layoutType": "block",
+            "text": "字体描述",
+            "bindKey": "descStyle",
+            "default": {
+                "fontColors": {
+                    "hex": "#000000"
+                },
+                "fontSize": 14,
+                "fontSizeUnit": "px"
+            }
           }
         ]
       },

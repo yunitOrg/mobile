@@ -20,7 +20,7 @@
               <b>{{item.title}}</b>
               <span>{{item.time}}</span>
             </div>
-            <span>{{item.desc}}</span>
+            <span class="idealist-desc">{{item.desc}}</span>
           </div>
           <div class="idealist-right" :class="item.type === 1 ? 'waitStyle' : 'yetStyle'">{{item.type === 1 ? propData.waitTitle : propData.yetTitle}}</div>
         </li>
@@ -62,7 +62,7 @@ export default {
         waitTitle: "待回复",
         yetTitle: "已回复",
         box:{
-          marginTopVal: "15px",
+          marginTopVal: "0",
           marginRightVal: "",
           marginBottomVal: "",
           marginLeftVal: "",
@@ -70,6 +70,16 @@ export default {
           paddingRightVal: "10px",
           paddingBottomVal: "",
           paddingLeftVal: "10px"
+        },
+        liBox: {
+          marginTopVal: "",
+          marginRightVal: "",
+          marginBottomVal: "",
+          marginLeftVal: "",
+          paddingTopVal: "20px",
+          paddingRightVal: "20px",
+          paddingBottomVal: "20px",
+          paddingLeftVal: "20px"
         },
         waitStyle: {
             fontColors: {
@@ -85,7 +95,28 @@ export default {
             fontSize: 14,
             fontSizeUnit: "px"
         },
-        liSplitHeight: "10px"
+        liSplitHeight: "10px",
+        titleStyle: {
+          fontColors: {
+              hex: "#000000"
+          },
+          fontSize: 14,
+          fontSizeUnit: "px"
+        },
+        timeStyle: {
+          fontColors: {
+              hex: "#000000"
+          },
+          fontSize: 14,
+          fontSizeUnit: "px"
+        },
+        descStyle: {
+          fontColors: {
+              hex: "#000000"
+          },
+          fontSize: 14,
+          fontSizeUnit: "px"
+        }
       }
     }
   },
@@ -101,6 +132,9 @@ export default {
     init () {
       this.convertAttrToStyleObject();
       this.convertTipsStyleObject();
+      this.converTitleStyleObject();
+      this.converTimeStyleObject();
+      this.converDescStyleObject();
     },
     convertAttrToStyleObject () {
       console.log(this.propData, '数据源')
@@ -132,7 +166,36 @@ export default {
           styleObject["padding-left"] = `${ulbox.paddingLeftVal}`;
         }
       }
+      let listyleObject = {};
+      if (this.propData.liBox) {
+        let libox = this.propData.liBox || {};
+        if (libox.marginTopVal) {
+          listyleObject["margin-top"] = `${libox.marginTopVal}`;
+        }
+        if (libox.marginRightVal) {
+          listyleObject["margin-right"] = `${libox.marginRightVal}`;
+        }
+        if (libox.marginBottomVal) {
+          listyleObject["margin-bottom"] = `${libox.marginBottomVal}`;
+        }
+        if (libox.marginLeftVal) {
+          listyleObject["margin-left"] = `${libox.marginLeftVal}`;
+        }
+        if (libox.paddingTopVal) {
+          listyleObject["padding-top"] = `${libox.paddingTopVal}`;
+        }
+        if (libox.paddingRightVal) {
+          listyleObject["padding-right"] = `${libox.paddingRightVal}`;
+        }
+        if (libox.paddingBottomVal) {
+          listyleObject["padding-bottom"] = `${libox.paddingBottomVal}`;
+        }
+        if (libox.paddingLeftVal) {
+          listyleObject["padding-left"] = `${libox.paddingLeftVal}`;
+        }
+      }
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .idealist-ul", styleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .idealist-ul li", listyleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .idealist-ul li+li", {"margin-top": this.propData.liSplitHeight});
     },
     convertTipsStyleObject () {
@@ -200,6 +263,108 @@ export default {
         }
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .yetStyle", yetStyleObject);
+    },
+    converTitleStyleObject () {
+      let styleObject = {};
+      if (this.propData.titleStyle) {
+        let item = this.propData.titleStyle || {};
+        if (item.fontColors) {
+          styleObject["color"] = item.fontColors.hex;
+        }
+        if (item.fontDecoration) {
+          styleObject["text-decoration"] = item.fontDecoration;
+        }
+        if (item.fontFamily) {
+          styleObject['font-family'] = item.fontFamily;
+        }
+        if (item.fontLetterSpacing) {
+          styleObject["word-spacing"] = item.fontLetterSpacing + item.fontLetterSpacingUnit;
+        }
+        if (item.fontLineHeight) {
+          styleObject['line-height'] = item.fontLineHeight + (item.fontLineHeightUnit == "-" ? "" : item.fontLineHeightUnit);
+        }
+        if (item.fontSize) {
+          styleObject['font-size'] = item.fontSize + item.fontSizeUnit
+        }
+        if (item.fontStyle) {
+          styleObject['font-style'] = item.fontStyle
+        }
+        if (item.fontTextAlign) {
+          styleObject['text-align'] = item.fontTextAlign
+        }
+        if (item.fontWeight) {
+          styleObject['font-weight'] = item.fontWeight.split(" ")[0]
+        }
+      }
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .idealist-title b", styleObject);
+    },
+    converTimeStyleObject () {
+      let styleObject = {};
+      if (this.propData.timeStyle) {
+        let item = this.propData.timeStyle || {};
+        if (item.fontColors) {
+          styleObject["color"] = item.fontColors.hex;
+        }
+        if (item.fontDecoration) {
+          styleObject["text-decoration"] = item.fontDecoration;
+        }
+        if (item.fontFamily) {
+          styleObject['font-family'] = item.fontFamily;
+        }
+        if (item.fontLetterSpacing) {
+          styleObject["word-spacing"] = item.fontLetterSpacing + item.fontLetterSpacingUnit;
+        }
+        if (item.fontLineHeight) {
+          styleObject['line-height'] = item.fontLineHeight + (item.fontLineHeightUnit == "-" ? "" : item.fontLineHeightUnit);
+        }
+        if (item.fontSize) {
+          styleObject['font-size'] = item.fontSize + item.fontSizeUnit
+        }
+        if (item.fontStyle) {
+          styleObject['font-style'] = item.fontStyle
+        }
+        if (item.fontTextAlign) {
+          styleObject['text-align'] = item.fontTextAlign
+        }
+        if (item.fontWeight) {
+          styleObject['font-weight'] = item.fontWeight.split(" ")[0]
+        }
+      }
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .idealist-title span", styleObject);
+    },
+    converDescStyleObject () {
+      let styleObject = {};
+      if (this.propData.descStyle) {
+        let item = this.propData.descStyle || {};
+        if (item.fontColors) {
+          styleObject["color"] = item.fontColors.hex;
+        }
+        if (item.fontDecoration) {
+          styleObject["text-decoration"] = item.fontDecoration;
+        }
+        if (item.fontFamily) {
+          styleObject['font-family'] = item.fontFamily;
+        }
+        if (item.fontLetterSpacing) {
+          styleObject["word-spacing"] = item.fontLetterSpacing + item.fontLetterSpacingUnit;
+        }
+        if (item.fontLineHeight) {
+          styleObject['line-height'] = item.fontLineHeight + (item.fontLineHeightUnit == "-" ? "" : item.fontLineHeightUnit);
+        }
+        if (item.fontSize) {
+          styleObject['font-size'] = item.fontSize + item.fontSizeUnit
+        }
+        if (item.fontStyle) {
+          styleObject['font-style'] = item.fontStyle
+        }
+        if (item.fontTextAlign) {
+          styleObject['text-align'] = item.fontTextAlign
+        }
+        if (item.fontWeight) {
+          styleObject['font-weight'] = item.fontWeight.split(" ")[0]
+        }
+      }
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .idealist-desc", styleObject);
     }
   }
 }
@@ -211,7 +376,6 @@ export default {
     li{
       list-style: none;
       display: flex;
-      padding: 20px;
       align-items: center;
       border-radius: 5px;
       box-shadow: 0px  0px 20px 0px #ccc;
@@ -228,7 +392,12 @@ export default {
       .idealist-content{
         flex: 1;
         .idealist-title{
+          display: flex;
+          justify-content: space-between;
           padding-bottom: 5px;
+          span{
+            padding-right: 20px;
+          }
         }
         b{
           font-size: 16px;
