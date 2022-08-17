@@ -368,13 +368,13 @@ export default {
         },
 
         initData() {
-            // if (this.moduleObject.env === 'develop') {
+            if (this.moduleObject.env === 'develop') {
                 this.pageData = activityData
                 return
-            // }
-            // this.isFirst = false
-            // this.isLoading = true
-            // this.getDataSourceData()
+            }
+            this.isFirst = false
+            this.isLoading = true
+            this.getDataSourceData()
         },
         setContextValue(object) {
             console.log('统一接口设置的值', object)

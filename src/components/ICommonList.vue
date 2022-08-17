@@ -358,7 +358,7 @@ export default {
         },
 
         initData() {
-            // if (this.moduleObject.env === 'develop') {
+            if (this.moduleObject.env === 'develop') {
                 const data = getCommonListData.call(this)
                 if (this.propData.styleType === 'styleOne') {
                     data.value = data.value1
@@ -367,10 +367,10 @@ export default {
                 }
                 this.pageData = data
                 return
-            // }
-            // this.isFirst = false
-            // this.isLoading = true
-            // this.getDataSourceData()
+            }
+            this.isFirst = false
+            this.isLoading = true
+            this.getDataSourceData()
         },
         setContextValue(object) {
             console.log('统一接口设置的值', object)
