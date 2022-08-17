@@ -47,7 +47,10 @@
         class="i-selectPieChart-content-wapper"
       >
         <div class="i-selectPieChart-content-chart" :id="`charts_container_${moduleObject.id}`" />
-        <div class="i-selectPieChart-content-table">
+        <div
+          class="i-selectPieChart-content-table"
+          v-if="propData.tableFields && propData.tableFields.length > 0"
+        >
           <div
             class="i-selectPieChart-content-table-row"
             v-for="(item, index) in chartData"
@@ -165,26 +168,27 @@ export default {
     [Popup.name]: Popup,
     [Picker.name]: Picker
   },
+  // {
+  //       colorType: 'field',
+  //       chartColorField: '',
+  //       chartType: 'hollow',
+  //       columnsType: 'static',
+  //       chartDataSource: '1',
+  //       showIcon: true,
+  //       title: '年度学时',
+  //       titleIconPosition: 'left',
+  //       isShowTitleBar: true,
+  //       selectBtn: true,
+  //       moreBtn: false,
+  //       pickerTitle: '选择年份',
+  //       showChartTip: true,
+  //       itemBorderWidth: 0,
+  //       tableFields: [{ name: 'name' }, { name: 'displayValue' }, { name: 'ratio' }]
+  //     }
   data() {
     return {
       moduleObject: {},
-      propData: this.$root.propData.compositeAttr || {
-        colorType: 'field',
-        chartColorField: '',
-        chartType: 'hollow',
-        columnsType: 'static',
-        chartDataSource: '1',
-        showIcon: true,
-        title: '年度学时',
-        titleIconPosition: 'left',
-        isShowTitleBar: true,
-        selectBtn: true,
-        moreBtn: false,
-        pickerTitle: '选择年份',
-        showChartTip: true,
-        itemBorderWidth: 0,
-        tableFields: [{ name: 'name' }, { name: 'displayValue' }, { name: 'ratio' }]
-      },
+      propData: this.$root.propData.compositeAttr || {},
       isLoading: false,
       showPicker: false,
       columns: [],
@@ -331,7 +335,7 @@ export default {
             radius: this.propData.chartType == 'hollow' ? ['45%', '75%'] : [0, '75%'],
             itemStyle: {
               borderColor: '#fff',
-              borderWidth: this.propData.itemBorderWidth
+              borderWidth: this.propData.itemBorderWidth || 0
             },
             label: { show: false },
             labelLine: { show: false },
@@ -904,9 +908,10 @@ export default {
           }
         }
       }
+      // 内层容器高度适配，若外层有高度，则内层随外层缩放。若外层没有高度，则由内层容器的子元素撑起。前提设置的有外层容器高度属性，若无此值不走此逻辑，取下面style中的预设
       if (styleObject.height && styleObject.height != 'auto') {
         innerCardStyleObject.height = 0;
-      } else {
+      } else if (styleObject.height && styleObject.height == 'auto') {
         innerCardStyleObject.height = 'auto';
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id, styleObject);
