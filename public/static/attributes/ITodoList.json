@@ -102,6 +102,14 @@
                     "desc": "组件上方标题文字",
                     "default": "消息提醒",
                     "display": "@[isShowTitle]"
+                },
+                {
+                    "type": "inputNumber",
+                    "layoutType": "inline",
+                    "text": "最多显示",
+                    "bindKey": "limit",
+                    "desc": "设置组件列表最多显示几条",
+                    "default": 2
                 }
             ]
         },
@@ -412,6 +420,7 @@
                     "type": "inputNumber",
                     "layoutType": "inline",
                     "text": "标题行数",
+                    "desc": "设置标题文本超过换行的行数，如果没有超过则不生效",
                     "bindKey": "lineTitleClamp",
                     "default": 2
                 },
@@ -496,7 +505,7 @@
                             "hex": "#333333",
                             "hex8": "#333333FF"
                         },
-                        "fontSize": 14,
+                        "fontSize": 15,
                         "fontSizeUnit": "px",
                         "fontWeight": "400"
                     }
@@ -511,7 +520,7 @@
                             "hex": "",
                             "hex8": ""
                         },
-                        "fontSize": 14,
+                        "fontSize": 15,
                         "fontSizeUnit": "px",
                         "fontWeight": "400"
                     }

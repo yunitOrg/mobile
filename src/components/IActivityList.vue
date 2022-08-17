@@ -5,8 +5,11 @@
             :ref="'listContainerRef-' + moduleObject.id"
             :propData="propData"
             :pageData="pageData"
+            :isFirst="isFirst"
+            :isLoading="isLoading"
             @handleClickMore="handleClickMore"
         >
+            <!-- 列表内容 -->
             <template #list>
                 <div
                     v-for="(item, index) in pageData.value"
@@ -28,6 +31,7 @@
                     </div>
                     <!-- 右侧内容 -->
                     <div class="flex-1">
+                        <!-- 标题 -->
                         <div class="activity-list-title-line d-flex align-c">
                             <span class="activity-list-title">{{ getDataField(propData.titleField, item) }}</span>
                             <span
@@ -37,6 +41,7 @@
                                 >{{ getDataField(propData.userField, item) }}</span
                             >
                         </div>
+                        <!-- 标签 -->
                         <div class="activity-list-tags">
                             <span
                                 class="activity-list-tag"
@@ -45,6 +50,7 @@
                                 >{{ tag }}</span
                             >
                         </div>
+                        <!-- 地点 -->
                         <div class="d-flex align-c activity-list-style-one-location-box">
                             <div class="d-flex align-c activity-list-icon-container" v-if="propData.isShowLocationIcon">
                                 <svg
@@ -62,6 +68,7 @@
                             </div>
                             <span class="text-o-e"> {{ getDataField(propData.locationField, item) }}</span>
                         </div>
+                        <!-- 参与人数 -->
                         <div class="d-flex align-c activity-list-style-one-person-box">
                             <div class="d-flex align-c activity-list-icon-container" v-if="propData.isShowPersonIcon">
                                 <svg
@@ -78,25 +85,17 @@
                     </div>
                 </div>
             </template>
-            <ICommonMask :moduleObject="moduleObject" :propData="propData"></ICommonMask>
-            <template #empty v-if="!isFirst && !isLoading && pageData.value.length === 0">
-                <ICommonEmpty :moduleObject="moduleObject" :propData="propData"></ICommonEmpty>
-            </template>
         </ICommonListContainer>
     </div>
 </template>
 <script>
 import ICommonListContainer from '../commonComponents/ICommonListContainer'
-import ICommonMask from '../commonComponents/ICommonMask'
-import ICommonEmpty from '../commonComponents/ICommonEmpty'
 import commonListMixin from '../mixins/commonList'
 import { activityData } from '../mock/mockData'
 export default {
     name: 'IActivityList',
     components: {
-        ICommonListContainer,
-        ICommonMask,
-        ICommonEmpty
+        ICommonListContainer
     },
     mixins: [commonListMixin],
     data() {
@@ -118,6 +117,10 @@ export default {
             this.convertAttrToStyleObject()
             this.convertThemeListAttrToStyleObject()
         },
+        /**
+         * 获取用户当前活动的状态样式
+         * @param {*} text 用户状态文字
+         */
         getUserStatusStyle(text) {
             if (Array.isArray(this.propData.userStatusList) && this.propData.userStatusList.length > 0) {
                 const currentUserStatus = this.propData.userStatusList.find((el) => el.statusText === text),
@@ -134,6 +137,10 @@ export default {
             }
             return {}
         },
+        /**
+         * 获取活动当前状态样式
+         * @param {*} text 活动状态文字
+         */
         getActivityStatusStyle(text) {
             if (Array.isArray(this.propData.activityList) && this.propData.activityList.length > 0) {
                 const currentActivityStatus = this.propData.activityList.find((el) => el.statusText === text),
@@ -155,7 +162,7 @@ export default {
             }
             return {}
         },
-
+        // 设置样式
         convertAttrToStyleObject() {
             var boxLineStyleObj = {},
                 timeBoxStyleObj = {},
@@ -317,9 +324,7 @@ export default {
             })
             this.initData()
         },
-        /**
-         * 主题颜色
-         */
+        // 主题颜色
         convertThemeListAttrToStyleObject() {
             var themeList = this.propData.themeList
             if (!themeList) {
@@ -354,48 +359,13 @@ export default {
         },
 
         initData() {
-            let that = this
             if (this.moduleObject.env === 'develop') {
                 this.pageData = activityData
                 return
             }
-            //所有地址的url参数转换
-            var params = that.commonParam()
-            switch (this.propData.dataSourceType) {
-                case 'customInterface':
-                    this.propData.customInterfaceUrl &&
-                        window.IDM.http
-                            .get(this.propData.customInterfaceUrl, params)
-                            .then((res) => {
-                                //res.data
-                                that.$set(
-                                    that.propData,
-                                    'fontContent',
-                                    that.getExpressData('resultData', that.propData.dataFiled, res.data)
-                                )
-                                // that.propData.fontContent = ;
-                            })
-                            .catch(function (error) {})
-                    break
-                case 'pageCommonInterface':
-                    //使用通用接口直接跳过，在setContextValue执行
-                    break
-                case 'customFunction':
-                    if (this.propData.customFunction && this.propData.customFunction.length > 0) {
-                        var resValue = ''
-                        try {
-                            resValue =
-                                window[this.propData.customFunction[0].name] &&
-                                window[this.propData.customFunction[0].name].call(this, {
-                                    ...params,
-                                    ...this.propData.customFunction[0].param,
-                                    moduleObject: this.moduleObject
-                                })
-                        } catch (error) {}
-                        that.propData.fontContent = resValue
-                    }
-                    break
-            }
+            this.isFirst = false
+            this.isLoading = true
+            this.getDataSourceData()
         },
         setContextValue(object) {
             console.log('统一接口设置的值', object)

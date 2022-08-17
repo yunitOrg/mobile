@@ -5,8 +5,11 @@
             :ref="'listContainerRef-' + moduleObject.id"
             :propData="propData"
             :pageData="pageData"
+            :isFirst="isFirst"
+            :isLoading="isLoading"
             @handleClickMore="handleClickMore"
         >
+            <!-- 列表内容 -->
             <template #list>
                 <div
                     v-for="(item, index) in pageData.value"
@@ -25,25 +28,17 @@
                     </div>
                 </div>
             </template>
-            <ICommonMask :moduleObject="moduleObject" :propData="propData"></ICommonMask>
-            <template #empty v-if="!isFirst && !isLoading && pageData.value.length === 0">
-                <ICommonEmpty :moduleObject="moduleObject" :propData="propData"></ICommonEmpty>
-            </template>
         </ICommonListContainer>
     </div>
 </template>
 <script>
 import ICommonListContainer from '../commonComponents/ICommonListContainer'
-import ICommonMask from '../commonComponents/ICommonMask'
-import ICommonEmpty from '../commonComponents/ICommonEmpty'
 import commonListMixin from '../mixins/commonList'
 import { todoData } from '../mock/mockData'
 export default {
     name: 'ITodoList',
     components: {
-        ICommonListContainer,
-        ICommonMask,
-        ICommonEmpty
+        ICommonListContainer
     },
     mixins: [commonListMixin],
     data() {
@@ -150,24 +145,24 @@ export default {
             if (!themeList) {
                 return
             }
-            const themeNamePrefix =
-                IDM.setting && IDM.setting.applications && IDM.setting.applications.themeNamePrefix
-                    ? IDM.setting.applications.themeNamePrefix
-                    : 'idm-theme-'
-            for (var i = 0; i < themeList.length; i++) {
-                var item = themeList[i]
-                let moduleColorObj = {
-                    'font-size': item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : ''
-                }
-                IDM.setStyleToPageHead(
-                    '.' +
-                        themeNamePrefix +
-                        item.key +
-                        (` #${this.moduleObject.id}-common-list` || 'module_demo') +
-                        ' .module-name',
-                    moduleColorObj
-                )
-            }
+            // const themeNamePrefix =
+            //     IDM.setting && IDM.setting.applications && IDM.setting.applications.themeNamePrefix
+            //         ? IDM.setting.applications.themeNamePrefix
+            //         : 'idm-theme-'
+            // for (var i = 0; i < themeList.length; i++) {
+            //     var item = themeList[i]
+            //     let moduleColorObj = {
+            //         'font-size': item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : ''
+            //     }
+            //     IDM.setStyleToPageHead(
+            //         '.' +
+            //             themeNamePrefix +
+            //             item.key +
+            //             (` #${this.moduleObject.id}-common-list` || 'module_demo') +
+            //             ' .module-name',
+            //         moduleColorObj
+            //     )
+            // }
             // 通用样式
             this.$nextTick(() => {
                 this.$refs['listContainerRef-' + this.moduleObject.id].convertThemeListAttrToStyleObject()
@@ -179,48 +174,13 @@ export default {
         },
 
         initData() {
-            let that = this
             if (this.moduleObject.env === 'develop') {
                 this.pageData = todoData
                 return
             }
-            //所有地址的url参数转换
-            var params = that.commonParam()
-            switch (this.propData.dataSourceType) {
-                case 'customInterface':
-                    this.propData.customInterfaceUrl &&
-                        window.IDM.http
-                            .get(this.propData.customInterfaceUrl, params)
-                            .then((res) => {
-                                //res.data
-                                that.$set(
-                                    that.propData,
-                                    'fontContent',
-                                    that.getExpressData('resultData', that.propData.dataFiled, res.data)
-                                )
-                                // that.propData.fontContent = ;
-                            })
-                            .catch(function (error) {})
-                    break
-                case 'pageCommonInterface':
-                    //使用通用接口直接跳过，在setContextValue执行
-                    break
-                case 'customFunction':
-                    if (this.propData.customFunction && this.propData.customFunction.length > 0) {
-                        var resValue = ''
-                        try {
-                            resValue =
-                                window[this.propData.customFunction[0].name] &&
-                                window[this.propData.customFunction[0].name].call(this, {
-                                    ...params,
-                                    ...this.propData.customFunction[0].param,
-                                    moduleObject: this.moduleObject
-                                })
-                        } catch (error) {}
-                        that.propData.fontContent = resValue
-                    }
-                    break
-            }
+            this.isFirst = false
+            this.isLoading = true
+            this.getDataSourceData()
         },
         setContextValue(object) {
             console.log('统一接口设置的值', object)
@@ -235,5 +195,8 @@ export default {
 <style lang="scss" scoped>
 .box-line:last-child {
     border-bottom: 0 !important;
+}
+.module-name{
+    margin: 0 5px 0 0;
 }
 </style>

@@ -128,6 +128,14 @@
                     "bindKey": "buttonText",
                     "default": "报名",
                     "display": "@[styleType == 'styleOne']"
+                },
+                {
+                    "type": "inputNumber",
+                    "layoutType": "inline",
+                    "text": "最多显示",
+                    "bindKey": "limit",
+                    "desc": "设置组件列表最多显示几条",
+                    "default": 3
                 }
             ]
         },

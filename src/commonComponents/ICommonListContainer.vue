@@ -1,5 +1,6 @@
 <template>
     <div :id="`${moduleObject.id}-common-list`" class="over-h position-r">
+        <!-- 通用头 -->
         <i-common-header
             v-if="propData.isShowTitle"
             @handleClickMore="$emit('handleClickMore')"
@@ -7,24 +8,47 @@
             :propData="propData"
             :pageData="pageData"
         ></i-common-header>
+        <!-- 内层容器 -->
         <div class="common-list-container">
+            <!-- 列表内容 -->
             <slot name="list"></slot>
-            <slot name="loading"></slot>
-            <slot name="empty"></slot>
+            <!-- 内容空占位 -->
+            <ICommonEmpty
+                v-if="!isFirst && !isLoading && pageData.value.length === 0"
+                :moduleObject="moduleObject"
+                :propData="propData"
+            ></ICommonEmpty>
+            <!-- page loading -->
+            <div class="d-flex just-c" v-if="isLoading">
+                <van-loading size="24px" vertical>加载中...</van-loading>
+            </div>
         </div>
-        <slot></slot>
+        <!-- 数据源遮罩层 -->
+        <ICommonMask :moduleObject="moduleObject" :propData="propData"></ICommonMask>
     </div>
 </template>
 <script>
 import ICommonHeader from '../commonComponents/ICommonHeader'
 import adaptationScreen from '../mixins/adaptationScreen'
+import ICommonMask from '../commonComponents/ICommonMask'
+import ICommonEmpty from '../commonComponents/ICommonEmpty'
 export default {
     name: 'ICommonListContainer',
     components: {
-        ICommonHeader
+        ICommonHeader,
+        ICommonMask,
+        ICommonEmpty
     },
     mixins: [adaptationScreen],
     props: {
+        isFirst: {
+            type: Boolean,
+            default: true
+        },
+        isLoading: {
+            type: Boolean,
+            default: false
+        },
         moduleObject: {
             type: Object,
             required: true

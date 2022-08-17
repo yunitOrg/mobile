@@ -1,8 +1,9 @@
+import { getDatasInterfaceUrl } from '@/api/config'
 export default {
     data() {
         return {
-            isLoading: false,
-            isFirst: true
+            isLoading: false, // page is loading
+            isFirst: true // page is first load
         }
     },
     methods: {
@@ -36,12 +37,11 @@ export default {
             url = IDM.url.getWebPath(url)
             window.open(url)
         },
-        
         /**
          * 通用的url参数对象
          * 所有地址的url参数转换
          */
-         commonParam() {
+        commonParam() {
             let urlObject = IDM.url.queryObject()
             var params = {
                 pageId:
@@ -51,9 +51,39 @@ export default {
             return params
         },
         /**
+         * 获取数据源数据
+         */
+        getDataSourceData() {
+            window.IDM.http
+                .post(
+                    getDatasInterfaceUrl,
+                    {
+                        id: this.propData.dataSource && this.propData.dataSource.value,
+                        limit: this.propData.limit,
+                        start: 0
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json;charset=UTF-8'
+                        }
+                    }
+                )
+                .then((res) => {
+                    //res.data
+                    if (res.status == 200 && res.data.code == 200) {
+                        this.pageData = res.data.data
+                    } else {
+                        IDM.message.error(res.data.message)
+                    }
+                })
+                .finally(() => {
+                    this.isLoading = false
+                })
+        },
+        /**
          * 通用的获取表达式匹配后的结果
          */
-         getExpressData(dataName, dataFiled, resultData) {
+        getExpressData(dataName, dataFiled, resultData) {
             //给defaultValue设置dataFiled的值
             var _defaultVal = undefined
             if (dataFiled) {
@@ -66,6 +96,7 @@ export default {
 
             return _defaultVal
         },
+        // 发送消息
         sendBroadcastMessage(object) {
             window.IDM.broadcast && window.IDM.broadcast.send(object)
         },
@@ -94,6 +125,6 @@ export default {
                     break
             }
             console.log('组件收到消息', messageObject)
-        },
+        }
     }
 }

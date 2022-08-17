@@ -102,6 +102,14 @@
                     "desc": "组件上方标题文字",
                     "default": "党建动态",
                     "display": "@[isShowTitle]"
+                },
+                {
+                    "type": "inputNumber",
+                    "layoutType": "inline",
+                    "text": "最多显示",
+                    "bindKey": "limit",
+                    "desc": "设置组件列表最多显示几条",
+                    "default": 3
                 }
             ]
         },
@@ -412,6 +420,7 @@
                     "type": "inputNumber",
                     "layoutType": "inline",
                     "text": "标题行数",
+                    "desc": "设置标题文本超过换行的行数，如果没有超过则不生效",
                     "bindKey": "lineTitleClamp",
                     "default": 2
                 },

@@ -5,6 +5,8 @@
             :ref="'listContainerRef-' + moduleObject.id"
             :propData="propData"
             :pageData="pageData"
+            :isFirst="isFirst"
+            :isLoading="isLoading"
             @handleClickMore="handleClickMore"
         >
             <template #list>
@@ -86,25 +88,17 @@
                     </div>
                 </div>
             </template>
-            <ICommonMask :moduleObject="moduleObject" :propData="propData"></ICommonMask>
-            <template #empty v-if="!isFirst && !isLoading && pageData.value.length === 0">
-                <ICommonEmpty :moduleObject="moduleObject" :propData="propData"></ICommonEmpty>
-            </template>
         </ICommonListContainer>
     </div>
 </template>
 <script>
 import ICommonListContainer from '../commonComponents/ICommonListContainer'
-import ICommonMask from '../commonComponents/ICommonMask'
-import ICommonEmpty from '../commonComponents/ICommonEmpty'
 import commonListMixin from '../mixins/commonList'
 import { getCommonListData } from '../mock/mockData'
 export default {
     name: 'ICommonList',
     components: {
-        ICommonListContainer,
-        ICommonMask,
-        ICommonEmpty
+        ICommonListContainer
     },
     data() {
         return {
@@ -121,6 +115,7 @@ export default {
         this.convertThemeListAttrToStyleObject()
     },
     methods: {
+        // 按钮是否显示函数
         handleShowButton(item) {
             if (this.propData.isShowButtonFunction && this.propData.isShowButtonFunction.length > 0) {
                 let resValue = ''
@@ -143,6 +138,7 @@ export default {
             this.convertAttrToStyleObject()
             this.convertThemeListAttrToStyleObject()
         },
+        // 样式
         convertAttrToStyleObject() {
             var boxLineStyleObj = {},
                 lineTitleFontStyleObj = {},
@@ -295,9 +291,7 @@ export default {
 
             this.initData()
         },
-        /**
-         * 主题颜色
-         */
+        // 主题颜色
         convertThemeListAttrToStyleObject() {
             var themeList = this.propData.themeList
             if (!themeList) {
@@ -349,7 +343,6 @@ export default {
         },
 
         initData() {
-            let that = this
             if (this.moduleObject.env === 'develop') {
                 const data = getCommonListData.call(this)
                 if (this.propData.styleType === 'styleOne') {
@@ -360,43 +353,9 @@ export default {
                 this.pageData = data
                 return
             }
-            //所有地址的url参数转换
-            var params = that.commonParam()
-            switch (this.propData.dataSourceType) {
-                case 'customInterface':
-                    this.propData.customInterfaceUrl &&
-                        window.IDM.http
-                            .get(this.propData.customInterfaceUrl, params)
-                            .then((res) => {
-                                //res.data
-                                that.$set(
-                                    that.propData,
-                                    'fontContent',
-                                    that.getExpressData('resultData', that.propData.dataFiled, res.data)
-                                )
-                                // that.propData.fontContent = ;
-                            })
-                            .catch(function (error) {})
-                    break
-                case 'pageCommonInterface':
-                    //使用通用接口直接跳过，在setContextValue执行
-                    break
-                case 'customFunction':
-                    if (this.propData.customFunction && this.propData.customFunction.length > 0) {
-                        var resValue = ''
-                        try {
-                            resValue =
-                                window[this.propData.customFunction[0].name] &&
-                                window[this.propData.customFunction[0].name].call(this, {
-                                    ...params,
-                                    ...this.propData.customFunction[0].param,
-                                    moduleObject: this.moduleObject
-                                })
-                        } catch (error) {}
-                        that.propData.fontContent = resValue
-                    }
-                    break
-            }
+            this.isFirst = false
+            this.isLoading = true
+            this.getDataSourceData()
         },
         setContextValue(object) {
             console.log('统一接口设置的值', object)

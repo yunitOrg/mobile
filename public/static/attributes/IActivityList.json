@@ -102,6 +102,14 @@
                     "desc": "设置组件上方标题文本",
                     "default": "活动列表",
                     "display": "@[isShowTitle]"
+                },
+                {
+                    "type": "inputNumber",
+                    "layoutType": "inline",
+                    "text": "最多显示",
+                    "bindKey": "limit",
+                    "desc": "设置组件列表最多显示几条",
+                    "default": 3
                 }
             ]
         },
