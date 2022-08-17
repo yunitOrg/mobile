@@ -443,6 +443,15 @@
             "helpUrl": "",
             "children": [
                 {
+                    "type": "inputNumber",
+                    "layoutType": "inline",
+                    "text": "标题行数",
+                    "desc": "设置标题文本超过换行的行数，如果没有超过则不生效",
+                    "bindKey": "lineTitleClamp",
+                    "display": "@[styleType == 'styleTwo']",
+                    "default": 2
+                },
+                {
                     "type": "box",
                     "layoutType": "block",
                     "text": "内外边距",
@@ -523,20 +532,18 @@
                             "text": "宽高",
                             "children": [
                                 {
-                                    "type": "input",
+                                    "type": "inputNumber",
                                     "layoutType": "block",
-                                    "text": "宽",
-                                    "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
+                                    "text": "宽(px)",
                                     "bindKey": "imageWidth",
-                                    "default": "40%"
+                                    "default": 150
                                 },
                                 {
-                                    "type": "input",
+                                    "type": "inputNumber",
                                     "layoutType": "block",
-                                    "text": "高",
-                                    "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
+                                    "text": "高(px)",
                                     "bindKey": "imageHeight",
-                                    "default": "100px"
+                                    "default": 100
                                 }
                             ]
                         },

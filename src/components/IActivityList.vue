@@ -19,10 +19,10 @@
                 >
                     <!-- 左侧内容 -->
                     <div class="d-flex flex-d-c just-c align-c activity-list-left">
-                        <div class="activity-list-time">{{ getDataField(propData.timeField, item) }}</div>
-                        <div class="activity-list-week">{{ getDataField(propData.weekField, item) }}</div>
+                        <div class="activity-list-time text-o-e">{{ getDataField(propData.timeField, item) }}</div>
+                        <div class="activity-list-week text-o-e">{{ getDataField(propData.weekField, item) }}</div>
                         <div
-                            class="activity-list-status"
+                            class="activity-list-status nowrap"
                             v-if="getDataField(propData.activityField, item)"
                             :style="getActivityStatusStyle(getDataField(propData.activityField, item))"
                         >
@@ -35,14 +35,14 @@
                         <div class="activity-list-title-line d-flex align-c">
                             <span class="activity-list-title">{{ getDataField(propData.titleField, item) }}</span>
                             <span
-                                class="activity-list-user-status"
+                                class="activity-list-user-status nowrap"
                                 v-if="getDataField(propData.activityField, item)"
                                 :style="getUserStatusStyle(getDataField(propData.userField, item))"
                                 >{{ getDataField(propData.userField, item) }}</span
                             >
                         </div>
                         <!-- 标签 -->
-                        <div class="activity-list-tags">
+                        <div class="activity-list-tags text-o-e">
                             <span
                                 class="activity-list-tag"
                                 v-for="(tag, indexs) in getDataField(propData.tagField, item)"
@@ -51,7 +51,7 @@
                             >
                         </div>
                         <!-- 地点 -->
-                        <div class="d-flex align-c activity-list-style-one-location-box">
+                        <div class="d-flex align-c activity-list-style-one-location-box text-o-e">
                             <div class="d-flex align-c activity-list-icon-container" v-if="propData.isShowLocationIcon">
                                 <svg
                                     v-if="propData.locationIcon && propData.locationIcon.length"
@@ -69,7 +69,7 @@
                             <span class="text-o-e"> {{ getDataField(propData.locationField, item) }}</span>
                         </div>
                         <!-- 参与人数 -->
-                        <div class="d-flex align-c activity-list-style-one-person-box">
+                        <div class="d-flex align-c activity-list-style-one-person-box text-o-e">
                             <div class="d-flex align-c activity-list-icon-container" v-if="propData.isShowPersonIcon">
                                 <svg
                                     v-if="propData.personIcon && propData.personIcon.length"
@@ -91,18 +91,18 @@
 <script>
 import ICommonListContainer from '../commonComponents/ICommonListContainer'
 import commonListMixin from '../mixins/commonList'
+import adaptationScreenMixin from '../mixins/adaptationScreen'
 import { activityData } from '../mock/mockData'
 export default {
     name: 'IActivityList',
     components: {
         ICommonListContainer
     },
-    mixins: [commonListMixin],
+    mixins: [adaptationScreenMixin, commonListMixin],
     data() {
         return {
             moduleObject: {},
             propData: this.$root.propData.compositeAttr || {},
-            pageWidth: null,
             pageData: { value: [], count: 0, moreUrl: '' }
         }
     },
@@ -128,6 +128,7 @@ export default {
                 if (currentUserStatus) {
                     if (Object.keys(currentUserStatus.userStatusFont).length > 0) {
                         IDM.style.setFontStyle(styleObj, currentUserStatus.userStatusFont)
+                        this.adaptiveFontSize(styleObj, currentUserStatus.userStatusFont)
                     }
                     if (Object.keys(currentUserStatus.userBorder).length > 0) {
                         IDM.style.setBorderStyle(styleObj, currentUserStatus.userBorder)
@@ -148,6 +149,7 @@ export default {
                 if (currentActivityStatus) {
                     if (Object.keys(currentActivityStatus.activityStatusFont).length > 0) {
                         IDM.style.setFontStyle(styleObj, currentActivityStatus.activityStatusFont)
+                        this.adaptiveFontSize(styleObj, currentActivityStatus.activityStatusFont)
                     }
                     if (
                         currentActivityStatus.activityStatusBgColor &&
@@ -203,6 +205,7 @@ export default {
                             break
                         case 'timeFont':
                             IDM.style.setFontStyle(timeBoxStyleObj, element)
+                            this.adaptiveFontSize(timeBoxStyleObj, element)
                             break
                         // 星期样式
                         case 'weekBox':
@@ -210,6 +213,7 @@ export default {
                             break
                         case 'weekFont':
                             IDM.style.setFontStyle(weekBoxStyleObj, element)
+                            this.adaptiveFontSize(weekBoxStyleObj, element)
                             break
                         // 活动状态
                         case 'activityStatusBox':
@@ -227,13 +231,16 @@ export default {
                             break
                         case 'titleFont':
                             IDM.style.setFontStyle(titleFontObj, element)
+                            this.adaptiveFontSize(titleFontObj, element)
                             break
                         // 标签样式
                         case 'tagBox':
                             IDM.style.setBoxStyle(tagStyleObj, element)
+                            this.adaptiveFontSize(tagStyleObj, element)
                             break
                         case 'tagFont':
                             IDM.style.setFontStyle(tagStyleObj, element)
+                            this.adaptiveFontSize(tagStyleObj, element)
                             break
                         case 'tagBorder':
                             IDM.style.setBorderStyle(tagStyleObj, element)
@@ -260,6 +267,7 @@ export default {
                             break
                         case 'locationFontStyle':
                             IDM.style.setFontStyle(locationLineObj, element)
+                            this.adaptiveFontSize(locationLineObj, element)
                             break
 
                         //人物行样式
@@ -279,6 +287,7 @@ export default {
                             break
                         case 'personFont':
                             IDM.style.setFontStyle(personLineObj, element)
+                            this.adaptiveFontSize(personLineObj, element)
                             break
                         //人物状态
                         case 'userStatusBox':
@@ -359,13 +368,13 @@ export default {
         },
 
         initData() {
-            if (this.moduleObject.env === 'develop') {
+            // if (this.moduleObject.env === 'develop') {
                 this.pageData = activityData
                 return
-            }
-            this.isFirst = false
-            this.isLoading = true
-            this.getDataSourceData()
+            // }
+            // this.isFirst = false
+            // this.isLoading = true
+            // this.getDataSourceData()
         },
         setContextValue(object) {
             console.log('统一接口设置的值', object)
@@ -380,5 +389,8 @@ export default {
 <style lang="scss" scoped>
 .box-line:last-child {
     border-bottom: 0 !important;
+}
+.nowrap{
+    white-space: nowrap;
 }
 </style>

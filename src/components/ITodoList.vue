@@ -34,18 +34,18 @@
 <script>
 import ICommonListContainer from '../commonComponents/ICommonListContainer'
 import commonListMixin from '../mixins/commonList'
+import adaptationScreenMixin from '../mixins/adaptationScreen'
 import { todoData } from '../mock/mockData'
 export default {
     name: 'ITodoList',
     components: {
         ICommonListContainer
     },
-    mixins: [commonListMixin],
+    mixins: [adaptationScreenMixin, commonListMixin],
     data() {
         return {
             moduleObject: {},
             propData: this.$root.propData.compositeAttr || {},
-            pageWidth: null,
             pageData: { value: [], count: 0, moreUrl: '' }
         }
     },
@@ -111,9 +111,11 @@ export default {
                         // 字体设置
                         case 'messageFontStyle':
                             IDM.style.setFontStyle(noReadFontStyleObj, element)
+                            this.adaptiveFontSize(noReadFontStyleObj, element)
                             break
                         case 'hasReadFontStyle':
                             IDM.style.setFontStyle(hasReadFontStyleObj, element)
+                            this.adaptiveFontSize(hasReadFontStyleObj, element)
                             break
                         case 'lineBox':
                             IDM.style.setBoxStyle(boxLineStyleObj, element)
@@ -174,13 +176,13 @@ export default {
         },
 
         initData() {
-            if (this.moduleObject.env === 'develop') {
+            // if (this.moduleObject.env === 'develop') {
                 this.pageData = todoData
                 return
-            }
-            this.isFirst = false
-            this.isLoading = true
-            this.getDataSourceData()
+            // }
+            // this.isFirst = false
+            // this.isLoading = true
+            // this.getDataSourceData()
         },
         setContextValue(object) {
             console.log('统一接口设置的值', object)

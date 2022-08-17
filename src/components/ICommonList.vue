@@ -22,8 +22,8 @@
                         class="common-list-left-image"
                     />
                     <div v-if="!propData.styleType || propData.styleType === 'styleOne'" class="flex-1">
-                        <div class="d-flex common-list-title">{{ getDataField(propData.titleField, item) }}</div>
-                        <div class="d-flex common-list-style-one-time-box">
+                        <div class="d-flex common-list-title text-o-e">{{ getDataField(propData.titleField, item) }}</div>
+                        <div class="d-flex common-list-style-one-time-box text-o-e">
                             <div class="d-flex align-c common-list-icon-container" v-if="propData.isShowTimeIcon">
                                 <svg
                                     v-if="propData.timeIcon && propData.timeIcon.length"
@@ -36,7 +36,7 @@
                             </div>
                             <span class="text-o-e"> {{ getDataField(propData.timeField, item) }}</span>
                         </div>
-                        <div class="d-flex align-c common-list-style-one-location-box">
+                        <div class="d-flex align-c common-list-style-one-location-box text-o-e">
                             <div class="d-flex align-c common-list-icon-container" v-if="propData.isShowLocationIcon">
                                 <svg
                                     v-if="propData.locationIcon && propData.locationIcon.length"
@@ -49,7 +49,7 @@
                             </div>
                             <span class="text-o-e"> {{ getDataField(propData.locationField, item) }}</span>
                         </div>
-                        <div class="d-flex just-b align-c common-list-style-one-person-box">
+                        <div class="d-flex just-b align-c common-list-style-one-person-box text-o-e">
                             <div class="d-flex align-c">
                                 <div class="d-flex align-c common-list-icon-container" v-if="propData.isShowPersonIcon">
                                     <svg
@@ -72,7 +72,7 @@
                             </div>
                         </div>
                     </div>
-                    <div v-if="propData.styleType === 'styleTwo'" class="d-flex flex-d-c just-a">
+                    <div v-if="propData.styleType === 'styleTwo'" class="d-flex flex-d-c just-a flex-1">
                         <div
                             class="common-list-title"
                             :class="[
@@ -81,7 +81,7 @@
                         >
                             {{ item.title }}
                         </div>
-                        <div class="d-flex just-b align-c common-list-process-text">
+                        <div class="d-flex just-b align-c common-list-process-text text-o-e">
                             <span>观看至{{ getDataField(propData.processField, item) }}</span
                             ><span>{{ getDataField(propData.timeField, item) }}</span>
                         </div>
@@ -94,6 +94,7 @@
 <script>
 import ICommonListContainer from '../commonComponents/ICommonListContainer'
 import commonListMixin from '../mixins/commonList'
+import adaptationScreenMixin from '../mixins/adaptationScreen'
 import { getCommonListData } from '../mock/mockData'
 export default {
     name: 'ICommonList',
@@ -104,11 +105,10 @@ export default {
         return {
             moduleObject: {},
             propData: this.$root.propData.compositeAttr || {},
-            pageWidth: null,
             pageData: { value: [], count: 0, moreUrl: '' }
         }
     },
-    mixins: [commonListMixin],
+    mixins: [adaptationScreenMixin, commonListMixin],
     created() {
         this.moduleObject = this.$root.moduleObject
         this.convertAttrToStyleObject()
@@ -150,7 +150,8 @@ export default {
                 personIconObj = {},
                 personLineObj = {},
                 buttonStyleObj = {},
-                processLineObj = {}
+                processLineObj = {},
+                lineTitleClampObj = {}
             for (const key in this.propData) {
                 if (this.propData.hasOwnProperty.call(this.propData, key)) {
                     const element = this.propData[key]
@@ -158,14 +159,21 @@ export default {
                         continue
                     }
                     switch (key) {
-                        case 'lineTitleFontStyle':
-                            IDM.style.setFontStyle(lineTitleFontStyleObj, element)
-                            break
+                        // 单项box样式
                         case 'lineBox':
                             IDM.style.setBoxStyle(boxLineStyleObj, element)
                             break
                         case 'lineBorder':
                             IDM.style.setBorderStyle(boxLineStyleObj, element)
+                            break
+                        // 标题样式
+                        case 'lineTitleFontStyle':
+                            IDM.style.setFontStyle(lineTitleFontStyleObj, element)
+                            this.adaptiveFontSize(lineTitleFontStyleObj, element)
+                            break
+                        case 'lineTitleClamp':
+                            lineTitleClampObj['-webkit-line-clamp'] = element
+                            lineTitleClampObj['line-clamp'] = element
                             break
                         // 图片样式
                         case 'imageBox':
@@ -175,10 +183,10 @@ export default {
                             IDM.style.setBorderStyle(imageStyleObj, element)
                             break
                         case 'imageWidth':
-                            imageStyleObj['width'] = element
+                            imageStyleObj['width'] = this.getAdaptiveSize(element, 1.5) + 'px'
                             break
                         case 'imageHeight':
-                            imageStyleObj['height'] = element
+                            imageStyleObj['height'] = this.getAdaptiveSize(element, 1.5) + 'px'
                             break
 
                         //时间行样式
@@ -198,6 +206,7 @@ export default {
                             break
                         case 'timeFontStyle':
                             IDM.style.setFontStyle(timeLineObj, element)
+                            this.adaptiveFontSize(timeLineObj, element)
                             break
 
                         //地点行样式
@@ -217,6 +226,7 @@ export default {
                             break
                         case 'locationFontStyle':
                             IDM.style.setFontStyle(locationLineObj, element)
+                            this.adaptiveFontSize(locationLineObj, element)
                             break
 
                         //人物行样式
@@ -236,6 +246,7 @@ export default {
                             break
                         case 'personFontStyle':
                             IDM.style.setFontStyle(personLineObj, element)
+                            this.adaptiveFontSize(personLineObj, element)
                             break
                         // 按钮样式
                         case 'buttonBox':
@@ -243,6 +254,7 @@ export default {
                             break
                         case 'buttonFont':
                             IDM.style.setFontStyle(buttonStyleObj, element)
+                            this.adaptiveFontSize(buttonStyleObj, element)
                             break
                         case 'buttonBorder':
                             IDM.style.setBorderStyle(buttonStyleObj, element)
@@ -256,12 +268,15 @@ export default {
                         // 样式二：进度行样式
                         case 'processFont':
                             IDM.style.setFontStyle(processLineObj, element)
+                            this.adaptiveFontSize(processLineObj, element)
                             break
                     }
                 }
             }
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .box-line', boxLineStyleObj)
+            // 标题样式
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .common-list-title', lineTitleFontStyleObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .common-list-title .text-o-e-2', lineTitleClampObj)
             // 图片样式
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .common-list-left-image', imageStyleObj)
             // 时间行样式
@@ -343,7 +358,7 @@ export default {
         },
 
         initData() {
-            if (this.moduleObject.env === 'develop') {
+            // if (this.moduleObject.env === 'develop') {
                 const data = getCommonListData.call(this)
                 if (this.propData.styleType === 'styleOne') {
                     data.value = data.value1
@@ -352,10 +367,10 @@ export default {
                 }
                 this.pageData = data
                 return
-            }
-            this.isFirst = false
-            this.isLoading = true
-            this.getDataSourceData()
+            // }
+            // this.isFirst = false
+            // this.isLoading = true
+            // this.getDataSourceData()
         },
         setContextValue(object) {
             console.log('统一接口设置的值', object)

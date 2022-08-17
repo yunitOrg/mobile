@@ -1,3 +1,4 @@
+// 屏幕适配mixin sfc
 export default {
     data() {
         return {
@@ -28,6 +29,14 @@ export default {
                 return initSize
             }
             return Math.round(FINAL_RESULT)
+        },
+        /**
+         * 字体大小适配
+         * @param {*} styleObj 样式对象
+         * @param {*} element 样式元素
+         */
+        adaptiveFontSize(styleObj, element) {
+            styleObj['font-size'] = this.getAdaptiveSize(element.fontSize) + element.fontSizeUnit
         }
     }
 }

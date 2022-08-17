@@ -58,6 +58,7 @@
 <script>
 import ICommonListContainer from '../commonComponents/ICommonListContainer'
 import commonListMixin from '../mixins/commonList'
+import adaptationScreenMixin from '../mixins/adaptationScreen'
 import { getContentListData } from '../mock/mockData'
 export default {
     name: 'IContentList',
@@ -68,11 +69,10 @@ export default {
         return {
             moduleObject: {},
             propData: this.$root.propData.compositeAttr || {},
-            pageWidth: null,
             pageData: { value: [], count: 0, moreUrl: '' }
         }
     },
-    mixins: [commonListMixin],
+    mixins: [adaptationScreenMixin, commonListMixin],
     created() {
         this.moduleObject = this.$root.moduleObject
         this.convertAttrToStyleObject()
@@ -108,6 +108,7 @@ export default {
                             break
                         case 'lineTitleFont':
                             IDM.style.setFontStyle(lineTitleObj, element)
+                            this.adaptiveFontSize(lineTitleObj, element)
                             break
                         // 标题样式
                         case 'lineTitleBox':
@@ -120,6 +121,7 @@ export default {
                         // 底部样式
                         case 'lineBottomTitleFont':
                             IDM.style.setFontStyle(lineBottomTitleObj, element)
+                            this.adaptiveFontSize(lineBottomTitleObj, element)
                             break
                         case 'lineBottomBox':
                             IDM.style.setBoxStyle(lineBottomTitleObj, element)
@@ -129,10 +131,10 @@ export default {
                             IDM.style.setBorderStyle(lineImageObj, element)
                             break
                         case 'imageWidth':
-                            oneImageObj['width'] = element + 'px'
+                            oneImageObj['width'] =  this.getAdaptiveSize(element, 1.8) + 'px'
                             break
                         case 'imageHeight':
-                            lineImageObj['height'] = element + 'px'
+                            lineImageObj['height'] = this.getAdaptiveSize(element, 1.8) + 'px'
                     }
                 }
             }
@@ -190,13 +192,13 @@ export default {
         },
 
         initData() {
-            if (this.moduleObject.env === 'develop') {
+            // if (this.moduleObject.env === 'develop') {
                 this.pageData = getContentListData.call(this)
                 return
-            }
-            this.isFirst = false
-            this.isLoading = true
-            this.getDataSourceData()
+            // }
+            // this.isFirst = false
+            // this.isLoading = true
+            // this.getDataSourceData()
         },
         setContextValue(object) {
             console.log('统一接口设置的值', object)

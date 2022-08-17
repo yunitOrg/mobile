@@ -535,6 +535,7 @@
                                 },
                                 "fontSize": 18,
                                 "fontSizeUnit": "px",
+                                "fontTextAlign": "center",
                                 "fontWeight": "600"
                             }
                         }
@@ -572,6 +573,7 @@
                                     "hex8": "#575555FF"
                                 },
                                 "fontSize": 16,
+                                "fontTextAlign": "center",
                                 "fontSizeUnit": "px",
                                 "fontWeight": "400"
                             }

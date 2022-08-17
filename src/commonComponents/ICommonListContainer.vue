@@ -128,6 +128,7 @@ export default {
                         // 标题样式
                         case 'titleFontStyle':
                             IDM.style.setFontStyle(titleFontStyleObj, element)
+                            this.adaptiveFontSize(titleFontStyleObj, element)
                             break
                         case 'titleIconFontColor':
                             if (element && element.hex8) {
@@ -157,6 +158,7 @@ export default {
                             break
                         case 'rightTitleFontStyle':
                             IDM.style.setFontStyle(rightTitleFontStyleObj, element, true)
+                            this.adaptiveFontSize(rightTitleFontStyleObj, element)
                             break
                         case 'titleBox':
                             IDM.style.setBoxStyle(titleStyleObj, element)
