@@ -136,6 +136,27 @@
       "className": "IArticleDetails",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.itimeaxis",
+      "comName": "时间轴",
+      "className": "ITimeAxis",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.iallcomment",
+      "comName": "全部评论",
+      "className": "IAllComment",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.icommonetdetail",
+      "comName": "评论详情",
+      "className": "ICommentDetail",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }
