@@ -511,7 +511,6 @@ export default {
 
       const scale = this.getScale(pageSize.width);
       styleObject['--i-selectPieChart-scale'] = scale;
-      console.log(styleObject);
 
       if (this.propData.bgSize && this.propData.bgSize == 'custom') {
         styleObject['background-size'] =
@@ -566,12 +565,12 @@ export default {
             case 'height':
               styleObject[key] = element;
               break;
-            case 'innerWidth':
-              innerCardStyleObject['width'] = element;
-              break;
-            case 'innerHeight':
-              innerCardStyleObject['height'] = element;
-              break;
+            // case 'innerWidth':
+            //   innerCardStyleObject['width'] = element;
+            //   break;
+            // case 'innerHeight':
+            //   innerCardStyleObject['height'] = element;
+            //   break;
             case 'chartHeight':
               chartStyleObject['height'] = element;
               break;
@@ -907,6 +906,8 @@ export default {
       }
       if (styleObject.height && styleObject.height != 'auto') {
         innerCardStyleObject.height = 0;
+      } else {
+        innerCardStyleObject.height = 'auto';
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id, styleObject);
       window.IDM.setStyleToPageHead(
