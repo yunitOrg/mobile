@@ -21,22 +21,6 @@
       "desc": "提供设置组件能达到展示效果的基本属性设置信息",
       "children": [
         {
-          "type": "treeSelect",
-          "layoutType": "inline",
-          "text": "数据源",
-          "desc": "用于选择组件的数据源",
-          "bindKey": "dataSource",
-          "dataSourceUrl": "ctrl/dataSource/getDatasourceByGroup"
-        },
-        {
-          "type": "actionSelect",
-          "layoutType": "block",
-          "text": "自定义函数",
-          "bindKey": "customFunction",
-          "desc": "用于格式化数据源返回的数据，参数为{urlObject:url参数,pageId:页面id,customParam:自定义的参数,resultData:原始数据,moduleObject:组件信息}",
-          "multiple": false
-        },
-        {
           "type": "input",
           "layoutType": "inline",
           "text": "标题字段",
@@ -67,6 +51,22 @@
           "desc": "用于指定组件无数据时的显示文字",
           "bindKey": "emptyDescription",
           "default": "暂无数据"
+        },
+        {
+          "type": "treeSelect",
+          "layoutType": "inline",
+          "text": "数据源",
+          "desc": "用于选择组件的数据源",
+          "bindKey": "dataSource",
+          "dataSourceUrl": "ctrl/dataSource/getDatasourceByGroup"
+        },
+        {
+          "type": "actionSelect",
+          "layoutType": "block",
+          "text": "自定义函数",
+          "bindKey": "customFunction",
+          "desc": "用于格式化数据源返回的数据，参数为{urlObject:url参数,pageId:页面id,customParam:自定义的参数,resultData:原始数据,moduleObject:组件信息}",
+          "multiple": false
         }
       ]
     },

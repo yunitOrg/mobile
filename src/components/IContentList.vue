@@ -1,139 +1,223 @@
 <template>
-    <div idm-ctrl="idm_module"
-    :id="moduleObject.id" 
-    :idm-ctrl-id="moduleObject.id" 
-    :title="propData.htmlTitle?propData.fontContent:''" 
-    v-show="propData.defaultStatus!='hidden'" 
-    @click="textClickHandle">
-     <!--
-       组件内部容器
-       增加class="drag_container" 必选
-       idm-ctrl-id：组件的id，这个必须不能为空
-       idm-container-index  组件的内部容器索引，不重复唯一且不变，必选
-     -->
-     {{propData.fontContent}}
-   </div>
+    <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id" :title="propData.htmlTitle">
+        <ICommonListContainer
+            :moduleObject="moduleObject"
+            :ref="'listContainerRef-' + moduleObject.id"
+            :propData="propData"
+            :pageData="pageData"
+            :isFirst="isFirst"
+            :isLoading="isLoading"
+            @handleClickMore="handleClickMore"
+        >
+            <template #list>
+                <div
+                    v-for="(item, index) in pageData.value"
+                    :key="index"
+                    class="box-line"
+                    @click="handleItemClick(item)"
+                >
+                    <div class="d-flex just-b">
+                        <div class="flex-1 common-list-title">
+                            <div class="text-o-e-2">{{ getDataField(propData.titleField, item) }}</div>
+                        </div>
+                        <img
+                            v-if="item.images.length === 1"
+                            class="one-img"
+                            :src="
+                                IDM.url.getWebPath(
+                                    getDataField(propData.imageField, item) &&
+                                        getDataField(propData.imageField, item)[0]
+                                )
+                            "
+                            alt="图片加载失败"
+                        />
+                    </div>
+                    <van-row gutter="10" v-if="item.images.length > 1">
+                        <van-col
+                            :span="item.images.length == 2 ? 12 : 8"
+                            v-for="(items, indexs) in getDataField(propData.imageField, item) || []"
+                            class="flex-1"
+                            :key="indexs"
+                        >
+                            <img :src="IDM.url.getWebPath(items)" alt="图片加载失败" class="image-list" />
+                        </van-col>
+                    </van-row>
+                    <div class="d-flex just-b content-list-bottom">
+                        <span v-if="getDataField(propData.originField, item)"
+                            >来源：{{ getDataField(propData.originField, item) }}</span
+                        >
+                        <span v-if="getDataField(propData.originField, item)"
+                            >发布时间：{{ getDataField(propData.timeField, item) }}</span
+                        >
+                    </div>
+                </div>
+            </template>
+        </ICommonListContainer>
+    </div>
 </template>
 <script>
+import ICommonListContainer from '../commonComponents/ICommonListContainer'
+import commonListMixin from '../mixins/commonList'
+import adaptationScreenMixin from '../mixins/adaptationScreen'
+import { getContentListData } from '../mock/mockData'
 export default {
-name: 'IContentList',
-data() {
-    return {
-        moduleObject:{},
-        propData:this.$root.propData.compositeAttr||{
-            fontContent:"Hello Word"
+    name: 'IContentList',
+    components: {
+        ICommonListContainer
+    },
+    data() {
+        return {
+            moduleObject: {},
+            propData: this.$root.propData.compositeAttr || {},
+            pageData: { value: [], count: 0, moreUrl: '' }
+        }
+    },
+    mixins: [adaptationScreenMixin, commonListMixin],
+    created() {
+        this.moduleObject = this.$root.moduleObject
+        this.convertAttrToStyleObject()
+        this.convertThemeListAttrToStyleObject()
+    },
+    methods: {
+        propDataWatchHandle(propData) {
+            this.propData = propData.compositeAttr || {}
+            this.convertAttrToStyleObject()
+            this.convertThemeListAttrToStyleObject()
+        },
+        // 样式
+        convertAttrToStyleObject() {
+            var boxLineStyleObj = {},
+                lineTitleObj = {},
+                lineImageObj = {},
+                lineBottomTitleObj = {},
+                lineTitleClampObj = {},
+                oneImageObj = {}
+            for (const key in this.propData) {
+                if (this.propData.hasOwnProperty.call(this.propData, key)) {
+                    const element = this.propData[key]
+                    if (!element && element !== false && element != 0) {
+                        continue
+                    }
+                    switch (key) {
+                        // 盒子样式
+                        case 'lineBox':
+                            IDM.style.setBoxStyle(boxLineStyleObj, element)
+                            break
+                        case 'lineBorder':
+                            IDM.style.setBorderStyle(boxLineStyleObj, element)
+                            break
+                        case 'lineTitleFont':
+                            IDM.style.setFontStyle(lineTitleObj, element)
+                            this.adaptiveFontSize(lineTitleObj, element)
+                            break
+                        // 标题样式
+                        case 'lineTitleBox':
+                            IDM.style.setBoxStyle(lineTitleObj, element)
+                            break
+                        case 'lineTitleClamp':
+                            lineTitleClampObj['-webkit-line-clamp'] = element
+                            lineTitleClampObj['line-clamp'] = element
+                            break
+                        // 底部样式
+                        case 'lineBottomTitleFont':
+                            IDM.style.setFontStyle(lineBottomTitleObj, element)
+                            this.adaptiveFontSize(lineBottomTitleObj, element)
+                            break
+                        case 'lineBottomBox':
+                            IDM.style.setBoxStyle(lineBottomTitleObj, element)
+                            break
+                        // 图片样式
+                        case 'imageBorder':
+                            IDM.style.setBorderStyle(lineImageObj, element)
+                            break
+                        case 'imageWidth':
+                            oneImageObj['width'] =  this.getAdaptiveSize(element, 1.8) + 'px'
+                            break
+                        case 'imageHeight':
+                            lineImageObj['height'] = this.getAdaptiveSize(element, 1.8) + 'px'
+                    }
+                }
+            }
+            // 盒子样式
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .box-line', boxLineStyleObj)
+            // 标题样式
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .common-list-title', lineTitleObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .common-list-title .text-o-e-2', lineTitleClampObj)
+            // 底部样式
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .content-list-bottom', lineBottomTitleObj)
+            // 图片样式
+            window.IDM.setStyleToPageHead(
+                IDM.style.generateClassName('#' + this.moduleObject.id, [' .one-img', ' .image-list']),
+                lineImageObj
+            )
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .one-img', oneImageObj)
+
+            this.$nextTick(() => {
+                this.$refs['listContainerRef-' + this.moduleObject.id].convertAttrToStyleObject()
+            })
+            this.initData()
+        },
+        // 主题颜色
+        convertThemeListAttrToStyleObject() {
+            var themeList = this.propData.themeList
+            if (!themeList) {
+                return
+            }
+            const themeNamePrefix =
+                IDM.setting && IDM.setting.applications && IDM.setting.applications.themeNamePrefix
+                    ? IDM.setting.applications.themeNamePrefix
+                    : 'idm-theme-'
+            for (var i = 0; i < themeList.length; i++) {
+                var item = themeList[i]
+                let moduleColorObj = {
+                    'font-size': item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : ''
+                }
+                IDM.setStyleToPageHead(
+                    '.' +
+                        themeNamePrefix +
+                        item.key +
+                        (` #${this.moduleObject.id}-common-list` || 'module_demo') +
+                        ' .module-name',
+                    moduleColorObj
+                )
+            }
+            // 通用样式
+            this.$nextTick(() => {
+                this.$refs['listContainerRef-' + this.moduleObject.id].convertThemeListAttrToStyleObject()
+            })
+        },
+        reload() {
+            //请求数据源
+            this.initData()
+        },
+
+        initData() {
+            if (this.moduleObject.env === 'develop') {
+                this.pageData = getContentListData.call(this)
+                return
+            }
+            this.isFirst = false
+            this.isLoading = true
+            this.getDataSourceData()
+        },
+        setContextValue(object) {
+            console.log('统一接口设置的值', object)
+            if (object.type != 'pageCommonInterface') {
+                return
+            }
         }
     }
-},
-created() {
-    this.moduleObject = this.$root.moduleObject
-    this.convertAttrToStyleObject();
-},
-methods: {
-    propDataWatchHandle(propData){
-        this.propData = propData.compositeAttr||{};
-        this.convertAttrToStyleObject();
-    },
-    convertAttrToStyleObject(){
-        var styleObject = {};
-        if(this.propData.bgSize&&this.propData.bgSize=="custom"){
-          styleObject["background-size"]=(this.propData.bgSizeWidth?this.propData.bgSizeWidth.inputVal+this.propData.bgSizeWidth.selectVal:"auto")+" "+(this.propData.bgSizeHeight?this.propData.bgSizeHeight.inputVal+this.propData.bgSizeHeight.selectVal:"auto")
-        }else if(this.propData.bgSize){
-          styleObject["background-size"]=this.propData.bgSize;
-        }
-        if(this.propData.positionX&&this.propData.positionX.inputVal){
-          styleObject["background-position-x"]=this.propData.positionX.inputVal+this.propData.positionX.selectVal;
-        }
-        if(this.propData.positionY&&this.propData.positionY.inputVal){
-          styleObject["background-position-y"]=this.propData.positionY.inputVal+this.propData.positionY.selectVal;
-        }
-        for (const key in this.propData) {
-          if (this.propData.hasOwnProperty.call(this.propData, key)) {
-            const element = this.propData[key];
-            if(!element&&element!==false&&element!=0){
-              continue;
-            }
-            switch (key) {
-              case "width":
-              case "height":
-                styleObject[key]=element;
-                break;
-            }
-          }
-        }
-        window.IDM.setStyleToPageHead(this.moduleObject.id,styleObject);
-        this.initData();
-    },
-    reload(){
-        //请求数据源
-        this.initData();
-    },
-    initData(){
-        let that = this;
-        //所有地址的url参数转换
-        var params = that.commonParam();
-        switch (this.propData.dataSourceType) {
-          case "customInterface":
-            this.propData.customInterfaceUrl&&window.IDM.http.get(this.propData.customInterfaceUrl,params)
-            .then((res) => {
-              //res.data
-              that.$set(that.propData,"fontContent",that.getExpressData("resultData",that.propData.dataFiled,res.data));
-              // that.propData.fontContent = ;
-            })
-            .catch(function (error) {});
-            break;
-          case "pageCommonInterface":
-            //使用通用接口直接跳过，在setContextValue执行
-            break;
-          case "customFunction":
-            if(this.propData.customFunction&&this.propData.customFunction.length>0){
-              var resValue = "";
-              try {
-                resValue = window[this.propData.customFunction[0].name]&&window[this.propData.customFunction[0].name].call(this,{...params,...this.propData.customFunction[0].param,moduleObject:this.moduleObject});
-              } catch (error) {
-              }
-              that.propData.fontContent = resValue;
-            }
-            break;
-        }
-      },
-      receiveBroadcastMessage(object){
-        console.log("组件收到消息",object)
-        if(object.type&&object.type=="linkageShowModule"){
-          this.showThisModuleHandle();
-        }else if(object.type&&object.type=="linkageHideModule"){
-          this.hideThisModuleHandle();
-        }
-      },
-      setContextValue(object) {
-        console.log("统一接口设置的值", object);
-        if (object.type != "pageCommonInterface") {
-          return;
-        }
-        //这里使用的是子表，所以要循环匹配所有子表的属性然后再去设置修改默认值
-        if (object.key == this.propData.dataName) {
-          // this.propData.fontContent = this.getExpressData(this.propData.dataName,this.propData.dataFiled,object.data);
-          this.$set(this.propData,"fontContent",this.getExpressData(this.propData.dataName,this.propData.dataFiled,object.data));
-        }
-      },
-      sendBroadcastMessage(object){
-        window.IDM.broadcast&&window.IDM.broadcast.send(object);
-      },
-      /**
-     * 通用的url参数对象
-     * 所有地址的url参数转换
-     */
-    commonParam(){
-      let urlObject = IDM.url.queryObject();
-      var params = {
-        pageId:
-          window.IDM.broadcast && window.IDM.broadcast.pageModule
-            ? window.IDM.broadcast.pageModule.id
-            : "",
-        urlData: JSON.stringify(urlObject),
-      };
-      return params;
-    },
 }
-};
 </script>
+
+<style lang="scss" scoped>
+.box-line:last-child {
+    border-bottom: 0 !important;
+}
+.one-img {
+    margin: 0 0 0 10px;
+}
+.image-list {
+    width: 100%;
+}
+</style>
