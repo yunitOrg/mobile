@@ -9,7 +9,6 @@
     idm-ctrl="idm_module"
     :id="moduleObject.id"
     :idm-ctrl-id="moduleObject.id"
-    :title="propData.htmlTitle"
     class="i-selectPieChart-outer"
   >
     <div class="i-selectPieChart-header" v-if="propData.isShowTitleBar">
@@ -33,61 +32,84 @@
         :class="
           showPicker ? 'i-selectPieChart-header-select-active' : 'i-selectPieChart-header-select'
         "
-        v-if="propData.selectBtn"
+        v-if="propData.columnsType != 'none'"
         @click="showPicker = true"
       >
         {{ pickerSelectText }}
       </div>
-      <div class="i-selectPieChart-header-more" v-if="propData.moreBtn" @click="moreClick">
-        更多>
-      </div>
     </div>
     <div class="i-selectPieChart-content">
-      <van-loading v-if="isLoading" size="24px" vertical>加载中...</van-loading>
-      <div v-else-if="chartData" class="i-selectPieChart-content-wapper">
-        <div
-          class="i-selectPieChart-content-chart"
-          :id="`charts_container_${moduleObject.id}`"
-        />
+      <van-loading v-show="isLoading" :size="loadingSize" vertical>{{
+        propData.loadingDescription || '加载中...'
+      }}</van-loading>
+      <div
+        v-show="!isLoading && chartData && Object.keys(chartData).length > 0"
+        class="i-selectPieChart-content-wapper"
+      >
+        <div class="i-selectPieChart-content-chart" :id="`charts_container_${moduleObject.id}`" />
         <div class="i-selectPieChart-content-table">
           <div
             class="i-selectPieChart-content-table-row"
             v-for="(item, index) in chartData"
             :key="index"
+            @click.stop="tableRowCilck(item)"
           >
-            <div class="col-box" v-for="(field, i) in propData.tableFields" :key="i">
-              <div
-                class="col-box-legend"
-                v-if="i == 0"
-                :style="{ 'background-color': colors[index] }"
-              />
-              <div class="col-box-text">{{ getExpressData('data', field.name, item) }}</div>
+            <div class="col-legend" :style="{ 'background-color': colors[index] }" />
+            <div
+              class="col-text"
+              v-for="(field, i) in propData.tableFields"
+              :key="i"
+              :style="{
+                'text-align': field.textAlign
+                  ? field.textAlign
+                  : i == 0
+                  ? 'left'
+                  : i == propData.tableFields.length - 1
+                  ? 'right'
+                  : 'center'
+              }"
+            >
+              {{ getExpressData('data', field.name, item) }}
             </div>
           </div>
         </div>
       </div>
       <van-empty
-        v-else
+        v-show="!isLoading && (!chartData || Object.keys(chartData).length == 0)"
         :image-size="emptyImageSize"
         :description="propData.emptyDescription || '暂无数据'"
       >
-        <!-- <template #image>
-                <van-image :src="IDM.url.getModuleAssetsWebPath(require('../assets/empty-default.png'), moduleObject)" />
-              </template> -->
+        <template #image>
+          <van-image
+            :src="
+              IDM.url.getModuleAssetsWebPath(require('../assets/empty-default.png'), moduleObject)
+            "
+          />
+        </template>
       </van-empty>
     </div>
     <div
       class="i-selectPieChart-mask"
-      v-if="moduleObject.env !== 'production' && !propData.dataSource"
+      v-if="
+        moduleObject.env !== 'production' &&
+        ((propData.isShowTitleBar &&
+          propData.columnsType == 'dataSource' &&
+          !propData.columnsDataSource) ||
+          !propData.chartDataSource)
+      "
     >
       <span>！未绑定数据源</span>
     </div>
-    <van-popup v-model="showPicker" round position="bottom">
+    <van-popup
+      v-if="propData.isShowTitleBar && propData.columnsType != 'none'"
+      v-model="showPicker"
+      round
+      position="bottom"
+    >
       <van-picker
         show-toolbar
-        :title="propData.pickerTitle"
+        :title="propData.selectBtnPlaceholder || '请选择'"
         :columns="columnsText"
-        :default-index="pickerSelectIndex"
         @cancel="showPicker = false"
         @confirm="onConfirm"
       />
@@ -104,29 +126,35 @@ import 'vant/lib/popup/style';
 import 'vant/lib/picker/style';
 const devChartResult = [
   {
-    name: '会议',
-    value: 946
+    name: '集中培训',
+    value: 100,
+    displayValue: '100h',
+    ratio: '30%',
+    color: 'red'
   },
   {
-    name: '请假',
-    value: 972
+    name: '论学学时',
+    value: 100,
+    displayValue: '100h',
+    ratio: '40%'
   },
   {
-    name: '其他',
-    value: 617
-  },
-  {
-    name: '收文',
-    value: 21
-  },
-  {
-    name: '发文',
-    value: 700
-  },
-  {
-    name: '签报',
-    value: 200
+    name: '在线学习',
+    value: 100,
+    displayValue: '100h',
+    ratio: '30%',
+    color: 'green'
   }
+];
+const devColumns = [
+  { text: '2015年', value: '2015', isDefault: false },
+  { text: '2016年', value: '2016', isDefault: false },
+  { text: '2017年', value: '2017', isDefault: false },
+  { text: '2018年', value: '2018', isDefault: false },
+  { text: '2019年', value: '2019', isDefault: false },
+  { text: '2020年', value: '2020', isDefault: false },
+  { text: '2021年', value: '2021', isDefault: false },
+  { text: '2022年', value: '2022', isDefault: true }
 ];
 export default {
   name: 'ISelectPieChart',
@@ -141,7 +169,11 @@ export default {
     return {
       moduleObject: {},
       propData: this.$root.propData.compositeAttr || {
-        dataSource: '1',
+        colorType: 'field',
+        chartColorField: '',
+        chartType: 'hollow',
+        columnsType: 'static',
+        chartDataSource: '1',
         showIcon: true,
         title: '年度学时',
         titleIconPosition: 'left',
@@ -151,22 +183,13 @@ export default {
         pickerTitle: '选择年份',
         showChartTip: true,
         itemBorderWidth: 0,
-        tableFields: [{ name: 'name', showLegend: true }, { name: 'value' }]
+        tableFields: [{ name: 'name' }, { name: 'displayValue' }, { name: 'ratio' }]
       },
       isLoading: false,
       showPicker: false,
-      columns: [
-        { text: '2015年', vlaue: '2015' },
-        { text: '2016年', vlaue: '2016' },
-        { text: '2017年', vlaue: '2017' },
-        { text: '2018年', vlaue: '2018' },
-        { text: '2019年', vlaue: '2019' },
-        { text: '2020年', vlaue: '2020' },
-        { text: '2021年', vlaue: '2021' },
-        { text: '2022年', vlaue: '2022' }
-      ],
-      pickerSelect: null,
-      chartData: devChartResult,
+      columns: [],
+      pickerSelect: {},
+      chartData: {},
       chart: null
     };
   },
@@ -175,9 +198,14 @@ export default {
     emptyImageSize() {
       return this.getScale() * (this.propData.emptyImageSize || 70);
     },
+    loadingSize() {
+      return this.getScale() * (this.propData.loadingSize || 24);
+    },
     pickerSelectText() {
-      if (!this.pickerSelect) return this.propData.selectBtnPlaceholder || '请选择';
-      return this.pickerSelect.text;
+      if (this.pickerSelect && this.pickerSelect.value) {
+        return this.pickerSelect.text;
+      }
+      return this.propData.selectBtnPlaceholder || '请选择';
     },
     columnsText() {
       if (!this.columns) return [];
@@ -194,22 +222,76 @@ export default {
         '#5B8FF9',
         '#FF8F00'
       ];
-      const chartColors =
-        this.propData.chartColors?.map(item => item.color?.hex8).filter(item => !!item) || [];
+      let chartColors = [];
+      if (this.propData.colorType == 'field') {
+        chartColors = this.propData.chartColorField
+          ? this.chartData.map(item =>
+              this.getExpressData('data', this.propData.chartColorField, item)
+            )
+          : [];
+      } else {
+        chartColors =
+          this.propData.chartColors?.map(item => item.color?.hex8).filter(item => !!item) || [];
+      }
       return [...chartColors, ...defaultColors];
     }
   },
   created() {
     this.moduleObject = this.$root.moduleObject;
+    this.convertAttrToStyleObject();
+    this.convertThemeListAttrToStyleObject();
   },
   mounted() {
-    this.chart = this.$echarts.init(document.getElementById(`charts_container_${this.moduleObject.id}`));
-    // this.chart.resize();
-    console.log(this.chart);
-    this.drawChart();
+    this.chart = this.$echarts.init(
+      document.getElementById(`charts_container_${this.moduleObject.id}`)
+    );
+    this.initData();
   },
-  destroyed() {},
+  destroyed() {
+    this.chart.dispose();
+  },
   methods: {
+    /**
+     * 提供父级组件调用的刷新prop数据组件
+     */
+    propDataWatchHandle(propData) {
+      this.propData = propData.compositeAttr || {};
+      this.convertAttrToStyleObject();
+      this.convertThemeListAttrToStyleObject();
+      this.drawChart();
+      this.$nextTick(() => {
+        this.chart.resize();
+      });
+    },
+    /**
+     * 组件通信：接收消息的方法
+     */
+    receiveBroadcastMessage(messageObject) {
+      switch (messageObject.type) {
+        case 'websocket':
+          if (this.propData.messageRefreshKey && messageObject.message) {
+            const messageData =
+              (typeof messageObject.message === 'string' && JSON.parse(messageObject.message)) ||
+              messageObject.message;
+            const arr = Array.isArray(this.propData.messageRefreshKey)
+              ? this.propData.messageRefreshKey
+              : [this.propData.messageRefreshKey];
+            if (messageData.badgeType && arr.includes(messageData.badgeType)) {
+              this.getChartData();
+            }
+          }
+          break;
+        case 'linkageReload':
+          this.initData();
+          break;
+        case 'pageResize':
+          this.convertAttrToStyleObject(messageObject.message);
+          this.$nextTick(() => {
+            this.chart.resize();
+          });
+          break;
+      }
+    },
     /**
      * 适配页面
      */
@@ -222,15 +304,31 @@ export default {
     onConfirm(value, index) {
       this.pickerSelect = this.columns && this.columns[index];
       this.showPicker = false;
+      if (this.moduleObject.env == 'production') {
+        this.getChartData();
+        this.customFunctionHandle(this.propData.customSelectChange, {
+          selectedValue: this.pickerSelect.value,
+          selectedItem: this.pickerSelect,
+          chartData: this.chartData
+        });
+      }
+    },
+    tableRowCilck(item) {
+      this.customFunctionHandle(this.propData.customTableRowCilck, {
+        selectedValue: this.pickerSelect.value,
+        selectedItem: this.pickerSelect,
+        chartData: this.chartData,
+        record: item
+      });
     },
     drawChart() {
-      const legendData = this.chartData?.map(item => item.name);
+      this.chart.clear();
       const option = {
         color: this.colors,
         series: [
           {
             type: 'pie',
-            radius: ['40%', '70%'],
+            radius: this.propData.chartType == 'hollow' ? ['45%', '75%'] : [0, '75%'],
             itemStyle: {
               borderColor: '#fff',
               borderWidth: this.propData.itemBorderWidth
@@ -258,6 +356,637 @@ export default {
         _defaultVal = window.IDM.express.replace.call(this, '@[' + filedExp + ']', dataObject);
       }
       return _defaultVal;
+    },
+    customFormat(customFunction, resultData) {
+      if (customFunction && customFunction[0] && customFunction[0].name) {
+        resultData =
+          window[customFunction[0].name] &&
+          window[customFunction[0].name].call(this, {
+            customParam: customFunction[0].param,
+            moduleObject: this.moduleObject,
+            resultData: resultData,
+            urlObject: IDM.url.queryObject(),
+            pageId:
+              window.IDM.broadcast && window.IDM.broadcast.pageModule
+                ? window.IDM.broadcast.pageModule.id
+                : ''
+          });
+      }
+      return resultData;
+    },
+    customFunctionHandle(customFunction, param) {
+      if (customFunction && customFunction[0] && customFunction[0].name) {
+        window[customFunction[0].name] &&
+          window[customFunction[0].name].call(this, {
+            customParam: customFunction[0].param,
+            moduleObject: this.moduleObject,
+            urlObject: IDM.url.queryObject(),
+            pageId:
+              window.IDM.broadcast && window.IDM.broadcast.pageModule
+                ? window.IDM.broadcast.pageModule.id
+                : '',
+            ...param
+          });
+      }
+    },
+    /**
+     * 请求数据
+     */
+    initData() {
+      if (!this.moduleObject.env || this.moduleObject.env == 'develop') {
+        this.chartData = devChartResult;
+        this.columns = devColumns;
+        const pickerSelect = this.columns.find(item => item.isDefault);
+        this.pickerSelect = pickerSelect || this.columns[0];
+        this.drawChart();
+        this.$nextTick(() => {
+          this.chart.resize();
+        });
+        return;
+      }
+      if (!this.propData.columnsDataSource || !this.propData.chartDataSource) {
+        return false;
+      }
+      this.getColumns();
+    },
+    getColumns() {
+      if (!this.propData.isShowTitleBar || this.propData.columnsType == 'none') {
+        this.getChartData();
+      } else if (this.propData.columnsType == 'static') {
+        this.columns = this.propData.columnsList;
+        const pickerSelect = this.columns.find(item => item.isDefault);
+        this.pickerSelect = pickerSelect || {};
+        this.getChartData();
+      } else {
+        const url = `ctrl/dataSource/getDatas`;
+        const urlObject = IDM.url.queryObject();
+        this.isLoading = true;
+        IDM.http
+          .post(
+            url,
+            {
+              id: this.propData.columnsDataSource.value,
+              pageId:
+                window.IDM.broadcast && window.IDM.broadcast.pageModule
+                  ? window.IDM.broadcast.pageModule.id
+                  : '',
+              ...urlObject
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json;charset=UTF-8'
+              }
+            }
+          )
+          .done(res => {
+            if (res.type === 'success') {
+              const resultData = this.customFormat(this.propData.columnsCustomFunction, res.data);
+              this.columns = resultData;
+              const pickerSelect = this.columns.find(item => item.isDefault);
+              this.pickerSelect = pickerSelect || {};
+              this.getChartData();
+            } else {
+              this.isLoading = false;
+            }
+          })
+          .error(err => {
+            console.log(err);
+            this.isLoading = false;
+          });
+      }
+    },
+    getChartData() {
+      const url = `ctrl/dataSource/getDatas`;
+      const urlObject = IDM.url.queryObject();
+      this.isLoading = true;
+      IDM.http
+        .post(
+          url,
+          {
+            id: this.propData.chartDataSource.value,
+            pageId:
+              window.IDM.broadcast && window.IDM.broadcast.pageModule
+                ? window.IDM.broadcast.pageModule.id
+                : '',
+            ...urlObject,
+            selectedValue: this.pickerSelect.value,
+            selectedItem: this.pickerSelect
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json;charset=UTF-8'
+            }
+          }
+        )
+        .done(res => {
+          if (res.type === 'success') {
+            const resultData = this.customFormat(this.propData.chartDataCustomFunction, res.data);
+            this.chartData = resultData;
+            this.drawChart();
+            this.$nextTick(() => {
+              this.chart.resize();
+            });
+          }
+          this.isLoading = false;
+        })
+        .error(err => {
+          console.log(err);
+          this.isLoading = false;
+        });
+    },
+    /**
+     * 把属性转换成样式对象
+     */
+    convertAttrToStyleObject(pageSize = {}) {
+      const styleObject = {};
+      const titleStyleObject = {};
+      const innerCardStyleObject = {};
+      const iconStyleObject = {};
+      const emptyStyleObject = {};
+      const loadingStyleObject = {};
+      const chartStyleObject = {};
+      const tableStyleObject = {};
+      const tableIconStyleObject = {};
+      const selectStyleObject = {};
+
+      const scale = this.getScale(pageSize.width);
+      styleObject['--i-selectPieChart-scale'] = scale;
+      console.log(styleObject);
+
+      if (this.propData.bgSize && this.propData.bgSize == 'custom') {
+        styleObject['background-size'] =
+          (this.propData.bgSizeWidth
+            ? this.propData.bgSizeWidth.inputVal + this.propData.bgSizeWidth.selectVal
+            : 'auto') +
+          ' ' +
+          (this.propData.bgSizeHeight
+            ? this.propData.bgSizeHeight.inputVal + this.propData.bgSizeHeight.selectVal
+            : 'auto');
+      } else if (this.propData.bgSize) {
+        styleObject['background-size'] = this.propData.bgSize;
+      }
+      if (this.propData.innerBgSize && this.propData.innerBgSize == 'custom') {
+        innerCardStyleObject['background-size'] =
+          (this.propData.innerBgSizeWidth
+            ? this.propData.innerBgSizeWidth.inputVal + this.propData.innerBgSizeWidth.selectVal
+            : 'auto') +
+          ' ' +
+          (this.propData.innerBgSizeHeight
+            ? this.propData.innerBgSizeHeight.inputVal + this.propData.innerBgSizeHeight.selectVal
+            : 'auto');
+      } else if (this.propData.innerBgSize) {
+        innerCardStyleObject['background-size'] = this.propData.innerBgSize;
+      }
+
+      if (this.propData.positionX && this.propData.positionX.inputVal) {
+        styleObject['background-position-x'] =
+          this.propData.positionX.inputVal + this.propData.positionX.selectVal;
+      }
+      if (this.propData.innerPositionX && this.propData.innerPositionX.inputVal) {
+        innerCardStyleObject['background-position-x'] =
+          this.propData.innerPositionX.inputVal + this.propData.innerPositionX.selectVal;
+      }
+
+      if (this.propData.positionY && this.propData.positionY.inputVal) {
+        styleObject['background-position-y'] =
+          this.propData.positionY.inputVal + this.propData.positionY.selectVal;
+      }
+      if (this.propData.innerPositionY && this.propData.innerPositionY.inputVal) {
+        innerCardStyleObject['background-position-y'] =
+          this.propData.innerPositionY.inputVal + this.propData.innerPositionY.selectVal;
+      }
+      for (const key in this.propData) {
+        if (this.propData.hasOwnProperty.call(this.propData, key)) {
+          const element = this.propData[key];
+          if (!element && element !== false && element != 0) {
+            continue;
+          }
+          switch (key) {
+            case 'width':
+            case 'height':
+              styleObject[key] = element;
+              break;
+            case 'innerWidth':
+              innerCardStyleObject['width'] = element;
+              break;
+            case 'innerHeight':
+              innerCardStyleObject['height'] = element;
+              break;
+            case 'chartHeight':
+              chartStyleObject['height'] = element;
+              break;
+            case 'tableHeight':
+              tableStyleObject['height'] = element;
+              break;
+            case 'bgColor':
+              if (element && element.hex8) {
+                styleObject['background-color'] = IDM.hex8ToRgbaString(element.hex8);
+              }
+              break;
+            case 'innerBgColor':
+              if (element && element.hex8) {
+                innerCardStyleObject['background-color'] = IDM.hex8ToRgbaString(element.hex8);
+              }
+              break;
+            case 'boxShadow':
+              styleObject['box-shadow'] = element;
+              break;
+            case 'box':
+              if (element.marginTopVal) {
+                styleObject['margin-top'] = `${element.marginTopVal}`;
+              }
+              if (element.marginRightVal) {
+                styleObject['margin-right'] = `${element.marginRightVal}`;
+              }
+              if (element.marginBottomVal) {
+                styleObject['margin-bottom'] = `${element.marginBottomVal}`;
+              }
+              if (element.marginLeftVal) {
+                styleObject['margin-left'] = `${element.marginLeftVal}`;
+              }
+              if (element.paddingTopVal) {
+                styleObject['padding-top'] = `${element.paddingTopVal}`;
+              }
+              if (element.paddingRightVal) {
+                styleObject['padding-right'] = `${element.paddingRightVal}`;
+              }
+              if (element.paddingBottomVal) {
+                styleObject['padding-bottom'] = `${element.paddingBottomVal}`;
+              }
+              if (element.paddingLeftVal) {
+                styleObject['padding-left'] = `${element.paddingLeftVal}`;
+              }
+              break;
+            case 'innerBox':
+              if (element.marginTopVal) {
+                innerCardStyleObject['margin-top'] = `${element.marginTopVal}`;
+              }
+              if (element.marginRightVal) {
+                innerCardStyleObject['margin-right'] = `${element.marginRightVal}`;
+              }
+              if (element.marginBottomVal) {
+                innerCardStyleObject['margin-bottom'] = `${element.marginBottomVal}`;
+              }
+              if (element.marginLeftVal) {
+                innerCardStyleObject['margin-left'] = `${element.marginLeftVal}`;
+              }
+              if (element.paddingTopVal) {
+                innerCardStyleObject['padding-top'] = `${element.paddingTopVal}`;
+              }
+              if (element.paddingRightVal) {
+                innerCardStyleObject['padding-right'] = `${element.paddingRightVal}`;
+              }
+              if (element.paddingBottomVal) {
+                innerCardStyleObject['padding-bottom'] = `${element.paddingBottomVal}`;
+              }
+              if (element.paddingLeftVal) {
+                innerCardStyleObject['padding-left'] = `${element.paddingLeftVal}`;
+              }
+              break;
+            case 'tableBox':
+              if (element.marginTopVal) {
+                tableStyleObject['margin-top'] = `${element.marginTopVal}`;
+              }
+              if (element.marginRightVal) {
+                tableStyleObject['margin-right'] = `${element.marginRightVal}`;
+              }
+              if (element.marginBottomVal) {
+                tableStyleObject['margin-bottom'] = `${element.marginBottomVal}`;
+              }
+              if (element.marginLeftVal) {
+                tableStyleObject['margin-left'] = `${element.marginLeftVal}`;
+              }
+              if (element.paddingTopVal) {
+                tableStyleObject['padding-top'] = `${element.paddingTopVal}`;
+              }
+              if (element.paddingRightVal) {
+                tableStyleObject['padding-right'] = `${element.paddingRightVal}`;
+              }
+              if (element.paddingBottomVal) {
+                tableStyleObject['padding-bottom'] = `${element.paddingBottomVal}`;
+              }
+              if (element.paddingLeftVal) {
+                tableStyleObject['padding-left'] = `${element.paddingLeftVal}`;
+              }
+              break;
+            case 'bgImgUrl':
+              styleObject['background-image'] = `url(${window.IDM.url.getWebPath(element)})`;
+              break;
+            case 'innerBgImgUrl':
+              innerCardStyleObject['background-image'] = `url(${window.IDM.url.getWebPath(
+                element
+              )})`;
+              break;
+            case 'positionX':
+              //背景横向偏移
+              break;
+            case 'innerPositionX':
+              //背景横向偏移
+              break;
+            case 'positionY':
+              //背景纵向偏移
+              break;
+            case 'innerPositionY':
+              //背景纵向偏移
+              break;
+            case 'bgRepeat':
+              //平铺模式
+              styleObject['background-repeat'] = element;
+              break;
+            case 'innerBgRepeat':
+              //平铺模式
+              innerCardStyleObject['background-repeat'] = element;
+              break;
+            case 'bgAttachment':
+              //背景模式
+              styleObject['background-attachment'] = element;
+              break;
+            case 'innerBgAttachment':
+              //背景模式
+              innerCardStyleObject['background-attachment'] = element;
+              break;
+            case 'border':
+              if (element.border.top.width > 0) {
+                styleObject['border-top-width'] =
+                  element.border.top.width + element.border.top.widthUnit;
+                styleObject['border-top-style'] = element.border.top.style;
+                if (element.border.top.colors.hex8) {
+                  styleObject['border-top-color'] = IDM.hex8ToRgbaString(
+                    element.border.top.colors.hex8
+                  );
+                }
+              }
+              if (element.border.right.width > 0) {
+                styleObject['border-right-width'] =
+                  element.border.right.width + element.border.right.widthUnit;
+                styleObject['border-right-style'] = element.border.right.style;
+                if (element.border.right.colors.hex8) {
+                  styleObject['border-right-color'] = IDM.hex8ToRgbaString(
+                    element.border.right.colors.hex8
+                  );
+                }
+              }
+              if (element.border.bottom.width > 0) {
+                styleObject['border-bottom-width'] =
+                  element.border.bottom.width + element.border.bottom.widthUnit;
+                styleObject['border-bottom-style'] = element.border.bottom.style;
+                if (element.border.bottom.colors.hex8) {
+                  styleObject['border-bottom-color'] = IDM.hex8ToRgbaString(
+                    element.border.bottom.colors.hex8
+                  );
+                }
+              }
+              if (element.border.left.width > 0) {
+                styleObject['border-left-width'] =
+                  element.border.left.width + element.border.left.widthUnit;
+                styleObject['border-left-style'] = element.border.left.style;
+                if (element.border.left.colors.hex8) {
+                  styleObject['border-left-color'] = IDM.hex8ToRgbaString(
+                    element.border.left.colors.hex8
+                  );
+                }
+              }
+
+              styleObject['border-top-left-radius'] =
+                element.radius.leftTop.radius + element.radius.leftTop.radiusUnit;
+              styleObject['border-top-right-radius'] =
+                element.radius.rightTop.radius + element.radius.rightTop.radiusUnit;
+              styleObject['border-bottom-left-radius'] =
+                element.radius.leftBottom.radius + element.radius.leftBottom.radiusUnit;
+              styleObject['border-bottom-right-radius'] =
+                element.radius.rightBottom.radius + element.radius.rightBottom.radiusUnit;
+              break;
+            case 'innerBorder':
+              if (element.border.top.width > 0) {
+                innerCardStyleObject['border-top-width'] =
+                  element.border.top.width + element.border.top.widthUnit;
+                innerCardStyleObject['border-top-style'] = element.border.top.style;
+                if (element.border.top.colors.hex8) {
+                  innerCardStyleObject['border-top-color'] = IDM.hex8ToRgbaString(
+                    element.border.top.colors.hex8
+                  );
+                }
+              }
+              if (element.border.right.width > 0) {
+                innerCardStyleObject['border-right-width'] =
+                  element.border.right.width + element.border.right.widthUnit;
+                innerCardStyleObject['border-right-style'] = element.border.right.style;
+                if (element.border.right.colors.hex8) {
+                  innerCardStyleObject['border-right-color'] = IDM.hex8ToRgbaString(
+                    element.border.right.colors.hex8
+                  );
+                }
+              }
+              if (element.border.bottom.width > 0) {
+                innerCardStyleObject['border-bottom-width'] =
+                  element.border.bottom.width + element.border.bottom.widthUnit;
+                innerCardStyleObject['border-bottom-style'] = element.border.bottom.style;
+                if (element.border.bottom.colors.hex8) {
+                  innerCardStyleObject['border-bottom-color'] = IDM.hex8ToRgbaString(
+                    element.border.bottom.colors.hex8
+                  );
+                }
+              }
+              if (element.border.left.width > 0) {
+                innerCardStyleObject['border-left-width'] =
+                  element.border.left.width + element.border.left.widthUnit;
+                innerCardStyleObject['border-left-style'] = element.border.left.style;
+                if (element.border.left.colors.hex8) {
+                  innerCardStyleObject['border-left-color'] = IDM.hex8ToRgbaString(
+                    element.border.left.colors.hex8
+                  );
+                }
+              }
+
+              innerCardStyleObject['border-top-left-radius'] =
+                element.radius.leftTop.radius + element.radius.leftTop.radiusUnit;
+              innerCardStyleObject['border-top-right-radius'] =
+                element.radius.rightTop.radius + element.radius.rightTop.radiusUnit;
+              innerCardStyleObject['border-bottom-left-radius'] =
+                element.radius.leftBottom.radius + element.radius.leftBottom.radiusUnit;
+              innerCardStyleObject['border-bottom-right-radius'] =
+                element.radius.rightBottom.radius + element.radius.rightBottom.radiusUnit;
+              break;
+            case 'titleFont':
+              titleStyleObject['font-family'] = element.fontFamily;
+              if (element.fontColors.hex8) {
+                titleStyleObject['color'] = IDM.hex8ToRgbaString(element.fontColors.hex8);
+              }
+              titleStyleObject['font-weight'] =
+                element.fontWeight && element.fontWeight.split(' ')[0];
+              titleStyleObject['font-style'] = element.fontStyle;
+              titleStyleObject['font-size'] = `calc(${
+                element.fontSize + element.fontSizeUnit
+              } * #{$scale})`;
+              titleStyleObject['line-height'] =
+                element.fontLineHeight +
+                (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
+              titleStyleObject['text-align'] = element.fontTextAlign;
+              titleStyleObject['text-decoration'] = element.fontDecoration;
+              break;
+            case 'titleIconColor':
+              iconStyleObject['color'] = IDM.hex8ToRgbaString(element.hex8);
+              break;
+            case 'titleIconSize':
+              iconStyleObject['font-size'] = `calc(${element}px * #{$scale})`;
+              break;
+            case 'tableIconSize':
+              tableIconStyleObject['width'] = `calc(${element}px * #{$scale})`;
+              tableIconStyleObject['height'] = `calc(${element}px * #{$scale})`;
+              break;
+            case 'tableFont':
+              tableStyleObject['font-family'] = element.fontFamily;
+              if (element.fontColors.hex8) {
+                tableStyleObject['color'] = IDM.hex8ToRgbaString(element.fontColors.hex8);
+              }
+              tableStyleObject['font-weight'] =
+                element.fontWeight && element.fontWeight.split(' ')[0];
+              tableStyleObject['font-style'] = element.fontStyle;
+              tableStyleObject['font-size'] = `calc(${
+                element.fontSize + element.fontSizeUnit
+              } * #{$scale})`;
+              tableStyleObject['line-height'] =
+                element.fontLineHeight +
+                (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
+              tableStyleObject['text-align'] = element.fontTextAlign;
+              tableStyleObject['text-decoration'] = element.fontDecoration;
+              break;
+            case 'loadingFont':
+              loadingStyleObject['font-family'] = element.fontFamily;
+              if (element.fontColors.hex8) {
+                loadingStyleObject['color'] = IDM.hex8ToRgbaString(element.fontColors.hex8);
+              }
+              loadingStyleObject['font-weight'] =
+                element.fontWeight && element.fontWeight.split(' ')[0];
+              loadingStyleObject['font-style'] = element.fontStyle;
+              loadingStyleObject['font-size'] = `calc(${
+                element.fontSize + element.fontSizeUnit
+              } * #{$scale})`;
+              loadingStyleObject['line-height'] =
+                element.fontLineHeight +
+                (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
+              loadingStyleObject['text-align'] = element.fontTextAlign;
+              loadingStyleObject['text-decoration'] = element.fontDecoration;
+              break;
+            case 'emptyFont':
+              emptyStyleObject['font-family'] = element.fontFamily;
+              if (element.fontColors.hex8) {
+                emptyStyleObject['color'] = IDM.hex8ToRgbaString(element.fontColors.hex8);
+              }
+              emptyStyleObject['font-weight'] =
+                element.fontWeight && element.fontWeight.split(' ')[0];
+              emptyStyleObject['font-style'] = element.fontStyle;
+              emptyStyleObject['font-size'] = `calc(${
+                element.fontSize + element.fontSizeUnit
+              } * #{$scale})`;
+              emptyStyleObject['line-height'] =
+                element.fontLineHeight +
+                (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
+              emptyStyleObject['text-align'] = element.fontTextAlign;
+              emptyStyleObject['text-decoration'] = element.fontDecoration;
+              break;
+            case 'selectFont':
+              selectStyleObject['font-family'] = element.fontFamily;
+              if (element.fontColors.hex8) {
+                selectStyleObject['color'] = IDM.hex8ToRgbaString(element.fontColors.hex8);
+              }
+              selectStyleObject['font-weight'] =
+                element.fontWeight && element.fontWeight.split(' ')[0];
+              selectStyleObject['font-style'] = element.fontStyle;
+              selectStyleObject['font-size'] = `calc(${
+                element.fontSize + element.fontSizeUnit
+              } * #{$scale})`;
+              selectStyleObject['line-height'] =
+                element.fontLineHeight +
+                (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
+              selectStyleObject['text-align'] = element.fontTextAlign;
+              selectStyleObject['text-decoration'] = element.fontDecoration;
+              break;
+          }
+        }
+      }
+      if (styleObject.height && styleObject.height != 'auto') {
+        innerCardStyleObject.height = 0;
+      }
+      window.IDM.setStyleToPageHead(this.moduleObject.id, styleObject);
+      window.IDM.setStyleToPageHead(
+        this.moduleObject.id + ' .i-selectPieChart-content',
+        innerCardStyleObject
+      );
+      window.IDM.setStyleToPageHead(
+        this.moduleObject.id + ' .i-selectPieChart-header-tit span',
+        titleStyleObject
+      );
+      window.IDM.setStyleToPageHead(
+        this.moduleObject.id + ' .i-selectPieChart-header-tit .i-selectPieChart-header-tit-icon',
+        iconStyleObject
+      );
+      window.IDM.setStyleToPageHead(
+        this.moduleObject.id + ' .i-selectPieChart-header .i-selectPieChart-header-select',
+        selectStyleObject
+      );
+      window.IDM.setStyleToPageHead(
+        this.moduleObject.id + ' .i-selectPieChart-header .i-selectPieChart-header-select-active',
+        selectStyleObject
+      );
+      window.IDM.setStyleToPageHead(
+        this.moduleObject.id + ' .i-selectPieChart-content .i-selectPieChart-content-chart',
+        chartStyleObject
+      );
+      window.IDM.setStyleToPageHead(
+        this.moduleObject.id + ' .i-selectPieChart-content .i-selectPieChart-content-table',
+        tableStyleObject
+      );
+      window.IDM.setStyleToPageHead(
+        this.moduleObject.id +
+          ' .i-selectPieChart-content .i-selectPieChart-content-table .col-legend',
+        tableIconStyleObject
+      );
+      window.IDM.setStyleToPageHead(this.moduleObject.id + ' .van-empty', emptyStyleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + ' .van-loading', loadingStyleObject);
+    },
+    /**
+     * 主题颜色
+     */
+    convertThemeListAttrToStyleObject() {
+      const themeList = this.propData.themeList;
+      if (!themeList) {
+        return;
+      }
+      const themeNamePrefix =
+        IDM.setting && IDM.setting.applications && IDM.setting.applications.themeNamePrefix
+          ? IDM.setting.applications.themeNamePrefix
+          : 'idm-theme-';
+      for (var i = 0; i < themeList.length; i++) {
+        const item = themeList[i];
+
+        const titleSvgStyleObject = {
+          color: item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : ''
+        };
+
+        const selectStyleObject = {
+          color: item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : ''
+        };
+
+        IDM.setStyleToPageHead(
+          '.' +
+            themeNamePrefix +
+            item.key +
+            ' #' +
+            (this.moduleObject.packageid || 'module_demo') +
+            ' .i-selectPieChart-header .i-selectPieChart-header-select-active',
+          selectStyleObject
+        );
+        IDM.setStyleToPageHead(
+          '.' +
+            themeNamePrefix +
+            item.key +
+            ' #' +
+            (this.moduleObject.packageid || 'module_demo') +
+            ' .i-selectPieChart-header-tit .i-selectPieChart-header-tit-icon',
+          titleSvgStyleObject
+        );
+      }
     }
   }
 };
@@ -277,7 +1006,8 @@ $scale: var(--i-selectPieChart-scale);
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  height: 200px;
+  height: auto;
+  overflow: hidden;
 
   .i-selectPieChart-header {
     display: flex;
@@ -369,16 +1099,24 @@ $scale: var(--i-selectPieChart-scale);
   }
 
   .i-selectPieChart-content {
-    background-color: #fff;
     /* border-radius: calc(10px * #{$scale});
     padding: calc(10px * #{$scale}) calc(14px * #{$scale}); */
     flex-grow: 1;
     flex-shrink: 1;
-    height: 0;
+    height: auto;
 
     ::v-deep .van-loading {
-      min-height: calc(130px * #{$scale});
+      height: 100%;
       justify-content: center;
+    }
+
+    ::v-deep .van-empty {
+      padding: 0;
+      height: 100%;
+    }
+
+    ::v-deep .van-empty__description {
+      font-size: inherit;
     }
 
     .i-selectPieChart-content-wapper {
@@ -387,38 +1125,33 @@ $scale: var(--i-selectPieChart-scale);
       flex-direction: column;
       align-items: stretch;
       .i-selectPieChart-content-chart {
+        width: 100%;
         flex-grow: 1;
         flex-shrink: 1;
-        height: 100px;
+        height: 150px;
       }
 
       .i-selectPieChart-content-table {
         flex-grow: 1;
         flex-shrink: 1;
-        overflow: auto;
-        height: 100px;
-        padding: 0 80px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: 150px;
+        padding: 0 12%;
         .i-selectPieChart-content-table-row {
           display: flex;
-          justify-content: space-around;
           align-items: center;
           padding: 8px 0;
           line-height: 1;
-          .col-box {
-            display: flex;
-            align-items: center;
+          .col-legend {
+            // width: calc(14px * #{$scale});
+            // height: calc(14px * #{$scale});
+            width: calc(14px * #{$scale});
+            height: calc(14px * #{$scale});
+            margin-right: calc(12px * #{$scale});
+          }
+          .col-text {
             flex-grow: 1;
-            /* margin-left: 50%; */
-            .col-box-legend {
-              // width: calc(14px * #{$scale});
-              // height: calc(14px * #{$scale});
-              width: 14px;
-              height: 14px;
-              margin-right: 10px;
-            }
-            .col-box-text {
-              
-            }
           }
         }
       }
@@ -437,20 +1170,12 @@ $scale: var(--i-selectPieChart-scale);
     justify-content: center;
     align-items: center;
     span {
-      padding: calc(6px * #{$scale}) calc(20px * #{$scale});
+      padding: 6px 20px;
       color: #e6a23c;
       background: #fdf6ec;
-      border: calc(1px * #{$scale}) solid #f5dab1;
-      border-radius: calc(4px * #{$scale});
+      border: 1px solid #f5dab1;
+      border-radius: 4px;
     }
-  }
-
-  ::v-deep .van-empty {
-    padding: 0;
-  }
-
-  ::v-deep .van-empty__description {
-    font-size: inherit;
   }
 }
 </style>
