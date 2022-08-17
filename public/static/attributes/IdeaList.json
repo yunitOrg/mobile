@@ -20,7 +20,146 @@
         "text": "基本属性",
         "desc": "提供设置组件能达到展示效果的基本属性设置信息",
         "children": [
-          
+          {
+            "type": "input",
+            "layoutType": "inline",
+            "text": "待回复标题",
+            "bindKey": "waitTitle",
+            "default": "待回复"
+          },
+          {
+            "type": "font",
+            "layoutType": "block",
+            "text": "待回复样式",
+            "bindKey": "waitStyle",
+            "default": {
+                "fontColors": {
+                    "hex": "#f00"
+                },
+                "fontSize": 14,
+                "fontSizeUnit": "px"
+            }
+          },
+          {
+            "type": "input",
+            "layoutType": "inline",
+            "text": "已回复标题",
+            "bindKey": "yetTitle",
+            "default": "已回复"
+          },
+          {
+            "type": "font",
+            "layoutType": "block",
+            "text": "已回复样式",
+            "bindKey": "yetStyle",
+            "default": {
+                "fontColors": {
+                    "hex": "#000000"
+                },
+                "fontSize": 14,
+                "fontSizeUnit": "px"
+            }
+          }
+        ]
+      },
+      {
+        "type": "group",
+        "text": "样式设置",
+        "desc": "点击？查看样式设置用法指南",
+        "helpUrl": "",
+        "children": [
+          {
+            "type": "box",
+            "layoutType": "block",
+            "text": "内外边距",
+            "bindKey": "box",
+            "default": {
+              "marginTopVal": "",
+              "marginRightVal": "",
+              "marginBottomVal": "",
+              "marginLeftVal": "",
+              "paddingTopVal": "",
+              "paddingRightVal": "10px",
+              "paddingBottomVal": "",
+              "paddingLeftVal": "10px"
+            }
+          },
+          {
+            "type": "box",
+            "layoutType": "block",
+            "text": "列表边距",
+            "bindKey": "liBox",
+            "default": {
+              "marginTopVal": "",
+              "marginRightVal": "",
+              "marginBottomVal": "",
+              "marginLeftVal": "",
+              "paddingTopVal": "20px",
+              "paddingRightVal": "20px",
+              "paddingBottomVal": "20px",
+              "paddingLeftVal": "20px"
+            }
+          },
+          {
+            "type": "input",
+            "layoutType": "inline",
+            "text": "分割距离",
+            "bindKey": "liSplitHeight",
+            "default": "10px"
+          },
+          {
+            "type": "font",
+            "layoutType": "block",
+            "text": "字体名称",
+            "bindKey": "titleStyle",
+            "default": {
+                "fontColors": {
+                    "hex": "#000000"
+                },
+                "fontSize": 14,
+                "fontSizeUnit": "px"
+            }
+          },
+          {
+            "type": "font",
+            "layoutType": "block",
+            "text": "字体日期",
+            "bindKey": "timeStyle",
+            "default": {
+                "fontColors": {
+                    "hex": "#000000"
+                },
+                "fontSize": 14,
+                "fontSizeUnit": "px"
+            }
+          },
+          {
+            "type": "font",
+            "layoutType": "block",
+            "text": "字体描述",
+            "bindKey": "descStyle",
+            "default": {
+                "fontColors": {
+                    "hex": "#000000"
+                },
+                "fontSize": 14,
+                "fontSizeUnit": "px"
+            }
+          }
+        ]
+      },
+      {
+        "type": "group",
+        "text": "高级",
+        "desc": "点击？查看高级设置用法指南",
+        "children": [
+          {
+            "type": "treeSelect",
+            "layoutType": "inline",
+            "text": "数据源",
+            "bindKey": "dataSource",
+            "dataSourceUrl":"/ctrl/dataSource/getDatasourceByGroup"
+          }
         ]
       }
   ]

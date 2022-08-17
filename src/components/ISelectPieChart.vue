@@ -43,30 +43,31 @@
       </div>
     </div>
     <div class="i-selectPieChart-content">
-      <van-loading v-show="isLoading" size="24px" vertical>加载中...</van-loading>
-      <div
-        v-show="!isLoading && chartData"
-        class="i-selectPieChart-content-chart"
-        :id="`charts_container_${moduleObject.id}`"
-      />
-      <div v-show="!isLoading && chartData" class="i-selectPieChart-content-table">
+      <van-loading v-if="isLoading" size="24px" vertical>加载中...</van-loading>
+      <div v-else-if="chartData" class="i-selectPieChart-content-wapper">
         <div
-          class="i-selectPieChart-content-table-row"
-          v-for="(item, index) in chartData"
-          :key="index"
-        >
-          <div class="col-box" v-for="(field, i) in propData.tableFields" :key="i">
-            <div
-              class="col-box-legend"
-              v-if="field.showLegend"
-              :style="{ 'background-color': colors[index] }"
-            />
-            <div>{{ getExpressData('data', field.name, item) }}</div>
+          class="i-selectPieChart-content-chart"
+          :id="`charts_container_${moduleObject.id}`"
+        />
+        <div class="i-selectPieChart-content-table">
+          <div
+            class="i-selectPieChart-content-table-row"
+            v-for="(item, index) in chartData"
+            :key="index"
+          >
+            <div class="col-box" v-for="(field, i) in propData.tableFields" :key="i">
+              <div
+                class="col-box-legend"
+                v-if="i == 0"
+                :style="{ 'background-color': colors[index] }"
+              />
+              <div class="col-box-text">{{ getExpressData('data', field.name, item) }}</div>
+            </div>
           </div>
         </div>
       </div>
       <van-empty
-        v-show="!isLoading && !chartData"
+        v-else
         :image-size="emptyImageSize"
         :description="propData.emptyDescription || '暂无数据'"
       >
@@ -202,17 +203,10 @@ export default {
     this.moduleObject = this.$root.moduleObject;
   },
   mounted() {
-    this.chart = this.$echarts.init(
-      document.getElementById(`charts_container_${this.moduleObject.id}`),
-      null,
-      {
-        width: document.querySelector(`#charts_container_${this.moduleObject.id}`).offsetWidth,
-        height: document.querySelector(`#charts_container_${this.moduleObject.id}`).offsetHeight
-      }
-    );
+    this.chart = this.$echarts.init(document.getElementById(`charts_container_${this.moduleObject.id}`));
     // this.chart.resize();
     console.log(this.chart);
-    // this.drawChart();
+    this.drawChart();
   },
   destroyed() {},
   methods: {
@@ -273,7 +267,7 @@ export default {
 $scale: var(--i-selectPieChart-scale);
 .i-selectPieChart-outer {
   width: auto;
-  box-sizing: content-box;
+  box-sizing: border-box;
   padding: 10px;
   font-family: PingFangSC-Regular;
   color: #333333;
@@ -282,6 +276,7 @@ $scale: var(--i-selectPieChart-scale);
   font-size: calc(14px * #{$scale});
   display: flex;
   flex-direction: column;
+  align-items: stretch;
   height: 200px;
 
   .i-selectPieChart-header {
@@ -375,46 +370,55 @@ $scale: var(--i-selectPieChart-scale);
 
   .i-selectPieChart-content {
     background-color: #fff;
-    border-radius: calc(10px * #{$scale});
-    padding: calc(10px * #{$scale}) calc(14px * #{$scale});
+    /* border-radius: calc(10px * #{$scale});
+    padding: calc(10px * #{$scale}) calc(14px * #{$scale}); */
     flex-grow: 1;
-    flex-shrink: 0;
-    // display: flex;
-    // flex-direction: column;
-    box-sizing: content-box;
+    flex-shrink: 1;
+    height: 0;
 
     ::v-deep .van-loading {
       min-height: calc(130px * #{$scale});
       justify-content: center;
     }
 
-    .i-selectPieChart-content-chart {
-      box-sizing: content-box;
-      height: 50% !important;
-      // flex-grow: 1;
-    }
+    .i-selectPieChart-content-wapper {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      .i-selectPieChart-content-chart {
+        flex-grow: 1;
+        flex-shrink: 1;
+        height: 100px;
+      }
 
-    .i-selectPieChart-content-table {
-      box-sizing: content-box;
-      height: 50% !important;
-      // flex-grow: 1;
-      overflow: scroll;
-      // padding: 0 20px;
-      .i-selectPieChart-content-table-row {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        padding: 8px 0;
-        line-height: 1;
-        .col-box {
+      .i-selectPieChart-content-table {
+        flex-grow: 1;
+        flex-shrink: 1;
+        overflow: auto;
+        height: 100px;
+        padding: 0 80px;
+        .i-selectPieChart-content-table-row {
           display: flex;
+          justify-content: space-around;
           align-items: center;
-          .col-box-legend {
-            // width: calc(14px * #{$scale});
-            // height: calc(14px * #{$scale});
-            width: 14px;
-            height: 14px;
-            margin-right: 10px;
+          padding: 8px 0;
+          line-height: 1;
+          .col-box {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            /* margin-left: 50%; */
+            .col-box-legend {
+              // width: calc(14px * #{$scale});
+              // height: calc(14px * #{$scale});
+              width: 14px;
+              height: 14px;
+              margin-right: 10px;
+            }
+            .col-box-text {
+              
+            }
           }
         }
       }
