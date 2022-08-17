@@ -10,7 +10,7 @@
   :idm-ctrl-id="moduleObject.id" 
   >
   <div class="idm_imgupload">
-    <span class="idm_upload_font" v-if="propData.showImg">上传附件（最多三个）</span>
+    <span class="idm_upload_font" v-if="propData.showImg">上传附件（最多{{propData.uploadNumber}}个）</span>
     <van-uploader
     v-model="fileList"
     multiple
@@ -188,7 +188,9 @@ export default {
     */
     beforeRead (file) {
       if (this.propData.uploadfile) {
-        if (!this.propData.uploadfile.split(',').includes(file.type)) {
+        console.log(this.propData.uploadfile.split(','))
+        console.log(file, '上传数据')
+        if (!this.propData.uploadfile.split(',').includes(file.name.split('.').slice(-1))) {
           Toast('请上传 正确格式');
           return false;
         }

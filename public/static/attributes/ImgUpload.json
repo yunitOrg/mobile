@@ -127,7 +127,7 @@
             {
               "type": "font",
               "layoutType": "block",
-              "text": "文字字体",
+              "text": "标题字体",
               "bindKey": "itemFontStyle",
               "default": {
                   "fontColors": {
@@ -140,7 +140,7 @@
             {
               "type": "box",
               "layoutType": "block",
-              "text": "文字间距",
+              "text": "标题间距",
               "bindKey": "itemFontMargin",
               "default": {
                   "marginTopVal": "",
@@ -163,11 +163,10 @@
       "desc": "点击？查看高级设置用法指南",
       "children": [
         {
-          "type": "treeSelect",
+          "type": "input",
           "layoutType": "inline",
-          "text": "数据源",
-          "bindKey": "dataSource",
-          "dataSourceUrl":"/ctrl/dataSource/getDatasourceByGroup"
+          "text": "上传接口",
+          "bindKey": "uploadInterface"
         }
       ]
     }
