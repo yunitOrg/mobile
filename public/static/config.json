@@ -75,9 +75,9 @@
       "comLangue": "vue"
     },
     {
-      "classId": "idm.component.mobile.itips",
+      "classId": "idm.component.mobile.itags",
       "comName": "标签选择器",
-      "className": "ITips",
+      "className": "ITags",
       "comType": "common",
       "comLangue": "vue"
     },
