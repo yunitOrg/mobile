@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lasttime": "2022-08-10 14:39:29",
+  "lasttime": "2022-08-15 09:19:34",
   "author": "申龙",
   "className": "mobile",
   "module": [
@@ -13,15 +13,15 @@
     },
     {
       "classId": "idm.component.mobile.ibanner",
-      "comName": "广告轮播",
+      "comName": "轮播图",
       "className": "IBanner",
       "comType": "common",
       "comLangue": "vue"
     },
     {
-      "classId": "idm.component.mobile.iunifiedtodo",
-      "comName": "代办列表",
-      "className": "IUnifiedTodo",
+      "classId": "idm.component.mobile.itodolist",
+      "comName": "待办列表",
+      "className": "ITodoList",
       "comType": "common",
       "comLangue": "vue"
     },
@@ -110,9 +110,23 @@
       "comLangue": "vue"
     },
     {
+      "classId": "idm.component.mobile.icommonlist",
+      "comName": "通用列表",
+      "className": "ICommonList",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
       "classId": "idm.component.mobile.selectPieChart",
       "comName": "饼状统计图",
       "className": "ISelectPieChart",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.iactivitylist",
+      "comName": "活动列表",
+      "className": "IActivityList",
       "comType": "common",
       "comLangue": "vue"
     },

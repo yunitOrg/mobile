@@ -1,7 +1,7 @@
 {
-    "classId": "idm.component.mobile.icontentlist",
-    "comName": "内容列表",
-    "className": "IContentList",
+    "classId": "idm.component.mobile.itodolist",
+    "comName": "待办列表",
+    "className": "ITodoList",
     "comType": "common",
     "comLangue": "vue",
     "compositeAttr": [
@@ -100,7 +100,7 @@
                     "text": "组件标题",
                     "bindKey": "htmlTitle",
                     "desc": "组件上方标题文字",
-                    "default": "党建动态",
+                    "default": "消息提醒",
                     "display": "@[isShowTitle]"
                 },
                 {
@@ -109,7 +109,7 @@
                     "text": "最多显示",
                     "bindKey": "limit",
                     "desc": "设置组件列表最多显示几条",
-                    "default": 3
+                    "default": 2
                 }
             ]
         },
@@ -417,6 +417,14 @@
             "helpUrl": "",
             "children": [
                 {
+                    "type": "inputNumber",
+                    "layoutType": "inline",
+                    "text": "标题行数",
+                    "desc": "设置标题文本超过换行的行数，如果没有超过则不生效",
+                    "bindKey": "lineTitleClamp",
+                    "default": 2
+                },
+                {
                     "type": "box",
                     "layoutType": "block",
                     "text": "内外边距",
@@ -488,188 +496,76 @@
                     }
                 },
                 {
-                    "type": "group",
+                    "type": "font",
                     "layoutType": "block",
-                    "text": "标题样式",
-                    "children": [
-                        {
-                            "type": "inputNumber",
-                            "layoutType": "inline",
-                            "text": "标题行数",
-                            "desc": "设置标题文本超过换行的行数，如果没有超过则不生效",
-                            "bindKey": "lineTitleClamp",
-                            "default": 2
+                    "text": "消息字体",
+                    "bindKey": "messageFontStyle",
+                    "default": {
+                        "fontColors": {
+                            "hex": "#333333",
+                            "hex8": "#333333FF"
                         },
-                        {
-                            "type": "box",
-                            "layoutType": "block",
-                            "text": "标题边距",
-                            "bindKey": "lineTitleBox",
-                            "default": {
-                                "marginTopVal": "",
-                                "marginRightVal": "",
-                                "marginBottomVal": "10px",
-                                "marginLeftVal": "",
-                                "paddingTopVal": "",
-                                "paddingRightVal": "",
-                                "paddingBottomVal": "",
-                                "paddingLeftVal": ""
-                            }
-                        },
-                        {
-                            "type": "font",
-                            "layoutType": "block",
-                            "text": "字体",
-                            "bindKey": "lineTitleFont",
-                            "default": {
-                                "fontFamily": "",
-                                "fontColors": {
-                                    "hex": "",
-                                    "hex8": ""
-                                },
-                                "fontWeight": "600 Semi Bold",
-                                "fontStyle": "",
-                                "fontSize": 16,
-                                "fontSizeUnit": "px",
-                                "fontLineHeight": "",
-                                "fontLineHeightUnit": "px",
-                                "fontTextAlign": "",
-                                "fontDecoration": "",
-                                "fontLetterSpacing": 0,
-                                "fontLetterSpacingUnit": "px"
-                            }
-                        }
-                    ]
+                        "fontSize": 15,
+                        "fontSizeUnit": "px",
+                        "fontWeight": "400"
+                    }
                 },
                 {
-                    "type": "group",
+                    "type": "font",
                     "layoutType": "block",
-                    "text": "图片样式",
-                    "children": [
-                        {
-                            "type": "inlineGroup",
-                            "text": "宽高",
-                            "children": [
-                                {
-                                    "type": "inputNumber",
-                                    "layoutType": "block",
-                                    "text": "宽",
-                                    "desc": "只在一个图片时生效，2个或3个自动显示在一行，单位：px",
-                                    "bindKey": "imageWidth",
-                                    "default": 135
-                                },
-                                {
-                                    "type": "inputNumber",
-                                    "layoutType": "block",
-                                    "text": "高",
-                                    "desc": "设置所有图片的高度，单位：px",
-                                    "bindKey": "imageHeight",
-                                    "default": 70
-                                }
-                            ]
+                    "text": "已读字体",
+                    "bindKey": "hasReadFontStyle",
+                    "default": {
+                        "fontColors": {
+                            "hex": "",
+                            "hex8": ""
                         },
-                        {
-                            "type": "border",
-                            "layoutType": "block",
-                            "text": "图片边框",
-                            "bindKey": "imageBorder",
-                            "default": {
-                                "border": {
-                                    "top": {
-                                        "style": "0",
-                                        "width": 0,
-                                        "widthUnit": "",
-                                        "colors": {}
-                                    },
-                                    "right": {
-                                        "style": "0",
-                                        "width": 0,
-                                        "widthUnit": "",
-                                        "colors": {}
-                                    },
-                                    "bottom": {
-                                        "style": "",
-                                        "width": 0,
-                                        "widthUnit": "px",
-                                        "colors": {
-                                            "hex": "",
-                                            "hex8": ""
-                                        }
-                                    },
-                                    "left": {
-                                        "style": "0",
-                                        "width": 0,
-                                        "widthUnit": "",
-                                        "colors": {}
-                                    }
-                                },
-                                "radius": {
-                                    "leftTop": {
-                                        "radius": 6,
-                                        "radiusUnit": "px"
-                                    },
-                                    "rightTop": {
-                                        "radius": 6,
-                                        "radiusUnit": "px"
-                                    },
-                                    "leftBottom": {
-                                        "radius": 6,
-                                        "radiusUnit": "px"
-                                    },
-                                    "rightBottom": {
-                                        "radius": 6,
-                                        "radiusUnit": "px"
-                                    }
-                                }
-                            }
+                        "fontSize": 15,
+                        "fontSizeUnit": "px",
+                        "fontWeight": "400"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "table",
+            "text": "消息模块样式",
+            "desc": "点击？查看主题设置用法指南",
+            "bindKey": "moduleStyleList",
+            "tabText": "模块[index]",
+            "default": [
+                {
+                    "moduleName": "党费缴纳",
+                    "moduleFont": {
+                        "fontColors": {
+                            "hex": "#E11212",
+                            "hex8": "#E11212FF"
                         }
-                    ]
+                    }
                 },
                 {
-                    "type": "group",
-                    "layoutType": "block",
-                    "text": "底部样式",
-                    "children": [
-                        {
-                            "type": "box",
-                            "layoutType": "block",
-                            "text": "内外边距",
-                            "bindKey": "lineBottomBox",
-                            "default": {
-                                "marginTopVal": "5px",
-                                "marginRightVal": "",
-                                "marginBottomVal": "",
-                                "marginLeftVal": "",
-                                "paddingTopVal": "",
-                                "paddingRightVal": "",
-                                "paddingBottomVal": "",
-                                "paddingLeftVal": ""
-                            }
-                        },
-                        {
-                            "type": "font",
-                            "layoutType": "block",
-                            "text": "字体",
-                            "bindKey": "lineBottomTitleFont",
-                            "default": {
-                                "fontFamily": "",
-                                "fontColors": {
-                                    "hex": "#8A8686",
-                                    "hex8": "#8A8686FF"
-                                },
-                                "fontWeight": "",
-                                "fontStyle": "",
-                                "fontSize": 13,
-                                "fontSizeUnit": "px",
-                                "fontLineHeight": "",
-                                "fontLineHeightUnit": "px",
-                                "fontTextAlign": "",
-                                "fontDecoration": "",
-                                "fontLetterSpacing": 0,
-                                "fontLetterSpacingUnit": "px"
-                            }
+                    "moduleName": "组织生活",
+                    "moduleFont": {
+                        "fontColors": {
+                            "hex": "#0080FF",
+                            "hex8": "#0080FFFF"
                         }
-                    ]
+                    }
+                }
+            ],
+            "children": [
+                {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "模块名称",
+                    "bindKey": "moduleName"
+                },
+                {
+                    "type": "font",
+                    "layoutType": "inline",
+                    "text": "字体样式",
+                    "bindKey": "moduleFont",
+                    "default": {}
                 }
             ]
         },
@@ -767,6 +663,40 @@
                     "dictionary": []
                 },
                 {
+                    "type": "select",
+                    "layoutType": "inline",
+                    "text": "已读判断",
+                    "bindKey": "hasReadJudge",
+                    "default": "express",
+                    "dictionary": [
+                        {
+                            "label": "表达式",
+                            "value": "express"
+                        },
+                        {
+                            "label": "自定义函数",
+                            "value": "customFunction"
+                        }
+                    ]
+                },
+                {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "表达式",
+                    "display": "@[hasReadJudge === 'express']",
+                    "desc": "用来判断消息已读的表达式，例如：readStatus === '1'",
+                    "bindKey": "hasReadExpress",
+                    "default": "readStatus === '1'"
+                },
+                {
+                    "type": "actionSelect",
+                    "layoutType": "block",
+                    "display": "@[hasReadJudge === 'customFunction']",
+                    "text": "已读函数",
+                    "bindKey": "readFunction",
+                    "multiple": false
+                },
+                {
                     "type": "group",
                     "text": "适配设置",
                     "desc": "通过设置属性来适配移动端页面尺寸",
@@ -797,30 +727,16 @@
                         {
                             "type": "input",
                             "layoutType": "inline",
+                            "text": "模块字段",
+                            "bindKey": "moduleField",
+                            "default": "moduleName"
+                        },
+                        {
+                            "type": "input",
+                            "layoutType": "inline",
                             "text": "标题字段",
                             "bindKey": "titleField",
                             "default": "title"
-                        },
-                        {
-                            "type": "input",
-                            "layoutType": "inline",
-                            "text": "图片字段",
-                            "bindKey": "imageField",
-                            "default": "images"
-                        },
-                        {
-                            "type": "input",
-                            "layoutType": "inline",
-                            "text": "来源字段",
-                            "bindKey": "originField",
-                            "default": "origin"
-                        },
-                        {
-                            "type": "input",
-                            "layoutType": "inline",
-                            "text": "时间字段",
-                            "bindKey": "timeField",
-                            "default": "time"
                         },
                         {
                             "type": "input",
