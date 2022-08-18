@@ -19,7 +19,7 @@
     :type="propData.type || 'line'"
     @change="changeCallback"
     :before-change="beforeChange">
-      <van-tab v-for="item in allTabList" :key="item.key" :title="item.tab" :disabled="item.disable" title-class="tab-custom" :title-style="setFontStyle(item.tableFont)">
+      <van-tab v-for="item in allTabList" :key="item.key" :name="item.key" :title="item.tab" :disabled="item.disable" title-class="tab-custom" :title-style="setFontStyle(item.tableFont)">
         <template v-if="propData.isDrag === 'container'">
           <div class="tab-conent drag_container"
             v-if="item.opened"
@@ -47,15 +47,24 @@ export default{
         staticTabPaneList: [
           {
             key: '1',
-            opened: true,
-            tab: '支部简介'
+            tab: '支部简介',
           },
           {
             key: '2',
-            opened: true,
-            tab: '支部党员'
+            tab: '支部党员',
+            defaultActiveKey: true
           }
-        ]
+        ],
+        tableStyleFont: {
+          fontColors: {
+            hex8: '#f00'
+          }
+        },
+        tableChooseFont: {
+          fontColors: {
+            hex8: '#000'
+          }
+        }
       }
     }
   },
@@ -80,13 +89,108 @@ export default{
       if (this.propData.height) {
         styleHeight['height'] = this.propData.height;
       }
+      let fontStyleObj = {};
+      if (this.propData.tableStyleFont) {
+        let item = this.propData.tableStyleFont || {};
+        item.fontColors && (fontStyleObj['color'] = item.fontColors.hex8);
+        item.fontFamily && (fontStyleObj['font-family'] = item.fontFamily);
+        item.fontWeight && (fontStyleObj['font-weight'] = item.fontWeight.split(" ")[0]);
+        item.fontStyle && (fontStyleObj['font-style'] = item.fontStyle);
+        item.fontSize && (fontStyleObj['font-size'] = item.fontSize + item.fontSizeUnit);
+        item.fontLineHeight && (fontStyleObj['line-height'] = item.fontLineHeight + (item.fontLineHeightUnit == "-" ? "" : item.fontLineHeightUnit));
+        item.fontTextAlign && (fontStyleObj['text-align'] = item.fontTextAlign);
+        item.fontDecoration && (fontStyleObj['text-decoration'] = item.fontDecoration);
+      }
+      let chooseFontStyle = {};
+      if (this.propData.tableChooseFont) {
+        let item = this.propData.tableChooseFont || {};
+        item.fontColors && (chooseFontStyle['color'] = item.fontColors.hex8);
+        item.fontFamily && (chooseFontStyle['font-family'] = item.fontFamily);
+        item.fontWeight && (chooseFontStyle['font-weight'] = item.fontWeight.split(" ")[0]);
+        item.fontStyle && (chooseFontStyle['font-style'] = item.fontStyle);
+        item.fontSize && (chooseFontStyle['font-size'] = item.fontSize + item.fontSizeUnit);
+        item.fontLineHeight && (chooseFontStyle['line-height'] = item.fontLineHeight + (item.fontLineHeightUnit == "-" ? "" : item.fontLineHeightUnit));
+        item.fontTextAlign && (chooseFontStyle['text-align'] = item.fontTextAlign);
+        item.fontDecoration && (chooseFontStyle['text-decoration'] = item.fontDecoration);
+      }
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .tab-ul .van-tab", fontStyleObj);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .tab-ul .van-tab--active", chooseFontStyle);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .tab-conent", styleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .tab-ul .van-tabs__wrap", styleHeight);
+    },
+    convertBorderStyleObject () {
+      let styleObject = {};
+      if (this.propData.border) {
+        let element = this.propData.border;
+        if (element.border.top.width > 0) {
+          styleObject["border-top-width"] =
+            element.border.top.width + element.border.top.widthUnit;
+          styleObject["border-top-style"] = element.border.top.style;
+          if (element.border.top.colors.hex) {
+            styleObject["border-top-color"] =
+              element.border.top.colors.hex;
+          }
+        }
+        if (element.border.right.width > 0) {
+          styleObject["border-right-width"] =
+            element.border.right.width + element.border.right.widthUnit;
+          styleObject["border-right-style"] = element.border.right.style;
+          if (element.border.right.colors.hex) {
+            styleObject["border-right-color"] =
+              element.border.right.colors.hex;
+          }
+        }
+        if (element.border.bottom.width > 0) {
+          styleObject["border-bottom-width"] =
+            element.border.bottom.width + element.border.bottom.widthUnit;
+          styleObject["border-bottom-style"] =
+            element.border.bottom.style;
+          if (element.border.bottom.colors.hex) {
+            styleObject["border-bottom-color"] =
+              element.border.bottom.colors.hex;
+          }
+        }
+        if (element.border.left.width > 0) {
+          styleObject["border-left-width"] =
+            element.border.left.width + element.border.left.widthUnit;
+          styleObject["border-left-style"] = element.border.left.style;
+          if (element.border.left.colors.hex) {
+            styleObject["border-left-color"] =
+              element.border.left.colors.hex;
+          }
+        }
+
+        styleObject["border-top-left-radius"] =
+          element.radius.leftTop.radius +
+          element.radius.leftTop.radiusUnit;
+        styleObject["border-top-right-radius"] =
+          element.radius.rightTop.radius +
+          element.radius.rightTop.radiusUnit;
+        styleObject["border-bottom-left-radius"] =
+          element.radius.leftBottom.radius +
+          element.radius.leftBottom.radiusUnit;
+        styleObject["border-bottom-right-radius"] =
+          element.radius.rightBottom.radius +
+          element.radius.rightBottom.radiusUnit;
+      }
+      let chooseTabObject = {}
+      if (this.propData.chooseWidth) {
+        chooseTabObject['width'] = this.propData.chooseWidth
+      }
+      if (this.propData.chooseHeight) {
+        chooseTabObject['height'] = this.propData.chooseHeight
+      }
+      if (this.propData.chooseBgColor) {
+        chooseTabObject['background-color'] = (this.propData.chooseBgColor || {}).hex
+      }
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .tab-ul .van-tabs__line", chooseTabObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .tab-ul", styleObject);
     },
     initAttrToModule () {
       console.log(this.propData, '数据源');
       this.initBaseAttrToModule();
       this.convertAttrToStyleObject();
+      this.convertBorderStyleObject();
     },
     setFontStyle (item) {
       let obj = {};
@@ -114,10 +218,8 @@ export default{
             Object.keys(that.propData.staticTabPaneList[0]).length > 0))
       ) {
         if (this.moduleObject.env!='develop') {
-          console.log(this.activeTab, '初始化')
           that.propData.staticTabPaneList.forEach(item => {
             if (item.defaultActiveKey) {
-              console.log(item.key, '222')
               this.activeTab = item.key;
             }
             if (!this.activeTab) {
@@ -137,6 +239,7 @@ export default{
     changeCallback (key) {
       let that = this;
       this.activeTab = key;
+      console.log(key)
       this.allTabList.forEach(item=>{
         if(this.activeTab === item.key){
           if(!item.opened){
@@ -149,6 +252,26 @@ export default{
         }
       })
       this.changeEventFunHandle("changeFunction");
+      this.sendBroadcastMessage({
+        type: 'chooseTab',
+        rangeModule: this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
+        message: this.allTabList.filter(item => item.key)
+      })
+      console.log(this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId))
+    },
+    /**
+     * 组件通信：发送消息的方法
+     * @param {
+     *  type:"自己定义的，统一规定的type：linkageResult（组件联动传结果值）、linkageDemand（组件联动传需求值）、linkageReload（联动组件重新加载）
+     * 、linkageOpenDialog（打开弹窗）、linkageCloseDialog（关闭弹窗）、linkageShowModule（显示组件）、linkageHideModule（隐藏组件）、linkageResetDefaultValue（重置默认值）",
+     *  message:{实际的消息对象},
+     *  rangeModule:"为空发送给全部，根据配置的属性中设定的值（值的内容是组件的packageid数组），不取子表的，比如直接 this.$root.propData.compositeAttr["attrKey"]（注意attrKey是属性中定义的bindKey）,这里的格式为：['1','2']"",
+     *  className:"指定的组件类型，比如只给待办组件发送，然后再去过滤上面的值"
+     *  globalSend:如果为true则全站发送消息，注意全站rangeModule是无效的，只有className才有效，默认为false
+     * } object 
+     */
+    sendBroadcastMessage(object) {
+        window.IDM.broadcast && window.IDM.broadcast.send(object);
     },
     /**
      * 切换标签前执行特定逻辑
