@@ -33,13 +33,16 @@ export default {
     return {
       fileList: [],
       moduleObject:{},
+      photo: [],
       propData:this.$root.propData.compositeAttr || {
         uploadNumber: 3,
         showImg: true,
+        disabledImg: false,
         overSize: {
-          inputVal: 2,
+          inputVal: 3,
           selectVal: "M"
         },
+        uploadUrl: '/ctrl/idm/api/fileupload',
         itemFontStyle: {
           fontColors: {
               hex: "#666"
@@ -47,6 +50,7 @@ export default {
           fontSize: 14,
           fontSizeUnit: "px"
         },
+        uploadfile: 'png,jpj,jpeg',
         itemFontMargin: {
           marginTopVal: "",
           marginRightVal: "",
@@ -180,8 +184,33 @@ export default {
       let overSize = this.propData.overSize || {};
       Toast(`文件大小不能超过 ${overSize.inputVal}${overSize.selectVal}`);
     },
+    // 上传
     afterRead (file) {
-      console.log(file)
+      console.log(file, '上传完毕')
+      IDM.http.upload(this.propData.uploadUrl, file.file, {"type":"forms_uploadimage_ctrl"}).then(res => {
+        let result = res.data || {};
+        if (result.code === '200') {
+          var resultData = result.data;
+          let obj = {
+            url: IDM.url.getWebPath(resultData.filePath),
+            size: resultData.fileSize,
+            width: resultData.imageWidth,
+            height: resultData.imageHeight,
+          }
+          this.photo.push(obj)
+        } else {
+          //根据文件名来查找到文件列表中要删除的文件
+          this.handleDelete(file.file.name)
+        }
+      })
+    },
+    //根据文件名来查找到文件列表中要删除的文件
+    handleDelete (name) {
+      this.fileList.forEach((item, index) => {
+        if (item.file.name === name) {
+          this.fileList.splice(index, 1)
+        }
+      })
     },
     /** 
      * 上传前
@@ -189,11 +218,12 @@ export default {
     beforeRead (file) {
       if (this.propData.uploadfile) {
         console.log(this.propData.uploadfile.split(','))
-        console.log(file, '上传数据')
-        if (!this.propData.uploadfile.split(',').includes(file.name.split('.').slice(-1))) {
+        console.log(file, '上传数据', file.name.split('.').slice(-1)[0])
+        if (!this.propData.uploadfile.split(',').includes(file.name.split('.').slice(-1)[0])) {
           Toast('请上传 正确格式');
           return false;
         }
+        return true;
       } else {
         return true
       }

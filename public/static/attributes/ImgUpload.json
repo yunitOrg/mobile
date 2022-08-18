@@ -23,15 +23,15 @@
         {
           "type": "switch",
           "layoutType": "inline",
-          "text": "上传文字",
-          "desc":"传文字是否显示",
+          "text": "标题",
+          "desc":"标题是否显示",
           "bindKey": "showImg",
           "default": true
         },
         {
           "type": "inputNumber",
           "layoutType": "inline",
-          "text": "上传个数",
+          "text": "最多上传",
           "bindKey": "uploadNumber",
           "default": 3
         },
@@ -60,7 +60,7 @@
           "layoutType": "inline",
           "text": "文件格式",
           "bindKey": "uploadfile",
-          "default": "png,jpj,jpeg"
+          "default": "png,jpg,jpeg"
         },
         {
           "type": "switch",
@@ -166,7 +166,8 @@
           "type": "input",
           "layoutType": "inline",
           "text": "上传接口",
-          "bindKey": "uploadInterface"
+          "bindKey": "uploadUrl",
+          "default": "/ctrl/idm/api/fileupload"
         }
       ]
     }

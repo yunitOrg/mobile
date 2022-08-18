@@ -20,7 +20,185 @@
         "text": "基本属性",
         "desc": "提供设置组件能达到展示效果的基本属性设置信息",
         "children": [
-
+          {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "显示标题",
+            "desc":"个人页签是否显示",
+            "bindKey": "selfShow",
+            "default": true
+          },
+          {
+            "type": "input",
+            "layoutType": "inline",
+            "text": "标题内容",
+            "bindKey": "title",
+            "default": "类型选择(多选)"
+          },
+          {
+            "type": "table",
+            "text": "页签选项设置",
+            "bindKey": "staticTabPaneList",
+            "tabText": "页签[index]",
+            "children": [
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "tab标识",
+                "bindKey": "key"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "tab文字",
+                "bindKey": "tab"
+              },
+              {
+                "type": "switch",
+                "layoutType": "inline",
+                "text": "默认选中",
+                "bindKey": "defaultActiveKey",
+                "default": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "group",
+        "text": "外层容器样式",
+        "desc": "点击？查看样式设置用法指南",
+        "helpUrl": "",
+        "children": [
+          {
+            "type": "inlineGroup",
+            "text": "容器",
+            "children": [
+                {
+                    "type": "input",
+                    "layoutType": "block",
+                    "text": "宽",
+                    "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
+                    "bindKey": "boxWidth",
+                    "width": "100%",
+                    "default": "auto"
+                },
+                {
+                    "type": "input",
+                    "layoutType": "block",
+                    "text": "高",
+                    "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
+                    "bindKey": "boxHeight",
+                    "width": "200px",
+                    "default": "auto"
+                }
+            ]
+          },
+          {
+            "type": "colorPicker",
+            "layoutType": "inline",
+            "desc": "背景颜色",
+            "text": "背景颜色",
+            "bindKey": "boxbg"
+          },
+          {
+            "type": "box",
+            "layoutType": "block",
+            "text": "内外边距",
+            "bindKey": "box",
+            "default": {
+                "marginTopVal": "",
+                "marginRightVal": "",
+                "marginBottomVal": "",
+                "marginLeftVal": "",
+                "paddingTopVal": "",
+                "paddingRightVal": "",
+                "paddingBottomVal": "",
+                "paddingLeftVal": ""
+            }
+          }
+        ]
+      },
+      {
+        "type": "group",
+        "text": "内层容器样式",
+        "desc": "点击？查看样式设置用法指南",
+        "helpUrl": "",
+        "children": [
+          {
+            "type": "font",
+            "layoutType": "block",
+            "text": "标题样式",
+            "bindKey": "itemFontStyle",
+            "default": {
+                "fontColors": {
+                    "hex": "#666"
+                },
+                "fontSize": 14,
+                "fontSizeUnit": "px"
+            }
+          },
+          {
+            "type": "input",
+            "layoutType": "inline",
+            "text": "最小宽度",
+            "bindKey": "minWidth",
+            "default": "80px"
+          },
+          {
+            "type": "box",
+            "layoutType": "block",
+            "text": "标签边距",
+            "bindKey": "tagBox",
+            "default": {
+                "marginTopVal": "10px",
+                "marginRightVal": "",
+                "marginBottomVal": "",
+                "marginLeftVal": "",
+                "paddingTopVal": "",
+                "paddingRightVal": "",
+                "paddingBottomVal": "",
+                "paddingLeftVal": ""
+            }
+          },
+          {
+            "type": "font",
+            "layoutType": "block",
+            "text": "默认字体",
+            "bindKey": "tagStyle",
+            "default": {
+              "fontColors": {
+                  "hex": "#666"
+              },
+              "fontSize": 14,
+              "fontSizeUnit": "px"
+            }
+          },
+          {
+            "type": "border",
+            "layoutType": "block",
+            "text": "默认字体边框",
+            "bindKey": "border"
+          },
+          {
+            "type": "font",
+            "layoutType": "block",
+            "text": "选中字体",
+            "bindKey": "tagActiveStyle",
+            "default": {
+                "fontColors": {
+                    "hex": "#666"
+                },
+                "fontSize": 14,
+                "fontSizeUnit": "px"
+            }
+          },
+          {
+            "type": "border",
+            "layoutType": "block",
+            "text": "选中边框",
+            "bindKey": "tagActiveBorder"
+          }
         ]
       },
       {
