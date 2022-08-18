@@ -163,24 +163,24 @@ export default {
             if (!themeList) {
                 return
             }
-            const themeNamePrefix =
-                IDM.setting && IDM.setting.applications && IDM.setting.applications.themeNamePrefix
-                    ? IDM.setting.applications.themeNamePrefix
-                    : 'idm-theme-'
-            for (var i = 0; i < themeList.length; i++) {
-                var item = themeList[i]
-                let moduleColorObj = {
-                    'font-size': item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : ''
-                }
-                IDM.setStyleToPageHead(
-                    '.' +
-                        themeNamePrefix +
-                        item.key +
-                        (` #${this.moduleObject.id}-common-list` || 'module_demo') +
-                        ' .module-name',
-                    moduleColorObj
-                )
-            }
+            // const themeNamePrefix =
+            //     IDM.setting && IDM.setting.applications && IDM.setting.applications.themeNamePrefix
+            //         ? IDM.setting.applications.themeNamePrefix
+            //         : 'idm-theme-'
+            // for (var i = 0; i < themeList.length; i++) {
+            //     var item = themeList[i]
+            //     let moduleColorObj = {
+            //         'font-size': item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : ''
+            //     }
+            //     IDM.setStyleToPageHead(
+            //         '.' +
+            //             themeNamePrefix +
+            //             item.key +
+            //             (` #${this.moduleObject.id}-common-list` || 'module_demo') +
+            //             ' .module-name',
+            //         moduleColorObj
+            //     )
+            // }
             // 通用样式
             this.$nextTick(() => {
                 this.$refs['listContainerRef-' + this.moduleObject.id].convertThemeListAttrToStyleObject()
