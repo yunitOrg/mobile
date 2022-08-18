@@ -394,7 +394,6 @@ export default {
      * 加载动态数据
      */
     initData() {
-      this.isLoading = true;
       if (!this.moduleObject.env || this.moduleObject.env == "develop") {
         // mock数据
         setTimeout(()=>{
@@ -572,11 +571,13 @@ export default {
             const messageData = typeof messageObject.message === 'string' && JSON.parse(messageObject.message) || messageObject.message
             const arr = Array.isArray(this.propData.messageRefreshKey) ? this.propData.messageRefreshKey : [this.propData.messageRefreshKey]
             if(messageData.badgeType && arr.includes(messageData.badgeType)){
+              this.isLoading = true;
               this.initData();
             }
           }
           break;
         case 'linkageReload':
+          this.isLoading = true;
           this.initData()
           break;
         case 'pageResize':
@@ -715,7 +716,7 @@ $scale: var(--i-schedule-scale);
         background-color: rgb(214, 27, 22);
 
         &.hollow {
-          background-color: transparent;
+          background-color: transparent !important;
           .circle-inner {
             display: none;
           }

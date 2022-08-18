@@ -91,7 +91,7 @@
               "value": "bottom"
             }
           ],
-          "default": "solid"
+          "default": "center"
         },
         {
           "type": "radio",
@@ -143,7 +143,7 @@
             "marginTopVal": "8px",
             "marginRightVal": "8px",
             "marginBottomVal": "8px",
-            "marginLeftVal": "16px",
+            "marginLeftVal": "8px",
             "paddingTopVal": "16px",
             "paddingRightVal": "16px",
             "paddingBottomVal": "16px",
@@ -170,7 +170,7 @@
               "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
               "bindKey": "height",
               "width": "60px",
-              "default": "auto"
+              "default": "100%"
             }
           ]
         },
@@ -486,6 +486,29 @@
           "desc": "根据接口返回数据格式指定结果集的字段，比如结果集名为resultData（自定义接口忽略）且它的值为{code:\"200\",data:{value:[{\"date\":\"2022-05-12\"}]}}，则这里应该填写data",
           "default": "data",
           "placeholder": "示例：data 或者 [0].data[0]"
+        },
+        {
+            "type": "select",
+            "layoutType": "inline",
+            "text": "刷新KEY",
+            "bindKey": "messageRefreshKey",
+            "desc": "根据组件接收到的消息KEY来刷新数据",
+            "default": "",
+            "multiple": true,
+            "placeholder": "示例：inbox,info",
+            "ctrlAttrObject": {
+                "mode": "tags"
+            },
+            "dictionary": [
+                {
+                    "label": "inbox",
+                    "value": "inbox"
+                },
+                {
+                    "label": "info",
+                    "value": "info"
+                }
+            ]
         }
       ]
     }
