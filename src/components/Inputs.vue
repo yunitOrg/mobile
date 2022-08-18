@@ -19,7 +19,8 @@
 export default {
   data () {
     return {
-      moduleObject:{}
+      moduleObject:{},
+      propData:this.$root.propData.compositeAttr||{}
     }
   },
   created () {
