@@ -2,9 +2,7 @@
   <div idm-ctrl="idm_module"
        :id="moduleObject.id"
        :idm-ctrl-id="moduleObject.id"
-       :title="propData.htmlTitle?propData.fontContent:''"
-       v-show="propData.defaultStatus!='hidden'"
-       @click="textClickHandle">
+       class="IStudy-Card">
     <div class="container">
       <div class="study-card">
         <div class="study-card-header">
@@ -20,15 +18,16 @@
         </div>
         <div class="video-list">
           <div class="video-card" v-for="item in mockData" :key="item.index">
-            <div :style="{background:item.img,backgroundColor:black}" class="videoImg">
+            <div class="videoImg">
+              <img :src="item.image">
               <div class="videoData">
                 <div class="left-data">
                   <svg-icon icon-class="youtube" color="white"/>
-                  <p class="video-data-text">{{ item.VideoNumber }}</p>
+                  <p class="video-data-text">{{ item.amountOfPlay }}</p>
                 </div>
-                <p class="video-data-text"> {{ item.yearDate }}</p></div>
+                <p class="video-data-text"> {{ item.releaseDate }}</p></div>
             </div>
-            <p class="videoDetail">{{ item.VideoDetail }}</p>
+            <p class="videoDetail">{{ item.videoIntroduction }}</p>
           </div>
         </div>
       </div>
@@ -49,39 +48,43 @@ export default {
       mockData: [
         {
           index: 1,
-          img: "url",
-          VideoNumber: 1200,
-          yearDate: "2022-8-7",
-          VideoDetail: "我们一起参加党课开讲拉，当时我来讲直播课程"
+          image: "url",
+          amountOfPlay: 1200,
+          releaseDate: "2022-8-7",
+          videoIntroduction: "我们一起参加党课开讲拉，当时我来讲直播课程"
         },
         {
           index: 2,
-          img: "url",
-          VideoNumber: 1200,
-          yearDate: "2022-8-7",
-          VideoDetail: "123456789"
+          image: "url",
+          amountOfPlay: 1200,
+          releaseDate: "2022-8-7",
+          videoIntroduction: "123456789"
         },
         {
           index: 3,
-          img: "url",
-          VideoNumber: 1200,
-          yearDate: "2022-8-7",
-          VideoDetail: "123456789"
+          image: "url",
+          amountOfPlay: 1200,
+          releaseDate: "2022-8-7",
+          videoIntroduction: "123456789"
         },
         {
           index: 4,
-          img: "url",
-          VideoNumber: 1200,
-          yearDate: "2022-8-7",
-          VideoDetail: "123456789"
+          image: "url",
+          amountOfPlay: 1200,
+          releaseDate: "2022-8-7",
+          videoIntroduction: "123456789"
         }
       ]
     }
   },
+  computed:{
+    loadingSize() {
+      return this.getScale() * (this.propData.loadingSize || 24);
+    },
+  },
   created() {
     this.moduleObject = this.$root.moduleObject
     this.convertAttrToStyleObject();
-    this.convertThemeListAttrToStyleObject();
   },
   methods: {
     /**
@@ -90,11 +93,6 @@ export default {
     propDataWatchHandle(propData) {
       this.propData = propData.compositeAttr || {};
       this.convertAttrToStyleObject();
-      this.convertThemeListAttrToStyleObject();
-      window.IDM.http.post(this.propData.customInterfaceUrl || "/ctrl/login"
-      ).then(res => {
-
-      })
     },
     /**
      * 重新加载
@@ -105,30 +103,28 @@ export default {
     },
     initData() {
       let that = this;
-      //所有地址的url参数转换
-      switch (this.propData.dataSourceType) {
-        case "customInterface":
-          this.propData.customInterfaceUrl && window.IDM.http.get(this.propData.customInterfaceUrl)
-              .then((res) => {
-                //res.data
-                that.mockData = res.data;
-              })
-              .catch(function (error) {
+      console.log("接口url是",this.propData.dataSource)
+      this.propData.dataSource && window.IDM.http.get(this.propData.dataSource)
+          .then((res) => {
+            //res.data
+            console.log(res)
+            // that.mockData = res.data;
+          })
+          .catch(function (error) {
 
-              });
-          break;
-      }
+          });
     },
     /**
      * 把属性转换成样式对象
      */
-    convertAttrToStyleObject() {
+    convertAttrToStyleObject(pageSize = {}) {
       let styleObject = {};
       let styleHeaderLeft = {};
       let styleHeaderRight = {};
       let styleVideo = {};
       let videoDataText = {};
       let videoDetailText = {};
+      const scale = this.getScale(pageSize.width);
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
           const element = this.propData[key];
@@ -139,6 +135,12 @@ export default {
             case "width":
             case "height":
               styleObject[key] = element;
+              break;
+            case "VideoWidth":
+              styleVideo["width"] = element;
+              break;
+            case "VideoHeight":
+              styleVideo["height"] = element;
               break;
             case "box":
               if (element.marginTopVal) {
@@ -312,14 +314,25 @@ export default {
           }
         }
       }
-      window.IDM.setStyleToPageHead(this.moduleObject.id + ' .study-card', styleObject);
-      window.IDM.setStyleToPageHead(this.moduleObject.id + ' .left-text', styleHeaderLeft);
-      window.IDM.setStyleToPageHead(this.moduleObject.id + ' .right-text', styleHeaderRight);
-      window.IDM.setStyleToPageHead(this.moduleObject.id + ' .video-card', styleVideo);
-      window.IDM.setStyleToPageHead(this.moduleObject.id + ' .video-data-text', videoDataText);
-      window.IDM.setStyleToPageHead(this.moduleObject.id + ' .videoDetail', videoDetailText);
+      window.IDM.setStyleToPageHead(
+          this.moduleObject.id + ' .study-card',
+          styleObject);
+      window.IDM.setStyleToPageHead(
+          this.moduleObject.id + ' .left-text',
+          styleHeaderLeft);
+      window.IDM.setStyleToPageHead(
+          this.moduleObject.id + ' .right-text',
+          styleHeaderRight);
+      window.IDM.setStyleToPageHead(
+          this.moduleObject.id + ' .video-card',
+          styleVideo);
+      window.IDM.setStyleToPageHead(
+          this.moduleObject.id + ' .video-data-text',
+          videoDataText);
+      window.IDM.setStyleToPageHead(
+          this.moduleObject.id + ' .videoDetail',
+          videoDetailText);
     },
-
   }
 }
 </script>
@@ -329,15 +342,16 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #ffffff;
+  width: 100%;
 
   .study-card {
     border: 1px solid rgba(243, 243, 243, 1);
     height: auto;
-    width: 23rem;
+    width: 90%;
     background-color: #ffffff;
     box-shadow: 0 0 5px #8d8d8d;
     border-radius: 0.5rem;
+    margin: 1rem 0;
 
     &-header {
       margin: 0.4rem 0.5rem;
@@ -390,11 +404,11 @@ export default {
       align-content: space-around;
       justify-content: space-between;
       flex-direction: row;
-      height: 81%;
+      height: 90%;
 
       .video-card {
         position: relative;
-        width: 10rem;
+        width: 48%;;
         height: auto;
         margin: 0.5rem 0;
         border: 1px solid rgba(200, 200, 200, 1);
@@ -404,10 +418,16 @@ export default {
         .videoImg {
           width: auto;
           height: 6rem;
-          background-color: #a80000;
           display: flex;
           flex-direction: column-reverse;
           align-items: center;
+          img{
+            width: auto;
+            height: 6rem;
+            position: absolute;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+          }
         }
 
         .videoData {
@@ -422,6 +442,8 @@ export default {
           font-weight: 600;
 
           .left-data {
+            width: 50%;
+            height: 100%;
             display: flex;
             align-items: center;
 

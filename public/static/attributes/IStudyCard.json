@@ -31,7 +31,7 @@
               "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
               "bindKey": "width",
               "width": "60px",
-              "default": "22rem"
+              "default": "400px"
             },
             {
               "type": "input",
@@ -40,7 +40,7 @@
               "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
               "bindKey": "height",
               "width": "60px",
-              "default": "25rem"
+              "default": "400px"
             }
           ]
         },
@@ -106,20 +106,20 @@
             },
             "radius": {
               "leftTop": {
-                "radius": 0.5,
-                "radiusUnit": "rem"
+                "radius": 20,
+                "radiusUnit": "px"
               },
               "rightTop": {
-                "radius": 0.5,
-                "radiusUnit": "rem"
+                "radius": 20,
+                "radiusUnit": "px"
               },
               "leftBottom": {
-                "radius": 0.5,
-                "radiusUnit": "rem"
+                "radius": 20,
+                "radiusUnit": "px"
               },
               "rightBottom": {
-                "radius": 0.5,
-                "radiusUnit": "rem"
+                "radius": 20,
+                "radiusUnit": "px"
               }
             }
           }
@@ -130,14 +130,14 @@
           "text": "内外边距",
           "bindKey": "box",
           "default": {
-            "marginTopVal": "0",
-            "marginRightVal": "0",
-            "marginBottomVal": "0",
-            "marginLeftVal": "0",
+            "marginTopVal": "10px",
+            "marginRightVal": "10px",
+            "marginBottomVal": "10px",
+            "marginLeftVal": "10px",
             "paddingTopVal": "0",
-            "paddingRightVal": "0.5rem",
+            "paddingRightVal": "20px",
             "paddingBottomVal": "0",
-            "paddingLeftVal": "0.5rem"
+            "paddingLeftVal": "20px"
           }
         }
       ]
@@ -165,10 +165,10 @@
             },
             "fontWeight": "700 Bold",
             "fontStyle": "normal",
-            "fontSize": 1.5,
-            "fontSizeUnit": "rem",
-            "fontLineHeight": 1.5,
-            "fontLineHeightUnit": "rem",
+            "fontSize": 25,
+            "fontSizeUnit": "px",
+            "fontLineHeight": 25,
+            "fontLineHeightUnit": "px",
             "fontTextAlign": "center"
           }
         },
@@ -189,12 +189,36 @@
             },
             "fontWeight": "600 Semi Bold",
             "fontStyle": "normal",
-            "fontSize": 1.2,
-            "fontSizeUnit": "rem",
-            "fontLineHeight": 1.2,
-            "fontLineHeightUnit": "rem",
+            "fontSize": 20,
+            "fontSizeUnit": "px",
+            "fontLineHeight": 20,
+            "fontLineHeightUnit": "px",
             "fontTextAlign": "center"
           }
+        },
+        {
+          "type": "inlineGroup",
+          "text": "视频卡片宽高",
+          "children": [
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "宽",
+              "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
+              "bindKey": "VideoWidth",
+              "width": "60px",
+              "default": "166px"
+            },
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "高",
+              "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
+              "bindKey": "VideoHeight",
+              "width": "60px",
+              "default": "152px"
+            }
+          ]
         },
         {
           "type": "border",
@@ -258,20 +282,20 @@
             },
             "radius": {
               "leftTop": {
-                "radius": 0.5,
-                "radiusUnit": "rem"
+                "radius": 15,
+                "radiusUnit": "px"
               },
               "rightTop": {
-                "radius": 0.5,
-                "radiusUnit": "rem"
+                "radius": 15,
+                "radiusUnit": "px"
               },
               "leftBottom": {
-                "radius": 0.5,
-                "radiusUnit": "rem"
+                "radius": 15,
+                "radiusUnit": "px"
               },
               "rightBottom": {
-                "radius": 0.5,
-                "radiusUnit": "rem"
+                "radius": 15,
+                "radiusUnit": "px"
               }
             }
           }
@@ -282,9 +306,9 @@
           "text": "视频内外边距",
           "bindKey": "videoBox",
           "default": {
-            "marginTopVal": "0.5rem",
+            "marginTopVal": "15px",
             "marginRightVal": "0",
-            "marginBottomVal": "0.5rem",
+            "marginBottomVal": "15px",
             "marginLeftVal": "0",
             "paddingTopVal": "0",
             "paddingRightVal": "0",
@@ -303,17 +327,17 @@
           "layoutType": "block",
           "text": "视频下方文字",
           "bindKey": "videoBottomFont"
-        },
-        {
-          "type": "input",
-          "layoutType": "inline",
-          "text": "数据接口",
-          "bindKey": "customInterfaceUrl",
-          "dataSourceUrl":"",
-          "display": "@[showTodoNumber]",
-          "desc": "用于获取数据源的接口地址，请按照统一标准的返回格式返回文本数据，格式如下：{\"code\":\"200\",\"data\":\"\",...}"
         }
       ]
+    },
+    {
+      "type": "treeSelect",
+      "layoutType": "inline",
+      "text": "数据源",
+      "bindKey": "dataSource",
+      "dataSourceUrl":"/ctrl/dataSource/getDatasourceByGroup",
+      "display": "@[dataType === 'dataSource']",
+      "desc": "用于获取数据源的接口地址，请按照统一标准的返回格式返回文本数据，格式如下：{\"code\":\"200\",\"data\":{index:1,image:\"url\",amountOfPlay:1200,releaseDate:\"2022-8-7\",videoIntroduction:\"视频描述\"},...}"
     }
   ]
 }
