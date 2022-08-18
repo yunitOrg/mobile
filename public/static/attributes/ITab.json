@@ -143,6 +143,62 @@
         ]
       },
       {
+        "type": "group",
+        "text": "样式属性",
+        "desc": "提供设置组件能达到展示效果的样式属性设置信息",
+        "children": [
+          {
+            "type": "font",
+            "layoutType": "block",
+            "text": "文字",
+            "bindKey": "tableStyleFont"
+          },
+          {
+            "type": "font",
+            "layoutType": "block",
+            "text": "选中文字",
+            "bindKey": "tableChooseFont"
+          },
+          {
+            "type": "border",
+            "layoutType": "block",
+            "text": "容器边框",
+            "bindKey": "border"
+          },
+          {
+            "type": "inlineGroup",
+            "text": "选中底部宽高",
+            "children": [
+                {
+                    "type": "input",
+                    "layoutType": "block",
+                    "text": "宽",
+                    "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
+                    "bindKey": "chooseWidth",
+                    "width": "60px",
+                    "default": "40px"
+                },
+                {
+                  "type": "input",
+                  "layoutType": "block",
+                  "text": "高",
+                  "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
+                  "bindKey": "chooseHeight",
+                  "width": "60px",
+                  "default": "3px"
+              }
+            ]
+          },
+          {
+            "type": "colorPicker",
+            "layoutType": "inline",
+            "text": "选中底部背景色",
+            "bindKey": "chooseBgColor",
+            "placeholder": "请选择颜色"
+          }
+        ]
+      },
+      {
         "type": "table",
         "text": "页签选项设置",
         "bindKey": "staticTabPaneList",
@@ -201,6 +257,14 @@
             "desc": "切换标签前的回调函数，返回 false 可阻止切换，支持返回 Promise",
             "bindKey": "beforChange",
             "multiple": false
+          },
+          {
+            "type": "pageModuleSelect",
+            "layoutType": "block",
+            "text": "tab菜单联动组件",
+            "desc": "选择点击tab需要联动的组件",
+            "bindKey": "triggerComponents",
+            "multiple": true
           }
         ]
       }

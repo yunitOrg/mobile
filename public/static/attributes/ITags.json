@@ -206,7 +206,14 @@
         "text": "高级",
         "desc": "点击？查看高级设置用法指南",
         "children": [
-   
+          {
+            "type": "pageModuleSelect",
+            "layoutType": "block",
+            "text": "tag菜单联动组件",
+            "desc": "选择点击tag需要联动的组件",
+            "bindKey": "triggerComponents",
+            "multiple": true
+          }
         ]
       }
   ]
