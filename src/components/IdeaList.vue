@@ -31,7 +31,7 @@
 
 <script>
 export default {
-  name: 'IHeadList',
+  name: 'IdeaList',
   data () {
     return {
       list: [
