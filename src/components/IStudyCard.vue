@@ -17,7 +17,7 @@
           </div>
         </div>
         <div class="video-list">
-          <div class="video-card" v-for="item in videoData" :key="item.index">
+          <div class="video-card" v-for="item in videoData" :key="item.index" @click=toVideo(item)>
             <div class="videoImg">
               <img :src="item.image">
               <div class="videoData">
@@ -51,28 +51,32 @@ export default {
           image: "url",
           amountOfPlay: 1200,
           releaseDate: "2022-8-7",
-          videoIntroduction: "我们一起参加党课开讲拉，当时我来讲直播课程"
+          videoIntroduction: "我们一起参加党课开讲拉，当时我来讲直播课程",
+          videoUrl:"#"
         },
         {
           index: 2,
           image: "url",
           amountOfPlay: 1200,
           releaseDate: "2022-8-7",
-          videoIntroduction: "123456789"
+          videoIntroduction: "123456789",
+          videoUrl:"#"
         },
         {
           index: 3,
           image: "url",
           amountOfPlay: 1200,
           releaseDate: "2022-8-7",
-          videoIntroduction: "123456789"
+          videoIntroduction: "123456789",
+          videoUrl:"#"
         },
         {
           index: 4,
           image: "url",
           amountOfPlay: 1200,
           releaseDate: "2022-8-7",
-          videoIntroduction: "123456789"
+          videoIntroduction: "123456789",
+          videoUrl:"#"
         }
       ]
     }
@@ -385,11 +389,21 @@ export default {
         );
       }
     },
+
     //点击更多的回调函数
     showMoreData() {
       console.log(this.propData.showMoreUrl)
       if(this.propData.showMoreUrl !== ''){
         IDM.router.push(this.moduleObject.routerId, this.propData.showMoreUrl, {
+          keep: true
+        });
+      }
+    },
+
+    //点击视频卡片后跳转函数
+    toVideo(video){
+      if(video.videoUrl !== ''){
+        IDM.router.push(this.moduleObject.routerId, video.videoUrl, {
           keep: true
         });
       }
