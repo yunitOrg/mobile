@@ -25,7 +25,7 @@
           class="i-time-axis-item"
           v-for="(item, index) in infoList"
           :key="index"
-          :class="`${item.level === 1?'active':''} ${propData.circlePostion}`"
+          :class="`${item.level === 2?'active':''} ${propData.circlePostion}`"
         >
           <div class="item-label">
             <span>{{ item.label }}</span>
@@ -468,7 +468,7 @@ export default {
             }
           });
           this.isLoading = false;
-        },2000)
+        },1000)
         
         return;
       }
@@ -612,6 +612,8 @@ $scale: var(--i-schedule-scale);
   background-color: #fff;
   box-shadow: 0 calc(2px * #{ $scale }) calc(12px * #{ $scale }) 0 rgba(0, 0, 0, 0.07);
   border-radius: calc(6px * #{ $scale });
+  color: #000;
+  font-size: calc(14px * #{ $scale });
 
   .i-time-axis-item {
     display: flex;
@@ -622,8 +624,7 @@ $scale: var(--i-schedule-scale);
       display: flex;
       align-items: center;
       padding-right: calc(6px * #{ $scale });
-      font-size: calc(12px * #{ $scale });
-      color: rgb(153, 153, 153);
+      font-size: calc(14px * #{ $scale });
 
       span {
         width: 100%;
@@ -674,8 +675,7 @@ $scale: var(--i-schedule-scale);
         flex: 1;
 
         .left-title {
-          color: #000;
-          font-size: calc(14px * #{ $scale });
+          color: currentColor;
           margin-bottom: calc(8px * #{ $scale });
         }
 
@@ -708,8 +708,8 @@ $scale: var(--i-schedule-scale);
 
     &.active {
       .item-label {
-        font-size: calc(14px * #{ $scale });
-        color: #000;
+        font-size: calc(12px * #{ $scale });
+        color: rgb(153, 153, 153);
       }
 
       .item-style-circle {
