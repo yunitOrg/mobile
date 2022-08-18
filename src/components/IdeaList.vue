@@ -365,6 +365,25 @@ export default {
         }
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .idealist-desc", styleObject);
+    },
+    /**
+     * 组件通信：接收消息的方法
+     * @param {
+     *  type:"发送消息的时候定义的类型，这里可以自己用来要具体做什么，统一规定的type：linkageResult（组件联动传结果值）、linkageDemand（组件联动传需求值）、linkageReload（联动组件重新加载）
+     * 、linkageOpenDialog（打开弹窗）、linkageCloseDialog（关闭弹窗）、linkageShowModule（显示组件）、linkageHideModule（隐藏组件）、linkageResetDefaultValue（重置默认值）"
+     *  message:{发送的时候传输的消息对象数据}
+     *  messageKey:"消息数据的key值，代表数据类型是什么，常用于表单交互上，比如通过这个key判断是什么数据"
+     *  isAcross:如果为true则代表发送来源是其他页面的组件，默认为false
+     * } object
+     */
+    receiveBroadcastMessage (object) {
+      console.log(object, '接收')
+      switch (object.type) {
+        // tab消息
+        case 'chooseTab':
+          console.log('接收消息', object.message)
+          break;
+      }
     }
   }
 }
