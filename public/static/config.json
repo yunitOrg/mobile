@@ -157,6 +157,13 @@
       "className": "ICommentDetail",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.studycard",
+      "comName": "学习内容卡片",
+      "className": "IStudyCard",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }
