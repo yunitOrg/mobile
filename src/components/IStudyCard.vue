@@ -43,40 +43,40 @@ export default {
     return {
       moduleObject: {},
       propData: this.$root.propData.compositeAttr || {
-        fontContent: "Hello Word"
+        headText: "学习精选"
       },
       videoData: [
         {
           index: 1,
-          image: "url",
+          image: "https://boot-img.xuexi.cn/lego/image/2562_newsSlider/dc0441f5511b41fc9f7606e415dea00c.png",
           amountOfPlay: 1200,
-          releaseDate: "2022-8-7",
-          videoIntroduction: "我们一起参加党课开讲拉，当时我来讲直播课程",
-          videoUrl:"#"
+          releaseDate: "2022-8-17",
+          videoIntroduction: "安徽合肥：多彩过暑假，实践有收获",
+          videoUrl:"#1"
         },
         {
           index: 2,
-          image: "url",
+          image: "https://boot-img.xuexi.cn/lego/image/2562_newsSlider/b4fbbb9fd80745f99c77a1f1682a3740.jpg",
           amountOfPlay: 1200,
-          releaseDate: "2022-8-7",
-          videoIntroduction: "123456789",
-          videoUrl:"#"
+          releaseDate: "2022-8-17",
+          videoIntroduction: "浙江宁波：植物观察 地质探索 假期研学快乐多",
+          videoUrl:"#2"
         },
         {
           index: 3,
-          image: "url",
+          image: "https://boot-img.xuexi.cn/lego/image/2562_newsSlider/05776bf6034d40b882366297006da726.jpg",
           amountOfPlay: 1200,
-          releaseDate: "2022-8-7",
-          videoIntroduction: "123456789",
-          videoUrl:"#"
+          releaseDate: "2022-8-17",
+          videoIntroduction: "河南内乡：戏曲博物馆里过暑假，品味非遗文化",
+          videoUrl:"#3"
         },
         {
           index: 4,
-          image: "url",
+          image: "https://boot-img.xuexi.cn/contribute_img/20220809100554/66386949742976920.jpg",
           amountOfPlay: 1200,
-          releaseDate: "2022-8-7",
-          videoIntroduction: "123456789",
-          videoUrl:"#"
+          releaseDate: "2022-8-17",
+          videoIntroduction: "河南鹤壁淇滨区:“双减”下的暑假劳动教育结硕果",
+          videoUrl:"#4"
         }
       ]
     }
@@ -515,7 +515,7 @@ $scale: var(--i-schedule-scale);
 
       .video-card {
         position: relative;
-        width: 48%;;
+        width: 47%;;
         height: auto;
         margin: calc(8px * #{ $scale }) 0;
         border: calc(1px * #{ $scale }) solid rgba(200, 200, 200, 1);
@@ -524,14 +524,14 @@ $scale: var(--i-schedule-scale);
 
         .videoImg {
           width: auto;
-          height: calc(96px * #{ $scale });
+          height: calc(88px * #{ $scale });
           display: flex;
           flex-direction: column-reverse;
           align-items: center;
 
           img {
-            width: auto;
-            height: calc(96px * #{ $scale });
+            width: 100%;
+            height: calc(88px * #{ $scale });
             position: absolute;
             background-size: 100% 100%;
             background-repeat: no-repeat;
@@ -548,6 +548,7 @@ $scale: var(--i-schedule-scale);
           font-size: calc(12px * #{ $scale });
           line-height: calc(12px * #{ $scale });
           font-weight: 600;
+          z-index: 1;
 
           .left-data {
             width: 50%;
@@ -579,7 +580,7 @@ $scale: var(--i-schedule-scale);
           margin: calc(8px * #{ $scale }) calc(8px * #{ $scale });
           font-size: calc(14px * #{ $scale });
           color: rgb(50, 50, 50);
-          font-weight: 600;
+          font-weight: 500;
           display: -webkit-box;
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 2;
