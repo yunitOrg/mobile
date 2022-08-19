@@ -217,7 +217,7 @@
           {
             "type": "font",
             "layoutType": "block",
-            "text": "字体名称",
+            "text": "标题字体",
             "bindKey": "titleStyle",
             "default": {
                 "fontColors": {
@@ -230,7 +230,7 @@
           {
             "type": "font",
             "layoutType": "block",
-            "text": "字体描述",
+            "text": "描述字体",
             "bindKey": "descStyle",
             "default": {
                 "fontColors": {
@@ -253,6 +253,66 @@
             "text": "数据源",
             "bindKey": "dataSource",
             "dataSourceUrl":"/ctrl/dataSource/getDatasourceByGroup"
+          },
+          {
+            "type": "group",
+            "text": "页面数据绑定",
+            "desc": "页面数据绑定",
+            "children": [
+              {
+                "type": "textarea",
+                "layoutType": "inline",
+                "text": "头像字段",
+                "bindKey": "ImgInterface"
+              },
+              {
+                "type": "textarea",
+                "layoutType": "inline",
+                "text": "标题字段",
+                "bindKey": "titleInterface"
+              },
+              {
+                "type": "textarea",
+                "layoutType": "inline",
+                "text": "描述字段",
+                "bindKey": "descInterface"
+              },
+              {
+                "type": "textarea",
+                "layoutType": "inline",
+                "text": "性别字段",
+                "bindKey": "sexInterface",
+                "default": "type == '1'"
+              }
+            ]
+          },
+          {
+            "type": "table",
+            "text": "标签字段",
+            "bindKey": "tagTable",
+            "tabText": "页签[index]",
+            "children": [
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "tab标识",
+                "bindKey": "key"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "标签字段",
+                "bindKey": "tab",
+                "desc": "取数据：为false, 标签字段是：填写对应数据的参数 eg: xxx。如果是判断: true, 标签字段是: 参数名='1' eg: xxx='1'"
+              },
+              {
+                "type": "switch",
+                "layoutType": "inline",
+                "text": "判断还是取数据",
+                "bindKey": "defaultActiveKey",
+                "default": false
+              }
+            ]
           },
           {
             "type": "actionSelect",

@@ -11,20 +11,25 @@
   >
     <div class="idm-idealist">
       <div class="idealist-ul">
-        <li v-for="(item, index) in list" :key="index">
+        <li v-for="(item, index) in pageDataList.length > 0 ? pageDataList : list" :key="index">
           <div class="idealist-img">
-            <img src="http://116.236.111.158:8086/DreamWeb/resource/img/body-bg-shanghai.png" alt="">
+            <img :src="item[propData.ImgInterface] || item.headImg" alt="">
           </div>
           <div class="idealist-content">
             <div class="idealist-title">
-              <b>{{item.title}}</b>
-              <span>{{item.time}}</span>
+              <b>{{item[propData.titleInterface] || item.title}}</b>
+              <span>{{item[propData.TimeInterface] || item.time}}</span>
             </div>
-            <span class="idealist-desc">{{item.desc}}</span>
+            <span class="idealist-desc">{{item[propData.descInterface] || item.desc}}</span>
           </div>
-          <div class="idealist-right" :class="item.type === 1 ? 'waitStyle' : 'yetStyle'">{{item.type === 1 ? propData.waitTitle : propData.yetTitle}}</div>
+          <div class="idealist-right" :class="hadnleActive(item, propData.activeInterface) ? 'waitStyle' : 'yetStyle'">
+            {{hadnleActive(item, propData.activeInterface) ? propData.waitTitle : propData.yetTitle}}
+          </div>
         </li>
       </div>
+    </div>
+    <div class="idm-message-list-parent-box-mask" v-if="moduleObject.env === 'develop' && !propData.dataSource">
+      <span>！未绑定数据源</span>
     </div>
   </div>
 </template>
@@ -34,6 +39,7 @@ export default {
   name: 'IdeaList',
   data () {
     return {
+      pageDataList: [],
       list: [
         {
           headImg: 'http://116.236.111.158:8086/DreamWeb/resource/img/body-bg-shanghai.png',
@@ -61,6 +67,7 @@ export default {
       propData:this.$root.propData.compositeAttr||{
         waitTitle: "待回复",
         yetTitle: "已回复",
+        activeInterface: "type == '1'",
         box:{
           marginTopVal: "0",
           marginRightVal: "",
@@ -129,7 +136,42 @@ export default {
       this.propData = propData.compositeAttr||{};
       this.init();
     },
+    hadnleActive (row, key) {
+      let str = `function test(res){return res.${key}}`
+      let result = this.handleFunc(str)
+      return result(row)
+    },
+    handleFunc(strFun) {
+      return new Function(`return ${strFun}`)();
+    },
+    initData () {
+      let that = this;
+      const customInterfaceUrl = '/ctrl/dataSource/getDatas';
+      if (this.moduleObject.env == "production") {
+        this.propData.dataSource &&
+          IDM.http
+            .post(
+              customInterfaceUrl,
+              {
+                id: this.propData.dataSource && this.propData.dataSource.value,
+              },
+              {
+                headers: {
+                  "Content-Type": "application/json;charset=UTF-8",
+                },
+              }
+            )
+            .done((res) => {
+              if (res.type === "success") {
+                that.pageDataList = res.data || [];
+              } else {
+                IDM.message.error(res.message);
+              }
+            });
+      }
+    },
     init () {
+      this.initData();
       this.convertAttrToStyleObject();
       this.convertTipsStyleObject();
       this.converTitleStyleObject();
@@ -389,7 +431,26 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.idm-message-list-parent-box-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: rgba(0,0,0,.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span {
+    padding: 6px 20px;
+    color: #e6a23c;
+    background: #fdf6ec;
+    border:1px solid #f5dab1;
+    border-radius: 4px;
+  }
+}
 .idm-idealist{
   .idealist-ul{
     li{
