@@ -10,7 +10,13 @@
   :idm-ctrl-id="moduleObject.id" 
   >
     <div class="idm_inputs">
-      fsf
+      <van-field
+        v-model="username"
+        name="用户名"
+        label="用户名"
+        placeholder="用户名"
+        :rules="[{ required: true, message: '请填写用户名' }]"
+      />
     </div>
   </div>
 </template>
@@ -19,7 +25,9 @@
 export default {
   data () {
     return {
-      moduleObject:{}
+      moduleObject:{},
+      propData:this.$root.propData.compositeAttr||{},
+      username: ''
     }
   },
   created () {

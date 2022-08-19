@@ -432,7 +432,7 @@ export default {
       switch (object.type) {
         // tab消息
         case 'chooseTab':
-          console.log('接收消息', object)
+          console.log('接收消息', object.message)
           break;
       }
     },

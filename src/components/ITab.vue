@@ -239,7 +239,6 @@ export default{
     changeCallback (key) {
       let that = this;
       this.activeTab = key;
-      console.log(key)
       this.allTabList.forEach(item=>{
         if(this.activeTab === item.key){
           if(!item.opened){
@@ -255,9 +254,8 @@ export default{
       this.sendBroadcastMessage({
         type: 'chooseTab',
         rangeModule: this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
-        message: this.allTabList.filter(item => item.key)
+        message: this.allTabList.find(item => item.key === key)
       })
-      console.log(this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId))
     },
     /**
      * 组件通信：发送消息的方法
@@ -271,7 +269,7 @@ export default{
      * } object 
      */
     sendBroadcastMessage(object) {
-        window.IDM.broadcast && window.IDM.broadcast.send(object);
+      window.IDM.broadcast && window.IDM.broadcast.send(object);
     },
     /**
      * 切换标签前执行特定逻辑
