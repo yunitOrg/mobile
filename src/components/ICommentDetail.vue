@@ -5,191 +5,684 @@
     id：使用moduleObject.id，如果id不使用这个将会被idm-ctrl-id属性替换
     idm-ctrl-id：组件的id，这个必须不能为空
   -->
-  <div idm-ctrl="idm_module"
-   :id="moduleObject.id" 
-   :idm-ctrl-id="moduleObject.id" 
-   :title="propData.htmlTitle?propData.fontContent:''" 
-   v-show="propData.defaultStatus!='hidden'" 
-   @click="textClickHandle">
+  <div
+    class="i-comment-detail-outer"
+    idm-ctrl="idm_module"
+    :id="moduleObject.id"
+    :idm-ctrl-id="moduleObject.id"
+    v-show="propData.defaultStatus != 'hidden'"
+  >
     <!--
       组件内部容器
       增加class="drag_container" 必选
       idm-ctrl-id：组件的id，这个必须不能为空
       idm-container-index  组件的内部容器索引，不重复唯一且不变，必选
     -->
-    {{propData.fontContent}}
+    <div class="i-comment-detail-wrapper">
+      <div class="i-comment-detail-main" v-if="detailInfo">
+        <div class="i-comment-detail-content-left">
+          <img
+            class="content-left-avatar"
+            :src="
+              IDM.url.getModuleAssetsWebPath(
+                require('../assets/default_avatar.png'),
+                moduleObject
+              )
+            "
+          />
+        </div>
+        <div class="i-comment-detail-content-right">
+          <div class="content-right-top">
+            <span class="comment-name">{{ detailInfo.avatar }}</span>
+            <span
+              class="comment-star"
+              :class="{ active: detailInfo.star }"
+              @click="starClick(detailInfo)"
+              ><svg-icon icon-class="commentStar" />{{
+                detailInfo.starNum
+              }}</span
+            >
+          </div>
+          <p class="content-right-center">{{ detailInfo.bt }}</p>
+          <div class="content-right-bottom">
+            <span class="comment-time">{{ detailInfo.time }}</span>
+            <span class="comment-total">评论 {{ detailInfo.total }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="i-comment-detail-content">
+        <van-list
+          v-model="loading"
+          :finished="finished"
+          :finished-text="finishedText"
+          @load="initData"
+        >
+          <div
+            class="i-comment-detail-content-item"
+            v-for="(item, i) in infoList"
+            :key="i"
+            :class="{ 'border-none': infoList.length - 1 === i }"
+          >
+            <div class="i-comment-detail-content-left">
+              <img
+                class="content-left-avatar"
+                :src="
+                  IDM.url.getModuleAssetsWebPath(
+                    require('../assets/default_avatar.png'),
+                    moduleObject
+                  )
+                "
+              />
+            </div>
+            <div class="i-comment-detail-content-right">
+              <div class="content-right-top">
+                <span class="comment-name">{{ item.avatar }}</span>
+              </div>
+              <p class="content-right-center">
+                回复<span>{{ item.reply }}:</span>{{ item.bt }}
+              </p>
+              <div class="content-right-bottom">
+                <span class="comment-time">{{ item.time }}</span>
+                <span class="comment-reply" @click="replyClick(item)"
+                  >回复</span
+                >
+              </div>
+            </div>
+          </div>
+        </van-list>
+      </div>
+    </div>
+
+    <div class="i-comment-detail-bar">
+      <van-field v-model="value" placeholder="写评论" left-icon="edit">
+        <template #button>
+          <van-button>发表</van-button>
+        </template>
+      </van-field>
+    </div>
   </div>
 </template>
 
 <script>
+import { List, Icon } from "vant";
 export default {
-  name: 'ICommentDetail',
-  data(){
-    return {
-      moduleObject:{},
-      propData:this.$root.propData.compositeAttr||{
-        fontContent:"评论详情"
-      }
-    }
+  name: "ICommentDetail",
+  components: {
+    [List.name]: List,
+    [Icon.name]: Icon,
   },
-  props: {
+  data() {
+    return {
+      moduleObject: {},
+      propData: this.$root.propData.compositeAttr || {
+        emptyDescription: "暂无回复",
+        finishedTip: "数据已加载全部",
+      },
+      loading: false,
+      finished: false,
+      detailInfo: null,
+      infoList: [],
+      total: 0,
+      pageSize: 5,
+      start: 0,
+    };
+  },
+  props: {},
+  computed: {
+    finishedText() {
+      let text = "";
+      if (!this.loading && this.infoList.length === 0) {
+        text = this.propData.emptyDescription;
+      } else {
+        text = this.propData.finishedTip;
+      }
+      return text;
+    },
   },
   created() {
-    this.moduleObject = this.$root.moduleObject
-    // console.log(this.moduleObject)
+    this.moduleObject = this.$root.moduleObject;
     this.convertAttrToStyleObject();
+    this.convertThemeListAttrToStyleObject();
+
+    this.getDetail();
   },
-  mounted() {
-    //赋值给window提供跨页面调用
-    this.$nextTick(function(params) {
-      //单独组件不能使用这种方式
-      // window[this.moduleObject.packageid] = this;
-    });
-  },
+  mounted() {},
   destroyed() {},
-  methods:{
+  methods: {
+    getDetail() {
+      if (!this.moduleObject.env || this.moduleObject.env == "develop") {
+        // mock数据
+        setTimeout(() => {
+          const res = {
+            img: "",
+            id: "",
+            avatar: "Wunder",
+            time: "6分钟前",
+            star: false,
+            starNum: 100,
+            bt: "我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
+            from: "来自广东深圳",
+            total: 4,
+          };
+          this.detailInfo = res;
+        }, 500);
+
+        return;
+      }
+      let dataSource = this.propData.detailDataSource;
+      if (!dataSource) {
+        return;
+      }
+      let url = `ctrl/dataSource/getDatas`;
+      IDM.http
+        .post(
+          url,
+          {
+            id: dataSource.value,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json;charset=UTF-8",
+            },
+          }
+        )
+        .done((res) => {
+          console.log(res, "接口数据");
+          if (res.code === "200") {
+            this.detailInfo = this.propData.dataFiled
+              ? this.getExpressData("dataName", this.propData.dataFiled, res)
+              : res;
+          } else {
+            console.log(url + "请求失败");
+          }
+        })
+        .error((response) => {
+          console.log(url + "请求失败");
+        })
+        .always((res) => {
+          this.loading = false;
+        });
+    },
+    /**
+     * 删除
+     */
+    delClick(item) {
+      console.log(item, "删除");
+    },
+    /**
+     * 回复跳转
+     */
+    replyClick(item) {
+      if (this.propData.replyJump && this.propData.replyJump.id)
+        IDM.router.push(
+          this.moduleObject.routerId,
+          this.propData.replyJump.id,
+          {
+            keep: true,
+            params: { id: item.id },
+            enterAnim: "",
+            quitAnim: "",
+          }
+        );
+    },
+    /**
+     * 点赞
+     */
+    starClick(item) {
+      item.star = !item.star;
+    },
+    /**
+     * 重载组件
+     */
+    reload(whole) {
+      if (whole) {
+      }
+      this.loading = true;
+      this.finished = false;
+      this.infoList = [];
+      this.initData();
+    },
+    /**
+     * 适配页面
+     */
+    getScale(pageWidth) {
+      const base = this.propData.baseValue || 414;
+      const ratio = this.propData.adaptationRatio || 1.2;
+      const width =
+        this.moduleObject.env === "production"
+          ? window.innerWidth
+          : pageWidth || 414;
+      return (width / base - 1) * (ratio - 1) + 1;
+    },
     /**
      * 提供父级组件调用的刷新prop数据组件
      */
-    propDataWatchHandle(propData){
-      this.propData = propData.compositeAttr||{};
+    propDataWatchHandle(propData) {
+      this.propData = propData.compositeAttr || {};
       this.convertAttrToStyleObject();
+      this.convertThemeListAttrToStyleObject();
     },
     /**
      * 把属性转换成样式对象
      */
-    convertAttrToStyleObject(){
-      var styleObject = {};
-      if(this.propData.bgSize&&this.propData.bgSize=="custom"){
-        styleObject["background-size"]=(this.propData.bgSizeWidth?this.propData.bgSizeWidth.inputVal+this.propData.bgSizeWidth.selectVal:"auto")+" "+(this.propData.bgSizeHeight?this.propData.bgSizeHeight.inputVal+this.propData.bgSizeHeight.selectVal:"auto")
-      }else if(this.propData.bgSize){
-        styleObject["background-size"]=this.propData.bgSize;
+    convertAttrToStyleObject(pageSize = {}) {
+      var styleObject = {},
+        innerStyleObject = {},
+        titleStyleObject = {};
+
+      const scale = this.getScale(pageSize.width);
+      styleObject["--i-comment-detail-scale"] = scale;
+
+      if (this.propData.bgSize && this.propData.bgSize == "custom") {
+        styleObject["background-size"] =
+          (this.propData.bgSizeWidth
+            ? this.propData.bgSizeWidth.inputVal +
+              this.propData.bgSizeWidth.selectVal
+            : "auto") +
+          " " +
+          (this.propData.bgSizeHeight
+            ? this.propData.bgSizeHeight.inputVal +
+              this.propData.bgSizeHeight.selectVal
+            : "auto");
+      } else if (this.propData.bgSize) {
+        styleObject["background-size"] = this.propData.bgSize;
       }
-      if(this.propData.positionX&&this.propData.positionX.inputVal){
-        styleObject["background-position-x"]=this.propData.positionX.inputVal+this.propData.positionX.selectVal;
+      if (this.propData.positionX && this.propData.positionX.inputVal) {
+        styleObject["background-position-x"] =
+          this.propData.positionX.inputVal + this.propData.positionX.selectVal;
       }
-      if(this.propData.positionY&&this.propData.positionY.inputVal){
-        styleObject["background-position-y"]=this.propData.positionY.inputVal+this.propData.positionY.selectVal;
+      if (this.propData.positionY && this.propData.positionY.inputVal) {
+        styleObject["background-position-y"] =
+          this.propData.positionY.inputVal + this.propData.positionY.selectVal;
+      }
+
+      if (this.propData.innerBgSize && this.propData.innerBgSize == "custom") {
+        innerStyleObject["background-size"] =
+          (this.propData.innerBgSizeWidth
+            ? this.propData.innerBgSizeWidth.inputVal +
+              this.propData.innerBgSizeWidth.selectVal
+            : "auto") +
+          " " +
+          (this.propData.innerBgSizeHeight
+            ? this.propData.innerBgSizeHeight.inputVal +
+              this.propData.innerBgSizeHeight.selectVal
+            : "auto");
+      } else if (this.propData.innerBgSize) {
+        innerStyleObject["background-size"] = this.propData.innerBgSize;
+      }
+      if (
+        this.propData.innerPositionX &&
+        this.propData.innerPositionX.inputVal
+      ) {
+        innerStyleObject["background-position-x"] =
+          this.propData.innerPositionX.inputVal +
+          this.propData.innerPositionX.selectVal;
+      }
+      if (
+        this.propData.innerPositionY &&
+        this.propData.innerPositionY.inputVal
+      ) {
+        innerStyleObject["background-position-y"] =
+          this.propData.innerPositionY.inputVal +
+          this.propData.innerPositionY.selectVal;
       }
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
           const element = this.propData[key];
-          if(!element&&element!==false&&element!=0){
+          if (!element && element !== false && element != 0) {
             continue;
           }
           switch (key) {
             case "width":
             case "height":
-              styleObject[key]=element;
+              styleObject[key] = element;
+              break;
+            case "innerWidth":
+              innerStyleObject["width"] = element;
+              break;
+            case "innerHeight":
+              innerStyleObject["height"] = element;
               break;
             case "bgColor":
-              if(element&&element.hex8){
-                styleObject["background-color"]=element.hex8;
+              if (element && element.hex8) {
+                styleObject["background-color"] = IDM.hex8ToRgbaString(
+                  element.hex8
+                );
+              }
+              break;
+            case "innerBgColor":
+              if (element && element.hex8) {
+                innerStyleObject["background-color"] = IDM.hex8ToRgbaString(
+                  element.hex8
+                );
               }
               break;
             case "box":
-              if(element.marginTopVal){
-                styleObject["margin-top"]=`${element.marginTopVal}`;
+              if (element.marginTopVal) {
+                styleObject["margin-top"] = `${element.marginTopVal}`;
               }
-              if(element.marginRightVal){
-                styleObject["margin-right"]=`${element.marginRightVal}`;
+              if (element.marginRightVal) {
+                styleObject["margin-right"] = `${element.marginRightVal}`;
               }
-              if(element.marginBottomVal){
-                styleObject["margin-bottom"]=`${element.marginBottomVal}`;
+              if (element.marginBottomVal) {
+                styleObject["margin-bottom"] = `${element.marginBottomVal}`;
               }
-              if(element.marginLeftVal){
-                styleObject["margin-left"]=`${element.marginLeftVal}`;
+              if (element.marginLeftVal) {
+                styleObject["margin-left"] = `${element.marginLeftVal}`;
               }
-              if(element.paddingTopVal){
-                styleObject["padding-top"]=`${element.paddingTopVal}`;
+              if (element.paddingTopVal) {
+                styleObject["padding-top"] = `${element.paddingTopVal}`;
               }
-              if(element.paddingRightVal){
-                styleObject["padding-right"]=`${element.paddingRightVal}`;
+              if (element.paddingRightVal) {
+                styleObject["padding-right"] = `${element.paddingRightVal}`;
               }
-              if(element.paddingBottomVal){
-                styleObject["padding-bottom"]=`${element.paddingBottomVal}`;
+              if (element.paddingBottomVal) {
+                styleObject["padding-bottom"] = `${element.paddingBottomVal}`;
               }
-              if(element.paddingLeftVal){
-                styleObject["padding-left"]=`${element.paddingLeftVal}`;
+              if (element.paddingLeftVal) {
+                styleObject["padding-left"] = `${element.paddingLeftVal}`;
+              }
+              break;
+            case "innerBox":
+              if (element.marginTopVal) {
+                innerStyleObject["margin-top"] = `${element.marginTopVal}`;
+              }
+              if (element.marginRightVal) {
+                innerStyleObject["margin-right"] = `${element.marginRightVal}`;
+              }
+              if (element.marginBottomVal) {
+                innerStyleObject[
+                  "margin-bottom"
+                ] = `${element.marginBottomVal}`;
+              }
+              if (element.marginLeftVal) {
+                innerStyleObject["margin-left"] = `${element.marginLeftVal}`;
+              }
+              if (element.paddingTopVal) {
+                innerStyleObject["padding-top"] = `${element.paddingTopVal}`;
+              }
+              if (element.paddingRightVal) {
+                innerStyleObject[
+                  "padding-right"
+                ] = `${element.paddingRightVal}`;
+              }
+              if (element.paddingBottomVal) {
+                innerStyleObject[
+                  "padding-bottom"
+                ] = `${element.paddingBottomVal}`;
+              }
+              if (element.paddingLeftVal) {
+                innerStyleObject["padding-left"] = `${element.paddingLeftVal}`;
               }
               break;
             case "bgImgUrl":
-              styleObject["background-image"]=`url(${window.IDM.url.getWebPath(element)})`;
+              styleObject[
+                "background-image"
+              ] = `url(${window.IDM.url.getWebPath(element)})`;
+              break;
+            case "innerBgImgUrl":
+              innerStyleObject[
+                "background-image"
+              ] = `url(${window.IDM.url.getWebPath(element)})`;
               break;
             case "positionX":
               //背景横向偏移
-              
+
               break;
             case "positionY":
               //背景纵向偏移
-              
+
               break;
             case "bgRepeat":
               //平铺模式
-                styleObject["background-repeat"]=element;
+              styleObject["background-repeat"] = element;
+              break;
+            case "innerBgRepeat":
+              //平铺模式
+              innerStyleObject["background-repeat"] = element;
               break;
             case "bgAttachment":
               //背景模式
-                styleObject["background-attachment"]=element;
+              styleObject["background-attachment"] = element;
+              break;
+            case "innerBgAttachment":
+              //背景模式
+              innerStyleObject["background-attachment"] = element;
               break;
             case "border":
-              if(element.border.top.width>0){
-                styleObject["border-top-width"]=element.border.top.width+element.border.top.widthUnit;
-                styleObject["border-top-style"]=element.border.top.style;
-                if(element.border.top.colors.hex8){
-                  styleObject["border-top-color"]=element.border.top.colors.hex8;
+              if (element.border.top.width > 0) {
+                styleObject["border-top-width"] =
+                  element.border.top.width + element.border.top.widthUnit;
+                styleObject["border-top-style"] = element.border.top.style;
+                if (element.border.top.colors.hex8) {
+                  styleObject["border-top-color"] = IDM.hex8ToRgbaString(
+                    element.border.top.colors.hex8
+                  );
                 }
               }
-              if(element.border.right.width>0){
-                styleObject["border-right-width"]=element.border.right.width+element.border.right.widthUnit;
-                styleObject["border-right-style"]=element.border.right.style;
-                if(element.border.right.colors.hex8){
-                  styleObject["border-right-color"]=element.border.right.colors.hex8;
+              if (element.border.right.width > 0) {
+                styleObject["border-right-width"] =
+                  element.border.right.width + element.border.right.widthUnit;
+                styleObject["border-right-style"] = element.border.right.style;
+                if (element.border.right.colors.hex8) {
+                  styleObject["border-right-color"] = IDM.hex8ToRgbaString(
+                    element.border.right.colors.hex8
+                  );
                 }
               }
-              if(element.border.bottom.width>0){
-                styleObject["border-bottom-width"]=element.border.bottom.width+element.border.bottom.widthUnit;
-                styleObject["border-bottom-style"]=element.border.bottom.style;
-                if(element.border.bottom.colors.hex8){
-                  styleObject["border-bottom-color"]=element.border.bottom.colors.hex8;
+              if (element.border.bottom.width > 0) {
+                styleObject["border-bottom-width"] =
+                  element.border.bottom.width + element.border.bottom.widthUnit;
+                styleObject["border-bottom-style"] =
+                  element.border.bottom.style;
+                if (element.border.bottom.colors.hex8) {
+                  styleObject["border-bottom-color"] = IDM.hex8ToRgbaString(
+                    element.border.bottom.colors.hex8
+                  );
                 }
               }
-              if(element.border.left.width>0){
-                styleObject["border-left-width"]=element.border.left.width+element.border.left.widthUnit;
-                styleObject["border-left-style"]=element.border.left.style;
-                if(element.border.left.colors.hex8){
-                  styleObject["border-left-color"]=element.border.left.colors.hex8;
+              if (element.border.left.width > 0) {
+                styleObject["border-left-width"] =
+                  element.border.left.width + element.border.left.widthUnit;
+                styleObject["border-left-style"] = element.border.left.style;
+                if (element.border.left.colors.hex8) {
+                  styleObject["border-left-color"] = IDM.hex8ToRgbaString(
+                    element.border.left.colors.hex8
+                  );
                 }
               }
-              
-              styleObject["border-top-left-radius"]=element.radius.leftTop.radius+element.radius.leftTop.radiusUnit;
-              styleObject["border-top-right-radius"]=element.radius.rightTop.radius+element.radius.rightTop.radiusUnit;
-              styleObject["border-bottom-left-radius"]=element.radius.leftBottom.radius+element.radius.leftBottom.radiusUnit;
-              styleObject["border-bottom-right-radius"]=element.radius.rightBottom.radius+element.radius.rightBottom.radiusUnit;
+
+              styleObject["border-top-left-radius"] =
+                element.radius.leftTop.radius +
+                element.radius.leftTop.radiusUnit;
+              styleObject["border-top-right-radius"] =
+                element.radius.rightTop.radius +
+                element.radius.rightTop.radiusUnit;
+              styleObject["border-bottom-left-radius"] =
+                element.radius.leftBottom.radius +
+                element.radius.leftBottom.radiusUnit;
+              styleObject["border-bottom-right-radius"] =
+                element.radius.rightBottom.radius +
+                element.radius.rightBottom.radiusUnit;
+              break;
+            case "innerBorder":
+              if (element.border.top.width > 0) {
+                innerStyleObject["border-top-width"] =
+                  element.border.top.width + element.border.top.widthUnit;
+                innerStyleObject["border-top-style"] = element.border.top.style;
+                if (element.border.top.colors.hex8) {
+                  innerStyleObject["border-top-color"] = IDM.hex8ToRgbaString(
+                    element.border.top.colors.hex8
+                  );
+                }
+              }
+              if (element.border.right.width > 0) {
+                innerStyleObject["border-right-width"] =
+                  element.border.right.width + element.border.right.widthUnit;
+                innerStyleObject["border-right-style"] =
+                  element.border.right.style;
+                if (element.border.right.colors.hex8) {
+                  innerStyleObject["border-right-color"] = IDM.hex8ToRgbaString(
+                    element.border.right.colors.hex8
+                  );
+                }
+              }
+              if (element.border.bottom.width > 0) {
+                innerStyleObject["border-bottom-width"] =
+                  element.border.bottom.width + element.border.bottom.widthUnit;
+                innerStyleObject["border-bottom-style"] =
+                  element.border.bottom.style;
+                if (element.border.bottom.colors.hex8) {
+                  innerStyleObject["border-bottom-color"] =
+                    IDM.hex8ToRgbaString(element.border.bottom.colors.hex8);
+                }
+              }
+              if (element.border.left.width > 0) {
+                innerStyleObject["border-left-width"] =
+                  element.border.left.width + element.border.left.widthUnit;
+                innerStyleObject["border-left-style"] =
+                  element.border.left.style;
+                if (element.border.left.colors.hex8) {
+                  innerStyleObject["border-left-color"] = IDM.hex8ToRgbaString(
+                    element.border.left.colors.hex8
+                  );
+                }
+              }
+
+              innerStyleObject["border-top-left-radius"] =
+                element.radius.leftTop.radius +
+                element.radius.leftTop.radiusUnit;
+              innerStyleObject["border-top-right-radius"] =
+                element.radius.rightTop.radius +
+                element.radius.rightTop.radiusUnit;
+              innerStyleObject["border-bottom-left-radius"] =
+                element.radius.leftBottom.radius +
+                element.radius.leftBottom.radiusUnit;
+              innerStyleObject["border-bottom-right-radius"] =
+                element.radius.rightBottom.radius +
+                element.radius.rightBottom.radiusUnit;
               break;
             case "font":
-              styleObject["font-family"]=element.fontFamily;
-              if(element.fontColors.hex8){
-                styleObject["color"]=element.fontColors.hex8;
+              titleStyleObject["font-family"] = element.fontFamily;
+              if (element.fontColors.hex8) {
+                titleStyleObject["color"] = IDM.hex8ToRgbaString(
+                  element.fontColors.hex8
+                );
               }
-              styleObject["font-weight"]=element.fontWeight&&element.fontWeight.split(" ")[0];
-              styleObject["font-style"]=element.fontStyle;
-              styleObject["font-size"]=element.fontSize+element.fontSizeUnit;
-              styleObject["line-height"]=element.fontLineHeight+(element.fontLineHeightUnit=="-"?"":element.fontLineHeightUnit);
-              styleObject["text-align"]=element.fontTextAlign;
-              styleObject["text-decoration"]=element.fontDecoration;
+              titleStyleObject["font-weight"] =
+                element.fontWeight && element.fontWeight.split(" ")[0];
+              titleStyleObject["font-style"] = element.fontStyle;
+              titleStyleObject["font-size"] =
+                element.fontSize + element.fontSizeUnit;
+              titleStyleObject["line-height"] =
+                element.fontLineHeight +
+                (element.fontLineHeightUnit == "-"
+                  ? ""
+                  : element.fontLineHeightUnit);
+              titleStyleObject["text-align"] = element.fontTextAlign;
+              titleStyleObject["text-decoration"] = element.fontDecoration;
+              break;
+            case "innerFont":
+              innerStyleObject["font-family"] = element.fontFamily;
+              if (element.fontColors.hex8) {
+                innerStyleObject["color"] = IDM.hex8ToRgbaString(
+                  element.fontColors.hex8
+                );
+              }
+              innerStyleObject["font-weight"] =
+                element.fontWeight && element.fontWeight.split(" ")[0];
+              innerStyleObject["font-style"] = element.fontStyle;
+              innerStyleObject["font-size"] =
+                element.fontSize + element.fontSizeUnit;
+              innerStyleObject["line-height"] =
+                element.fontLineHeight +
+                (element.fontLineHeightUnit == "-"
+                  ? ""
+                  : element.fontLineHeightUnit);
+              innerStyleObject["text-align"] = element.fontTextAlign;
+              innerStyleObject["text-decoration"] = element.fontDecoration;
+              break;
+            case "boxShadow":
+              styleObject["box-shadow"] = element;
+              break;
+            case "innerBoxShadow":
+              innerStyleObject["box-shadow"] = element;
               break;
           }
         }
       }
-      window.IDM.setStyleToPageHead(this.moduleObject.id,styleObject);
-      this.initData();
+      window.IDM.setStyleToPageHead(this.moduleObject.id, styleObject);
+      window.IDM.setStyleToPageHead(
+        this.moduleObject.id + ` .i-comment-detail-content`,
+        innerStyleObject
+      );
+    },
+    /**
+     * 主题颜色
+     */
+    convertThemeListAttrToStyleObject() {
+      const themeList = this.propData.themeList;
+      if (!themeList) {
+        return;
+      }
+      const themeNamePrefix =
+        IDM.setting &&
+        IDM.setting.applications &&
+        IDM.setting.applications.themeNamePrefix
+          ? IDM.setting.applications.themeNamePrefix
+          : "idm-theme-";
+      for (var i = 0; i < themeList.length; i++) {
+        var item = themeList[i];
+
+        IDM.setStyleToPageHead(
+          "." +
+            themeNamePrefix +
+            item.key +
+            " #" +
+            (this.moduleObject.packageid || "module_demo") +
+            " .i-comment-detail-header .i-comment-detail-header-right",
+          {
+            "border-color": item.mainColor
+              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+              : "",
+          }
+        );
+
+        IDM.setStyleToPageHead(
+          "." +
+            themeNamePrefix +
+            item.key +
+            " #" +
+            (this.moduleObject.packageid || "module_demo") +
+            " .i-comment-detail-content .i-comment-detail-content-item .comment-star.active",
+          {
+            color: item.mainColor
+              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+              : "",
+          }
+        );
+
+        IDM.setStyleToPageHead(
+          "." +
+            themeNamePrefix +
+            item.key +
+            " #" +
+            (this.moduleObject.packageid || "module_demo") +
+            " .i-comment-detail-content-item .i-comment-detail-content-right .content-right-bottom",
+          {
+            color: item.mainColor
+              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+              : "",
+          }
+        );
+      }
     },
     /**
      * 通用的url参数对象
      * 所有地址的url参数转换
      */
-    commonParam(){
+    commonParam() {
       let urlObject = IDM.url.queryObject();
       var params = {
         pageId:
@@ -201,58 +694,132 @@ export default {
       return params;
     },
     /**
-     * 重新加载
-     */
-    reload(){
-      //请求数据源
-      this.initData();
-    },
-    /**
      * 加载动态数据
      */
-    initData(){
-      let that = this;
-      //所有地址的url参数转换
-      var params = that.commonParam();
-      switch (this.propData.dataSourceType) {
-        case "customInterface":
-          this.propData.customInterfaceUrl&&window.IDM.http.get(this.propData.customInterfaceUrl,params)
-          .then((res) => {
-            //res.data
-            that.$set(that.propData,"fontContent",that.getExpressData("resultData",that.propData.dataFiled,res.data));
-            // that.propData.fontContent = ;
-          })
-          .catch(function (error) {
-            
-          });
-          break;
-        case "pageCommonInterface":
-          //使用通用接口直接跳过，在setContextValue执行
-          break;
-        case "customFunction":
-          if(this.propData.customFunction&&this.propData.customFunction.length>0){
-            var resValue = "";
-            try {
-              resValue = window[this.propData.customFunction[0].name]&&window[this.propData.customFunction[0].name].call(this,{...params,...this.propData.customFunction[0].param,moduleObject:this.moduleObject});
-            } catch (error) {
-            }
-            that.propData.fontContent = resValue;
+    initData() {
+      if (!this.moduleObject.env || this.moduleObject.env == "develop") {
+        // mock数据
+        setTimeout(() => {
+          const res = {
+            total: 10,
+            list: [
+              {
+                img: "",
+                id: "",
+                avatar: "Wunder",
+                time: "6分钟前",
+                star: true,
+                starNum: 100,
+                bt: "我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
+                from: "来自广东深圳",
+                total: 100,
+                reply: "The Shy",
+              },
+              {
+                img: "",
+                id: "",
+                avatar: "The Shy",
+                time: "6分钟前",
+                star: false,
+                starNum: 100,
+                bt: "我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
+                from: "来自广东深圳",
+                total: 100,
+                reply: "Wunder",
+              },
+              {
+                img: "",
+                id: "",
+                avatar: "Wunder",
+                time: "6分钟前",
+                star: false,
+                starNum: 100,
+                bt: "我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
+                from: "来自广东深圳",
+                total: 100,
+                reply: "The Shy",
+              },
+              {
+                img: "",
+                id: "",
+                avatar: "The Shy",
+                time: "6分钟前",
+                star: true,
+                starNum: 100,
+                bt: "我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
+                from: "来自广东深圳",
+                total: 100,
+                reply: "Wunder",
+              },
+              {
+                img: "",
+                id: "",
+                avatar: "Wunder",
+                time: "6分钟前",
+                star: false,
+                starNum: 100,
+                bt: "我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
+                from: "来自广东深圳",
+                total: 100,
+                reply: "The Shy",
+              },
+            ],
+          };
+          // 简单模式下只展示三条
+          if (this.infoList.length >= res.total) {
+            this.finished = true;
           }
-          break;
+          this.infoList = [...this.infoList, ...res.list];
+          this.total = res.total;
+          this.loading = false;
+        }, 500);
+
+        return;
       }
+      let dataSource = this.propData.dataSource;
+      if (!dataSource) {
+        this.loading = false;
+        return;
+      }
+      let url = `ctrl/dataSource/getDatas`;
+      IDM.http
+        .post(
+          url,
+          {
+            id: dataSource.value,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json;charset=UTF-8",
+            },
+          }
+        )
+        .done((res) => {
+          console.log(res, "接口数据");
+          if (res.code === "200") {
+            this.infoList = this.propData.dataFiled
+              ? this.getExpressData("dataName", this.propData.dataFiled, res)
+              : res;
+          } else {
+            console.log(url + "请求失败");
+          }
+        })
+        .error((response) => {
+          console.log(url + "请求失败");
+        })
+        .always((res) => {
+          this.loading = false;
+        });
     },
     /**
      * 通用的获取表达式匹配后的结果
      */
-    getExpressData(dataName,dataFiled,resultData){
+    getExpressData(dataName, dataFiled, resultData) {
       //给defaultValue设置dataFiled的值
       var _defaultVal = undefined;
-      if(dataFiled){
+      if (dataFiled) {
         var filedExp = dataFiled;
-        filedExp =
-          dataName +
-          (filedExp.startsWiths("[") ? "" : ".") +
-          filedExp;
+        filedExp = dataName + (filedExp.startsWiths("[") ? "" : ".") + filedExp;
         var dataObject = { IDM: window.IDM };
         dataObject[dataName] = resultData;
         _defaultVal = window.IDM.express.replace.call(
@@ -262,55 +829,32 @@ export default {
         );
       }
       //对结果进行再次函数自定义
-      if(this.propData.customFunction&&this.propData.customFunction.length>0){
+      if (
+        this.propData.customFunction &&
+        this.propData.customFunction.length > 0
+      ) {
         var params = this.commonParam();
         var resValue = "";
         try {
-          resValue = window[this.propData.customFunction[0].name]&&window[this.propData.customFunction[0].name].call(this,{
-            ...params,
-            ...this.propData.customFunction[0].param,
-            moduleObject:this.moduleObject,
-            expressData:_defaultVal,interfaceData:resultData
-          });
-        } catch (error) {
-        }
+          resValue =
+            window[this.propData.customFunction[0].name] &&
+            window[this.propData.customFunction[0].name].call(this, {
+              ...params,
+              ...this.propData.customFunction[0].param,
+              moduleObject: this.moduleObject,
+              expressData: _defaultVal,
+              interfaceData: resultData,
+            });
+        } catch (error) {}
         _defaultVal = resValue;
       }
-      
+
       return _defaultVal;
     },
-    /**
-     * 文本点击事件
-     */
-    textClickHandle(){
-      let that = this;
-      if(this.moduleObject.env=="develop"){
-        //开发模式下不执行此事件
-        return;
-      }
-      //获取所有的URL参数、页面ID（pageId）、以及所有组件的返回值（用范围值去调用IDM提供的方法取出所有的组件值）
-      let urlObject = window.IDM.url.queryObject(),
-      pageId = window.IDM.broadcast&&window.IDM.broadcast.pageModule?window.IDM.broadcast.pageModule.id:"";
-      //自定义函数
-      /**
-       * [
-       * {name:"",param:{}}
-       * ]
-       */
-      var clickFunction = this.propData.clickFunction;
-      clickFunction&&clickFunction.forEach(item=>{
-        window[item.name]&&window[item.name].call(this,{
-          urlData:urlObject,
-          pageId,
-          customParam:item.param,
-          _this:this
-        });
-      })
-    },
-    showThisModuleHandle(){
+    showThisModuleHandle() {
       this.propData.defaultStatus = "default";
     },
-    hideThisModuleHandle(){
+    hideThisModuleHandle() {
       this.propData.defaultStatus = "hidden";
     },
     /**
@@ -321,14 +865,31 @@ export default {
      *  message:{发送的时候传输的消息对象数据}
      *  messageKey:"消息数据的key值，代表数据类型是什么，常用于表单交互上，比如通过这个key判断是什么数据"
      *  isAcross:如果为true则代表发送来源是其他页面的组件，默认为false
-     * } object 
+     * } object
      */
-    receiveBroadcastMessage(object){
-      console.log("组件收到消息",object)
-      if(object.type&&object.type=="linkageShowModule"){
-        this.showThisModuleHandle();
-      }else if(object.type&&object.type=="linkageHideModule"){
-        this.hideThisModuleHandle();
+    receiveBroadcastMessage(messageObject) {
+      console.log("组件收到消息", messageObject);
+      switch (messageObject.type) {
+        case "websocket":
+          if (this.propData.messageRefreshKey && messageObject.message) {
+            const messageData =
+              (typeof messageObject.message === "string" &&
+                JSON.parse(messageObject.message)) ||
+              messageObject.message;
+            const arr = Array.isArray(this.propData.messageRefreshKey)
+              ? this.propData.messageRefreshKey
+              : [this.propData.messageRefreshKey];
+            if (messageData.badgeType && arr.includes(messageData.badgeType)) {
+              this.reload();
+            }
+          }
+          break;
+        case "linkageReload":
+          this.reload(true);
+          break;
+        case "pageResize":
+          this.convertAttrToStyleObject(messageObject.message);
+          break;
       }
     },
     /**
@@ -340,30 +901,169 @@ export default {
      *  rangeModule:"为空发送给全部，根据配置的属性中设定的值（值的内容是组件的packageid数组），不取子表的，比如直接 this.$root.propData.compositeAttr["attrKey"]（注意attrKey是属性中定义的bindKey）,这里的格式为：['1','2']"",
      *  className:"指定的组件类型，比如只给待办组件发送，然后再去过滤上面的值"
      *  globalSend:如果为true则全站发送消息，注意全站rangeModule是无效的，只有className才有效，默认为false
-     * } object 
+     * } object
      */
-    sendBroadcastMessage(object){
-        window.IDM.broadcast&&window.IDM.broadcast.send(object);
+    sendBroadcastMessage(object) {
+      window.IDM.broadcast && window.IDM.broadcast.send(object);
     },
-    /**
-     * 交互功能：设置组件的上下文内容值
-     * @param {
-     *  type:"定义的类型，已知类型：pageCommonInterface（页面统一接口返回值）、"
-     *  key:"数据key标识，页面每个接口设置的数据集名称，方便识别获取自己需要的数据"
-     *  data:"数据集，内容为：字符串 or 数组 or 对象"
-     * }
-     */
-    setContextValue(object) {
-      console.log("统一接口设置的值", object);
-      if (object.type != "pageCommonInterface") {
-        return;
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+$scale: var(--i-comment-detail-scale);
+
+.i-comment-detail-outer {
+  color: #000;
+  font-size: calc(14px * #{$scale});
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  .i-comment-detail-wrapper {
+    height: calc(100% - 80px);
+    overflow: auto;
+    padding: 10px;
+    .i-comment-detail-main {
+      display: flex;
+      padding: calc(16px * #{$scale});
+      background-color: #fff;
+      box-shadow: 0 calc(2px * #{$scale}) calc(12px * #{$scale}) 0
+        rgba(0, 0, 0, 0.07);
+      border-radius: calc(6px * #{$scale});
+      margin-bottom: 12px;
+
+      .i-comment-detail-content-right .content-right-bottom {
+        color: rgb(101, 101, 101);
       }
-      //这里使用的是子表，所以要循环匹配所有子表的属性然后再去设置修改默认值
-      if (object.key == this.propData.dataName) {
-        // this.propData.fontContent = this.getExpressData(this.propData.dataName,this.propData.dataFiled,object.data);
-        this.$set(this.propData,"fontContent",this.getExpressData(this.propData.dataName,this.propData.dataFiled,object.data));
+    }
+
+    .i-comment-detail-content {
+      background-color: #fff;
+      box-shadow: 0px 2px 9px 7px rgba(238, 238, 238, 0.5);
+      border-radius: calc(6px * #{$scale});
+
+      .i-comment-detail-content-item {
+        display: flex;
+        border-bottom: 1px solid rgb(222, 222, 222);
+        padding: calc(16px * #{$scale});
+
+        &.border-none {
+          border-bottom: none;
+        }
+      }
+
+      .i-comment-detail-content-more {
+        color: rgb(102, 102, 102);
+        text-align: center;
+        padding-bottom: calc(10px * #{$scale});
+      }
+    }
+
+    .i-comment-detail-content-left {
+      width: calc(38px * #{$scale});
+      min-width: calc(38px * #{$scale});
+      .content-left-avatar {
+        width: 100%;
+        height: calc(38px * #{$scale});
+        border-radius: 50%;
+      }
+    }
+
+    .i-comment-detail-content-right {
+      padding: 0 calc(8px * #{$scale});
+      flex: 1;
+
+      .content-right-top {
+        padding: calc(10px * #{$scale}) 0 calc(6px * #{$scale}) 0;
+        display: flex;
+        color: rgb(146, 146, 146);
+        justify-content: space-between;
+
+        .comment-name {
+          color: rgb(101, 101, 101);
+        }
+
+        .comment-star {
+          cursor: pointer;
+          &.active {
+            color: rgb(193, 0, 0);
+          }
+
+          .svg-icon {
+            margin-right: calc(4px * #{$scale});
+          }
+        }
+      }
+
+      .content-right-center {
+        color: currentColor;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        margin: 0 0 calc(8px * #{$scale}) 0;
+
+        span {
+          color: rgb(193, 0, 0);
+          margin: 0 6px;
+        }
+      }
+
+      .content-right-bottom {
+        display: flex;
+        justify-content: space-between;
+        color: rgb(193, 0, 0);
+
+        .comment-time {
+          color: rgb(101, 101, 101);
+        }
+
+        .comment-reply {
+          flex: 1;
+          padding-left: 24px;
+        }
+      }
+    }
+  }
+
+  .i-comment-detail-bar {
+    height: 80px;
+    background: #ffffff;
+    box-shadow: 0px -2px 3px 0px rgba(204, 204, 204, 0.5);
+    display: flex;
+
+    ::v-deep .van-cell {
+      height: 60px;
+
+      .van-field__left-icon {
+        background: #f2f2f2;
+        margin-right: 0;
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        color: rgb(51, 51, 51);
+        border-radius: 4px 0 0 4px;
+      }
+
+      .van-field__body {
+        height: 100%;
+
+        .van-field__control {
+          height: 100%;
+          background: #f2f2f2;
+          border-radius: 0 4px 4px 0;
+        }
+      }
+
+      .van-button {
+        border: none;
+        font-size: 16px;
+        padding: 0 6px;
+        color: rgb(193, 0, 0);
       }
     }
   }
 }
-</script>
+</style>
