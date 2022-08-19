@@ -10,18 +10,19 @@
   :idm-ctrl-id="moduleObject.id" 
   >
     <div class="idm-iheadlist">
+      <van-search v-if="false" class="idm-search" v-model="searchVal" placeholder="请输入党员姓名关键词快速查找内容" />
       <div class="iheadlist-ul">
-        <li v-for="(item, index) in list" :key="index">
+        <li v-for="(item, index) in pageDataList.length > 0 ? pageDataList : list" :key="index">
           <div class="iheadlist-img">
-            <img :src="item.img" alt="">
+            <img :src="item[propData.ImgInterface] || item.img" alt="">
           </div>
           <div class="iheadlist-right">
             <div class="iheadlist-center">
               <div class="iheadlist-line">
-                <span class="iheadlist-author">{{item.author}}</span>
+                <span class="iheadlist-author">{{item[propData.titleInterface] || item.author}}</span>
                 <template v-if="propData.authorshowIcon">
                   <svg
-                    v-if="item.man===1"
+                    v-if="hadnleActive(item, propData.sexInterface)"
                     class="idm_svg_author_icon icon_author1"
                     aria-hidden="true"
                   >
@@ -35,11 +36,18 @@
                     <use :xlink:href="`#${propData.authorIcongirlClass}`"></use>
                   </svg>
                 </template>
-                <span class="color">{{item.tip1}}</span>
-                <span class="color">{{item.tip2}}</span>
-                <span class="color1">{{item.type === 1 && '已激活'}}</span>
+                <template v-if="propData.tagTable && propData.tagTable.length && propData.dataSource">
+                  <span v-for="subitem in propData.tagTable" :key="subitem.key" :class="subitem.defaultActiveKey ? 'color1' : 'color'">
+                    {{subitem.defaultActiveKey ? (hadnleActive(item, subitem.tab) && '已激活') : item[subitem.tab]}}
+                  </span>
+                </template>
+                <template v-else>
+                  <span class="color">{{item.tip1}}</span>
+                  <span class="color">{{item.tip2}}</span>
+                  <span class="color1" >{{item.active === 1 && '已激活'}}</span>
+                </template>
               </div>
-              <span class="iheadlist-desc">{{item.desc}}</span>
+              <span class="iheadlist-desc">{{item[propData.descInterface] || item.desc}}</span>
             </div>
             <div class="iheadlist-icon" v-if="propData.showIcon" @click="handleClick(item)">
               <svg
@@ -53,6 +61,9 @@
         </li>
       </div>
     </div>
+    <div class="idm-message-list-parent-box-mask" v-if="moduleObject.env === 'develop' && !propData.dataSource">
+      <span>！未绑定数据源</span>
+    </div>
   </div>
 </template>
 
@@ -61,26 +72,28 @@ export default {
   name: 'IHeadList',
   data () {
     return {
+      pageDataList: [],
       list: [
         {
-          man: 1,
+          type: 1,
           author: '宋尚朴',
           img: 'http://116.236.111.158:8086/DreamWeb/resource/img/body-bg-shanghai.png',
           desc: '中共上海市测试三支部',
           tip1: '书记',
           tip2: '组织部',
-          type: 1
+          active: 1
         },
         {
-          man: 2,
+          type: 2,
           author: '宋尚朴',
           img: 'http://116.236.111.158:8086/DreamWeb/resource/img/body-bg-shanghai.png',
           desc: '中共上海市测试三支部',
           tip1: '书记',
           tip2: '组织部',
-          type: 1
+          active: 1
         }
       ],
+      searchVal: '',
       moduleObject:{},
       propData:this.$root.propData.compositeAttr||{
         showIcon: true,
@@ -90,6 +103,24 @@ export default {
         titleIconClass: 'icon-settingOutline',
         titleIconFontSize: 20,
         authorIconFontSize: 18,
+        tagTable: [
+          {
+            key: '1',
+            tab: 'tip1',
+          },
+          {
+            key: '2',
+            tab: 'tip2'
+          },
+          {
+            key: '3',
+            tab: "active == '1'",
+            defaultActiveKey: true
+          }
+        ],
+        activeInterface: "active == '1'",
+        sexInterface: "type == '1'",
+        titleInterface: 'author',
         bgColor: {
         },
         authorIconmaxColor: {
@@ -154,7 +185,43 @@ export default {
       this.propData = propData.compositeAttr||{};
       this.init();
     },
+    hadnleActive (row, key) {
+      let str = `function test(res){return res.${key}}`
+      let result = this.handleFunc(str)
+      return result(row)
+    },
+    handleFunc(strFun) {
+      return new Function(`return ${strFun}`)();
+    },
+    initData () {
+      let that = this;
+      const customInterfaceUrl = '/ctrl/dataSource/getDatas';
+      if (this.moduleObject.env == "production") {
+        this.propData.dataSource &&
+          IDM.http
+            .post(
+              customInterfaceUrl,
+              {
+                id: this.propData.dataSource && this.propData.dataSource.value,
+              },
+              {
+                headers: {
+                  "Content-Type": "application/json;charset=UTF-8",
+                },
+              }
+            )
+            .done((res) => {
+              if (res.type === "success") {
+                that.pageDataList = res.data || [];
+              } else {
+                IDM.message.error(res.message);
+              }
+            });
+      }
+    },
     init () {
+      this.initData();
+      console.log(this.propData, '数据源')
       this.convertAttrToStyleObject();
       this.converPaddingObject();
       this.converTitleStyleObject();
@@ -446,7 +513,6 @@ export default {
       let customHandle = customFunctionList || that.propData[name];
       customHandle && customHandle.forEach(item => {
         window[item.name] && window[item.name].call(that, {
-          ...that.commonParam(),
           customParam: item.param,
           _that: that,
           ...params
@@ -457,9 +523,41 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.idm-message-list-parent-box-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: rgba(0,0,0,.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span {
+    padding: 6px 20px;
+    color: #e6a23c;
+    background: #fdf6ec;
+    border:1px solid #f5dab1;
+    border-radius: 4px;
+  }
+}
 .idm-iheadlist{
   background-color: #fff;
+  .idm-search {
+    .van-icon{
+      font-size: 24px;
+      color: #949494;
+    }
+    .van-field__body{
+      font-size: 16px;
+    }
+    .van-search__content{
+      border-radius: 40px;
+      background-color: #F2F2F2;
+    }
+  }
   .iheadlist-ul{
     // margin: 0 10px;
     border-radius: 10px;
