@@ -24,8 +24,20 @@
         <span v-if="curStatus" class="header-left-number">({{ total }})</span>
       </div>
       <div v-if="curStatus" class="i-all-comment-header-right">
-        <div class="header-right-btn" :class="{active:curMode === 'new'}" @click="modeToggle('new')">最新</div>
-        <div class="header-right-btn" :class="{active:curMode === 'hot'}" @click="modeToggle('hot')">最热</div>
+        <div
+          class="header-right-btn"
+          :class="{ active: curMode === 'new' }"
+          @click="modeToggle('new')"
+        >
+          最新
+        </div>
+        <div
+          class="header-right-btn"
+          :class="{ active: curMode === 'hot' }"
+          @click="modeToggle('hot')"
+        >
+          最热
+        </div>
       </div>
     </div>
 
@@ -57,17 +69,20 @@
             <div class="content-right-top">
               <span class="comment-name">{{ item.avatar }}</span>
               <span class="comment-time">{{ item.time }}</span>
-              <span class="comment-star" :class="{active: item.star}" @click="statClick(item)"
-                ><svg-icon icon-class="commentStar"/>{{ item.starNum }}</span
+              <span
+                class="comment-star"
+                :class="{ active: item.star }"
+                @click="statClick(item)"
+                ><svg-icon icon-class="commentStar" />{{ item.starNum }}</span
               >
             </div>
             <p class="content-right-center">{{ item.bt }}</p>
             <div class="content-right-bottom">
               <span class="comment-from">{{ item.from }}</span>
-              <span class="comment-total"
+              <span class="comment-total" @click="replyClick(item)"
                 >共{{ item.total }}条回复<van-icon name="play"
               /></span>
-              <span class="comment-del">删除</span>
+              <span class="comment-del" @click="delClick(item)">删除</span>
             </div>
           </div>
         </div>
@@ -84,15 +99,20 @@
 </template>
 
 <script>
+import { List, Icon } from "vant";
 export default {
   name: "IAllComment",
+  components: {
+    [List.name]: List,
+    [Icon.name]: Icon,
+  },
   data() {
     return {
       moduleObject: {},
       propData: this.$root.propData.compositeAttr || {
         title: "全部评论",
         emptyDescription: "暂无评论",
-        finishedTip: "数据已加载全部"
+        finishedTip: "数据已加载全部",
       },
       loading: false,
       finished: false,
@@ -100,52 +120,73 @@ export default {
       infoList: [],
       curStatus: false,
       total: 0,
-      pageSize:5,
-      start:0
+      pageSize: 5,
+      start: 0,
     };
   },
   props: {},
-  computed:{
-    finishedText(){
-      let text = ''
-      if(!this.loading && this.infoList.length === 0){
-        text = this.propData.emptyDescription
-      }else{
-        if(this.total <= 3){
-          text = this.propData.finishedTip
-        }else{
-          text = this.curStatus ? this.propData.finishedTip : ''
+  computed: {
+    finishedText() {
+      let text = "";
+      if (!this.loading && this.infoList.length === 0) {
+        text = this.propData.emptyDescription;
+      } else {
+        if (this.total <= 3) {
+          text = this.propData.finishedTip;
+        } else {
+          text = this.curStatus ? this.propData.finishedTip : "";
         }
       }
-      return text
-    }
+      return text;
+    },
   },
   created() {
     this.moduleObject = this.$root.moduleObject;
     this.convertAttrToStyleObject();
     this.convertThemeListAttrToStyleObject();
   },
-  mounted() {
-  },
+  mounted() {},
   destroyed() {},
   methods: {
     /**
+     * 删除
+     */
+    delClick(item){
+      console.log(item,"删除")
+    },
+    /**
+     * 回复跳转
+     */
+    replyClick(item) {
+      if (this.propData.replyJump && this.propData.replyJump.id)
+        IDM.router.push(
+          this.moduleObject.routerId,
+          this.propData.replyJump.id,
+          {
+            keep: true,
+            params: { id: item.id },
+            enterAnim: "",
+            quitAnim: "",
+          }
+        );
+    },
+    /**
      * 点赞
      */
-    statClick(item){
+    statClick(item) {
       item.star = true;
     },
     /**
      * 重载组件
      */
-    reload(whole){
-      if(whole){
+    reload(whole) {
+      if (whole) {
         this.curMode = "new";
         this.curStatus = false;
       }
       this.loading = true;
       this.finished = false;
-      this.infoList= [];
+      this.infoList = [];
       this.initData();
     },
     /**
@@ -186,7 +227,9 @@ export default {
      * 把属性转换成样式对象
      */
     convertAttrToStyleObject(pageSize = {}) {
-      var styleObject = {};
+      var styleObject = {},
+        innerStyleObject = {},
+        titleStyleObject = {};
 
       const scale = this.getScale(pageSize.width);
       styleObject["--i-all-comment-scale"] = scale;
@@ -213,6 +256,37 @@ export default {
         styleObject["background-position-y"] =
           this.propData.positionY.inputVal + this.propData.positionY.selectVal;
       }
+
+      if (this.propData.innerBgSize && this.propData.innerBgSize == "custom") {
+        innerStyleObject["background-size"] =
+          (this.propData.innerBgSizeWidth
+            ? this.propData.innerBgSizeWidth.inputVal +
+              this.propData.innerBgSizeWidth.selectVal
+            : "auto") +
+          " " +
+          (this.propData.innerBgSizeHeight
+            ? this.propData.innerBgSizeHeight.inputVal +
+              this.propData.innerBgSizeHeight.selectVal
+            : "auto");
+      } else if (this.propData.innerBgSize) {
+        innerStyleObject["background-size"] = this.propData.innerBgSize;
+      }
+      if (
+        this.propData.innerPositionX &&
+        this.propData.innerPositionX.inputVal
+      ) {
+        innerStyleObject["background-position-x"] =
+          this.propData.innerPositionX.inputVal +
+          this.propData.innerPositionX.selectVal;
+      }
+      if (
+        this.propData.innerPositionY &&
+        this.propData.innerPositionY.inputVal
+      ) {
+        innerStyleObject["background-position-y"] =
+          this.propData.innerPositionY.inputVal +
+          this.propData.innerPositionY.selectVal;
+      }
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
           const element = this.propData[key];
@@ -224,9 +298,24 @@ export default {
             case "height":
               styleObject[key] = element;
               break;
+            case "innerWidth":
+              innerStyleObject["width"] = element;
+              break;
+            case "innerHeight":
+              innerStyleObject["height"] = element;
+              break;
             case "bgColor":
               if (element && element.hex8) {
-                styleObject["background-color"] = IDM.hex8ToRgbaString(element.hex8);
+                styleObject["background-color"] = IDM.hex8ToRgbaString(
+                  element.hex8
+                );
+              }
+              break;
+            case "innerBgColor":
+              if (element && element.hex8) {
+                innerStyleObject["background-color"] = IDM.hex8ToRgbaString(
+                  element.hex8
+                );
               }
               break;
             case "box":
@@ -255,8 +344,45 @@ export default {
                 styleObject["padding-left"] = `${element.paddingLeftVal}`;
               }
               break;
+            case "innerBox":
+              if (element.marginTopVal) {
+                innerStyleObject["margin-top"] = `${element.marginTopVal}`;
+              }
+              if (element.marginRightVal) {
+                innerStyleObject["margin-right"] = `${element.marginRightVal}`;
+              }
+              if (element.marginBottomVal) {
+                innerStyleObject[
+                  "margin-bottom"
+                ] = `${element.marginBottomVal}`;
+              }
+              if (element.marginLeftVal) {
+                innerStyleObject["margin-left"] = `${element.marginLeftVal}`;
+              }
+              if (element.paddingTopVal) {
+                innerStyleObject["padding-top"] = `${element.paddingTopVal}`;
+              }
+              if (element.paddingRightVal) {
+                innerStyleObject[
+                  "padding-right"
+                ] = `${element.paddingRightVal}`;
+              }
+              if (element.paddingBottomVal) {
+                innerStyleObject[
+                  "padding-bottom"
+                ] = `${element.paddingBottomVal}`;
+              }
+              if (element.paddingLeftVal) {
+                innerStyleObject["padding-left"] = `${element.paddingLeftVal}`;
+              }
+              break;
             case "bgImgUrl":
               styleObject[
+                "background-image"
+              ] = `url(${window.IDM.url.getWebPath(element)})`;
+              break;
+            case "innerBgImgUrl":
+              innerStyleObject[
                 "background-image"
               ] = `url(${window.IDM.url.getWebPath(element)})`;
               break;
@@ -272,9 +398,17 @@ export default {
               //平铺模式
               styleObject["background-repeat"] = element;
               break;
+            case "innerBgRepeat":
+              //平铺模式
+              innerStyleObject["background-repeat"] = element;
+              break;
             case "bgAttachment":
               //背景模式
               styleObject["background-attachment"] = element;
+              break;
+            case "innerBgAttachment":
+              //背景模式
+              innerStyleObject["background-attachment"] = element;
               break;
             case "border":
               if (element.border.top.width > 0) {
@@ -282,8 +416,9 @@ export default {
                   element.border.top.width + element.border.top.widthUnit;
                 styleObject["border-top-style"] = element.border.top.style;
                 if (element.border.top.colors.hex8) {
-                  styleObject["border-top-color"] =
-                    IDM.hex8ToRgbaString(element.border.top.colors.hex8);
+                  styleObject["border-top-color"] = IDM.hex8ToRgbaString(
+                    element.border.top.colors.hex8
+                  );
                 }
               }
               if (element.border.right.width > 0) {
@@ -291,8 +426,9 @@ export default {
                   element.border.right.width + element.border.right.widthUnit;
                 styleObject["border-right-style"] = element.border.right.style;
                 if (element.border.right.colors.hex8) {
-                  styleObject["border-right-color"] =
-                    IDM.hex8ToRgbaString(element.border.right.colors.hex8);
+                  styleObject["border-right-color"] = IDM.hex8ToRgbaString(
+                    element.border.right.colors.hex8
+                  );
                 }
               }
               if (element.border.bottom.width > 0) {
@@ -301,8 +437,9 @@ export default {
                 styleObject["border-bottom-style"] =
                   element.border.bottom.style;
                 if (element.border.bottom.colors.hex8) {
-                  styleObject["border-bottom-color"] =
-                    IDM.hex8ToRgbaString(element.border.bottom.colors.hex8);
+                  styleObject["border-bottom-color"] = IDM.hex8ToRgbaString(
+                    element.border.bottom.colors.hex8
+                  );
                 }
               }
               if (element.border.left.width > 0) {
@@ -310,8 +447,9 @@ export default {
                   element.border.left.width + element.border.left.widthUnit;
                 styleObject["border-left-style"] = element.border.left.style;
                 if (element.border.left.colors.hex8) {
-                  styleObject["border-left-color"] =
-                    IDM.hex8ToRgbaString(element.border.left.colors.hex8);
+                  styleObject["border-left-color"] = IDM.hex8ToRgbaString(
+                    element.border.left.colors.hex8
+                  );
                 }
               }
 
@@ -328,28 +466,122 @@ export default {
                 element.radius.rightBottom.radius +
                 element.radius.rightBottom.radiusUnit;
               break;
-            case "font":
-              styleObject["font-family"] = element.fontFamily;
-              if (element.fontColors.hex8) {
-                styleObject["color"] = IDM.hex8ToRgbaString(element.fontColors.hex8);
+            case "innerBorder":
+              if (element.border.top.width > 0) {
+                innerStyleObject["border-top-width"] =
+                  element.border.top.width + element.border.top.widthUnit;
+                innerStyleObject["border-top-style"] = element.border.top.style;
+                if (element.border.top.colors.hex8) {
+                  innerStyleObject["border-top-color"] = IDM.hex8ToRgbaString(
+                    element.border.top.colors.hex8
+                  );
+                }
               }
-              styleObject["font-weight"] =
+              if (element.border.right.width > 0) {
+                innerStyleObject["border-right-width"] =
+                  element.border.right.width + element.border.right.widthUnit;
+                innerStyleObject["border-right-style"] =
+                  element.border.right.style;
+                if (element.border.right.colors.hex8) {
+                  innerStyleObject["border-right-color"] = IDM.hex8ToRgbaString(
+                    element.border.right.colors.hex8
+                  );
+                }
+              }
+              if (element.border.bottom.width > 0) {
+                innerStyleObject["border-bottom-width"] =
+                  element.border.bottom.width + element.border.bottom.widthUnit;
+                innerStyleObject["border-bottom-style"] =
+                  element.border.bottom.style;
+                if (element.border.bottom.colors.hex8) {
+                  innerStyleObject["border-bottom-color"] =
+                    IDM.hex8ToRgbaString(element.border.bottom.colors.hex8);
+                }
+              }
+              if (element.border.left.width > 0) {
+                innerStyleObject["border-left-width"] =
+                  element.border.left.width + element.border.left.widthUnit;
+                innerStyleObject["border-left-style"] =
+                  element.border.left.style;
+                if (element.border.left.colors.hex8) {
+                  innerStyleObject["border-left-color"] = IDM.hex8ToRgbaString(
+                    element.border.left.colors.hex8
+                  );
+                }
+              }
+
+              innerStyleObject["border-top-left-radius"] =
+                element.radius.leftTop.radius +
+                element.radius.leftTop.radiusUnit;
+              innerStyleObject["border-top-right-radius"] =
+                element.radius.rightTop.radius +
+                element.radius.rightTop.radiusUnit;
+              innerStyleObject["border-bottom-left-radius"] =
+                element.radius.leftBottom.radius +
+                element.radius.leftBottom.radiusUnit;
+              innerStyleObject["border-bottom-right-radius"] =
+                element.radius.rightBottom.radius +
+                element.radius.rightBottom.radiusUnit;
+              break;
+            case "font":
+              titleStyleObject["font-family"] = element.fontFamily;
+              if (element.fontColors.hex8) {
+                titleStyleObject["color"] = IDM.hex8ToRgbaString(
+                  element.fontColors.hex8
+                );
+              }
+              titleStyleObject["font-weight"] =
                 element.fontWeight && element.fontWeight.split(" ")[0];
-              styleObject["font-style"] = element.fontStyle;
-              styleObject["font-size"] =
+              titleStyleObject["font-style"] = element.fontStyle;
+              titleStyleObject["font-size"] =
                 element.fontSize + element.fontSizeUnit;
-              styleObject["line-height"] =
+              titleStyleObject["line-height"] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == "-"
                   ? ""
                   : element.fontLineHeightUnit);
-              styleObject["text-align"] = element.fontTextAlign;
-              styleObject["text-decoration"] = element.fontDecoration;
+              titleStyleObject["text-align"] = element.fontTextAlign;
+              titleStyleObject["text-decoration"] = element.fontDecoration;
+              break;
+            case "innerFont":
+              innerStyleObject["font-family"] = element.fontFamily;
+              if (element.fontColors.hex8) {
+                innerStyleObject["color"] = IDM.hex8ToRgbaString(
+                  element.fontColors.hex8
+                );
+              }
+              innerStyleObject["font-weight"] =
+                element.fontWeight && element.fontWeight.split(" ")[0];
+              innerStyleObject["font-style"] = element.fontStyle;
+              innerStyleObject["font-size"] =
+                element.fontSize + element.fontSizeUnit;
+              innerStyleObject["line-height"] =
+                element.fontLineHeight +
+                (element.fontLineHeightUnit == "-"
+                  ? ""
+                  : element.fontLineHeightUnit);
+              innerStyleObject["text-align"] = element.fontTextAlign;
+              innerStyleObject["text-decoration"] = element.fontDecoration;
+              break;
+            case "boxShadow":
+              styleObject["box-shadow"] = element;
+              break;
+            case "innerBoxShadow":
+              innerStyleObject["box-shadow"] = element;
               break;
           }
         }
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id, styleObject);
+      window.IDM.setStyleToPageHead(
+        this.moduleObject.id +
+          ` .i-all-comment-header .i-all-comment-header-left`,
+        titleStyleObject
+      );
+      window.IDM.setStyleToPageHead(
+        this.moduleObject.id + ` .i-all-comment-content`,
+        innerStyleObject
+      );
     },
     /**
      * 主题颜色
@@ -376,7 +608,9 @@ export default {
             (this.moduleObject.packageid || "module_demo") +
             " .i-all-comment-header .i-all-comment-header-right",
           {
-            "border-color" : item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
+            "border-color": item.mainColor
+              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+              : "",
           }
         );
 
@@ -388,7 +622,9 @@ export default {
             (this.moduleObject.packageid || "module_demo") +
             " .i-all-comment-header .header-right-btn",
           {
-            "color" : item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
+            color: item.mainColor
+              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+              : "",
           }
         );
         IDM.setStyleToPageHead(
@@ -399,7 +635,24 @@ export default {
             (this.moduleObject.packageid || "module_demo") +
             " .i-all-comment-header .header-right-btn.active",
           {
-            "background-color" : item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
+            "background-color": item.mainColor
+              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+              : "",
+            color: "#fff",
+          }
+        );
+
+        IDM.setStyleToPageHead(
+          "." +
+            themeNamePrefix +
+            item.key +
+            " #" +
+            (this.moduleObject.packageid || "module_demo") +
+            " .i-all-comment-content .i-all-comment-content-item .comment-star.active",
+          {
+            color: item.mainColor
+              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+              : "",
           }
         );
 
@@ -411,10 +664,11 @@ export default {
             (this.moduleObject.packageid || "module_demo") +
             " .i-all-comment-content-item .i-all-comment-content-right .content-right-bottom",
           {
-            "color" : item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
+            color: item.mainColor
+              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+              : "",
           }
         );
-
       }
     },
     /**
@@ -496,20 +750,20 @@ export default {
                 bt: "我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
                 from: "来自广东深圳",
                 total: 100,
-              }
+              },
             ],
           };
           // 简单模式下只展示三条
-          if(!this.curStatus){
+          if (!this.curStatus) {
             this.finished = true;
-            this.infoList = res.list.slice(0,3);
-          }else{
-            if(this.infoList.length >= res.total){
+            this.infoList = res.list.slice(0, 3);
+          } else {
+            if (this.infoList.length >= res.total) {
               this.finished = true;
             }
-            this.infoList =[...this.infoList,...res.list];
+            this.infoList = [...this.infoList, ...res.list];
           }
-          this.total = res.total
+          this.total = res.total;
           this.loading = false;
         }, 500);
 
@@ -653,7 +907,7 @@ export default {
 $scale: var(--i-all-comment-scale);
 
 .i-all-comment-outer {
-  margin: calc(8px * #{$scale});
+  padding: calc(8px * #{$scale});
   color: #000;
   font-size: calc(14px * #{$scale});
 
@@ -680,6 +934,7 @@ $scale: var(--i-all-comment-scale);
       height: calc(20px * #{$scale});
 
       .header-right-btn {
+        cursor: pointer;
         padding: calc(1px * #{$scale}) calc(10px * #{$scale});
         color: rgb(193, 0, 0);
 
@@ -734,19 +989,20 @@ $scale: var(--i-all-comment-scale);
             padding-left: calc(8px * #{$scale});
           }
 
-          .comment-star{
+          .comment-star {
+            cursor: pointer;
             &.active {
-              color:rgb(193, 0, 0);
+              color: rgb(193, 0, 0);
             }
 
             .svg-icon {
               margin-right: calc(4px * #{$scale});
             }
-          } 
+          }
         }
 
         .content-right-center {
-          color: rgb(51, 51, 51);
+          color: currentColor;
           overflow: hidden;
           text-overflow: ellipsis;
           display: -webkit-box;
@@ -764,9 +1020,17 @@ $scale: var(--i-all-comment-scale);
             color: rgb(146, 146, 146);
           }
 
-          .comment-total .van-icon {
-            transform: rotate(90deg);
-            margin-left: calc(4px * #{$scale});
+          .comment-total {
+            cursor: pointer;
+
+            .van-icon {
+              transform: rotate(90deg);
+              margin-left: calc(4px * #{$scale});
+            }
+          }
+
+          .comment-del {
+            cursor: pointer;
           }
         }
       }
