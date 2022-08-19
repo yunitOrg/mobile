@@ -48,7 +48,14 @@ export default {
     return {
       moduleObject: {},
       propData: this.$root.propData.compositeAttr || {
-        headText: "学习精选"
+        headText: "学习精选",
+        themeList:{
+          "key": "blue",
+          "mainColor": {
+            "hex": "#0073CA",
+            "hex8": "#0073CAFF"
+          }
+        }
       },
       videoData: [
         {
@@ -400,21 +407,20 @@ export default {
           IDM.setting.applications.themeNamePrefix
               ? IDM.setting.applications.themeNamePrefix
               : "idm-theme-";
+      console.log(themeList)
       for (var i = 0; i < themeList.length; i++) {
         var item = themeList[i];
-
         IDM.setStyleToPageHead(
             "." +
             themeNamePrefix +
             item.key +
             " #" +
             (this.moduleObject.packageid || "module_demo") +
-            " .left-text",
+            " .left",
             {
-              "border-color": item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
+              "color": item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
             }
         );
-
         IDM.setStyleToPageHead(
             "." +
             themeNamePrefix +
