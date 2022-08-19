@@ -509,10 +509,20 @@ export default {
             if (this.moduleObject.env === 'develop') {
                 return
             }
-            // window.sessionStorage.swiperClickedIndex = index
-
-            if (item.jumpUrl) {
-                const url = IDM.url.getWebPath(item.jumpUrl)
+            switch (this.propData.jumpStyle) {
+                case '_link':
+                    if (item.jumpUrl) {
+                        const url = IDM.url.getWebPath(item.jumpUrl)
+                        window.open(url)
+                    }
+                    break
+                case '_child':
+                    if (this.propData.pageList && this.propData.pageList.length > 0) {
+                        IDM.router.push(this.moduleObject.routerId, this.propData.pageList[0].id, true, item, '', '')
+                    } else {
+                        IDM.message.warning('请选择要跳转的子页面')
+                    }
+                    break
             }
         },
         /**

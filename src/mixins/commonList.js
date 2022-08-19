@@ -23,19 +23,55 @@ export default {
          * @returns
          */
         handleItemClick(item) {
-            let url = this.getDataField(this.propData.jumpUrlField, item)
-            if (!url) return
-            url = IDM.url.getWebPath(url)
-            window.open(url)
+            if (this.moduleObject.env === 'develop') {
+                return
+            }
+            let url = null
+            switch (this.propData.jumpStyle) {
+                case '_link':
+                    url = this.getDataField(this.propData.jumpUrlField, item)
+                    if (!url) return
+                    window.open(IDM.url.getWebPath(url))
+                    break
+                case '_child':
+                    if (this.propData.itemPageList && this.propData.itemPageList.length > 0) {
+                        IDM.router.push(
+                            this.moduleObject.routerId,
+                            this.propData.itemPageList[0].id,
+                            true,
+                            item,
+                            '',
+                            ''
+                        )
+                    } else {
+                        IDM.message.warning('请选择要跳转的子页面')
+                    }
+                    break
+            }
         },
         /**
          * 点击更多事件
          */
         handleClickMore() {
-            let url = this.getDataField(this.propData.moreUrlField, this.pageData)
-            if (!url) return
-            url = IDM.url.getWebPath(url)
-            window.open(url)
+            if (this.moduleObject.env === 'develop') {
+                return
+            }
+            let url = null
+            switch (this.propData.jumpStyle) {
+                case '_link':
+                    url = this.getDataField(this.propData.moreUrlField, this.pageData)
+                    if (!url) return
+                    url = IDM.url.getWebPath(url)
+                    window.open(url)
+                    break
+                case '_child':
+                    if (this.propData.morePageList && this.propData.morePageList.length > 0) {
+                        IDM.router.push(this.moduleObject.routerId, this.propData.morePageList[0].id, true, '', '', '')
+                    } else {
+                        IDM.message.warning('请选择要跳转的子页面')
+                    }
+                    break
+            }
         },
         /**
          * 通用的url参数对象
