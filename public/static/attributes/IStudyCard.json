@@ -30,9 +30,9 @@
         {
           "type": "pageSelect",
           "layoutType": "inline",
-          "text": "‘更多’点击",
+          "text": "更多页面",
           "bindKey": "showMoreUrl",
-          "desc": "点击‘更多’后触发跳转到的url地址"
+          "desc": "点击更多后触发跳转到的页面选择"
         }
       ]
     },
@@ -73,9 +73,9 @@
           "bindKey": "box",
           "default": {
             "marginTopVal": "16px",
-            "marginRightVal": "8px",
+            "marginRightVal": "10px",
             "marginBottomVal": "16px",
-            "marginLeftVal": "8px",
+            "marginLeftVal": "10px",
             "paddingTopVal": "0",
             "paddingRightVal": "12px",
             "paddingBottomVal": "0",
@@ -462,9 +462,9 @@
             },
             "fontWeight": "800",
             "fontStyle": "normal",
-            "fontSize": 14,
+            "fontSize": 18,
             "fontSizeUnit": "px",
-            "fontLineHeight": 14,
+            "fontLineHeight": 18,
             "fontLineHeightUnit": "px",
             "fontTextAlign": "center"
           }

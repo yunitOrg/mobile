@@ -500,11 +500,11 @@ $scale: var(--i-studycard-scale);
     width: 100%;
     background-color: #ffffff;
     border-radius: calc(6px * #{ $scale });
-    margin: calc(16px * #{ $scale }) calc(8px * #{ $scale });
+    margin: calc(16px * #{ $scale }) calc(10px * #{ $scale });
     padding: 0 calc(12px * #{ $scale });
 
     &-header {
-      margin: calc(14px * #{ $scale }) 0 calc(12px * #{ $scale }) 0;
+      margin: calc(18px * #{ $scale }) 0 calc(16px * #{ $scale }) 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -522,8 +522,8 @@ $scale: var(--i-studycard-scale);
         .left-text {
           font-family: arial, helvetica, 'microsoft yahei',serif;
           color: #333333FF;
-          font-size: calc(14px * #{ $scale });
-          line-height: calc(14px * #{ $scale });
+          font-size: calc(18px * #{ $scale });
+          line-height: calc(18px * #{ $scale });
           font-weight: 800;
         }
       };
@@ -540,7 +540,8 @@ $scale: var(--i-studycard-scale);
         .right-text {
           font-family: arial, helvetica, 'microsoft yahei',serif;
           padding-right: calc(5px * #{ $scale });
-          font-size: calc(12px * #{ $scale });
+          font-size: calc(14px * #{ $scale });
+          line-height: calc(14px * #{ $scale });
           font-weight: 400;
         }
 
@@ -552,8 +553,8 @@ $scale: var(--i-studycard-scale);
         align-items: center;
 
         svg {
-          width: calc(14px * #{ $scale });
-          height: calc(14px * #{ $scale });
+          width: calc(18px * #{ $scale });
+          height: calc(18px * #{ $scale });
         }
       }
     }
@@ -570,7 +571,7 @@ $scale: var(--i-studycard-scale);
 
       .video-card {
         position: relative;
-        width: 47%;;
+        width: 48%;;
         height: auto;
         margin: 0 0 calc(14px * #{ $scale }) 0;
         border: calc(1px * #{ $scale }) solid rgba(237,237,237, 1);
@@ -579,14 +580,14 @@ $scale: var(--i-studycard-scale);
 
         .videoImg {
           width: auto;
-          height: calc(86px * #{ $scale });
+          height: calc(106px * #{ $scale });
           display: flex;
           flex-direction: column-reverse;
           align-items: center;
 
           img {
             width: 100%;
-            height: calc(86px * #{ $scale });
+            height: calc(106px * #{ $scale });
             position: absolute;
             background-size: 100% 100%;
             background-repeat: no-repeat;
@@ -595,7 +596,7 @@ $scale: var(--i-studycard-scale);
 
         .videoData {
           width: 100%;
-          height: 22%;
+          height: 18%;
           display: flex;
           justify-content: space-between;
           padding: calc(2px * #{ $scale }) calc(4px  * #{ $scale });
@@ -631,10 +632,10 @@ $scale: var(--i-studycard-scale);
 
         .videoDetail {
           width: auto;
-          height: calc(31px * #{ $scale });
+          height: calc(40px * #{ $scale });
           margin: calc(6px * #{ $scale }) calc(8px * #{ $scale }) calc(10px * #{ $scale }) calc(8px * #{ $scale });
-          font-size: calc(12px * #{ $scale });
-          line-height: calc(16px * #{ $scale });
+          font-size: calc(14px * #{ $scale });
+          line-height: calc(20px * #{ $scale });
           color: rgb(50, 50, 50);
           font-weight: 500;
           display: -webkit-box;
