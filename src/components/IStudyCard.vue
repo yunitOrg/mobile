@@ -6,8 +6,8 @@
     <div class="container">
       <div class="study-card">
         <div class="study-card-header">
-          <div class="left-text">学习精选</div>
-          <div class="right">
+          <div class="left-text">{{ propData.headText }}</div>
+          <div class="right" @click="showMoreData">
             <div class="right-text">
               更多
             </div>
@@ -17,7 +17,7 @@
           </div>
         </div>
         <div class="video-list">
-          <div class="video-card" v-for="item in mockData" :key="item.index">
+          <div class="video-card" v-for="item in videoData" :key="item.index" @click=toVideo(item)>
             <div class="videoImg">
               <img :src="item.image">
               <div class="videoData">
@@ -43,56 +43,68 @@ export default {
     return {
       moduleObject: {},
       propData: this.$root.propData.compositeAttr || {
-        fontContent: "Hello Word"
+        headText: "学习精选"
       },
-      mockData: [
+      videoData: [
         {
           index: 1,
-          image: "url",
+          image: "https://boot-img.xuexi.cn/lego/image/2562_newsSlider/dc0441f5511b41fc9f7606e415dea00c.png",
           amountOfPlay: 1200,
-          releaseDate: "2022-8-7",
-          videoIntroduction: "我们一起参加党课开讲拉，当时我来讲直播课程"
+          releaseDate: "2022-8-17",
+          videoIntroduction: "安徽合肥：多彩过暑假，实践有收获",
+          videoUrl:"#1"
         },
         {
           index: 2,
-          image: "url",
+          image: "https://boot-img.xuexi.cn/lego/image/2562_newsSlider/b4fbbb9fd80745f99c77a1f1682a3740.jpg",
           amountOfPlay: 1200,
-          releaseDate: "2022-8-7",
-          videoIntroduction: "123456789"
+          releaseDate: "2022-8-17",
+          videoIntroduction: "浙江宁波：植物观察 地质探索 假期研学快乐多",
+          videoUrl:"#2"
         },
         {
           index: 3,
-          image: "url",
+          image: "https://boot-img.xuexi.cn/lego/image/2562_newsSlider/05776bf6034d40b882366297006da726.jpg",
           amountOfPlay: 1200,
-          releaseDate: "2022-8-7",
-          videoIntroduction: "123456789"
+          releaseDate: "2022-8-17",
+          videoIntroduction: "河南内乡：戏曲博物馆里过暑假，品味非遗文化",
+          videoUrl:"#3"
         },
         {
           index: 4,
-          image: "url",
+          image: "https://boot-img.xuexi.cn/contribute_img/20220809100554/66386949742976920.jpg",
           amountOfPlay: 1200,
-          releaseDate: "2022-8-7",
-          videoIntroduction: "123456789"
+          releaseDate: "2022-8-17",
+          videoIntroduction: "河南鹤壁淇滨区:“双减”下的暑假劳动教育结硕果",
+          videoUrl:"#4"
         }
       ]
     }
   },
-  computed:{
-    loadingSize() {
-      return this.getScale() * (this.propData.loadingSize || 24);
-    },
-  },
+  computed: {},
   created() {
     this.moduleObject = this.$root.moduleObject
     this.convertAttrToStyleObject();
+    this.convertThemeListAttrToStyleObject();
+
   },
   methods: {
+    /**
+     * 适配页面
+     */
+    getScale(pageWidth) {
+      const base = this.propData.baseValue || 414
+      const ratio = this.propData.adaptationRatio || 1.2
+      const width = this.moduleObject.env === "production" ? window.innerWidth : pageWidth || 414
+      return (width / base - 1) * (ratio - 1) + 1
+    },
     /**
      * 提供父级组件调用的刷新prop数据组件
      */
     propDataWatchHandle(propData) {
       this.propData = propData.compositeAttr || {};
       this.convertAttrToStyleObject();
+      this.convertThemeListAttrToStyleObject();
     },
     /**
      * 重新加载
@@ -102,17 +114,74 @@ export default {
       this.initData();
     },
     initData() {
-      let that = this;
-      console.log("接口url是",this.propData.dataSource)
-      this.propData.dataSource && window.IDM.http.get(this.propData.dataSource)
-          .then((res) => {
-            //res.data
-            console.log(res)
-            // that.mockData = res.data;
-          })
-          .catch(function (error) {
+      let dataSource = this.propData.dataSource;
+      if (!dataSource) {
+        this.isLoading = false;
+        return;
+      }
+      let url = `ctrl/dataSource/getDatas`;
+      IDM.http.post(url, {
+            id: dataSource.value,
+          }, {
+            headers: {
+              "Content-Type": "application/json;charset=UTF-8",
+            },
+          }
+      ).done((res) => {
+        console.log(res, "接口数据");
+        if (res.code === "200") {
+          this.videoData = this.propData.dataFiled
+              ? this.getExpressData("dataName", this.propData.dataFiled, res)
+              : res;
+        } else {
+          console.log(url + "请求失败");
+        }
+      }).error((response) => {
+        console.log(url + "请求失败");
+      }).always((res) => {
+        this.isLoading = false;
+      });
+    },
+    /**
+     * 通用的获取表达式匹配后的结果
+     */
+    getExpressData(dataName, dataFiled, resultData) {
+      //给defaultValue设置dataFiled的值
+      var _defaultVal = undefined;
+      if (dataFiled) {
+        var filedExp = dataFiled;
+        filedExp = dataName + (filedExp.startsWiths("[") ? "" : ".") + filedExp;
+        var dataObject = {IDM: window.IDM};
+        dataObject[dataName] = resultData;
+        _defaultVal = window.IDM.express.replace.call(
+            this,
+            "@[" + filedExp + "]",
+            dataObject
+        );
+      }
+      //对结果进行再次函数自定义
+      if (
+          this.propData.customFunction &&
+          this.propData.customFunction.length > 0
+      ) {
+        var params = this.commonParam();
+        var resValue = "";
+        try {
+          resValue =
+              window[this.propData.customFunction[0].name] &&
+              window[this.propData.customFunction[0].name].call(this, {
+                ...params,
+                ...this.propData.customFunction[0].param,
+                moduleObject: this.moduleObject,
+                expressData: _defaultVal,
+                interfaceData: resultData,
+              });
+        } catch (error) {
+        }
+        _defaultVal = resValue;
+      }
 
-          });
+      return _defaultVal;
     },
     /**
      * 把属性转换成样式对象
@@ -124,7 +193,9 @@ export default {
       let styleVideo = {};
       let videoDataText = {};
       let videoDetailText = {};
+
       const scale = this.getScale(pageSize.width);
+      styleObject['--i-schedule-scale'] = scale;
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
           const element = this.propData[key];
@@ -136,11 +207,23 @@ export default {
             case "height":
               styleObject[key] = element;
               break;
-            case "VideoWidth":
-              styleVideo["width"] = element;
+            case "bgColor":
+              if (element && element.hex8) {
+                styleObject["background-color"] = IDM.hex8ToRgbaString(element.hex8);
+              }
               break;
-            case "VideoHeight":
-              styleVideo["height"] = element;
+            case "bgImgUrl":
+              styleObject[
+                  "background-image"
+                  ] = `url(${window.IDM.url.getWebPath(element)})`;
+              break;
+            case "bgRepeat":
+              //平铺模式
+              styleObject["background-repeat"] = element;
+              break;
+            case "bgAttachment":
+              //背景模式
+              styleObject["background-attachment"] = element;
               break;
             case "box":
               if (element.marginTopVal) {
@@ -202,6 +285,9 @@ export default {
               styleObject["border-bottom-left-radius"] = element.radius.leftBottom.radius + element.radius.leftBottom.radiusUnit;
               styleObject["border-bottom-right-radius"] = element.radius.rightBottom.radius + element.radius.rightBottom.radiusUnit;
               break;
+            case "boxShadow":
+              styleObject["box-shadow"] = element;
+              break;
             case "headerLeftFont":
               styleHeaderLeft["font-family"] = element.fontFamily;
               if (element.fontColors.hex8) {
@@ -226,18 +312,6 @@ export default {
               styleHeaderRight["text-align"] = element.fontTextAlign;
               styleHeaderRight["text-decoration"] = element.fontDecoration;
               break;
-            case "videoDataFont":
-              videoDataText["font-family"] = element.fontFamily;
-              if (element.fontColors.hex8) {
-                videoDataText["color"] = element.fontColors.hex8;
-              }
-              videoDataText["font-weight"] = element.fontWeight && element.fontWeight.split(" ")[0];
-              videoDataText["font-style"] = element.fontStyle;
-              videoDataText["font-size"] = element.fontSize + element.fontSizeUnit;
-              videoDataText["line-height"] = element.fontLineHeight + (element.fontLineHeightUnit == "-" ? "" : element.fontLineHeightUnit);
-              videoDataText["text-align"] = element.fontTextAlign;
-              videoDataText["text-decoration"] = element.fontDecoration;
-              break;
             case "videoBottomFont":
               videoDetailText["font-family"] = element.fontFamily;
               if (element.fontColors.hex8) {
@@ -250,66 +324,6 @@ export default {
               videoDetailText["text-align"] = element.fontTextAlign;
               videoDetailText["text-decoration"] = element.fontDecoration;
 
-              break;
-            case "videoBox":
-              if (element.marginTopVal) {
-                styleVideo["margin-top"] = `${element.marginTopVal}`;
-              }
-              if (element.marginRightVal) {
-                styleVideo["margin-right"] = `${element.marginRightVal}`;
-              }
-              if (element.marginBottomVal) {
-                styleVideo["margin-bottom"] = `${element.marginBottomVal}`;
-              }
-              if (element.marginLeftVal) {
-                styleVideo["margin-left"] = `${element.marginLeftVal}`;
-              }
-              if (element.paddingTopVal) {
-                styleVideo["padding-top"] = `${element.paddingTopVal}`;
-              }
-              if (element.paddingRightVal) {
-                styleVideo["padding-right"] = `${element.paddingRightVal}`;
-              }
-              if (element.paddingBottomVal) {
-                styleVideo["padding-bottom"] = `${element.paddingBottomVal}`;
-              }
-              if (element.paddingLeftVal) {
-                styleVideo["padding-left"] = `${element.paddingLeftVal}`;
-              }
-              break;
-            case "videoBorder":
-              if (element.border.top.width > 0) {
-                styleVideo["border-top-width"] = element.border.top.width + element.border.top.widthUnit;
-                styleVideo["border-top-style"] = element.border.top.style;
-                if (element.border.top.colors.hex8) {
-                  styleVideo["border-top-color"] = element.border.top.colors.hex8;
-                }
-              }
-              if (element.border.right.width > 0) {
-                styleVideo["border-right-width"] = element.border.right.width + element.border.right.widthUnit;
-                styleVideo["border-right-style"] = element.border.right.style;
-                if (element.border.right.colors.hex8) {
-                  styleVideo["border-right-color"] = element.border.right.colors.hex8;
-                }
-              }
-              if (element.border.bottom.width > 0) {
-                styleVideo["border-bottom-width"] = element.border.bottom.width + element.border.bottom.widthUnit;
-                styleVideo["border-bottom-style"] = element.border.bottom.style;
-                if (element.border.bottom.colors.hex8) {
-                  styleVideo["border-bottom-color"] = element.border.bottom.colors.hex8;
-                }
-              }
-              if (element.border.left.width > 0) {
-                styleVideo["border-left-width"] = element.border.left.width + element.border.left.widthUnit;
-                styleVideo["border-left-style"] = element.border.left.style;
-                if (element.border.left.colors.hex8) {
-                  styleVideo["border-left-color"] = element.border.left.colors.hex8;
-                }
-              }
-              styleVideo["border-top-left-radius"] = element.radius.leftTop.radius + element.radius.leftTop.radiusUnit;
-              styleVideo["border-top-right-radius"] = element.radius.rightTop.radius + element.radius.rightTop.radiusUnit;
-              styleVideo["border-bottom-left-radius"] = element.radius.leftBottom.radius + element.radius.leftBottom.radiusUnit;
-              styleVideo["border-bottom-right-radius"] = element.radius.rightBottom.radius + element.radius.rightBottom.radiusUnit;
               break;
           }
         }
@@ -333,11 +347,105 @@ export default {
           this.moduleObject.id + ' .videoDetail',
           videoDetailText);
     },
+    /**
+     * 主题颜色
+     */
+    convertThemeListAttrToStyleObject() {
+      const themeList = this.propData.themeList;
+      if (!themeList) {
+        return;
+      }
+      const themeNamePrefix =
+          IDM.setting &&
+          IDM.setting.applications &&
+          IDM.setting.applications.themeNamePrefix
+              ? IDM.setting.applications.themeNamePrefix
+              : "idm-theme-";
+      for (var i = 0; i < themeList.length; i++) {
+        var item = themeList[i];
+
+        IDM.setStyleToPageHead(
+            "." +
+            themeNamePrefix +
+            item.key +
+            " #" +
+            (this.moduleObject.packageid || "module_demo") +
+            " .left-text",
+            {
+              "border-color": item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
+            }
+        );
+
+        IDM.setStyleToPageHead(
+            "." +
+            themeNamePrefix +
+            item.key +
+            " #" +
+            (this.moduleObject.packageid || "module_demo") +
+            " .right",
+            {
+              "color": item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
+            }
+        );
+      }
+    },
+
+    //点击更多的回调函数
+    showMoreData() {
+      console.log(this.propData.showMoreUrl)
+      if(this.propData.showMoreUrl !== ''){
+        IDM.router.push(this.moduleObject.routerId, this.propData.showMoreUrl, {
+          keep: true
+        });
+      }
+    },
+
+    //点击视频卡片后跳转函数
+    toVideo(video){
+      if(video.videoUrl !== ''){
+        IDM.router.push(this.moduleObject.routerId, video.videoUrl, {
+          keep: true
+        });
+      }
+    },
+    /**
+     * 组件通信：接收消息的方法
+     * @param {
+     *  type:"发送消息的时候定义的类型，这里可以自己用来要具体做什么，统一规定的type：linkageResult（组件联动传结果值）、linkageDemand（组件联动传需求值）、linkageReload（联动组件重新加载）
+     * 、linkageOpenDialog（打开弹窗）、linkageCloseDialog（关闭弹窗）、linkageShowModule（显示组件）、linkageHideModule（隐藏组件）、linkageResetDefaultValue（重置默认值）"
+     *  message:{发送的时候传输的消息对象数据}
+     *  messageKey:"消息数据的key值，代表数据类型是什么，常用于表单交互上，比如通过这个key判断是什么数据"
+     *  isAcross:如果为true则代表发送来源是其他页面的组件，默认为false
+     * } object
+     */
+    receiveBroadcastMessage(messageObject) {
+      switch(messageObject.type) {
+        case 'websocket':
+          if(this.propData.messageRefreshKey && messageObject.message){
+            const messageData = typeof messageObject.message === 'string' && JSON.parse(messageObject.message) || messageObject.message
+            const arr = Array.isArray(this.propData.messageRefreshKey) ? this.propData.messageRefreshKey : [this.propData.messageRefreshKey]
+            if(messageData.badgeType && arr.includes(messageData.badgeType)){
+              this.isLoading = true;
+              this.initData();
+            }
+          }
+          break;
+        case 'linkageReload':
+          this.isLoading = true;
+          this.initData()
+          break;
+        case 'pageResize':
+          this.convertAttrToStyleObject(messageObject.message);
+          break;
+      }
+    },
   }
 }
 </script>
 
 <style scoped lang="scss">
+$scale: var(--i-schedule-scale);
+
 .container {
   display: flex;
   justify-content: center;
@@ -345,16 +453,15 @@ export default {
   width: 100%;
 
   .study-card {
-    border: 1px solid rgba(243, 243, 243, 1);
+    border: calc(1px * #{ $scale }) solid rgba(243, 243, 243, 1);
     height: auto;
     width: 90%;
     background-color: #ffffff;
-    box-shadow: 0 0 5px #8d8d8d;
-    border-radius: 0.5rem;
-    margin: 1rem 0;
+    border-radius: calc(10px * #{ $scale });
+    margin: calc(16px * #{ $scale }) 0;
 
     &-header {
-      margin: 0.4rem 0.5rem;
+      margin: calc(7px * #{ $scale }) calc(8px * #{ $scale });
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -362,10 +469,10 @@ export default {
 
       .left-text {
         color: rgb(50, 50, 50);
-        border-left: 0.5rem #c90000 solid;
-        padding-left: 0.5rem;
-        font-size: 1.5rem;
-        line-height: 1.5rem;
+        border-left: calc(8px * #{ $scale }) #c90000 solid;
+        padding-left: calc(8px * #{ $scale });
+        font-size: calc(24px * #{ $scale });
+        line-height: calc(24px * #{ $scale });
         font-weight: 700;
       }
 
@@ -378,8 +485,8 @@ export default {
         color: rgb(205, 6, 3);
 
         .right-text {
-          padding-right: 0.3rem;
-          font-size: 1.2rem;
+          padding-right: calc(5px * #{ $scale });
+          font-size: calc(19px * #{ $scale });
           font-weight: 500;
         }
 
@@ -389,8 +496,8 @@ export default {
           align-items: center;
 
           svg {
-            width: 1.5rem;
-            height: 1.5rem;
+            width: calc(24px * #{ $scale });
+            height: calc(24px * #{ $scale });
           }
         }
       }
@@ -398,32 +505,33 @@ export default {
 
     .video-list {
       display: flex;
-      padding: 0 0.5rem;
+      padding: 0 calc(8px * #{ $scale });
       align-items: center;
       flex-wrap: wrap;
       align-content: space-around;
       justify-content: space-between;
       flex-direction: row;
-      height: 90%;
+      height: 100%;
 
       .video-card {
         position: relative;
-        width: 48%;;
+        width: 47%;;
         height: auto;
-        margin: 0.5rem 0;
-        border: 1px solid rgba(200, 200, 200, 1);
-        border-radius: 0.5rem;
+        margin: calc(8px * #{ $scale }) 0;
+        border: calc(1px * #{ $scale }) solid rgba(200, 200, 200, 1);
+        border-radius: calc(8px * #{ $scale });
         overflow: hidden;
 
         .videoImg {
           width: auto;
-          height: 6rem;
+          height: calc(88px * #{ $scale });
           display: flex;
           flex-direction: column-reverse;
           align-items: center;
-          img{
-            width: auto;
-            height: 6rem;
+
+          img {
+            width: 100%;
+            height: calc(88px * #{ $scale });
             position: absolute;
             background-size: 100% 100%;
             background-repeat: no-repeat;
@@ -435,11 +543,12 @@ export default {
           height: auto;
           display: flex;
           justify-content: space-between;
-          padding: 0.1rem 0.5rem;
+          padding: calc(2px * #{ $scale }) calc(8px * #{ $scale });
           align-items: center;
-          font-size: 0.8rem;
-          line-height: 0.8rem;
+          font-size: calc(12px * #{ $scale });
+          line-height: calc(12px * #{ $scale });
           font-weight: 600;
+          z-index: 1;
 
           .left-data {
             width: 50%;
@@ -448,9 +557,9 @@ export default {
             align-items: center;
 
             svg {
-              width: 2rem;
-              height: 2rem;
-              padding-right: 0.1rem;
+              width: calc(32px * #{ $scale });
+              height: calc(32px * #{ $scale });
+              padding-right: calc(2px * #{ $scale });
             }
           }
 
@@ -467,11 +576,11 @@ export default {
 
         .videoDetail {
           width: auto;
-          height: 2.5rem;
-          margin: 0.5rem 0.5rem;
-          font-size: 0.9rem;
+          height: calc(40px * #{ $scale });
+          margin: calc(8px * #{ $scale }) calc(8px * #{ $scale });
+          font-size: calc(14px * #{ $scale });
           color: rgb(50, 50, 50);
-          font-weight: 600;
+          font-weight: 500;
           display: -webkit-box;
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 2;

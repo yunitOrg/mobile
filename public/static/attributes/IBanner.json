@@ -69,22 +69,26 @@
                     "layoutType": "inline",
                     "text": "跳转方式",
                     "bindKey": "jumpStyle",
-                    "desc": "设置点击轮播图片时链接跳转方式",
+                    "desc": "设置点击轮播图片时跳转方式, 链接打开时使用window.open配置的数据源链接",
                     "dictionary": [
                         {
-                            "label": "智能跳转打开",
-                            "value": "_auto"
+                            "label": "子页面打开",
+                            "value": "_child"
                         },
                         {
-                            "label": "当前页跳转",
-                            "value": "_self"
-                        },
-                        {
-                            "label": "新窗口打开",
-                            "value": "_blank"
+                            "label": "链接打开",
+                            "value": "_link"
                         }
                     ],
-                    "default": "_auto"
+                    "default": "_link"
+                },
+                {
+                    "type": "pageSelect",
+                    "layoutType": "inline",
+                    "text": "跳转页面",
+                    "display": "@[jumpStyle === '_child']",
+                    "bindKey": "pageList",
+                    "desc": "选择要打开的子页面"
                 },
                 {
                     "type": "slider",

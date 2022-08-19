@@ -110,6 +110,40 @@
                     "bindKey": "limit",
                     "desc": "设置组件列表最多显示几条",
                     "default": 3
+                },
+                {
+                    "type": "select",
+                    "layoutType": "inline",
+                    "text": "跳转方式",
+                    "bindKey": "jumpStyle",
+                    "desc": "设置点击轮播图片时跳转方式, 链接打开时使用window.open配置的数据源链接",
+                    "dictionary": [
+                        {
+                            "label": "子页面打开",
+                            "value": "_child"
+                        },
+                        {
+                            "label": "链接打开",
+                            "value": "_link"
+                        }
+                    ],
+                    "default": "_link"
+                },
+                {
+                    "type": "pageSelect",
+                    "layoutType": "inline",
+                    "text": "更多页面",
+                    "display": "@[jumpStyle === '_child' && isShowTitle == true]",
+                    "bindKey": "morePageList",
+                    "desc": "选择要打开的子页面"
+                },
+                {
+                    "type": "pageSelect",
+                    "layoutType": "inline",
+                    "text": "单项页面",
+                    "display": "@[jumpStyle === '_child']",
+                    "bindKey": "itemPageList",
+                    "desc": "选择要打开的子页面"
                 }
             ]
         },
@@ -1043,7 +1077,7 @@
             "type": "table",
             "text": "活动状态列表样式",
             "bindKey": "activityList",
-            "tabText": "活动[index]",
+            "tabText": "状态[index]",
             "default": [
                 {
                     "statusText": "未开始",
