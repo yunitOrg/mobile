@@ -16,21 +16,21 @@
       <div class="irank-ul">
         <div class="irank-self" v-if="propData.selfShow">
           <div class="irank-index">
-            {{currentObj.index}}
+          {{currentObj.index}}
           </div>
           <div class="irank-center">
             <div class="irank-icon">
-              <img :src="currentObj.headImg" alt="">
+              <img :src="currentObj[propData.ImgInterface] || currentObj.headImg" alt="">
             </div>
             <div class="irank-desc">
-              <div class="irank-title">{{currentObj.title}}</div>
-              <div class="irank-tip">{{currentObj.desc}}</div>
+              <div class="irank-title">{{currentObj[propData.titleInterface] || currentObj.title}}</div>
+              <div class="irank-tip">{{currentObj[propData.descInterface] || currentObj.desc}}</div>
             </div>
           </div>
-          <div class="irank-right">{{currentObj.money}}</div>
+          <div class="irank-right">{{currentObj[propData.moneyInterface] || currentObj.money}}</div>
         </div>
         <div class="irank-content">
-          <li v-for="(item, index) in list" :key="index">
+          <li v-for="(item, index) in pageDataList.length > 0 ? pageDataList : list" :key="index">
             <div class="irank-index">
               <img :src="rankObj.rank1" alt="" v-if="index===0">
               <img :src="rankObj.rank2" alt="" v-else-if="index===1">
@@ -39,17 +39,20 @@
             </div>
             <div class="irank-center">
               <div class="irank-icon">
-                <img :src="item.headImg" alt="">
+                <img :src="item[propData.ImgInterface] || item.headImg" alt="">
               </div>
               <div class="irank-desc">
-                <div class="irank-title">{{item.title}}</div>
-                <div class="irank-tip">{{item.desc}}</div>
+                <div class="irank-title">{{item[propData.titleInterface] || item.title}}</div>
+                <div class="irank-tip">{{item[propData.descInterface] || item.desc}}</div>
               </div>
             </div>
-            <div class="irank-right">{{item.money}}</div>
+            <div class="irank-right">{{item[propData.moneyInterface] || item.money}}</div>
           </li>
         </div>
       </div>
+    </div>
+    <div class="idm-message-list-parent-box-mask" v-if="moduleObject.env === 'develop' && !propData.dataSource">
+      <span>！未绑定数据源</span>
     </div>
   </div>
 </template>
@@ -72,6 +75,7 @@ export default {
         desc: '河南省办公厅党支部',
         money: 10000
       },
+      pageDataList: [],
       list: [
         {
           headImg: 'http://116.236.111.158:8086/DreamWeb/resource/img/body-bg-shanghai.png',
@@ -103,7 +107,28 @@ export default {
           showImg: true,
           selfShow: true,
           imgWidth: '100%',
-          imgHeight: '200px'
+          imgHeight: '200px',
+          selfSlice: '10px',
+          ulbox: {
+            marginTopVal: "-20px",
+            marginRightVal: "10px",
+            marginBottomVal: "",
+            marginLeftVal: "10px",
+            paddingTopVal: "",
+            paddingRightVal: "",
+            paddingBottomVal: "",
+            paddingLeftVal: ""
+          },
+          libox: {
+            marginTopVal: "",
+            marginRightVal: "20px",
+            marginBottomVal: "",
+            marginLeftVal: "20px",
+            paddingTopVal: "10px",
+            paddingRightVal: "",
+            paddingBottomVal: "10px",
+            paddingLeftVal: ""
+          }
       }
     }
   },
@@ -116,7 +141,35 @@ export default {
       this.propData = propData.compositeAttr||{};
       this.init();
     },
+    initData () {
+      let that = this;
+      const customInterfaceUrl = '/ctrl/dataSource/getDatas';
+      if (this.moduleObject.env == "production") {
+        this.propData.dataSource &&
+          IDM.http
+            .post(
+              customInterfaceUrl,
+              {
+                id: this.propData.dataSource && this.propData.dataSource.value,
+              },
+              {
+                headers: {
+                  "Content-Type": "application/json;charset=UTF-8",
+                },
+              }
+            )
+            .done((res) => {
+              if (res.type === "success") {
+                that.pageDataList = res.data || [];
+                that.currentObj = res.data.find(item => item.id === that.propData.selfInterface)
+              } else {
+                IDM.message.error(res.message);
+              }
+            });
+      }
+    },
     init () {
+      this.initData();
       this.convertAttrToStyleObject();
       this.convertTitleStyleObject();
       this.convertMoneyStyleObject();
@@ -153,6 +206,43 @@ export default {
           styleObject["padding-left"] = `${ulbox.paddingLeftVal}`;
         }
       }
+      let listyleObject = {}, selfObject = {};
+      if (this.propData.libox) {
+        let ulbox = this.propData.libox || {};
+        if (ulbox.marginTopVal) {
+          listyleObject["margin-top"] = `${ulbox.marginTopVal}`;
+        }
+        if (ulbox.marginRightVal) {
+          listyleObject["margin-right"] = `${ulbox.marginRightVal}`;
+          selfObject["padding-right"] = `${ulbox.marginRightVal}`;
+        }
+        if (ulbox.marginBottomVal) {
+          listyleObject["margin-bottom"] = `${ulbox.marginBottomVal}`;
+        }
+        if (ulbox.marginLeftVal) {
+          listyleObject["margin-left"] = `${ulbox.marginLeftVal}`;
+          selfObject["padding-left"] = `${ulbox.marginLeftVal}`;
+        }
+        if (ulbox.paddingTopVal) {
+          listyleObject["padding-top"] = `${ulbox.paddingTopVal}`;
+          selfObject['padding-top'] = `${ulbox.paddingTopVal}`;
+        }
+        if (ulbox.paddingRightVal) {
+          listyleObject["padding-right"] = `${ulbox.paddingRightVal}`;
+        }
+        if (ulbox.paddingBottomVal) {
+          listyleObject["padding-bottom"] = `${ulbox.paddingBottomVal}`;
+          selfObject["padding-bottom"] = `${ulbox.paddingBottomVal}`;
+        }
+        if (ulbox.paddingLeftVal) {
+          listyleObject["padding-left"] = `${ulbox.paddingLeftVal}`;
+        }
+      }
+      if (this.propData.selfSlice) {
+        selfObject['margin-bottom'] = this.propData.selfSlice
+      }
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .irank-content li", listyleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .irank-self", selfObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .irank-ul", styleObject);
     },
     convertTitleStyleObject () {
@@ -318,7 +408,26 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.idm-message-list-parent-box-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: rgba(0,0,0,.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span {
+    padding: 6px 20px;
+    color: #e6a23c;
+    background: #fdf6ec;
+    border:1px solid #f5dab1;
+    border-radius: 4px;
+  }
+}
 .idm-iranking{
   .irank-img{
     width: 100%;
@@ -335,19 +444,27 @@ export default {
     // border-radius: 10px;
     // background: #fff;
     // box-shadow: 0px  0px 20px 0px #ccc;
+    .irank-li{
+      display: flex;
+      flex-direction: initial;
+      align-items: center;
+      box-shadow: 0px  0px 20px 0px #ccc;
+      // margin-bottom: 10px;
+      border-radius: 10px;
+      background: #fff;
+    }
     .irank-self{
-      padding: 10px 20px;
+      // padding: 10px 20px;
       // margin: 0 10px;
       display: flex;
       flex-direction: initial;
       align-items: center;
       box-shadow: 0px  0px 20px 0px #ccc;
-      margin-bottom: 10px;
+      // margin-bottom: 10px;
       border-radius: 10px;
       background: #fff;
     }
     .irank-content{
-      padding: 0px 20px;
       border-radius: 10px;
       background: #fff;
       box-shadow: 0px  0px 20px 0px #ccc;

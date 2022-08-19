@@ -1,38 +1,66 @@
-<template>
-  <!--
-    根目录规范(必须不能为空)：
-    idm-ctrl：控件类型 drag_container：容器，drag_container_inlieblock：行内容器，idm_module：非容器的组件
-    id：使用moduleObject.id，如果id不使用这个将会被idm-ctrl-id属性替换
-    idm-ctrl-id：组件的id，这个必须不能为空
-  -->
-  <div idm-ctrl="idm_module"
-  :id="moduleObject.id" 
-  :idm-ctrl-id="moduleObject.id" 
-  >
-    <div class="idm_inputs">
-      <van-field
-        v-model="username"
-        name="用户名"
-        label="用户名"
-        placeholder="用户名"
-        :rules="[{ required: true, message: '请填写用户名' }]"
-      />
-    </div>
-  </div>
-</template>
-
-<script>
+<script type="text/jsx">
 export default {
+  name: 'idm-form',
+
   data () {
     return {
-      moduleObject:{},
-      propData:this.$root.propData.compositeAttr||{},
-      username: ''
+      propData: this.$root.propData.compositeAttr||{
+        tableComponent: [
+          {
+            key: '1',
+            type: 'input',
+            labelSwitch: true,
+            labelText: '文本'
+          },
+          {
+            key: '2',
+            type: 'password',
+            labelSwitch: true,
+            labelText: '文本'
+          },
+          {
+            key: '3',
+            type: 'switch',
+            labelSwitch: true,
+            labelText: '文本'
+          },
+          {
+            key: '4',
+            type: 'checkbox',
+            labelSwitch: true,
+            labelText: '文本'
+          },
+          {
+            key: '5',
+            type: 'textarea',
+            labelSwitch: true,
+            labelText: '文本'
+          },
+          {
+            key: '6',
+            type: 'sendPws',
+            labelSwitch: true,
+            labelText: '文本'
+          }
+        ]
+      }
     }
   },
+  render () {
+    return <div idm-ctrl="idm_module" id={this.moduleObject.id} idm-ctrl-id={this.moduleObject.id}>
+      <div class="idm_inputs">
+        <van-form>
+          {this.propData.tableComponent.map(item => {
+            !item.render &&
+            this.renderFunc(item)
+          })}
+        </van-form>
+      </div>
+    </div>
+  },
   created () {
-    this.moduleObject = this.$root.moduleObject
-    this.init()
+    this.moduleObject = this.$root.moduleObject;
+    this.init();
   },
   methods: {
     propDataWatchHandle (propData) {
@@ -41,11 +69,11 @@ export default {
     },
     init () {
       console.log(this.propData, '数据源')
+    },
+    renderFunc (item) {
+      console.log(item)
     }
   }
+
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

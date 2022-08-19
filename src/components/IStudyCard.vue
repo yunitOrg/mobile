@@ -6,7 +6,12 @@
     <div class="container">
       <div class="study-card">
         <div class="study-card-header">
-          <div class="left-text">{{ propData.headText }}</div>
+          <div class="left">
+            <a-space class="icon">
+              <svg-icon icon-class="shu"/>
+            </a-space>
+            <div class="left-text">{{ propData.headText }}</div>
+          </div>
           <div class="right" @click="showMoreData">
             <div class="right-text">
               更多
@@ -195,7 +200,7 @@ export default {
       let videoDetailText = {};
 
       const scale = this.getScale(pageSize.width);
-      styleObject['--i-schedule-scale'] = scale;
+      styleObject['--i-studycard-scale'] = scale;
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
           const element = this.propData[key];
@@ -284,6 +289,40 @@ export default {
               styleObject["border-top-right-radius"] = element.radius.rightTop.radius + element.radius.rightTop.radiusUnit;
               styleObject["border-bottom-left-radius"] = element.radius.leftBottom.radius + element.radius.leftBottom.radiusUnit;
               styleObject["border-bottom-right-radius"] = element.radius.rightBottom.radius + element.radius.rightBottom.radiusUnit;
+              break;
+            case "videoBorder":
+              if (element.border.top.width > 0) {
+                styleVideo["border-top-width"] = element.border.top.width + element.border.top.widthUnit;
+                styleVideo["border-top-style"] = element.border.top.style;
+                if (element.border.top.colors.hex8) {
+                  styleVideo["border-top-color"] = element.border.top.colors.hex8;
+                }
+              }
+              if (element.border.right.width > 0) {
+                styleVideo["border-right-width"] = element.border.right.width + element.border.right.widthUnit;
+                styleVideo["border-right-style"] = element.border.right.style;
+                if (element.border.right.colors.hex8) {
+                  styleVideo["border-right-color"] = element.border.right.colors.hex8;
+                }
+              }
+              if (element.border.bottom.width > 0) {
+                styleVideo["border-bottom-width"] = element.border.bottom.width + element.border.bottom.widthUnit;
+                styleVideo["border-bottom-style"] = element.border.bottom.style;
+                if (element.border.bottom.colors.hex8) {
+                  styleVideo["border-bottom-color"] = element.border.bottom.colors.hex8;
+                }
+              }
+              if (element.border.left.width > 0) {
+                styleVideo["border-left-width"] = element.border.left.width + element.border.left.widthUnit;
+                styleVideo["border-left-style"] = element.border.left.style;
+                if (element.border.left.colors.hex8) {
+                  styleVideo["border-left-color"] = element.border.left.colors.hex8;
+                }
+              }
+              styleVideo["border-top-left-radius"] = element.radius.leftTop.radius + element.radius.leftTop.radiusUnit;
+              styleVideo["border-top-right-radius"] = element.radius.rightTop.radius + element.radius.rightTop.radiusUnit;
+              styleVideo["border-bottom-left-radius"] = element.radius.leftBottom.radius + element.radius.leftBottom.radiusUnit;
+              styleVideo["border-bottom-right-radius"] = element.radius.rightBottom.radius + element.radius.rightBottom.radiusUnit;
               break;
             case "boxShadow":
               styleObject["box-shadow"] = element;
@@ -392,21 +431,24 @@ export default {
 
     //点击更多的回调函数
     showMoreData() {
-      console.log(this.propData.showMoreUrl)
-      if(this.propData.showMoreUrl !== ''){
-        IDM.router.push(this.moduleObject.routerId, this.propData.showMoreUrl, {
-          keep: true
-        });
-      }
+      if (this.propData.showMoreUrl && this.propData.showMoreUrl.id)
+        IDM.router.push(
+            this.moduleObject.routerId,
+            this.propData.showMoreUrl.id,
+            {
+              keep: true,
+            }
+        );
     },
 
     //点击视频卡片后跳转函数
     toVideo(video){
-      if(video.videoUrl !== ''){
-        IDM.router.push(this.moduleObject.routerId, video.videoUrl, {
-          keep: true
-        });
-      }
+      console.log("跳转到视频地址")
+      // if(video.videoUrl !== ''){
+      //   IDM.router.push(this.moduleObject.routerId, video.videoUrl, {
+      //     keep: true
+      //   });
+      // }
     },
     /**
      * 组件通信：接收消息的方法
@@ -444,7 +486,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$scale: var(--i-schedule-scale);
+$scale: var(--i-studycard-scale);
 
 .container {
   display: flex;
@@ -455,26 +497,37 @@ $scale: var(--i-schedule-scale);
   .study-card {
     border: calc(1px * #{ $scale }) solid rgba(243, 243, 243, 1);
     height: auto;
-    width: 90%;
+    width: 100%;
     background-color: #ffffff;
-    border-radius: calc(10px * #{ $scale });
-    margin: calc(16px * #{ $scale }) 0;
+    border-radius: calc(6px * #{ $scale });
+    margin: calc(16px * #{ $scale }) calc(10px * #{ $scale });
+    padding: 0 calc(12px * #{ $scale });
 
     &-header {
-      margin: calc(7px * #{ $scale }) calc(8px * #{ $scale });
+      margin: calc(18px * #{ $scale }) 0 calc(16px * #{ $scale }) 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
       align-content: center;
 
-      .left-text {
-        color: rgb(50, 50, 50);
-        border-left: calc(8px * #{ $scale }) #c90000 solid;
-        padding-left: calc(8px * #{ $scale });
-        font-size: calc(24px * #{ $scale });
-        line-height: calc(24px * #{ $scale });
-        font-weight: 700;
-      }
+      .left{
+        display: flex;
+        justify-content: center;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        align-items: center;
+        color: rgb(205, 6, 3);
+        margin-left: calc(-4px * #{ $scale });
+
+        .left-text {
+          font-family: arial, helvetica, 'microsoft yahei',serif;
+          color: #333333FF;
+          font-size: calc(18px * #{ $scale });
+          line-height: calc(18px * #{ $scale });
+          font-weight: 800;
+        }
+      };
+
 
       .right {
         display: flex;
@@ -485,53 +538,56 @@ $scale: var(--i-schedule-scale);
         color: rgb(205, 6, 3);
 
         .right-text {
+          font-family: arial, helvetica, 'microsoft yahei',serif;
           padding-right: calc(5px * #{ $scale });
-          font-size: calc(19px * #{ $scale });
-          font-weight: 500;
+          font-size: calc(14px * #{ $scale });
+          line-height: calc(14px * #{ $scale });
+          font-weight: 400;
         }
 
-        .icon {
-          display: flex;
-          justify-content: center;
-          align-items: center;
+      }
 
-          svg {
-            width: calc(24px * #{ $scale });
-            height: calc(24px * #{ $scale });
-          }
+      .icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        svg {
+          width: calc(18px * #{ $scale });
+          height: calc(18px * #{ $scale });
         }
       }
     }
 
     .video-list {
       display: flex;
-      padding: 0 calc(8px * #{ $scale });
       align-items: center;
       flex-wrap: wrap;
       align-content: space-around;
       justify-content: space-between;
       flex-direction: row;
       height: 100%;
+      padding: 0;
 
       .video-card {
         position: relative;
-        width: 47%;;
+        width: 48%;;
         height: auto;
-        margin: calc(8px * #{ $scale }) 0;
-        border: calc(1px * #{ $scale }) solid rgba(200, 200, 200, 1);
-        border-radius: calc(8px * #{ $scale });
+        margin: 0 0 calc(14px * #{ $scale }) 0;
+        border: calc(1px * #{ $scale }) solid rgba(237,237,237, 1);
+        border-radius: calc(4px * #{ $scale });
         overflow: hidden;
 
         .videoImg {
           width: auto;
-          height: calc(88px * #{ $scale });
+          height: calc(106px * #{ $scale });
           display: flex;
           flex-direction: column-reverse;
           align-items: center;
 
           img {
             width: 100%;
-            height: calc(88px * #{ $scale });
+            height: calc(106px * #{ $scale });
             position: absolute;
             background-size: 100% 100%;
             background-repeat: no-repeat;
@@ -540,14 +596,14 @@ $scale: var(--i-schedule-scale);
 
         .videoData {
           width: 100%;
-          height: auto;
+          height: 18%;
           display: flex;
           justify-content: space-between;
-          padding: calc(2px * #{ $scale }) calc(8px * #{ $scale });
+          padding: calc(2px * #{ $scale }) calc(4px  * #{ $scale });
           align-items: center;
           font-size: calc(12px * #{ $scale });
           line-height: calc(12px * #{ $scale });
-          font-weight: 600;
+          font-weight: 400;
           z-index: 1;
 
           .left-data {
@@ -557,8 +613,8 @@ $scale: var(--i-schedule-scale);
             align-items: center;
 
             svg {
-              width: calc(32px * #{ $scale });
-              height: calc(32px * #{ $scale });
+              width: calc(24px * #{ $scale });
+              height: calc(24px * #{ $scale });
               padding-right: calc(2px * #{ $scale });
             }
           }
@@ -577,8 +633,9 @@ $scale: var(--i-schedule-scale);
         .videoDetail {
           width: auto;
           height: calc(40px * #{ $scale });
-          margin: calc(8px * #{ $scale }) calc(8px * #{ $scale });
+          margin: calc(6px * #{ $scale }) calc(8px * #{ $scale }) calc(10px * #{ $scale }) calc(8px * #{ $scale });
           font-size: calc(14px * #{ $scale });
+          line-height: calc(20px * #{ $scale });
           color: rgb(50, 50, 50);
           font-weight: 500;
           display: -webkit-box;

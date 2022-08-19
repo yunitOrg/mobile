@@ -120,8 +120,8 @@
         },
         {
           "type": "group",
-          "text": "上传附件文字",
-          "desc": "上传附件文字样式",
+          "text": "上传标题文字",
+          "desc": "上传标题文字样式",
           "helpUrl": "",
           "children": [
             {

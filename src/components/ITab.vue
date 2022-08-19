@@ -173,6 +173,33 @@ export default{
           element.radius.rightBottom.radius +
           element.radius.rightBottom.radiusUnit;
       }
+      if (this.propData.box) {
+        let item = this.propData.box || {};
+        if (item.marginTopVal) {
+          styleObject["margin-top"] = `${item.marginTopVal}`;
+        }
+        if (item.marginRightVal) {
+          styleObject["margin-right"] = `${item.marginRightVal}`;
+        }
+        if (item.marginBottomVal) {
+          styleObject["margin-bottom"] = `${item.marginBottomVal}`;
+        }
+        if (item.marginLeftVal) {
+          styleObject["margin-left"] = `${item.marginLeftVal}`;
+        }
+        if (item.paddingTopVal) {
+          styleObject["padding-top"] = `${item.paddingTopVal}`;
+        }
+        if (item.paddingRightVal) {
+          styleObject["padding-right"] = `${item.paddingRightVal}`;
+        }
+        if (item.paddingBottomVal) {
+          styleObject["padding-bottom"] = `${item.paddingBottomVal}`;
+        }
+        if (item.paddingLeftVal) {
+          styleObject["padding-left"] = `${item.paddingLeftVal}`;
+        }
+      }
       let chooseTabObject = {}
       if (this.propData.chooseWidth) {
         chooseTabObject['width'] = this.propData.chooseWidth

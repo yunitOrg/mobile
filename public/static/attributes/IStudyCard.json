@@ -21,11 +21,18 @@
       "desc": "提供设置组件能达到展示效果的基本属性设置信息",
       "children": [
         {
-          "type": "textarea",
+          "type": "input",
           "layoutType": "inline",
           "text": "标题",
           "bindKey": "headText",
           "default": "学习精选"
+        },
+        {
+          "type": "pageSelect",
+          "layoutType": "inline",
+          "text": "更多页面",
+          "bindKey": "showMoreUrl",
+          "desc": "点击更多后触发跳转到的页面选择"
         }
       ]
     },
@@ -66,13 +73,13 @@
           "bindKey": "box",
           "default": {
             "marginTopVal": "16px",
-            "marginRightVal": "0",
+            "marginRightVal": "10px",
             "marginBottomVal": "16px",
-            "marginLeftVal": "0",
+            "marginLeftVal": "10px",
             "paddingTopVal": "0",
-            "paddingRightVal": "10px",
+            "paddingRightVal": "12px",
             "paddingBottomVal": "0",
-            "paddingLeftVal": "10px"
+            "paddingLeftVal": "12px"
           }
         },
         {
@@ -256,84 +263,180 @@
           ]
         },
         {
-          "type": "border",
-          "layoutType": "block",
-          "text": "边框",
-          "bindKey": "border",
-          "default": {
-            "border": {
-              "top": {
-                "style": "solid",
-                "width": 1,
-                "widthUnit": "px",
-                "colors": {
-                  "rgba": {
-                    "r": 243,
-                    "g": 243,
-                    "b": 243,
-                    "a": 1
+          "type": "group",
+          "text": "外层容器边框",
+          "desc": "点击？查看背景设置用法指南",
+          "helpUrl": "",
+          "children": [
+            {
+              "type": "border",
+              "layoutType": "block",
+              "text": "边框",
+              "bindKey": "border",
+              "default": {
+                "border": {
+                  "top": {
+                    "style": "solid",
+                    "width": 1,
+                    "widthUnit": "px",
+                    "colors": {
+                      "rgba": {
+                        "r": 243,
+                        "g": 243,
+                        "b": 243,
+                        "a": 1
+                      }
+                    }
+                  },
+                  "right": {
+                    "style": "solid",
+                    "width": 1,
+                    "widthUnit": "px",
+                    "colors": {
+                      "rgba": {
+                        "r": 243,
+                        "g": 243,
+                        "b": 243,
+                        "a": 1
+                      }
+                    }
+                  },
+                  "bottom": {
+                    "style": "solid",
+                    "width": 1,
+                    "widthUnit": "px",
+                    "colors": {
+                      "rgba": {
+                        "r": 243,
+                        "g": 243,
+                        "b": 243,
+                        "a": 1
+                      }
+                    }
+                  },
+                  "left": {
+                    "style": "solid",
+                    "width": 1,
+                    "widthUnit": "px",
+                    "colors": {
+                      "rgba": {
+                        "r": 243,
+                        "g": 243,
+                        "b": 243,
+                        "a": 1
+                      }
+                    }
+                  }
+                },
+                "radius": {
+                  "leftTop": {
+                    "radius": 6,
+                    "radiusUnit": "px"
+                  },
+                  "rightTop": {
+                    "radius": 6,
+                    "radiusUnit": "px"
+                  },
+                  "leftBottom": {
+                    "radius": 6,
+                    "radiusUnit": "px"
+                  },
+                  "rightBottom": {
+                    "radius": 6,
+                    "radiusUnit": "px"
                   }
                 }
-              },
-              "right": {
-                "style": "solid",
-                "width": 1,
-                "widthUnit": "px",
-                "colors": {
-                  "rgba": {
-                    "r": 243,
-                    "g": 243,
-                    "b": 243,
-                    "a": 1
-                  }
-                }
-              },
-              "bottom": {
-                "style": "solid",
-                "width": 1,
-                "widthUnit": "px",
-                "colors": {
-                  "rgba": {
-                    "r": 243,
-                    "g": 243,
-                    "b": 243,
-                    "a": 1
-                  }
-                }
-              },
-              "left": {
-                "style": "solid",
-                "width": 1,
-                "widthUnit": "px",
-                "colors": {
-                  "rgba": {
-                    "r": 243,
-                    "g": 243,
-                    "b": 243,
-                    "a": 1
-                  }
-                }
-              }
-            },
-            "radius": {
-              "leftTop": {
-                "radius": 10,
-                "radiusUnit": "px"
-              },
-              "rightTop": {
-                "radius": 10,
-                "radiusUnit": "px"
-              },
-              "leftBottom": {
-                "radius": 10,
-                "radiusUnit": "px"
-              },
-              "rightBottom": {
-                "radius": 10,
-                "radiusUnit": "px"
               }
             }
-          }
+          ]
+        },
+        {
+          "type": "group",
+          "text": "视频卡片边框",
+          "desc": "点击？查看背景设置用法指南",
+          "helpUrl": "",
+          "children": [
+            {
+              "type": "border",
+              "layoutType": "block",
+              "text": "视频卡片边框",
+              "bindKey": "videoBorder",
+              "default": {
+                "border": {
+                  "top": {
+                    "style": "solid",
+                    "width": 1,
+                    "widthUnit": "px",
+                    "colors": {
+                      "rgba": {
+                        "r": 237,
+                        "g": 237,
+                        "b": 237,
+                        "a": 1
+                      }
+                    }
+                  },
+                  "right": {
+                    "style": "solid",
+                    "width": 1,
+                    "widthUnit": "px",
+                    "colors": {
+                      "rgba": {
+                        "r": 237,
+                        "g": 237,
+                        "b": 237,
+                        "a": 1
+                      }
+                    }
+                  },
+                  "bottom": {
+                    "style": "solid",
+                    "width": 1,
+                    "widthUnit": "px",
+                    "colors": {
+                      "rgba": {
+                        "r": 237,
+                        "g": 237,
+                        "b": 237,
+                        "a": 1
+                      }
+                    }
+                  },
+                  "left": {
+                    "style": "solid",
+                    "width": 1,
+                    "widthUnit": "px",
+                    "colors": {
+                      "rgba": {
+                        "r": 237,
+                        "g": 237,
+                        "b": 237,
+                        "a": 1
+                      }
+                    }
+                  }
+                },
+                "radius": {
+                  "leftTop": {
+                    "radius": 4,
+                    "radiusUnit": "px"
+                  },
+                  "rightTop": {
+                    "radius": 4,
+                    "radiusUnit": "px"
+                  },
+                  "leftBottom": {
+                    "radius": 4,
+                    "radiusUnit": "px"
+                  },
+                  "rightBottom": {
+                    "radius": 4,
+                    "radiusUnit": "px"
+                  }
+                }
+              }
+            }
+          ]
         },
         {
           "type": "input",
@@ -351,17 +454,17 @@
             "fontFamily": "impact, 'microsoft yahei'",
             "fontColors": {
               "rgba": {
-                "r": 50,
-                "g": 50,
-                "b": 50,
+                "r": 51,
+                "g": 51,
+                "b": 51,
                 "a": 1
               }
             },
-            "fontWeight": "700 Bold",
+            "fontWeight": "800",
             "fontStyle": "normal",
-            "fontSize": 24,
+            "fontSize": 18,
             "fontSizeUnit": "px",
-            "fontLineHeight": 24,
+            "fontLineHeight": 18,
             "fontLineHeightUnit": "px",
             "fontTextAlign": "center"
           }
@@ -468,14 +571,6 @@
               "default": "1.2"
             }
           ]
-        },
-        {
-          "type": "input",
-          "layoutType": "inline",
-          "text": "‘更多’点击",
-          "bindKey": "showMoreUrl",
-          "desc": "点击‘更多’后触发跳转到的url地址",
-          "placeholder": "/ctrl/moreVideo"
         },
         {
           "type": "treeSelect",

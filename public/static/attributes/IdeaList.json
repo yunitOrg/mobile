@@ -159,6 +159,44 @@
             "text": "数据源",
             "bindKey": "dataSource",
             "dataSourceUrl":"/ctrl/dataSource/getDatasourceByGroup"
+          },
+          {
+            "type": "group",
+            "text": "页面数据绑定",
+            "desc": "页面数据绑定",
+            "children": [
+              {
+                "type": "textarea",
+                "layoutType": "inline",
+                "text": "头像字段",
+                "bindKey": "ImgInterface"
+              },
+              {
+                "type": "textarea",
+                "layoutType": "inline",
+                "text": "标题字段",
+                "bindKey": "titleInterface"
+              },
+              {
+                "type": "textarea",
+                "layoutType": "inline",
+                "text": "描述字段",
+                "bindKey": "descInterface"
+              },
+              {
+                "type": "textarea",
+                "layoutType": "inline",
+                "text": "日期字段",
+                "bindKey": "TimeInterface"
+              },
+              {
+                "type": "textarea",
+                "layoutType": "inline",
+                "text": "待回复字段",
+                "bindKey": "activeInterface",
+                "default": "type == '1'"
+              }
+            ]
           }
         ]
       }
