@@ -1028,6 +1028,7 @@ $scale: var(--i-comment-detail-scale);
 
     ::v-deep .van-cell {
       height: 60px;
+      background-color: transparent;
 
       .van-field__left-icon {
         background: #f2f2f2;

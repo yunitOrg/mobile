@@ -23,14 +23,6 @@
         {
           "type": "input",
           "layoutType": "inline",
-          "text": "标题",
-          "desc": "组件标题",
-          "bindKey": "title",
-          "default": "全部评论"
-        },
-        {
-          "type": "input",
-          "layoutType": "inline",
           "text": "为空描述",
           "bindKey": "emptyDescription",
           "desc": "回复为空时的文字提示",
