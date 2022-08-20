@@ -74,7 +74,7 @@
     },
     {
       "type": "group",
-      "text": "外层容器样式",
+      "text": "主体容器样式",
       "desc": "点击？查看样式设置用法指南",
       "helpUrl": "",
       "children": [
@@ -301,14 +301,14 @@
         {
           "type": "font",
           "layoutType": "block",
-          "text": "标题文字",
+          "text": "评论文字",
           "bindKey": "font"
         }
       ]
     },
     {
       "type": "group",
-      "text": "内层容器样式",
+      "text": "底部容器样式",
       "desc": "点击？查看样式设置用法指南",
       "helpUrl": "",
       "children": [
@@ -603,18 +603,10 @@
           }
         },
         {
-          "type": "font",
-          "layoutType": "block",
-          "text": "文字",
-          "desc": "文字样式设置",
-          "bindKey": "innerFont"
-        },
-        {
           "type": "input",
           "layoutType": "inline",
           "text": "边框阴影",
-          "bindKey": "innerBoxShadow",
-          "default": "0px 2px 12px 0px rgba(0, 0, 0, 0.07)"
+          "bindKey": "innerBoxShadow"
         }
       ]
     },

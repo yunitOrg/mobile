@@ -105,12 +105,11 @@
 </template>
 
 <script>
-import { List, Icon } from "vant";
+import { List } from "vant";
 export default {
   name: "ICommentDetail",
   components: {
-    [List.name]: List,
-    [Icon.name]: Icon,
+    [List.name]: List
   },
   data() {
     return {
@@ -235,12 +234,11 @@ export default {
     /**
      * 重载组件
      */
-    reload(whole) {
-      if (whole) {
-      }
+    reload() {
       this.loading = true;
       this.finished = false;
       this.infoList = [];
+      this.getDetail();
       this.initData();
     },
     /**
@@ -583,26 +581,6 @@ export default {
               titleStyleObject["text-align"] = element.fontTextAlign;
               titleStyleObject["text-decoration"] = element.fontDecoration;
               break;
-            case "innerFont":
-              innerStyleObject["font-family"] = element.fontFamily;
-              if (element.fontColors.hex8) {
-                innerStyleObject["color"] = IDM.hex8ToRgbaString(
-                  element.fontColors.hex8
-                );
-              }
-              innerStyleObject["font-weight"] =
-                element.fontWeight && element.fontWeight.split(" ")[0];
-              innerStyleObject["font-style"] = element.fontStyle;
-              innerStyleObject["font-size"] =
-                element.fontSize + element.fontSizeUnit;
-              innerStyleObject["line-height"] =
-                element.fontLineHeight +
-                (element.fontLineHeightUnit == "-"
-                  ? ""
-                  : element.fontLineHeightUnit);
-              innerStyleObject["text-align"] = element.fontTextAlign;
-              innerStyleObject["text-decoration"] = element.fontDecoration;
-              break;
             case "boxShadow":
               styleObject["box-shadow"] = element;
               break;
@@ -612,9 +590,9 @@ export default {
           }
         }
       }
-      window.IDM.setStyleToPageHead(this.moduleObject.id, styleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + ` .i-comment-detail-wrapper`, styleObject);
       window.IDM.setStyleToPageHead(
-        this.moduleObject.id + ` .i-comment-detail-content`,
+        this.moduleObject.id + ` .i-comment-detail-bar`,
         innerStyleObject
       );
     },
@@ -641,21 +619,7 @@ export default {
             item.key +
             " #" +
             (this.moduleObject.packageid || "module_demo") +
-            " .i-comment-detail-header .i-comment-detail-header-right",
-          {
-            "border-color": item.mainColor
-              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
-              : "",
-          }
-        );
-
-        IDM.setStyleToPageHead(
-          "." +
-            themeNamePrefix +
-            item.key +
-            " #" +
-            (this.moduleObject.packageid || "module_demo") +
-            " .i-comment-detail-content .i-comment-detail-content-item .comment-star.active",
+            " .i-comment-detail-wrapper .content-right-top .comment-star.active",
           {
             color: item.mainColor
               ? IDM.hex8ToRgbaString(item.mainColor.hex8)
@@ -669,7 +633,35 @@ export default {
             item.key +
             " #" +
             (this.moduleObject.packageid || "module_demo") +
-            " .i-comment-detail-content-item .i-comment-detail-content-right .content-right-bottom",
+            " .i-comment-detail-wrapper .i-comment-detail-content-right .content-right-center span",
+          {
+            color: item.mainColor
+              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+              : "",
+          }
+        );
+
+        IDM.setStyleToPageHead(
+          "." +
+            themeNamePrefix +
+            item.key +
+            " #" +
+            (this.moduleObject.packageid || "module_demo") +
+            " .i-comment-detail-wrapper .i-comment-detail-content-right .content-right-bottom",
+          {
+            color: item.mainColor
+              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+              : "",
+          }
+        );
+
+        IDM.setStyleToPageHead(
+          "." +
+            themeNamePrefix +
+            item.key +
+            " #" +
+            (this.moduleObject.packageid || "module_demo") +
+            " .i-comment-detail-bar .van-cell .van-button",
           {
             color: item.mainColor
               ? IDM.hex8ToRgbaString(item.mainColor.hex8)
@@ -885,7 +877,7 @@ export default {
           }
           break;
         case "linkageReload":
-          this.reload(true);
+          this.reload();
           break;
         case "pageResize":
           this.convertAttrToStyleObject(messageObject.message);
