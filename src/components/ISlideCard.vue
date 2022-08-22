@@ -400,42 +400,44 @@ export default {
         this.setRows();
         return;
       }
-      const dataSource = this.propData.dataSource;
-      if (!dataSource) {
-        return false;
-      }
-      const url = `ctrl/dataSource/getDatas`;
-      const urlObject = IDM.url.queryObject();
-      this.isLoading = true;
-      IDM.http
-        .post(
-          url,
-          {
-            id: dataSource.value,
-            pageId:
-              window.IDM.broadcast && window.IDM.broadcast.pageModule
-                ? window.IDM.broadcast.pageModule.id
-                : '',
-            ...urlObject
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json;charset=UTF-8'
+      if (this.propData.dataType == 'dataSource' && this.propData.dataSource) {
+        const dataSource = this.propData.dataSource;
+        const url = `ctrl/dataSource/getDatas`;
+        const urlObject = IDM.url.queryObject();
+        this.isLoading = true;
+        IDM.http
+          .post(
+            url,
+            {
+              id: dataSource.value,
+              pageId:
+                window.IDM.broadcast && window.IDM.broadcast.pageModule
+                  ? window.IDM.broadcast.pageModule.id
+                  : '',
+              ...urlObject
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json;charset=UTF-8'
+              }
             }
-          }
-        )
-        .done(res => {
-          if (res.type === 'success') {
-            const resultData = this.customFormat(this.propData.customFunction, res.data);
-            this.data = resultData;
-            this.setRows();
-          }
-          this.isLoading = false;
-        })
-        .error(err => {
-          console.log(err);
-          this.isLoading = false;
-        });
+          )
+          .done(res => {
+            if (res.type === 'success') {
+              const resultData = this.customFormat(this.propData.customFunction, res.data);
+              this.data = resultData;
+              this.setRows();
+            }
+            this.isLoading = false;
+          })
+          .error(err => {
+            console.log(err);
+            this.isLoading = false;
+          });
+      } else if (this.propData.dataType == 'static' && this.propData.dataStaticSet) {
+        this.data = this.propData.dataStaticSet;
+        this.setRows();
+      }
     },
     setRows() {
       const data = [];
@@ -472,12 +474,16 @@ export default {
           window.IDM.broadcast && window.IDM.broadcast.pageModule
             ? window.IDM.broadcast.pageModule.id
             : '';
-        IDM.router.push(pageId, this.propData.moreBtnToPageId, {
-          keep: true,
-          params: {},
-          enterAnim: '',
-          quitAnim: ''
-        });
+        IDM.router.push(
+          pageId,
+          this.propData.moreBtnToPageId && this.propData.moreBtnToPageId[0]?.id,
+          {
+            keep: true,
+            params: {},
+            enterAnim: '',
+            quitAnim: ''
+          }
+        );
       } else {
         const url = IDM.url.getWebPath(this.propData.moreUrl);
         window.open(url, this.propData.moreTarget || '_self');
@@ -498,12 +504,16 @@ export default {
         this.propData.itemJumpPageParams?.forEach(param => {
           params[param.key] = this.getExpressData('data', param.field, item);
         });
-        IDM.router.push(pageId, this.propData.itemJumpPageId, {
-          keep: true,
-          params,
-          enterAnim: '',
-          quitAnim: ''
-        });
+        IDM.router.push(
+          pageId,
+          this.propData.itemJumpPageId && this.propData.itemJumpPageId[0]?.id,
+          {
+            keep: true,
+            params,
+            enterAnim: '',
+            quitAnim: ''
+          }
+        );
       } else if (this.propData.itemJumpUrl) {
         const url = IDM.url.getWebPath(IDM.express.replace(this.propData.itemJumpUrl, item));
         window.open(url, this.propData.itemJumpTarget || '_self');

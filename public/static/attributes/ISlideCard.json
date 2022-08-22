@@ -42,7 +42,7 @@
         {
           "type": "inputNumber",
           "layoutType": "inline",
-          "text": "列数",
+          "text": "展示列数",
           "desc": "左右滑动时可设置为0，表示不固定列数，允许超出。上下滑动时则必须大于0",
           "bindKey": "columNum",
           "default": 3
@@ -408,7 +408,7 @@
               "display": "@[itemJumpTarget=='_self'||itemJumpTarget=='_blank']"
             },
             {
-              "type": "input",
+              "type": "pageSelect",
               "layoutType": "inline",
               "text": "跳转页面",
               "desc": "单页面模式下，要跳转的页面",
@@ -723,7 +723,7 @@
               "display": "@[moreTarget=='_self'||moreTarget=='_blank']"
             },
             {
-              "type": "input",
+              "type": "pageSelect",
               "layoutType": "inline",
               "text": "跳转页面",
               "desc": "单页面模式下，要跳转的页面",
