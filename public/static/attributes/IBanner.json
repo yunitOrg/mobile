@@ -65,6 +65,15 @@
                     "display": "@[autoplay == true]"
                 },
                 {
+                    "type": "inputNumber",
+                    "layoutType": "inline",
+                    "text": "显示数量",
+                    "desc": "设置显示轮播图片数量，自定义配置轮播时失效",
+                    "bindKey": "limit",
+                    "default": 3,
+                    "display": "@[dataType === 'dataSource']"
+                },
+                {
                     "type": "select",
                     "layoutType": "inline",
                     "text": "跳转方式",
@@ -89,15 +98,6 @@
                     "display": "@[jumpStyle === '_child']",
                     "bindKey": "pageList",
                     "desc": "选择要打开的子页面"
-                },
-                {
-                    "type": "slider",
-                    "layoutType": "block",
-                    "text": "显示数量",
-                    "desc": "设置显示轮播图片数量，自定义配置轮播时失效",
-                    "bindKey": "limit",
-                    "default": 3,
-                    "display": "@[dataType === 'dataSource']"
                 }
             ]
         },
