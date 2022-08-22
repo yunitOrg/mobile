@@ -449,25 +449,7 @@
           "type": "font",
           "layoutType": "block",
           "text": "标题文字",
-          "bindKey": "headerLeftFont",
-          "default": {
-            "fontFamily": "impact, 'microsoft yahei'",
-            "fontColors": {
-              "rgba": {
-                "r": 51,
-                "g": 51,
-                "b": 51,
-                "a": 1
-              }
-            },
-            "fontWeight": "800",
-            "fontStyle": "normal",
-            "fontSize": 18,
-            "fontSizeUnit": "px",
-            "fontLineHeight": 18,
-            "fontLineHeightUnit": "px",
-            "fontTextAlign": "center"
-          }
+          "bindKey": "headerLeftFont"
         },
         {
           "type": "font",

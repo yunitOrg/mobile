@@ -107,17 +107,15 @@ export default {
     getScale(pageWidth) {
       const base = this.propData.baseValue || 414
       const ratio = this.propData.adaptationRatio || 1.2
-      let width = this.moduleObject.env === "production" ? window.innerWidth : pageWidth || 414
-      width=window.innerWidth
-      console.log(window.innerWidth)
-      console.log("1   "+width+"   2  "+base+"  3  "+ratio)
+      const width = this.moduleObject.env === "production" ? window.innerWidth : pageWidth || 414
       return (width / base - 1) * (ratio - 1) + 1
     },
     /**
      * 图片适配
      */
-    getImgScale(){
-      return window.innerWidth/414
+    getImgScale(pageWidth){
+      let width = this.moduleObject.env === "production" ? window.innerWidth :pageWidth || 414
+      return width/414
     },
 
     /**
@@ -134,6 +132,13 @@ export default {
     reload() {
       //请求数据源
       this.initData();
+
+      let styleObject = {};
+      const imgScale = this.getImgScale()
+      styleObject['--i-studycard-imgScale'] = imgScale;
+      window.IDM.setStyleToPageHead(
+          this.moduleObject.id + ' .study-card',
+          styleObject);
     },
     initData() {
       let dataSource = this.propData.dataSource;
@@ -217,9 +222,10 @@ export default {
       let videoDetailText = {};
 
       const scale = this.getScale(pageSize.width);
-      const imgScale = this.getImgScale()
-      styleObject['--i-studycard-imgScale'] = imgScale;
       styleObject['--i-studycard-scale'] = scale;
+
+      const imgScale = this.getImgScale(pageSize.width)
+      styleObject['--i-studycard-imgScale'] = imgScale;
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
           const element = this.propData[key];
@@ -419,7 +425,6 @@ export default {
           IDM.setting.applications.themeNamePrefix
               ? IDM.setting.applications.themeNamePrefix
               : "idm-theme-";
-      console.log(themeList)
       for (var i = 0; i < themeList.length; i++) {
         var item = themeList[i];
         IDM.setStyleToPageHead(
