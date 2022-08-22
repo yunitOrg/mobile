@@ -9,13 +9,13 @@
     idm-ctrl="idm_module"
     :id="moduleObject.id"
     :idm-ctrl-id="moduleObject.id"
-    class="i-selectPieChart-outer"
+    class="i-slideCard-outer"
   >
-    <div class="i-selectPieChart-header" v-if="propData.isShowTitleBar">
-      <div class="i-selectPieChart-header-main">
-        <div class="i-selectPieChart-header-tit">
+    <div class="i-slideCard-header" v-if="propData.isShowTitleBar">
+      <div class="i-slideCard-header-main">
+        <div class="i-slideCard-header-tit">
           <span v-if="propData.titleIconPosition === 'right'">{{ propData.title }}</span>
-          <div class="i-selectPieChart-header-tit-icon" v-if="propData.showIcon">
+          <div class="i-slideCard-header-tit-icon" v-if="propData.showIcon">
             <svg
               v-if="propData.titleIcon && propData.titleIcon.length > 0"
               class="idm_filed_svg_icon"
@@ -28,57 +28,116 @@
           <span v-if="propData.titleIconPosition === 'left'">{{ propData.title }}</span>
         </div>
       </div>
-      <div
-        :class="
-          showPicker ? 'i-selectPieChart-header-select-active' : 'i-selectPieChart-header-select'
-        "
-        v-if="propData.columnsType != 'none'"
-        @click="showPicker = true"
-      >
-        {{ pickerSelectText }}
-      </div>
+      <div class="i-slideCard-header-more" v-if="propData.moreBtn" @click="moreClick">更多 ></div>
     </div>
-    <div class="i-selectPieChart-content">
-      <van-loading v-show="isLoading" :size="loadingSize" vertical>{{
+    <div class="i-slideCard-content">
+      <van-loading v-if="isLoading" :size="loadingSize" vertical>{{
         propData.loadingDescription || '加载中...'
       }}</van-loading>
       <div
-        v-show="!isLoading && chartData && chartData.length > 0"
-        class="i-selectPieChart-content-wapper"
+        v-else-if="data && data.length > 0"
+        class="i-slideCard-content-wapper"
+        :style="{
+          'justify-content':
+            propData.layoutType != 'scroll' && propData.rowMarginType == 'static'
+              ? 'flex-start'
+              : 'space-between',
+          'overflow-x': propData.layoutType == 'scroll' ? 'auto' : 'hidden',
+          'overflow-y': propData.layoutType == 'scroll' ? 'hidden' : 'auto',
+          'flex-direction': propData.layoutType == 'scroll' ? 'row' : 'column'
+        }"
       >
-        <div class="i-selectPieChart-content-chart" :id="`charts_container_${moduleObject.id}`" />
         <div
-          class="i-selectPieChart-content-table"
-          v-if="propData.tableFields && propData.tableFields.length > 0"
+          class="i-slideCard-content-row"
+          v-for="(record, i) in data"
+          :key="i"
+          :style="{
+            'margin-top': i != 0 && propData.rowMarginType == 'static' ? rowMargin + 'px' : 0,
+            width: propData.layoutType == 'scroll' && propData.columNum == 0 ? 'auto' : '100%',
+            'justify-content':
+              propData.layoutType == 'scroll' && propData.columNum != 0
+                ? 'space-around'
+                : 'space-bettween'
+          }"
         >
           <div
-            class="i-selectPieChart-content-table-row"
-            v-for="(item, index) in chartData"
+            v-for="(item, index) in record"
             :key="index"
-            @click.stop="tableRowCilck(item)"
+            :class="
+              item
+                ? 'i-slideCard-content-item'
+                : 'i-slideCard-content-item i-slideCard-content-empty'
+            "
+            :style="{
+              'margin-left':
+                index != 0 && propData.layoutType == 'scroll' && propData.columNum == 0
+                  ? itemMargin + 'px'
+                  : 0,
+              'flex-shrink': propData.layoutType == 'scroll' && propData.columNum == 0 ? 0 : 1
+            }"
+            @click.stop="itemClick(item)"
           >
-            <div class="col-legend" :style="{ 'background-color': colors[index] }" />
-            <div
-              class="col-text"
-              v-for="(field, i) in propData.tableFields"
-              :key="i"
-              :style="{
-                'text-align': field.textAlign
-                  ? field.textAlign
-                  : i == 0
-                  ? 'left'
-                  : i == propData.tableFields.length - 1
-                  ? 'right'
-                  : 'center'
-              }"
-            >
-              {{ getExpressData('data', field.name, item) }}
+            <div v-if="item" class="item-img">
+              <van-image
+                v-if="propData.displayType == 'img'"
+                width="100%"
+                height="100%"
+                :src="
+                  IDM.url.getWebPath(
+                    propData.dataType == 'dataSource'
+                      ? getExpressData('data', propData.imageField, item)
+                      : item.imgUrl
+                  )
+                "
+              />
+              <i
+                v-else-if="propData.dataType == 'dataSource'"
+                :class="getClassStr(getExpressData('data', propData.iconField, item))"
+              />
+              <svg v-else class="idm_filed_svg_icon" aria-hidden="true">
+                <use :xlink:href="`#${item.iconFont && item.iconFont[0]}`" />
+              </svg>
+            </div>
+            <div class="item-text" v-if="item && propData.showText">
+              <div v-if="propData.mainTextField" class="item-text-main">
+                {{
+                  propData.dataType == 'dataSource'
+                    ? getExpressData('data', propData.mainTextField, item)
+                    : item.name
+                }}
+              </div>
+              <div
+                class="item-text-extra"
+                v-if="
+                  propData.dataType == 'dataSource' &&
+                  propData.extraFields &&
+                  propData.extraFields.length > 0
+                "
+              >
+                <div
+                  class="item-text-extra-col"
+                  v-for="(field, i) in propData.extraFields"
+                  :key="i"
+                  :style="{
+                    'text-align': field.textAlign
+                      ? field.textAlign
+                      : i == 0
+                      ? 'left'
+                      : i == propData.extraFields.length - 1
+                      ? 'right'
+                      : 'center',
+                    width: field.widthRatio ? `${field.widthRatio}%` : 'auto'
+                  }"
+                >
+                  {{ getExpressData('data', field.name, item) }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <van-empty
-        v-show="!isLoading && (!chartData || chartData.length == 0)"
+        v-else
         :image-size="emptyImageSize"
         :description="propData.emptyDescription || '暂无数据'"
       >
@@ -91,82 +150,50 @@
         </template>
       </van-empty>
     </div>
-    <div
-      class="i-selectPieChart-mask"
-      v-if="
-        moduleObject.env !== 'production' &&
-        ((propData.isShowTitleBar &&
-          propData.columnsType == 'dataSource' &&
-          !propData.columnsDataSource) ||
-          !propData.chartDataSource)
-      "
-    >
+    <div class="i-slideCard-mask" v-if="moduleObject.env !== 'production' && !propData.dataSource">
       <span>！未绑定数据源</span>
     </div>
-    <van-popup
-      v-if="propData.isShowTitleBar && propData.columnsType != 'none'"
-      v-model="showPicker"
-      round
-      position="bottom"
-    >
-      <van-picker
-        show-toolbar
-        :title="propData.selectBtnPlaceholder || '请选择'"
-        :columns="columnsText"
-        @cancel="showPicker = false"
-        @confirm="onConfirm"
-      />
-    </van-popup>
   </div>
 </template>
 
 <script>
-import { Empty, Loading, Image as VanImage, Popup, Picker } from 'vant';
+import { Empty, Loading, Image as VanImage } from 'vant';
 import 'vant/lib/empty/style';
 import 'vant/lib/loading/style';
 import 'vant/lib/image/style';
-import 'vant/lib/popup/style';
-import 'vant/lib/picker/style';
-const devChartResult = [
+const devResult = [
   {
-    name: '集中培训',
-    value: 100,
-    displayValue: '100h',
-    ratio: '30%',
-    color: 'red'
+    name: '学习强国',
+    text1: '15篇文章',
+    text2: '3.5w人已学习'
   },
   {
-    name: '论学学时',
-    value: 100,
-    displayValue: '100h',
-    ratio: '40%'
+    name: '学习强国',
+    text1: '15篇文章',
+    text2: '3.5w人已学习'
   },
   {
-    name: '在线学习',
-    value: 100,
-    displayValue: '100h',
-    ratio: '30%',
-    color: 'green'
+    name: '学习强国',
+    text1: '15篇文章',
+    text2: '3.5w人已学习'
+  },
+  {
+    name: '学习强国',
+    text1: '15篇文章',
+    text2: '3.5w人已学习'
+  },
+  {
+    name: '学习强国',
+    text1: '15篇文章',
+    text2: '3.5w人已学习'
   }
 ];
-const devColumns = [
-  { text: '2015年', value: '2015', isDefault: false },
-  { text: '2016年', value: '2016', isDefault: false },
-  { text: '2017年', value: '2017', isDefault: false },
-  { text: '2018年', value: '2018', isDefault: false },
-  { text: '2019年', value: '2019', isDefault: false },
-  { text: '2020年', value: '2020', isDefault: false },
-  { text: '2021年', value: '2021', isDefault: false },
-  { text: '2022年', value: '2022', isDefault: true }
-];
 export default {
-  name: 'ISelectPieChart',
+  name: 'ISlideCard',
   components: {
     [Empty.name]: Empty,
     [Loading.name]: Loading,
-    [VanImage.name]: VanImage,
-    [Popup.name]: Popup,
-    [Picker.name]: Picker
+    [VanImage.name]: VanImage
   },
   // {
   //       colorType: 'field',
@@ -188,73 +215,91 @@ export default {
   data() {
     return {
       moduleObject: {},
-      propData: this.$root.propData.compositeAttr || {},
+      propData: this.$root.propData.compositeAttr || {
+        dataType: 'dataSource',
+        displayType: 'icon',
+        dataSource: '1',
+        layoutType: 'scroll',
+        isShowTitleBar: true,
+        rowMarginType: 'ad',
+        columNum: 3,
+        moreBtn: true,
+        showIcon: true,
+        showText: true,
+        titleIconPosition: 'left',
+        title: '主题教育',
+        imageField: 'img',
+        mainTextField: 'name',
+        imageWidth: 50,
+        imageHeight: 50,
+        itemJumpTarget: 'router',
+        itemMargin: 10,
+        rowMargin: 10,
+        itemJumpPageParams: [{ key: 'itemName', field: 'name' }]
+        // extraFields: [{ name: 'text1' }, { name: 'text2' }]
+      },
       isLoading: false,
-      showPicker: false,
-      columns: [],
-      pickerSelect: {},
-      chartData: [],
-      chart: null
+      data: []
     };
   },
   props: {},
   computed: {
+    rowMargin() {
+      return this.getScale() * (this.propData.rowMargin || 0);
+    },
+    itemMargin() {
+      return this.getScale() * (this.propData.itemMargin || 0);
+    },
     emptyImageSize() {
       return this.getScale() * (this.propData.emptyImageSize || 70);
     },
     loadingSize() {
       return this.getScale() * (this.propData.loadingSize || 24);
-    },
-    pickerSelectText() {
-      if (this.pickerSelect && this.pickerSelect.value) {
-        return this.pickerSelect.text;
-      }
-      return this.propData.selectBtnPlaceholder || '请选择';
-    },
-    columnsText() {
-      if (!this.columns) return [];
-      return this.columns.map(item => item.text);
-    },
-    colors() {
-      const defaultColors = [
-        '#FFBA00',
-        '#FF8500',
-        '#3296FA',
-        '#0071C1',
-        '#67C23B',
-        '#2495C7',
-        '#5B8FF9',
-        '#FF8F00'
-      ];
-      let chartColors = [];
-      if (this.propData.colorType == 'field') {
-        chartColors = this.propData.chartColorField
-          ? this.chartData.map(item =>
-              this.getExpressData('data', this.propData.chartColorField, item)
-            )
-          : [];
-      } else {
-        chartColors =
-          this.propData.chartColors?.map(item => item.color?.hex8).filter(item => !!item) || [];
-      }
-      return [...chartColors, ...defaultColors];
     }
   },
   created() {
     this.moduleObject = this.$root.moduleObject;
     this.convertAttrToStyleObject();
     this.convertThemeListAttrToStyleObject();
-  },
-  mounted() {
-    this.chart = this.$echarts.init(
-      document.getElementById(`charts_container_${this.moduleObject.id}`)
-    );
+    this.loadIconFile();
     this.initData();
   },
-  destroyed() {
-    this.chart.dispose();
-  },
   methods: {
+    // 加载css
+    loadIconFile() {
+      if (this.propData.iconfontUrl && this.propData.dataType == 'dataSource') {
+        let baseUrl =
+          this.propData.iconfontUrl +
+          (this.propData.iconfontUrl.substring(
+            this.propData.iconfontUrl.length - 1,
+            this.propData.iconfontUrl.length
+          ) == '/'
+            ? ''
+            : '/');
+        IDM.http
+          .get(baseUrl + 'iconfont.json', {})
+          .then(res => {
+            if (!res.data) {
+              return;
+            }
+            //存在，加载css
+            IDM.module.loadCss(IDM.url.getWebPath(baseUrl + 'iconfont.css'), true);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+    },
+    getClassStr(icon) {
+      // 自定义
+      const isCustom = this.propData.iconfontUrl ? true : false;
+      // 取自定义字段 默认 iconfont
+      let fontFamily = isCustom && this.propData.iconFontFamily ? this.propData.iconFontFamily : '';
+      // 取自定义前缀 默认icon-
+      let prefix = isCustom && this.propData.iconPrefix ? this.propData.iconPrefix : '';
+      let familyStr = `${fontFamily} ${prefix}`;
+      return familyStr + icon;
+    },
     /**
      * 提供父级组件调用的刷新prop数据组件
      */
@@ -262,10 +307,7 @@ export default {
       this.propData = propData.compositeAttr || {};
       this.convertAttrToStyleObject();
       this.convertThemeListAttrToStyleObject();
-      this.drawChart();
-      this.$nextTick(() => {
-        this.chart.resize();
-      });
+      this.setRows();
     },
     /**
      * 组件通信：接收消息的方法
@@ -281,7 +323,7 @@ export default {
               ? this.propData.messageRefreshKey
               : [this.propData.messageRefreshKey];
             if (messageData.badgeType && arr.includes(messageData.badgeType)) {
-              this.getChartData();
+              this.initData();
             }
           }
           break;
@@ -290,9 +332,6 @@ export default {
           break;
         case 'pageResize':
           this.convertAttrToStyleObject(messageObject.message);
-          this.$nextTick(() => {
-            this.chart.resize();
-          });
           break;
       }
     },
@@ -304,47 +343,6 @@ export default {
       const ratio = this.propData.adaptationRatio || 1.2;
       const width = this.moduleObject.env === 'production' ? window.innerWidth : pageWidth || 414;
       return (width / base - 1) * (ratio - 1) + 1;
-    },
-    onConfirm(value, index) {
-      this.pickerSelect = this.columns && this.columns[index];
-      this.showPicker = false;
-      if (this.moduleObject.env == 'production') {
-        this.getChartData();
-        this.customFunctionHandle(this.propData.customSelectChange, {
-          selectedValue: this.pickerSelect.value,
-          selectedItem: this.pickerSelect,
-          chartData: this.chartData
-        });
-      }
-    },
-    tableRowCilck(item) {
-      this.customFunctionHandle(this.propData.customTableRowCilck, {
-        selectedValue: this.pickerSelect.value,
-        selectedItem: this.pickerSelect,
-        chartData: this.chartData,
-        record: item
-      });
-    },
-    drawChart() {
-      this.chart.clear();
-      const option = {
-        color: this.colors,
-        series: [
-          {
-            type: 'pie',
-            radius: this.propData.chartType == 'hollow' ? ['45%', '75%'] : [0, '75%'],
-            itemStyle: {
-              borderColor: '#fff',
-              borderWidth: this.propData.itemBorderWidth || 0
-            },
-            label: { show: false },
-            labelLine: { show: false },
-            emphasis: { disabled: true },
-            data: this.chartData
-          }
-        ]
-      };
-      this.chart.setOption(option);
     },
     /**
      * 通用的获取表达式匹配后的结果
@@ -398,68 +396,14 @@ export default {
      */
     initData() {
       if (!this.moduleObject.env || this.moduleObject.env == 'develop') {
-        this.chartData = devChartResult;
-        this.columns = devColumns;
-        const pickerSelect = this.columns.find(item => item.isDefault);
-        this.pickerSelect = pickerSelect || this.columns[0];
-        this.drawChart();
-        this.$nextTick(() => {
-          this.chart.resize();
-        });
+        this.data = devResult;
+        this.setRows();
         return;
       }
-      if (!this.propData.columnsDataSource || !this.propData.chartDataSource) {
+      const dataSource = this.propData.dataSource;
+      if (!dataSource) {
         return false;
       }
-      this.getColumns();
-    },
-    getColumns() {
-      if (!this.propData.isShowTitleBar || this.propData.columnsType == 'none') {
-        this.getChartData();
-      } else if (this.propData.columnsType == 'static') {
-        this.columns = this.propData.columnsList;
-        const pickerSelect = this.columns.find(item => item.isDefault);
-        this.pickerSelect = pickerSelect || {};
-        this.getChartData();
-      } else {
-        const url = `ctrl/dataSource/getDatas`;
-        const urlObject = IDM.url.queryObject();
-        this.isLoading = true;
-        IDM.http
-          .post(
-            url,
-            {
-              id: this.propData.columnsDataSource.value,
-              pageId:
-                window.IDM.broadcast && window.IDM.broadcast.pageModule
-                  ? window.IDM.broadcast.pageModule.id
-                  : '',
-              ...urlObject
-            },
-            {
-              headers: {
-                'Content-Type': 'application/json;charset=UTF-8'
-              }
-            }
-          )
-          .done(res => {
-            if (res.type === 'success') {
-              const resultData = this.customFormat(this.propData.columnsCustomFunction, res.data);
-              this.columns = resultData;
-              const pickerSelect = this.columns.find(item => item.isDefault);
-              this.pickerSelect = pickerSelect || {};
-              this.getChartData();
-            } else {
-              this.isLoading = false;
-            }
-          })
-          .error(err => {
-            console.log(err);
-            this.isLoading = false;
-          });
-      }
-    },
-    getChartData() {
       const url = `ctrl/dataSource/getDatas`;
       const urlObject = IDM.url.queryObject();
       this.isLoading = true;
@@ -467,14 +411,12 @@ export default {
         .post(
           url,
           {
-            id: this.propData.chartDataSource.value,
+            id: dataSource.value,
             pageId:
               window.IDM.broadcast && window.IDM.broadcast.pageModule
                 ? window.IDM.broadcast.pageModule.id
                 : '',
-            ...urlObject,
-            selectedValue: this.pickerSelect.value,
-            selectedItem: this.pickerSelect
+            ...urlObject
           },
           {
             headers: {
@@ -484,12 +426,9 @@ export default {
         )
         .done(res => {
           if (res.type === 'success') {
-            const resultData = this.customFormat(this.propData.chartDataCustomFunction, res.data);
-            this.chartData = resultData;
-            this.drawChart();
-            this.$nextTick(() => {
-              this.chart.resize();
-            });
+            const resultData = this.customFormat(this.propData.customFunction, res.data);
+            this.data = resultData;
+            this.setRows();
           }
           this.isLoading = false;
         })
@@ -497,6 +436,78 @@ export default {
           console.log(err);
           this.isLoading = false;
         });
+    },
+    setRows() {
+      const data = [];
+      if (this.propData.layoutType == 'scroll' && this.propData.columNum == 0) {
+        data[0] = this.data;
+      } else {
+        const columNum = this.propData.columNum || 3;
+        this.data.forEach((item, index) => {
+          if (data[parseInt(index / columNum)]) {
+            data[parseInt(index / columNum)].push(item);
+          } else {
+            data[parseInt(index / columNum)] = [item];
+          }
+        });
+        if (data[data.length - 1].length < columNum) {
+          for (let i = 0; i < columNum; i++) {
+            if (!data[data.length - 1][i]) {
+              data[data.length - 1][i] = null;
+            }
+          }
+        }
+      }
+      this.data = data;
+      console.log(this.data);
+    },
+    moreClick() {
+      if (!this.moduleObject.env || this.moduleObject.env == 'develop') {
+        return;
+      }
+      if (this.propData.moreTarget && this.propData.moreTarget === 'custom') {
+        this.customFunctionHandle(this.propData.customMoreBtnFunction);
+      } else if (this.propData.moreTarget && this.propData.moreTarget === 'router') {
+        const pageId =
+          window.IDM.broadcast && window.IDM.broadcast.pageModule
+            ? window.IDM.broadcast.pageModule.id
+            : '';
+        IDM.router.push(pageId, this.propData.moreBtnToPageId, {
+          keep: true,
+          params: {},
+          enterAnim: '',
+          quitAnim: ''
+        });
+      } else {
+        const url = IDM.url.getWebPath(this.propData.moreUrl);
+        window.open(url, this.propData.moreTarget || '_self');
+      }
+    },
+    itemClick(item) {
+      if (!this.moduleObject.env || this.moduleObject.env == 'develop') {
+        return;
+      }
+      if (this.propData.itemJumpTarget && this.propData.itemJumpTarget === 'custom') {
+        this.customFunctionHandle(this.propData.customItemJumpFunction, { item });
+      } else if (this.propData.itemJumpTarget && this.propData.itemJumpTarget === 'router') {
+        const pageId =
+          window.IDM.broadcast && window.IDM.broadcast.pageModule
+            ? window.IDM.broadcast.pageModule.id
+            : '';
+        const params = {};
+        this.propData.itemJumpPageParams?.forEach(param => {
+          params[param.key] = this.getExpressData('data', param.field, item);
+        });
+        IDM.router.push(pageId, this.propData.itemJumpPageId, {
+          keep: true,
+          params,
+          enterAnim: '',
+          quitAnim: ''
+        });
+      } else if (this.propData.itemJumpUrl) {
+        const url = IDM.url.getWebPath(IDM.express.replace(this.propData.itemJumpUrl, item));
+        window.open(url, this.propData.itemJumpTarget || '_self');
+      }
     },
     /**
      * 把属性转换成样式对象
@@ -508,13 +519,15 @@ export default {
       const iconStyleObject = {};
       const emptyStyleObject = {};
       const loadingStyleObject = {};
-      const chartStyleObject = {};
-      const tableStyleObject = {};
-      const tableIconStyleObject = {};
-      const selectStyleObject = {};
+      const itemStyleObject = {};
+      const itemActiveStyleObject = {};
+      const itemImgStyleObject = {};
+      const moreBtnStyleObject = {};
+      const mainTextStyleObject = {};
+      const extraTextStyleObject = {};
 
       const scale = this.getScale(pageSize.width);
-      styleObject['--i-selectPieChart-scale'] = scale;
+      styleObject['--i-slideCard-scale'] = scale;
 
       if (this.propData.bgSize && this.propData.bgSize == 'custom') {
         styleObject['background-size'] =
@@ -575,12 +588,6 @@ export default {
             // case 'innerHeight':
             //   innerCardStyleObject['height'] = element;
             //   break;
-            case 'chartHeight':
-              chartStyleObject['height'] = element;
-              break;
-            case 'tableHeight':
-              tableStyleObject['height'] = element;
-              break;
             case 'bgColor':
               if (element && element.hex8) {
                 styleObject['background-color'] = IDM.hex8ToRgbaString(element.hex8);
@@ -591,8 +598,24 @@ export default {
                 innerCardStyleObject['background-color'] = IDM.hex8ToRgbaString(element.hex8);
               }
               break;
+            case 'itemBgColor':
+              if (element && element.hex8) {
+                itemStyleObject['background-color'] = IDM.hex8ToRgbaString(element.hex8);
+              }
+              break;
+            case 'itemActiveBgColor':
+              if (element && element.hex8) {
+                itemActiveStyleObject['background-color'] = IDM.hex8ToRgbaString(element.hex8);
+              }
+              break;
             case 'boxShadow':
               styleObject['box-shadow'] = element;
+              break;
+            case 'itemShadow':
+              itemStyleObject['box-shadow'] = element;
+              break;
+            case 'itemActiveShadow':
+              itemActiveStyleObject['box-shadow'] = element;
               break;
             case 'box':
               if (element.marginTopVal) {
@@ -646,30 +669,30 @@ export default {
                 innerCardStyleObject['padding-left'] = `${element.paddingLeftVal}`;
               }
               break;
-            case 'tableBox':
+            case 'itembox':
               if (element.marginTopVal) {
-                tableStyleObject['margin-top'] = `${element.marginTopVal}`;
+                itemStyleObject['margin-top'] = `${element.marginTopVal}`;
               }
               if (element.marginRightVal) {
-                tableStyleObject['margin-right'] = `${element.marginRightVal}`;
+                itemStyleObject['margin-right'] = `${element.marginRightVal}`;
               }
               if (element.marginBottomVal) {
-                tableStyleObject['margin-bottom'] = `${element.marginBottomVal}`;
+                itemStyleObject['margin-bottom'] = `${element.marginBottomVal}`;
               }
               if (element.marginLeftVal) {
-                tableStyleObject['margin-left'] = `${element.marginLeftVal}`;
+                itemStyleObject['margin-left'] = `${element.marginLeftVal}`;
               }
               if (element.paddingTopVal) {
-                tableStyleObject['padding-top'] = `${element.paddingTopVal}`;
+                itemStyleObject['padding-top'] = `${element.paddingTopVal}`;
               }
               if (element.paddingRightVal) {
-                tableStyleObject['padding-right'] = `${element.paddingRightVal}`;
+                itemStyleObject['padding-right'] = `${element.paddingRightVal}`;
               }
               if (element.paddingBottomVal) {
-                tableStyleObject['padding-bottom'] = `${element.paddingBottomVal}`;
+                itemStyleObject['padding-bottom'] = `${element.paddingBottomVal}`;
               }
               if (element.paddingLeftVal) {
-                tableStyleObject['padding-left'] = `${element.paddingLeftVal}`;
+                itemStyleObject['padding-left'] = `${element.paddingLeftVal}`;
               }
               break;
             case 'bgImgUrl':
@@ -810,6 +833,108 @@ export default {
               innerCardStyleObject['border-bottom-right-radius'] =
                 element.radius.rightBottom.radius + element.radius.rightBottom.radiusUnit;
               break;
+            case 'itemBorder':
+              if (element.border.top.width > 0) {
+                itemStyleObject['border-top-width'] =
+                  element.border.top.width + element.border.top.widthUnit;
+                itemStyleObject['border-top-style'] = element.border.top.style;
+                if (element.border.top.colors.hex8) {
+                  itemStyleObject['border-top-color'] = IDM.hex8ToRgbaString(
+                    element.border.top.colors.hex8
+                  );
+                }
+              }
+              if (element.border.right.width > 0) {
+                itemStyleObject['border-right-width'] =
+                  element.border.right.width + element.border.right.widthUnit;
+                itemStyleObject['border-right-style'] = element.border.right.style;
+                if (element.border.right.colors.hex8) {
+                  itemStyleObject['border-right-color'] = IDM.hex8ToRgbaString(
+                    element.border.right.colors.hex8
+                  );
+                }
+              }
+              if (element.border.bottom.width > 0) {
+                itemStyleObject['border-bottom-width'] =
+                  element.border.bottom.width + element.border.bottom.widthUnit;
+                itemStyleObject['border-bottom-style'] = element.border.bottom.style;
+                if (element.border.bottom.colors.hex8) {
+                  itemStyleObject['border-bottom-color'] = IDM.hex8ToRgbaString(
+                    element.border.bottom.colors.hex8
+                  );
+                }
+              }
+              if (element.border.left.width > 0) {
+                itemStyleObject['border-left-width'] =
+                  element.border.left.width + element.border.left.widthUnit;
+                itemStyleObject['border-left-style'] = element.border.left.style;
+                if (element.border.left.colors.hex8) {
+                  itemStyleObject['border-left-color'] = IDM.hex8ToRgbaString(
+                    element.border.left.colors.hex8
+                  );
+                }
+              }
+
+              itemStyleObject['border-top-left-radius'] =
+                element.radius.leftTop.radius + element.radius.leftTop.radiusUnit;
+              itemStyleObject['border-top-right-radius'] =
+                element.radius.rightTop.radius + element.radius.rightTop.radiusUnit;
+              itemStyleObject['border-bottom-left-radius'] =
+                element.radius.leftBottom.radius + element.radius.leftBottom.radiusUnit;
+              itemStyleObject['border-bottom-right-radius'] =
+                element.radius.rightBottom.radius + element.radius.rightBottom.radiusUnit;
+              break;
+            case 'itemActiveBorder':
+              if (element.border.top.width > 0) {
+                itemActiveStyleObject['border-top-width'] =
+                  element.border.top.width + element.border.top.widthUnit;
+                itemActiveStyleObject['border-top-style'] = element.border.top.style;
+                if (element.border.top.colors.hex8) {
+                  itemActiveStyleObject['border-top-color'] = IDM.hex8ToRgbaString(
+                    element.border.top.colors.hex8
+                  );
+                }
+              }
+              if (element.border.right.width > 0) {
+                itemActiveStyleObject['border-right-width'] =
+                  element.border.right.width + element.border.right.widthUnit;
+                itemActiveStyleObject['border-right-style'] = element.border.right.style;
+                if (element.border.right.colors.hex8) {
+                  itemActiveStyleObject['border-right-color'] = IDM.hex8ToRgbaString(
+                    element.border.right.colors.hex8
+                  );
+                }
+              }
+              if (element.border.bottom.width > 0) {
+                itemActiveStyleObject['border-bottom-width'] =
+                  element.border.bottom.width + element.border.bottom.widthUnit;
+                itemActiveStyleObject['border-bottom-style'] = element.border.bottom.style;
+                if (element.border.bottom.colors.hex8) {
+                  itemActiveStyleObject['border-bottom-color'] = IDM.hex8ToRgbaString(
+                    element.border.bottom.colors.hex8
+                  );
+                }
+              }
+              if (element.border.left.width > 0) {
+                itemActiveStyleObject['border-left-width'] =
+                  element.border.left.width + element.border.left.widthUnit;
+                itemActiveStyleObject['border-left-style'] = element.border.left.style;
+                if (element.border.left.colors.hex8) {
+                  itemActiveStyleObject['border-left-color'] = IDM.hex8ToRgbaString(
+                    element.border.left.colors.hex8
+                  );
+                }
+              }
+
+              itemActiveStyleObject['border-top-left-radius'] =
+                element.radius.leftTop.radius + element.radius.leftTop.radiusUnit;
+              itemActiveStyleObject['border-top-right-radius'] =
+                element.radius.rightTop.radius + element.radius.rightTop.radiusUnit;
+              itemActiveStyleObject['border-bottom-left-radius'] =
+                element.radius.leftBottom.radius + element.radius.leftBottom.radiusUnit;
+              itemActiveStyleObject['border-bottom-right-radius'] =
+                element.radius.rightBottom.radius + element.radius.rightBottom.radiusUnit;
+              break;
             case 'titleFont':
               titleStyleObject['font-family'] = element.fontFamily;
               if (element.fontColors.hex8) {
@@ -833,26 +958,21 @@ export default {
             case 'titleIconSize':
               iconStyleObject['font-size'] = `calc(${element}px * #{$scale})`;
               break;
-            case 'tableIconSize':
-              tableIconStyleObject['width'] = `calc(${element}px * #{$scale})`;
-              tableIconStyleObject['height'] = `calc(${element}px * #{$scale})`;
-              break;
-            case 'tableFont':
-              tableStyleObject['font-family'] = element.fontFamily;
+            case 'font':
+              styleObject['font-family'] = element.fontFamily;
               if (element.fontColors.hex8) {
-                tableStyleObject['color'] = IDM.hex8ToRgbaString(element.fontColors.hex8);
+                styleObject['color'] = IDM.hex8ToRgbaString(element.fontColors.hex8);
               }
-              tableStyleObject['font-weight'] =
-                element.fontWeight && element.fontWeight.split(' ')[0];
-              tableStyleObject['font-style'] = element.fontStyle;
-              tableStyleObject['font-size'] = `calc(${
+              styleObject['font-weight'] = element.fontWeight && element.fontWeight.split(' ')[0];
+              styleObject['font-style'] = element.fontStyle;
+              styleObject['font-size'] = `calc(${
                 element.fontSize + element.fontSizeUnit
               } * #{$scale})`;
-              tableStyleObject['line-height'] =
+              styleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
-              tableStyleObject['text-align'] = element.fontTextAlign;
-              tableStyleObject['text-decoration'] = element.fontDecoration;
+              styleObject['text-align'] = element.fontTextAlign;
+              styleObject['text-decoration'] = element.fontDecoration;
               break;
             case 'loadingFont':
               loadingStyleObject['font-family'] = element.fontFamily;
@@ -888,22 +1008,79 @@ export default {
               emptyStyleObject['text-align'] = element.fontTextAlign;
               emptyStyleObject['text-decoration'] = element.fontDecoration;
               break;
-            case 'selectFont':
-              selectStyleObject['font-family'] = element.fontFamily;
+            case 'moreFont':
+              moreBtnStyleObject['font-family'] = element.fontFamily;
               if (element.fontColors.hex8) {
-                selectStyleObject['color'] = IDM.hex8ToRgbaString(element.fontColors.hex8);
+                moreBtnStyleObject['color'] = IDM.hex8ToRgbaString(element.fontColors.hex8);
               }
-              selectStyleObject['font-weight'] =
+              moreBtnStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
-              selectStyleObject['font-style'] = element.fontStyle;
-              selectStyleObject['font-size'] = `calc(${
+              moreBtnStyleObject['font-style'] = element.fontStyle;
+              moreBtnStyleObject['font-size'] = `calc(${
                 element.fontSize + element.fontSizeUnit
               } * #{$scale})`;
-              selectStyleObject['line-height'] =
+              moreBtnStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
-              selectStyleObject['text-align'] = element.fontTextAlign;
-              selectStyleObject['text-decoration'] = element.fontDecoration;
+              moreBtnStyleObject['text-align'] = element.fontTextAlign;
+              moreBtnStyleObject['text-decoration'] = element.fontDecoration;
+              break;
+            case 'mainFont':
+              mainTextStyleObject['font-family'] = element.fontFamily;
+              if (element.fontColors.hex8) {
+                mainTextStyleObject['color'] = IDM.hex8ToRgbaString(element.fontColors.hex8);
+              }
+              mainTextStyleObject['font-weight'] =
+                element.fontWeight && element.fontWeight.split(' ')[0];
+              mainTextStyleObject['font-style'] = element.fontStyle;
+              mainTextStyleObject['font-size'] = `calc(${
+                element.fontSize + element.fontSizeUnit
+              } * #{$scale})`;
+              mainTextStyleObject['line-height'] =
+                element.fontLineHeight +
+                (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
+              mainTextStyleObject['text-align'] = element.fontTextAlign;
+              mainTextStyleObject['text-decoration'] = element.fontDecoration;
+              break;
+            case 'extraFont':
+              extraTextStyleObject['font-family'] = element.fontFamily;
+              if (element.fontColors.hex8) {
+                extraTextStyleObject['color'] = IDM.hex8ToRgbaString(element.fontColors.hex8);
+              }
+              extraTextStyleObject['font-weight'] =
+                element.fontWeight && element.fontWeight.split(' ')[0];
+              extraTextStyleObject['font-style'] = element.fontStyle;
+              extraTextStyleObject['font-size'] = `calc(${
+                element.fontSize + element.fontSizeUnit
+              } * #{$scale})`;
+              extraTextStyleObject['line-height'] =
+                element.fontLineHeight +
+                (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
+              extraTextStyleObject['text-align'] = element.fontTextAlign;
+              extraTextStyleObject['text-decoration'] = element.fontDecoration;
+              break;
+            case 'itemImgRadius':
+              itemImgStyleObject['border-radius'] = `${element}px`;
+              break;
+            case 'itemImgWidth':
+              itemImgStyleObject['width'] = `${element}px`;
+              break;
+            case 'itemImgHeight':
+              itemImgStyleObject['height'] = `${element}px`;
+              break;
+            case 'itemIconSize':
+              itemImgStyleObject['font-size'] = `${element}px`;
+              break;
+            case 'itemIconColor':
+              if (element && element.hex8) {
+                styleObject['color'] = IDM.hex8ToRgbaString(element.hex8);
+              }
+              break;
+            case 'itemBoxWidth':
+              itemStyleObject['width'] = `${element}px`;
+              break;
+            case 'itemBoxHeight':
+              itemStyleObject['height'] = `${element}px`;
               break;
           }
         }
@@ -916,37 +1093,41 @@ export default {
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id, styleObject);
       window.IDM.setStyleToPageHead(
-        this.moduleObject.id + ' .i-selectPieChart-content',
+        this.moduleObject.id + ' .i-slideCard-content',
         innerCardStyleObject
       );
       window.IDM.setStyleToPageHead(
-        this.moduleObject.id + ' .i-selectPieChart-header-tit span',
+        this.moduleObject.id + ' .i-slideCard-header-tit span',
         titleStyleObject
       );
       window.IDM.setStyleToPageHead(
-        this.moduleObject.id + ' .i-selectPieChart-header-tit .i-selectPieChart-header-tit-icon',
+        this.moduleObject.id + ' .i-slideCard-header-tit .i-slideCard-header-tit-icon',
         iconStyleObject
       );
       window.IDM.setStyleToPageHead(
-        this.moduleObject.id + ' .i-selectPieChart-header .i-selectPieChart-header-select',
-        selectStyleObject
+        this.moduleObject.id + ' .i-slideCard-header .i-slideCard-header-more',
+        moreBtnStyleObject
       );
       window.IDM.setStyleToPageHead(
-        this.moduleObject.id + ' .i-selectPieChart-header .i-selectPieChart-header-select-active',
-        selectStyleObject
-      );
-      window.IDM.setStyleToPageHead(
-        this.moduleObject.id + ' .i-selectPieChart-content .i-selectPieChart-content-chart',
-        chartStyleObject
-      );
-      window.IDM.setStyleToPageHead(
-        this.moduleObject.id + ' .i-selectPieChart-content .i-selectPieChart-content-table',
-        tableStyleObject
+        this.moduleObject.id + ' .i-slideCard-content .i-slideCard-content-item',
+        itemStyleObject
       );
       window.IDM.setStyleToPageHead(
         this.moduleObject.id +
-          ' .i-selectPieChart-content .i-selectPieChart-content-table .col-legend',
-        tableIconStyleObject
+          ' .i-slideCard-content .i-slideCard-content-item:active:not(.i-slideCard-content-empty)',
+        itemActiveStyleObject
+      );
+      window.IDM.setStyleToPageHead(
+        this.moduleObject.id + ' .i-slideCard-content .i-slideCard-content-item .item-img',
+        itemImgStyleObject
+      );
+      window.IDM.setStyleToPageHead(
+        this.moduleObject.id + ' .i-slideCard-content .i-slideCard-content-item .item-text-main',
+        mainTextStyleObject
+      );
+      window.IDM.setStyleToPageHead(
+        this.moduleObject.id + ' .i-slideCard-content .i-slideCard-content-item .item-text-extra',
+        extraTextStyleObject
       );
       window.IDM.setStyleToPageHead(this.moduleObject.id + ' .van-empty', emptyStyleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + ' .van-loading', loadingStyleObject);
@@ -966,11 +1147,7 @@ export default {
       for (var i = 0; i < themeList.length; i++) {
         const item = themeList[i];
 
-        const titleSvgStyleObject = {
-          color: item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : ''
-        };
-
-        const selectStyleObject = {
+        const mainColor = {
           color: item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : ''
         };
 
@@ -980,8 +1157,8 @@ export default {
             item.key +
             ' #' +
             (this.moduleObject.packageid || 'module_demo') +
-            ' .i-selectPieChart-header .i-selectPieChart-header-select-active',
-          selectStyleObject
+            ' .i-slideCard-header .i-slideCard-header-more',
+          mainColor
         );
         IDM.setStyleToPageHead(
           '.' +
@@ -989,8 +1166,17 @@ export default {
             item.key +
             ' #' +
             (this.moduleObject.packageid || 'module_demo') +
-            ' .i-selectPieChart-header-tit .i-selectPieChart-header-tit-icon',
-          titleSvgStyleObject
+            ' .i-slideCard-header-tit .i-slideCard-header-tit-icon',
+          mainColor
+        );
+        IDM.setStyleToPageHead(
+          '.' +
+            themeNamePrefix +
+            item.key +
+            ' #' +
+            (this.moduleObject.packageid || 'module_demo') +
+            ' .i-slideCard-content .i-slideCard-content-item .item-text-extra',
+          mainColor
         );
       }
     }
@@ -999,8 +1185,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$scale: var(--i-selectPieChart-scale);
-.i-selectPieChart-outer {
+$scale: var(--i-slideCard-scale);
+.i-slideCard-outer {
   width: auto;
   box-sizing: border-box;
   padding: 10px;
@@ -1015,20 +1201,20 @@ $scale: var(--i-selectPieChart-scale);
   height: auto;
   overflow: hidden;
 
-  .i-selectPieChart-header {
+  .i-slideCard-header {
     display: flex;
     // height: calc(40px * #{ $scale });
     // line-height: calc(40px * #{ $scale });
     justify-content: space-between;
     align-items: center;
 
-    .i-selectPieChart-header-main {
+    .i-slideCard-header-main {
       // width: 86%;
       flex-grow: 1;
       display: flex;
       align-items: center;
 
-      .i-selectPieChart-header-tit {
+      .i-slideCard-header-tit {
         font-family: PingFangSC-Regular;
         color: #333333;
         font-style: normal;
@@ -1038,7 +1224,7 @@ $scale: var(--i-selectPieChart-scale);
         display: flex;
         align-items: center;
 
-        .i-selectPieChart-header-tit-icon {
+        .i-slideCard-header-tit-icon {
           display: inline-block;
           flex: 1;
         }
@@ -1063,50 +1249,15 @@ $scale: var(--i-selectPieChart-scale);
       }
     }
 
-    .i-selectPieChart-header-more,
-    .i-selectPieChart-header-select,
-    .i-selectPieChart-header-select-active {
-      // opacity: 0.5;
-      margin: 0 5px;
-      position: relative;
-    }
-
-    .i-selectPieChart-header-select,
-    .i-selectPieChart-header-select-active {
-      padding-right: 13px;
-    }
-    .i-selectPieChart-header-select-active {
+    .i-slideCard-header-more {
       color: red;
-    }
-    .i-selectPieChart-header-select::after {
-      position: absolute;
-      top: 50%;
-      right: 0px;
-      margin-top: -5px;
-      border: 3px solid;
-      border-color: transparent transparent currentColor currentColor;
-      -webkit-transform: rotate(-45deg);
-      transform: rotate(-45deg);
-      opacity: 1;
-      content: '';
-    }
-    .i-selectPieChart-header-select-active::after {
-      position: absolute;
-      top: 50%;
-      right: 0px;
-      margin-top: -1px;
-      -webkit-transform: rotate(135deg);
-      transform: rotate(135deg);
-      border: 3px solid;
-      border-color: transparent transparent currentColor currentColor;
-      opacity: 1;
-      content: '';
+      &:active {
+        opacity: 0.7;
+      }
     }
   }
 
-  .i-selectPieChart-content {
-    /* border-radius: calc(10px * #{$scale});
-    padding: calc(10px * #{$scale}) calc(14px * #{$scale}); */
+  .i-slideCard-content {
     flex-grow: 1;
     flex-shrink: 1;
     height: auto;
@@ -1125,46 +1276,89 @@ $scale: var(--i-selectPieChart-scale);
       font-size: inherit;
     }
 
-    .i-selectPieChart-content-wapper {
+    .i-slideCard-content-wapper {
       height: 100%;
+      width: 100%;
       display: flex;
       flex-direction: column;
-      align-items: stretch;
-      .i-selectPieChart-content-chart {
-        width: 100%;
-        flex-grow: 1;
-        flex-shrink: 1;
-        height: 150px;
+      flex-wrap: nowrap;
+      &::-webkit-scrollbar {
+        display: none;
       }
-
-      .i-selectPieChart-content-table {
-        flex-grow: 1;
-        flex-shrink: 1;
-        overflow-y: auto;
-        overflow-x: hidden;
-        height: 150px;
-        padding: 0 12%;
-        .i-selectPieChart-content-table-row {
+      .i-slideCard-content-row {
+        display: flex;
+        flex-shrink: 0;
+        // width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        .i-slideCard-content-item {
+          height: 90px;
+          width: 90px;
+          overflow: hidden;
+          flex-shrink: 0;
           display: flex;
+          flex-direction: column;
           align-items: center;
-          padding: 8px 0;
-          line-height: 1;
-          .col-legend {
-            // width: calc(14px * #{$scale});
-            // height: calc(14px * #{$scale});
-            width: calc(14px * #{$scale});
-            height: calc(14px * #{$scale});
-            margin-right: calc(12px * #{$scale});
+          justify-content: space-around;
+          padding: 5px;
+          &:active:not(.i-slideCard-content-empty) {
+            background-color: #f2f3f5;
           }
-          .col-text {
-            flex-grow: 1;
+          .item-img {
+            width: 50px;
+            height: 50px;
+            font-size: 50px;
+            border-radius: 5px;
+            overflow: hidden;
+            .idm_filed_svg_icon {
+              font-size: inherit;
+              line-height: 1;
+              width: 100%;
+              height: 100%;
+              display: block;
+              fill: currentColor;
+              // vertical-align: -0.15em;
+              outline: none;
+            }
+            i {
+              width: 100%;
+              height: 100%;
+              display: block;
+              font-size: inherit;
+              color: inherit;
+              line-height: 1;
+            }
+          }
+          .item-text {
+            width: 100%;
+            .item-text-main {
+              width: 100%;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              line-height: 1.6;
+              text-align: center;
+            }
+            .item-text-extra {
+              width: 100%;
+              display: flex;
+              font-size: calc(12px * #{$scale});
+              color: red;
+              .item-text-extra-col {
+                flex-grow: 1;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+              }
+            }
           }
         }
       }
     }
   }
 
-  .i-selectPieChart-mask {
+  .i-slideCard-mask {
     position: absolute;
     top: 0;
     left: 0;

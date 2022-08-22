@@ -72,7 +72,7 @@
               <span
                 class="comment-star"
                 :class="{ active: item.star }"
-                @click="statClick(item)"
+                @click="starClick(item)"
                 ><svg-icon icon-class="commentStar" />{{ item.starNum }}</span
               >
             </div>
@@ -173,7 +173,7 @@ export default {
     /**
      * 点赞
      */
-    statClick(item) {
+    starClick(item) {
       item.star = true;
     },
     /**
@@ -907,7 +907,7 @@ export default {
 $scale: var(--i-all-comment-scale);
 
 .i-all-comment-outer {
-  padding: calc(8px * #{$scale});
+  padding: calc(10px * #{$scale});
   color: #000;
   font-size: calc(14px * #{$scale});
 
@@ -1008,7 +1008,7 @@ $scale: var(--i-all-comment-scale);
           display: -webkit-box;
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 2;
-          margin-bottom: calc(8px * #{$scale});
+          margin: 0 0 calc(8px * #{$scale}) 0;
         }
 
         .content-right-bottom {
