@@ -1,5 +1,5 @@
 {
-  "classId": "idm.component.mobile.studycard",
+  "classId": "idm.component.mobile.istudycard",
   "comName": "学习内容卡片",
   "className": "IStudyCard",
   "comType": "common",

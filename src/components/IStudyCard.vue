@@ -107,9 +107,19 @@ export default {
     getScale(pageWidth) {
       const base = this.propData.baseValue || 414
       const ratio = this.propData.adaptationRatio || 1.2
-      const width = this.moduleObject.env === "production" ? window.innerWidth : pageWidth || 414
+      let width = this.moduleObject.env === "production" ? window.innerWidth : pageWidth || 414
+      width=window.innerWidth
+      console.log(window.innerWidth)
+      console.log("1   "+width+"   2  "+base+"  3  "+ratio)
       return (width / base - 1) * (ratio - 1) + 1
     },
+    /**
+     * 图片适配
+     */
+    getImgScale(){
+      return window.innerWidth/414
+    },
+
     /**
      * 提供父级组件调用的刷新prop数据组件
      */
@@ -207,6 +217,8 @@ export default {
       let videoDetailText = {};
 
       const scale = this.getScale(pageSize.width);
+      const imgScale = this.getImgScale()
+      styleObject['--i-studycard-imgScale'] = imgScale;
       styleObject['--i-studycard-scale'] = scale;
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
@@ -493,6 +505,7 @@ export default {
 
 <style scoped lang="scss">
 $scale: var(--i-studycard-scale);
+$imgScale: var(--i-studycard-imgScale);
 
 .container {
   display: flex;
@@ -586,14 +599,14 @@ $scale: var(--i-studycard-scale);
 
         .videoImg {
           width: auto;
-          height: calc(106px * #{ $scale });
+          height: calc(106px * #{ $imgScale });
           display: flex;
           flex-direction: column-reverse;
           align-items: center;
 
           img {
             width: 100%;
-            height: calc(106px * #{ $scale });
+            height: calc(106px * #{ $imgScale });
             position: absolute;
             background-size: 100% 100%;
             background-repeat: no-repeat;
