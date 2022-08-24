@@ -171,6 +171,13 @@
       "className": "ISlideCard",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.searchBar",
+      "comName": "条状搜索",
+      "className": "ISearchBar",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }

@@ -85,14 +85,14 @@
                 :src="
                   IDM.url.getWebPath(
                     propData.dataType == 'dataSource'
-                      ? getExpressData('data', propData.imageField, item)
+                      ? getExpressData('data', propData.imageField || 'imgUrl', item)
                       : item.imgUrl
                   )
                 "
               />
               <i
                 v-else-if="propData.dataType == 'dataSource'"
-                :class="getClassStr(getExpressData('data', propData.iconField, item))"
+                :class="getClassStr(getExpressData('data', propData.iconField || 'iconFont', item))"
               />
               <svg v-else class="idm_filed_svg_icon" aria-hidden="true">
                 <use :xlink:href="`#${item.iconFont && item.iconFont[0]}`" />
@@ -102,7 +102,7 @@
               <div v-if="propData.mainTextField" class="item-text-main">
                 {{
                   propData.dataType == 'dataSource'
-                    ? getExpressData('data', propData.mainTextField, item)
+                    ? getExpressData('data', propData.mainTextField || 'name', item)
                     : item.name
                 }}
               </div>
@@ -129,7 +129,7 @@
                     width: field.widthRatio ? `${field.widthRatio}%` : 'auto'
                   }"
                 >
-                  {{ getExpressData('data', field.name, item) }}
+                  {{ getExpressData('data', field.name || 'name', item) }}
                 </div>
               </div>
             </div>
@@ -195,49 +195,31 @@ export default {
     [Loading.name]: Loading,
     [VanImage.name]: VanImage
   },
-  // {
-  //       colorType: 'field',
-  //       chartColorField: '',
-  //       chartType: 'hollow',
-  //       columnsType: 'static',
-  //       chartDataSource: '1',
-  //       showIcon: true,
-  //       title: '年度学时',
-  //       titleIconPosition: 'left',
-  //       isShowTitleBar: true,
-  //       selectBtn: true,
-  //       moreBtn: false,
-  //       pickerTitle: '选择年份',
-  //       showChartTip: true,
-  //       itemBorderWidth: 0,
-  //       tableFields: [{ name: 'name' }, { name: 'displayValue' }, { name: 'ratio' }]
-  //     }
+  // dataType: 'dataSource',
+  // displayType: 'icon',
+  // dataSource: '1',
+  // layoutType: 'scroll',
+  // isShowTitleBar: true,
+  // rowMarginType: 'ad',
+  // columNum: 3,
+  // moreBtn: true,
+  // showIcon: true,
+  // showText: true,
+  // titleIconPosition: 'left',
+  // title: '主题教育',
+  // imageField: 'img',
+  // mainTextField: 'name',
+  // imageWidth: 50,
+  // imageHeight: 50,
+  // itemJumpTarget: 'router',
+  // itemMargin: 10,
+  // rowMargin: 10,
+  // itemJumpPageParams: [{ key: 'itemName', field: 'name' }]
+  // // extraFields: [{ name: 'text1' }, { name: 'text2' }]
   data() {
     return {
       moduleObject: {},
-      propData: this.$root.propData.compositeAttr || {
-        dataType: 'dataSource',
-        displayType: 'icon',
-        dataSource: '1',
-        layoutType: 'scroll',
-        isShowTitleBar: true,
-        rowMarginType: 'ad',
-        columNum: 3,
-        moreBtn: true,
-        showIcon: true,
-        showText: true,
-        titleIconPosition: 'left',
-        title: '主题教育',
-        imageField: 'img',
-        mainTextField: 'name',
-        imageWidth: 50,
-        imageHeight: 50,
-        itemJumpTarget: 'router',
-        itemMargin: 10,
-        rowMargin: 10,
-        itemJumpPageParams: [{ key: 'itemName', field: 'name' }]
-        // extraFields: [{ name: 'text1' }, { name: 'text2' }]
-      },
+      propData: this.$root.propData.compositeAttr || {},
       isLoading: false,
       data: []
     };
