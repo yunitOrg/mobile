@@ -21,8 +21,7 @@
       "desc": "提供设置组件能达到展示效果的基本属性设置信息",
       "children": [
         {
-          "type": "radio",
-          "styleType": "radio",
+          "type": "select",
           "layoutType": "inline",
           "text": "显示模式",
           "desc": "设置内容过多时的显示模式，可以左右滑动或上下滑动",
@@ -83,8 +82,7 @@
           "display": "@[isShowTitleBar]"
         },
         {
-          "type": "radio",
-          "styleType": "radio",
+          "type": "select",
           "layoutType": "inline",
           "text": "数据来源",
           "desc": "设置数据来源",
@@ -163,7 +161,6 @@
       "children": [
         {
           "type": "radio",
-          "styleType": "radio",
           "layoutType": "inline",
           "text": "图片图标",
           "desc": "设置图像区域的展示类型",
@@ -514,7 +511,6 @@
             },
             {
               "type": "radio",
-              "styleType": "radio",
               "layoutType": "inline",
               "text": "行间类型",
               "desc": "设置行间距类型",
@@ -625,7 +621,6 @@
       "children": [
         {
           "type": "radio",
-          "styleType": "radio",
           "layoutType": "inline",
           "text": "图标位置",
           "desc": "设置组件标题图标位置",
