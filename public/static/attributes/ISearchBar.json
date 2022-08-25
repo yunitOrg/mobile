@@ -401,7 +401,7 @@
               "layoutType": "inline",
               "text": "列间距",
               "bindKey": "tagsMarginRight",
-              "default": 24
+              "default": 10
             },
             {
               "type": "inputNumber",

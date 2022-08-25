@@ -449,7 +449,7 @@
           "children": [
             {
               "type": "inputNumber",
-              "layoutType": "block",
+              "layoutType": "inline",
               "text": "图标大小",
               "bindKey": "emptyImageSize",
               "default": 70
@@ -477,7 +477,7 @@
           "children": [
             {
               "type": "inputNumber",
-              "layoutType": "block",
+              "layoutType": "inline",
               "text": "图标大小",
               "bindKey": "loadingSize",
               "default": 24

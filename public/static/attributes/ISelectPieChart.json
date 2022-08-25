@@ -95,7 +95,7 @@
         },
         {
           "type": "treeSelect",
-          "layoutType": "inline",
+          "layoutType": "block",
           "text": "下拉数据源",
           "desc": "用于选择下拉的数据源",
           "bindKey": "columnsDataSource",
@@ -143,7 +143,7 @@
         },
         {
           "type": "treeSelect",
-          "layoutType": "inline",
+          "layoutType": "block",
           "text": "图表数据源",
           "desc": "用于选择图表的数据源",
           "bindKey": "chartDataSource",
@@ -357,7 +357,7 @@
               "value": "right"
             }
           ],
-          "default": "right"
+          "default": "left"
         },
         {
           "type": "iconSelect",
@@ -863,7 +863,7 @@
           "children": [
             {
               "type": "inputNumber",
-              "layoutType": "block",
+              "layoutType": "inline",
               "text": "图标大小",
               "bindKey": "emptyImageSize",
               "default": 70
@@ -891,7 +891,7 @@
           "children": [
             {
               "type": "inputNumber",
-              "layoutType": "block",
+              "layoutType": "inline",
               "text": "图标大小",
               "bindKey": "loadingSize",
               "default": 24

@@ -86,25 +86,6 @@
           "type": "radio",
           "styleType": "radio",
           "layoutType": "inline",
-          "text": "图片图标",
-          "desc": "设置图像区域的展示类型",
-          "bindKey": "displayType",
-          "dictionary": [
-            {
-              "label": "图片",
-              "value": "img"
-            },
-            {
-              "label": "图标",
-              "value": "icon"
-            }
-          ],
-          "default": "img"
-        },
-        {
-          "type": "radio",
-          "styleType": "radio",
-          "layoutType": "inline",
           "text": "数据来源",
           "desc": "设置数据来源",
           "bindKey": "dataType",
@@ -118,11 +99,11 @@
               "value": "static"
             }
           ],
-          "default": "dataSource"
+          "default": "static"
         },
         {
           "type": "treeSelect",
-          "layoutType": "inline",
+          "layoutType": "block",
           "text": "组件数据源",
           "desc": "用于选择组件的数据源, 入参如下{id:数据源的id,pageId:页面id,...urlObject:当前路径参数}",
           "bindKey": "dataSource",
@@ -181,6 +162,25 @@
       "helpUrl": "",
       "children": [
         {
+          "type": "radio",
+          "styleType": "radio",
+          "layoutType": "inline",
+          "text": "图片图标",
+          "desc": "设置图像区域的展示类型",
+          "bindKey": "displayType",
+          "dictionary": [
+            {
+              "label": "图片",
+              "value": "img"
+            },
+            {
+              "label": "图标",
+              "value": "icon"
+            }
+          ],
+          "default": "img"
+        },
+        {
           "type": "switch",
           "layoutType": "inline",
           "text": "显示文字",
@@ -211,7 +211,7 @@
           "children": [
             {
               "type": "inputNumber",
-              "layoutType": "block",
+              "layoutType": "inline",
               "text": "图标大小",
               "bindKey": "emptyImageSize",
               "default": 70
@@ -239,7 +239,7 @@
           "children": [
             {
               "type": "inputNumber",
-              "layoutType": "block",
+              "layoutType": "inline",
               "text": "图标大小",
               "bindKey": "loadingSize",
               "default": 24
@@ -529,7 +529,7 @@
                   "value": "static"
                 }
               ],
-              "display": "@[layoutType！='scroll']",
+              "display": "@[layoutType!='scroll']",
               "default": "adapt"
             },
             {
@@ -641,7 +641,7 @@
               "value": "right"
             }
           ],
-          "default": "right"
+          "default": "left"
         },
         {
           "type": "iconSelect",

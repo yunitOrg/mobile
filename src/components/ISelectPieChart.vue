@@ -262,6 +262,7 @@ export default {
       this.propData = propData.compositeAttr || {};
       this.convertAttrToStyleObject();
       this.convertThemeListAttrToStyleObject();
+      this.getColumns();
       this.drawChart();
       this.$nextTick(() => {
         this.chart.resize();
@@ -326,7 +327,6 @@ export default {
       });
     },
     drawChart() {
-      this.chart.clear();
       const option = {
         color: this.colors,
         series: [
@@ -401,27 +401,31 @@ export default {
         this.chartData = devChartResult;
         this.columns = devColumns;
         const pickerSelect = this.columns.find(item => item.isDefault);
-        this.pickerSelect = pickerSelect || this.columns[0];
+        this.pickerSelect = pickerSelect || {};
         this.drawChart();
         this.$nextTick(() => {
           this.chart.resize();
         });
         return;
       }
-      if (!this.propData.columnsDataSource || !this.propData.chartDataSource) {
-        return false;
-      }
       this.getColumns();
     },
     getColumns() {
       if (!this.propData.isShowTitleBar || this.propData.columnsType == 'none') {
         this.getChartData();
-      } else if (this.propData.columnsType == 'static') {
-        this.columns = this.propData.columnsList;
+      } else if (this.propData.columnsType == 'static' && this.propData.columnsList) {
+        if (this.propData.columnsList[0] && !this.propData.columnsList[0].value) {
+          this.columns = devColumns;
+        } else {
+          this.columns = this.propData.columnsList;
+        }
         const pickerSelect = this.columns.find(item => item.isDefault);
         this.pickerSelect = pickerSelect || {};
         this.getChartData();
-      } else {
+      } else if (this.propData.columnsDataSource) {
+        if (!this.moduleObject.env || this.moduleObject.env == 'develop') {
+          return false;
+        }
         const url = `ctrl/dataSource/getDatas`;
         const urlObject = IDM.url.queryObject();
         this.isLoading = true;
@@ -460,6 +464,13 @@ export default {
       }
     },
     getChartData() {
+      if (
+        !this.moduleObject.env ||
+        this.moduleObject.env == 'develop' ||
+        !this.propData.chartDataSource
+      ) {
+        return false;
+      }
       const url = `ctrl/dataSource/getDatas`;
       const urlObject = IDM.url.queryObject();
       this.isLoading = true;
@@ -818,9 +829,10 @@ export default {
               titleStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
               titleStyleObject['font-style'] = element.fontStyle;
-              titleStyleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              titleStyleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               titleStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -831,11 +843,11 @@ export default {
               iconStyleObject['color'] = IDM.hex8ToRgbaString(element.hex8);
               break;
             case 'titleIconSize':
-              iconStyleObject['font-size'] = `calc(${element}px * #{$scale})`;
+              iconStyleObject['font-size'] = scale * element + 'px';
               break;
             case 'tableIconSize':
-              tableIconStyleObject['width'] = `calc(${element}px * #{$scale})`;
-              tableIconStyleObject['height'] = `calc(${element}px * #{$scale})`;
+              tableIconStyleObject['width'] = scale * element + 'px';
+              tableIconStyleObject['height'] = scale * element + 'px';
               break;
             case 'tableFont':
               tableStyleObject['font-family'] = element.fontFamily;
@@ -845,9 +857,10 @@ export default {
               tableStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
               tableStyleObject['font-style'] = element.fontStyle;
-              tableStyleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              tableStyleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               tableStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -862,9 +875,10 @@ export default {
               loadingStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
               loadingStyleObject['font-style'] = element.fontStyle;
-              loadingStyleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              loadingStyleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               loadingStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -879,9 +893,10 @@ export default {
               emptyStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
               emptyStyleObject['font-style'] = element.fontStyle;
-              emptyStyleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              emptyStyleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               emptyStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -896,9 +911,10 @@ export default {
               selectStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
               selectStyleObject['font-style'] = element.fontStyle;
-              selectStyleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              selectStyleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               selectStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -924,7 +940,10 @@ export default {
         titleStyleObject
       );
       window.IDM.setStyleToPageHead(
-        this.moduleObject.id + ' .i-selectPieChart-header-tit .i-selectPieChart-header-tit-icon',
+        this.moduleObject.packageid +
+          ' #' +
+          this.moduleObject.id +
+          ' .i-selectPieChart-header-tit .i-selectPieChart-header-tit-icon',
         iconStyleObject
       );
       window.IDM.setStyleToPageHead(
@@ -1039,18 +1058,17 @@ $scale: var(--i-selectPieChart-scale);
         align-items: center;
 
         .i-selectPieChart-header-tit-icon {
+          margin-right: 5px;
           display: inline-block;
           flex: 1;
         }
 
         span {
-          margin: 0 5px;
+          margin-right: 5px;
           width: 90%;
           overflow: hidden;
           flex: 8;
         }
-
-        transform: translateX(-5px);
 
         .idm_filed_svg_icon {
           font-size: 1em;

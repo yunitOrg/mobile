@@ -215,6 +215,7 @@ export default {
       this.propData = propData.compositeAttr || {};
       this.convertAttrToStyleObject();
       this.convertThemeListAttrToStyleObject();
+      this.getPopular();
     },
     sendBroadcastMessage(object) {
       window.IDM.broadcast && window.IDM.broadcast.send(object);
@@ -910,23 +911,17 @@ export default {
               }
               break;
             case 'popularTitleIconSize':
-              popularTitleIconStyleObject['font-size'] = `calc(${element}px * #{$scale})`;
+              popularTitleIconStyleObject['font-size'] = scale * element + 'px';
               break;
             case 'recordTitleIconSize':
-              recordTitleIconStyleObject['font-size'] = `calc(${element}px * #{$scale})`;
+              recordTitleIconStyleObject['font-size'] = scale * element + 'px';
               break;
             case 'cellIconSize':
-              cellIconStyleObject['font-size'] = `calc(${element}px * #{$scale})`;
-              break;
-            case 'tagsMarginRight':
-              tagsStyleObject['margin-right'] = `calc(${element}px * #{$scale})`;
-              break;
-            case 'tagsMarginTop':
-              tagsStyleObject['margin-top'] = `calc(${element}px * #{$scale})`;
+              cellIconStyleObject['font-size'] = scale * element + 'px';
               break;
             case 'cellPadding':
-              cellStyleObject['padding-top'] = `calc(${element / 2}px * #{$scale})`;
-              cellStyleObject['padding-bottom'] = `calc(${element / 2}px * #{$scale})`;
+              cellStyleObject['padding-top'] = scale * (element / 2) + 'px';
+              cellStyleObject['padding-bottom'] = scale * (element / 2) + 'px';
               break;
             case 'searchInputFont':
               searchInputStyleObject['font-family'] = element.fontFamily;
@@ -936,9 +931,10 @@ export default {
               searchInputStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
               searchInputStyleObject['font-style'] = element.fontStyle;
-              searchInputStyleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              searchInputStyleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               searchInputStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -953,9 +949,10 @@ export default {
               searchCancelStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
               searchCancelStyleObject['font-style'] = element.fontStyle;
-              searchCancelStyleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              searchCancelStyleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               searchCancelStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -970,9 +967,10 @@ export default {
               popularTitleStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
               popularTitleStyleObject['font-style'] = element.fontStyle;
-              popularTitleStyleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              popularTitleStyleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               popularTitleStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -987,9 +985,10 @@ export default {
               recordTitleStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
               recordTitleStyleObject['font-style'] = element.fontStyle;
-              recordTitleStyleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              recordTitleStyleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               recordTitleStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -1004,9 +1003,10 @@ export default {
               tagsStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
               tagsStyleObject['font-style'] = element.fontStyle;
-              tagsStyleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              tagsStyleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               tagsStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -1021,9 +1021,10 @@ export default {
               cellTitleStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
               cellTitleStyleObject['font-style'] = element.fontStyle;
-              cellTitleStyleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              cellTitleStyleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               cellTitleStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -1248,13 +1249,17 @@ export default {
       }
     },
     getPopular() {
-      if (!this.moduleObject.env || this.moduleObject.env == 'develop') {
-        this.popularData = devPopularResult;
-        return;
-      }
       if (this.propData.popularType == 'static' && this.propData.popularStaticSet) {
-        this.popularData = this.propData.popularStaticSet.map(item => item.text);
+        if (this.propData.popularStaticSet[0] && !this.propData.popularStaticSet[0].text) {
+          this.popularData = devPopularResult;
+        } else {
+          this.popularData = this.propData.popularStaticSet.map(item => item.text);
+        }
       } else if (this.propData.popularDataSource) {
+        if (!this.moduleObject.env || this.moduleObject.env == 'develop') {
+          this.popularData = devPopularResult;
+          return;
+        }
         const dataSource = this.propData.popularDataSource;
         const url = `ctrl/dataSource/getDatas`;
         const urlObject = IDM.url.queryObject();
