@@ -26,7 +26,7 @@
       </template>
     </van-search>
     <div
-      v-if="showAction && (propData.showPopular || propData.showRecord)"
+      v-show="showAction && (propData.showPopular || propData.showRecord)"
       class="i-searchBar-panel"
     >
       <div
@@ -112,7 +112,7 @@
       </div>
     </div>
     <div
-      v-else-if="propData.showPopular || propData.showRecord"
+      v-show="!showAction && (propData.showPopular || propData.showRecord)"
       class="drag_container i-searchBar-container"
       idm-ctrl-inner
       :idm-ctrl-id="moduleObject.id"
@@ -1446,16 +1446,14 @@ $scale: var(--i-searchBar-scale);
             .i-searchBar-popular-header-tit-icon {
               display: inline-block;
               flex: 1;
+              margin-right: 5px;
             }
 
             span {
-              margin: 0 5px;
               width: 90%;
               overflow: hidden;
               flex: 8;
             }
-
-            transform: translateX(-5px);
 
             .idm_filed_svg_icon {
               font-size: 1em;
@@ -1509,16 +1507,14 @@ $scale: var(--i-searchBar-scale);
             .i-searchBar-record-header-tit-icon {
               display: inline-block;
               flex: 1;
+              margin-right: 5px;
             }
 
             span {
-              margin: 0 5px;
               width: 90%;
               overflow: hidden;
               flex: 8;
             }
-
-            transform: translateX(-5px);
 
             .idm_filed_svg_icon {
               font-size: 1em;

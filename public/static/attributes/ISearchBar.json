@@ -56,7 +56,7 @@
         },
         {
           "type": "treeSelect",
-          "layoutType": "inline",
+          "layoutType": "block",
           "text": "热门数据源",
           "desc": "用于选择热门的数据源",
           "bindKey": "popularDataSource",
@@ -127,7 +127,7 @@
         },
         {
           "type": "treeSelect",
-          "layoutType": "inline",
+          "layoutType": "block",
           "text": "历史数据源",
           "desc": "用于选择历史的数据源，入参有{type: 历史排序规则,pageId,...urlObject}",
           "bindKey": "recordDataSource",
@@ -145,7 +145,7 @@
         },
         {
           "type": "treeSelect",
-          "layoutType": "inline",
+          "layoutType": "block",
           "text": "历史保存数据源",
           "desc": "用于选择保存历史的数据源，入参有{text: 当前搜索输入的文字}",
           "bindKey": "recordAdddataSource",
@@ -154,7 +154,7 @@
         },
         {
           "type": "treeSelect",
-          "layoutType": "inline",
+          "layoutType": "block",
           "text": "历史删除数据源",
           "desc": "用于选择删除历史的数据源，入参有{text: 当前搜索输入的文字}",
           "bindKey": "recordRemoveDataSource",
@@ -222,7 +222,7 @@
             },
             {
               "type": "colorPicker",
-              "layoutType": "inline",
+              "layoutType": "block",
               "text": "外部容器背景色",
               "bindKey": "searchOutsideBgColor",
               "placeholder": "请选择颜色",
@@ -231,20 +231,20 @@
             {
               "type": "border",
               "layoutType": "block",
-              "text": "搜索内容边框",
+              "text": "搜索边框",
               "bindKey": "searchBorder"
             },
             {
               "type": "colorPicker",
-              "layoutType": "inline",
-              "text": "搜索内容背景色",
+              "layoutType": "block",
+              "text": "搜索背景色",
               "bindKey": "searchBgColor",
               "placeholder": "请选择颜色",
               "default": {}
             },
             {
               "type": "colorPicker",
-              "layoutType": "inline",
+              "layoutType": "block",
               "text": "搜索图标颜色",
               "bindKey": "searchIconColor",
               "placeholder": "请选择颜色",
@@ -305,7 +305,7 @@
           "layoutType": "inline",
           "text": "标题图标",
           "bindKey": "popularTitleIcon",
-          "display": "@[showPopularIcon]"
+          "display": "@[isShowPopularTitleBar&&showPopularIcon]"
         },
         {
           "type": "group",
@@ -467,7 +467,7 @@
           "layoutType": "inline",
           "text": "标题图标",
           "bindKey": "recordTitleIcon",
-          "display": "@[showRecordIcon]"
+          "display": "@[isShowRecordTitleBar&&showRecordIcon]"
         },
         {
           "type": "group",
@@ -1108,6 +1108,14 @@
       "desc": "点击？查看高级设置用法指南",
       "children": [
         {
+          "type": "pageModuleSelect",
+          "layoutType": "block",
+          "text": "tab菜单联动组件",
+          "desc": "选择点击tab需要联动的组件",
+          "bindKey": "triggerComponents",
+          "multiple": true
+        },
+        {
           "type": "group",
           "text": "适配设置",
           "desc": "通过设置属性来适配移动端页面尺寸",
@@ -1129,14 +1137,6 @@
               "default": "1.2"
             }
           ]
-        },
-        {
-          "type": "pageModuleSelect",
-          "layoutType": "block",
-          "text": "tab菜单联动组件",
-          "desc": "选择点击tab需要联动的组件",
-          "bindKey": "triggerComponents",
-          "multiple": true
         }
       ]
     }
