@@ -11,7 +11,7 @@
     :idm-ctrl-id="moduleObject.id"
     class="i-selectPieChart-outer"
   >
-    <div class="i-selectPieChart-header" v-if="propData.isShowTitleBar">
+    <div key="i-selectPieChart-header" class="i-selectPieChart-header" v-if="propData.isShowTitleBar">
       <div class="i-selectPieChart-header-main">
         <div class="i-selectPieChart-header-tit">
           <span v-if="propData.titleIconPosition === 'right'">{{ propData.title }}</span>
@@ -38,7 +38,7 @@
         {{ pickerSelectText }}
       </div>
     </div>
-    <div class="i-selectPieChart-content">
+    <div key="i-selectPieChart-content" class="i-selectPieChart-content">
       <van-loading v-show="isLoading" :size="loadingSize" vertical>{{
         propData.loadingDescription || '加载中...'
       }}</van-loading>
@@ -46,10 +46,11 @@
         v-show="!isLoading && chartData && chartData.length > 0"
         class="i-selectPieChart-content-wapper"
       >
-        <div class="i-selectPieChart-content-chart" :id="`charts_container_${moduleObject.id}`" />
+        <div key="i-selectPieChart-content-chart" :ref="`charts_container_${moduleObject.id}`" class="i-selectPieChart-content-chart" />
         <div
+          key="i-selectPieChart-content-table"
           class="i-selectPieChart-content-table"
-          v-if="propData.tableFields && propData.tableFields.length > 0"
+          v-if="propData.tableFields && propData.tableFields[0] && propData.tableFields[0].name"
         >
           <div
             class="i-selectPieChart-content-table-row"
@@ -246,9 +247,7 @@ export default {
     this.convertThemeListAttrToStyleObject();
   },
   mounted() {
-    this.chart = this.$echarts.init(
-      document.getElementById(`charts_container_${this.moduleObject.id}`)
-    );
+    this.chart = this.$echarts.init(this.$refs[`charts_container_${this.moduleObject.id}`]);
     this.initData();
   },
   destroyed() {
