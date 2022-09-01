@@ -12,7 +12,7 @@
     <div class="idm_tags">
       <div class="idm-tips-title" v-if="propData.selfShow">{{propData.title}}</div>
       <div class="idm-tips-ul">
-        <span v-for="item in tablist" :key="item.key" :class="item.defaultActiveKey&&'active'" @click="handleClick(item)">
+        <span v-for="(item, index) in tablist" :key="index" :class="item.defaultActiveKey&&'active'" @click="handleClick(item, index)">
           {{item.tab}}
         </span>
       </div>
@@ -21,22 +21,24 @@
 </template>
 
 <script>
+import { getDatasInterfaceUrl } from '@/api/config'
 export default {
   data () {
     return {
       moduleObject:{},
       tablist: [],
+      pageData: [],
       propData:this.$root.propData.compositeAttr||{
         selfShow: true,
         title: '类型选择(多选)',
         staticTabPaneList: [
           {
             key: '1',
-            tab: '支部简介'
+            tab: '支部简介',
           },
           {
             key: '2',
-            tab: '支部党员'
+            tab: '支部党员',
           },
           {
             key: '3',
@@ -88,10 +90,34 @@ export default {
       this.convertTitleStyleObject();
       this.convertBoxStyleObject();
       this.convertLiBoxStyleObject();
+      if (this.moduleObject.env == "production" && this.propData.tabDataType === 'dynamic') {
+        this.getPageData()
+      }
     },
-    handleClick (row) {
-      this.tablist.forEach(item => {
-        if (item.key === row.key) {
+    /** 
+     * 获取数据源
+    */
+    getPageData () {
+      window.IDM.http
+      .post(
+        getDatasInterfaceUrl,
+        { id: this.propData.dataSource && this.propData.dataSource.value },
+        { headers: {'Content-Type': 'application/json;charset=UTF-8'} })
+      .then(res => {
+        if (res.status == 200 && res.data.code == 200) {
+            this.pageData = res.data.data
+            this.pageData.forEach(item => {
+              item.tab = item[this.propData.nameField]
+            })
+            this.tablist = this.pageData;
+        } else {
+            IDM.message.error(res.data.message)
+        }
+      })
+    },
+    handleClick (row, val) {
+      this.tablist.forEach((item, index) => {
+        if (index === val) {
           item.defaultActiveKey =  item.defaultActiveKey ? false : (item.defaultActiveKey === 'undefined' ? true : !item.defaultActiveKey)
         }
       })

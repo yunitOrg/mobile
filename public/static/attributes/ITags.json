@@ -36,10 +36,29 @@
             "default": "类型选择(多选)"
           },
           {
+            "type": "radio",
+            "layoutType": "inline",
+            "text": "页签来源",
+            "desc":"用于设置页签数据来源，动态属性：使用控制中心设置返回的数据源（支持用户个性化定制和排序），静态属性：直接通过属性设置数据源，无法实现定制和排序",
+            "bindKey": "tabDataType",
+            "default": "static",
+            "dictionary": [
+              {
+                "label": "动态属性",
+                "value": "dynamic"
+              },
+              {
+                "label": "静态属性",
+                "value": "static"
+              }
+            ]
+          },
+          {
             "type": "table",
             "text": "页签选项设置",
             "bindKey": "staticTabPaneList",
             "tabText": "页签[index]",
+            "display":"@[tabDataType=='static']",
             "children": [
               {
                 "type": "input",
@@ -59,6 +78,17 @@
                 "text": "默认选中",
                 "bindKey": "defaultActiveKey",
                 "default": false
+              }
+            ],
+            "default": [
+              {
+                "key": 1,
+                "tab": "组织生活"
+              },
+              {
+                "key": 2,
+                "tab": "党费",
+                "defaultActiveKey": true
               }
             ]
           }
@@ -207,12 +237,33 @@
         "desc": "点击？查看高级设置用法指南",
         "children": [
           {
+            "type": "treeSelect",
+            "layoutType": "inline",
+            "text": "数据源",
+            "bindKey": "dataSource",
+            "dataSourceUrl": "/ctrl/dataSource/getDatasourceByGroup"
+          },
+          {
             "type": "pageModuleSelect",
             "layoutType": "block",
-            "text": "tag菜单联动组件",
+            "text": "tag菜单联动组件发送消息",
             "desc": "选择点击tag需要联动的组件",
             "bindKey": "triggerComponents",
             "multiple": true
+          },
+          {
+            "type": "group",
+            "text": "字段设置",
+            "desc": "设置从列表项中展示的对应字段",
+            "children": [
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "名称字段",
+                "bindKey": "nameField",
+                "default": "name"
+              }
+            ]
           }
         ]
       }

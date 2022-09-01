@@ -65,13 +65,6 @@
                 ]
               },
               {
-                "type": "switch",
-                "layoutType": "inline",
-                "text": "禁用",
-                "bindKey": "disabled",
-                "default": false
-              },
-              {
                 "type": "group",
                 "text": "左侧文本",
                 "desc": "提供设置组件能达到展示效果的基本属性设置信息",
@@ -80,15 +73,98 @@
                     "type": "switch",
                     "layoutType": "inline",
                     "text": "显示",
-                    "bindKey": "labelSwitch",
+                    "bindKey": "labelShow",
                     "default": true
                   },
                   {
                     "type": "input",
                     "layoutType": "inline",
                     "text": "文字",
-                    "bindKey": "labelText",
-                    "default": "文本"
+                    "bindKey": "label",
+                    "default": "label"
+                  },
+                  {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "宽",
+                    "bindKey": "labelWidth",
+                    "default": "100px"
+                  },
+                  {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "高",
+                    "bindKey": "labelHeight",
+                    "default": "auto"
+                  },
+                  {
+                    "type": "font",
+                    "layoutType": "block",
+                    "text": "字体",
+                    "bindKey": "labelFont"
+                  },
+                  {
+                    "type": "box",
+                    "layoutType": "block",
+                    "text": "内外边距",
+                    "bindKey": "labelBox"
+                  }
+                ]
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "绑定字段",
+                "bindKey": "field"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "placeholder",
+                "bindKey": "placeholder"
+              },
+              {
+                "type": "switch",
+                "layoutType": "inline",
+                "text": "禁用",
+                "bindKey": "disabled",
+                "default": false
+              },
+              {
+                "type": "switch",
+                "layoutType": "inline",
+                "text": "高度自适应",
+                "bindKey": "autosize",
+                "default": true,
+                "display": "@[type=='textarea']"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "最小高度",
+                "bindKey": "rows",
+                "default": 3,
+                "display": "@[type=='textarea']"
+              },
+              {
+                "type": "group",
+                "text": "显示字数统计",
+                "desc": "显示字数统计",
+                "display": "@[type=='textarea']",
+                "children": [
+                  {
+                    "type": "switch",
+                    "layoutType": "inline",
+                    "text": "显示字数统计",
+                    "bindKey": "showWordLimit",
+                    "default": true
+                  },
+                  {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "最大字数",
+                    "bindKey": "maxlength",
+                    "default": 100
                   }
                 ]
               }
