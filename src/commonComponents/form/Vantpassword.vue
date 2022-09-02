@@ -1,12 +1,14 @@
 <template>
-  <div class="input-com">
-    <div class="name" :style="computedStyle">
+  <div class="input-com" :style="computedBlock">
+    <div class="name" :style="computedStyle" v-if="params['labelShow']">
       {{label}}
     </div>
     <van-field
       v-model="formData[field]"
       type="password"
       :placeholder="params['placeholder']"
+      :input-align="params['inputAlign']"
+      :disabled="params['disabled']"
     />
   </div>
 </template>
@@ -33,6 +35,13 @@ export default{
         IDM.style.setBoxStyle(obj, this.params.labelBox)
       }
       return obj
+    },
+    computedBlock () {
+      let styleObject = {}
+      if (this.params['labelBlock']) {
+        styleObject['flex-wrap'] = 'wrap'
+      }
+      return styleObject
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
-  <div class="input-com">
-    <div class="name" :style="computedStyle">
+  <div class="input-com" :style="computedBlock">
+    <div class="name" :style="computedStyle" v-if="params['labelShow']">
       {{label}}
     </div>
     <van-field
@@ -8,7 +8,9 @@
       :rows="params[rows]"
       :autosize="params[autosize]"
       type="textarea"
+      :disabled="params['disabled']"
       :placeholder="params['placeholder']"
+      :input-align="params['inputAlign']"
       :maxlength="params[maxlength]"
       :show-word-limit="params[showWordLimit]"
     />
@@ -37,6 +39,13 @@ export default{
         IDM.style.setBoxStyle(obj, this.params.labelBox)
       }
       return obj
+    },
+    computedBlock () {
+      let styleObject = {}
+      if (this.params['labelBlock']) {
+        styleObject['flex-wrap'] = 'wrap'
+      }
+      return styleObject
     }
   }
 }

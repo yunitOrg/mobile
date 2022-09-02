@@ -1,16 +1,15 @@
 <template>
-  <div>
-    <van-cell-group inset>
-      <component
-        :is="comInput"
-        :type="type"
-        :label="label"
-        :field="field"
-        :options="options"
-        :formData="formData"
-        :params="params"
-      ></component>
-    </van-cell-group>
+  <div class="input-component">
+    <component
+      :is="comInput"
+      :id="id"
+      :type="type"
+      :label="label"
+      :field="field"
+      :options="options"
+      :formData="formData"
+      :params="params"
+    ></component>
   </div>
 </template>
 
@@ -32,7 +31,12 @@ const inputMap = {
 export default{
   name: "InputFactory",
   components: inputMap,
+  inject: ['propData'],
   props: {
+    id: {
+      type: String,
+      default: ""
+    },
     label: {
       type: String,
       default: ""
@@ -68,6 +72,21 @@ export default{
     comInput() {
       return inputMap['Vant'+this.type];
     }
+  },
+  methods: {
+    converBoxStyle () {
+      let styleObject = {}
+      if (this.propData.componentBox) {
+        IDM.style.setBoxStyle(styleObject, this.propData.componentBox)
+      }
+      if (this.propData.componentBorder) {
+        IDM.style.setBorderStyle(styleObject, this.propData.componentBorder)
+      }
+      window.IDM.setStyleToPageHead(this.id + " .input-component", styleObject);
+    }
+  },
+  mounted () {
+    this.converBoxStyle()
   }
 }
 </script>
@@ -78,6 +97,13 @@ export default{
   align-items: center;
   .name{
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .required{
+    color: red;
+    padding-right: 5px;
   }
 }
 </style>
