@@ -1,9 +1,13 @@
 <template>
   <div class="sendpws">
+    <span v-if="params.required" class="required">*</span>
     <van-field
       v-model="formData[field]"
       :disabled="params['disabled']"
       :placeholder="params['placeholder']"
+      @blur="handleBlur"
+      :error-message="!fieldCheck ? params['errorFont'] : ''"
+      :error-message-align="params['inputAlign']"
     />
     <span class="swnd-btn" :style="computedStyle">{{label}}</span>
   </div>
@@ -20,6 +24,11 @@ export default{
     formData: Object,
     params: Object
   },
+  data () {
+    return {
+      fieldCheck: true
+    }
+  },
   computed: {
     computedStyle () {
       let styleObject = {}
@@ -31,6 +40,15 @@ export default{
       this.params.pwdFont && (IDM.style.setFontStyle(styleObject, this.params.pwdFont))
       this.params.pwdBorder && (IDM.style.setBorderStyle(styleObject, this.params.pwdBorder))
       return styleObject
+    }
+  },
+  methods: {
+    handleBlur (event) {
+      const val = event.target.value;
+      const func = this.params['checkField'];
+      if (func && func[0] && func[0].name) {
+        this.fieldCheck = window[func[0].name] && window[func[0].name].call(this, val, {params: this.formData, data: this.params})
+      }
     }
   }
 }
@@ -46,6 +64,10 @@ export default{
 .sendpws{
   display: flex;
   align-items: center;
+  .required{
+    color: red;
+    padding-right: 5px;
+  }
   .swnd-btn{
     width: 35%;
     height: 30px;

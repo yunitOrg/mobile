@@ -59,7 +59,7 @@ export default{
       const val = event.target.value;
       const func = this.params['checkField'];
       if (func && func[0] && func[0].name) {
-        this.fieldCheck = window[func[0].name] && window[func[0].name].call(this, val)
+        this.fieldCheck = window[func[0].name] && window[func[0].name].call(this, val, {params: this.formData, data: this.params})
       }
     }
   }
