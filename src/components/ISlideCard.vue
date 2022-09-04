@@ -52,7 +52,7 @@
           v-for="(record, i) in data"
           :key="i"
           :style="{
-            'margin-top': i != 0 && propData.rowMarginType == 'static' ? rowMargin + 'px' : 0,
+            'margin-top': i != 0 && propData.rowMarginType == 'static' ? rowMargin + 'px' : '',
             width: propData.layoutType == 'scroll' && propData.columNum == 0 ? 'auto' : '100%',
             'justify-content':
               propData.layoutType == 'scroll' && propData.columNum != 0
@@ -72,7 +72,7 @@
               'margin-left':
                 index != 0 && propData.layoutType == 'scroll' && propData.columNum == 0
                   ? itemMargin + 'px'
-                  : 0,
+                  : '',
               'flex-shrink': propData.layoutType == 'scroll' && propData.columNum == 0 ? 0 : 1
             }"
             @click.stop="itemClick(item)"
@@ -473,7 +473,7 @@ export default {
       }
     },
     itemClick(item) {
-      if (!this.moduleObject.env || this.moduleObject.env == 'develop') {
+      if (!this.moduleObject.env || this.moduleObject.env == 'develop' || !item) {
         return;
       }
       if (this.propData.itemJumpTarget && this.propData.itemJumpTarget === 'custom') {
@@ -1291,6 +1291,9 @@ $scale: var(--i-slideCard-scale);
         align-items: center;
         justify-content: space-between;
         flex-wrap: nowrap;
+        .i-slideCard-content-empty {
+          opacity: 0;
+        }
         .i-slideCard-content-item {
           height: 90px;
           width: 90px;
