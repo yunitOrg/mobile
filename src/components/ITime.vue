@@ -18,8 +18,8 @@
             placeholder="点击选择开始日期"
             @click="handleShow(1)"
           />
-          <svg class="button-svg-icon" aria-hidden="true">
-            <use :xlink:href="`#icon-arrowRight`"></use>
+          <svg class="button-svg-icon" v-if="propData.timeIcon && propData.timeIcon.length > 0" aria-hidden="true">
+            <use :xlink:href="`#${propData.timeIcon[0]}`"></use>
           </svg>
         </div>
         <span class="time-split">至</span>
@@ -30,8 +30,8 @@
             placeholder="点击选择结束日期"
             @click="handleShow(2)"
           />
-          <svg class="button-svg-icon" aria-hidden="true">
-            <use :xlink:href="`#icon-arrowRight`"></use>
+          <svg class="button-svg-icon" v-if="propData.timeIcon && propData.timeIcon.length > 0" aria-hidden="true">
+            <use :xlink:href="`#${propData.timeIcon[0]}`"></use>
           </svg>
         </div>
       </div>

@@ -38,21 +38,11 @@
           "default": true
         },
         {
-          "type": "select",
+          "type": "iconSelect",
           "layoutType": "inline",
-          "text": "样式模式",
-          "bindKey": "styleModel",
-          "dictionary": [
-            {
-              "label": "移动端样式",
-              "value": "mobile"
-            },
-            {
-              "label": "pc样式",
-              "value": "pc"
-            }
-          ],
-          "default": "mobile"
+          "text": "时间图标",
+          "bindKey": "timeIcon",
+          "default": ""
         }
       ]
     },

@@ -89,21 +89,21 @@
       "comLangue": "vue"
     },
     {
-      "classId": "idm.component.mobile.icalender",
-      "comName": "日历",
-      "className": "Icalender",
+      "classId": "idm.component.mobile.isignin",
+      "comName": "签到打卡",
+      "className": "ISignin",
       "comType": "common",
       "comLangue": "vue"
     },
     {
-      "classId": "idm.component.mobile.Ishowform",
+      "classId": "idm.component.mobile.ishowform",
       "comName": "数据展示表单",
       "className": "IshowForm",
       "comType": "common",
       "comLangue": "vue"
     },
     {
-      "classId": "idm.component.mobile.Idialog",
+      "classId": "idm.component.mobile.idialog",
       "comName": "弹窗",
       "className": "IDialog",
       "comType": "common",
