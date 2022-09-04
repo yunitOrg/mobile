@@ -61,6 +61,10 @@
                   {
                     "label": "发送验证码",
                     "value": "sendPws"
+                  },
+                  {
+                    "label": "日历",
+                    "value": "calendar"
                   }
                 ]
               },
@@ -273,6 +277,75 @@
                     "display": "@[type=='sendPws']"
                   }
                 ]
+              },
+              {
+                "type": "group",
+                "text": "日历",
+                "layoutType": "block",
+                "desc": "提供设置组件能达到展示效果的基本属性设置信息",
+                "display": "@[type=='calendar']",
+                "children": [
+                  {
+                    "type": "select",
+                    "layoutType": "inline",
+                    "text": "日期类型",
+                    "bindKey": "dateType",
+                    "dictionary": [
+                      {
+                        "label": "单个日期",
+                        "value": "single"
+                      },
+                      {
+                        "label": "日期区间",
+                        "value": "range"
+                      },
+                      {
+                        "label": "多个日期",
+                        "value": "multiple"
+                      }
+                    ],
+                    "default": "single"
+                  },
+                  {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "自定义范围开始",
+                    "bindKey": "dateRangeStart",
+                    "placeholder": "new Date(2022, 0, 1)"
+                  },
+                  {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "自定义范围结束",
+                    "bindKey": "dateRangeEnd",
+                    "placeholder": "new Date(2022, 0, 1)"
+                  },
+                  {
+                    "type": "radio",
+                    "layoutType": "inline",
+                    "text": "弹出位置",
+                    "bindKey": "datePosition",
+                    "dictionary": [
+                      {
+                        "label": "上",
+                        "value": "top"
+                      },
+                      {
+                        "label": "右",
+                        "value": "right"
+                      },
+                      {
+                        "label": "下",
+                        "value": "bottom"
+                      },
+                      {
+                        "label": "左",
+                        "value": "left"
+                      }
+                    ],
+                    "default": "bottom"
+                  }
+                ]
               }
             ]
           }
@@ -355,6 +428,14 @@
             "text": "tab菜单联动组件",
             "desc": "选择点击tab需要联动的组件",
             "bindKey": "triggerComponents",
+            "multiple": true
+          },
+          {
+            "type": "actionSelect",
+            "layoutType": "block",
+            "text": "发送验证码事件",
+            "desc": "发送验证码组件的按钮点击事件",
+            "bindKey": "sendBtnClick",
             "multiple": true
           }
         ]

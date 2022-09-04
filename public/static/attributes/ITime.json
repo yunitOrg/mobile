@@ -1,0 +1,93 @@
+{
+  "classId": "idm.component.mobile.itime",
+  "comName": "日期选择器",
+  "className": "ITime",
+  "comType": "common",
+  "comLangue": "vue",
+  "compositeAttr": [
+    {
+      "type": "input",
+      "layoutType": "inline",
+      "text": "唯一标识",
+      "bindKey": "ctrlId",
+      "disabled": true,
+      "default": "@[packageid]",
+      "desc": "",
+      "helpUrl": ""
+    },
+    {
+      "type": "group",
+      "text": "基本属性",
+      "desc": "提供设置组件能达到展示效果的基本属性设置信息",
+      "children": [
+        {
+          "type": "radio",
+          "layoutType": "inline",
+          "text": "文本显示",
+          "bindKey": "labelShow",
+          "dictionary": [
+            {
+              "label": "显示",
+              "value": true
+            },
+            {
+              "label": "不显示",
+              "value": false
+            }
+          ],
+          "default": true
+        },
+        {
+          "type": "select",
+          "layoutType": "inline",
+          "text": "样式模式",
+          "bindKey": "styleModel",
+          "dictionary": [
+            {
+              "label": "移动端样式",
+              "value": "mobile"
+            },
+            {
+              "label": "pc样式",
+              "value": "pc"
+            }
+          ],
+          "default": "mobile"
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "text": "提示样式",
+      "desc": "提供设置组件能达到展示效果的基本属性设置信息",
+      "children": [
+        {
+          "type": "font",
+          "layoutType": "block",
+          "text": "字体",
+          "bindKey": "labelFont"
+        },
+        {
+          "type": "box",
+          "layoutType": "block",
+          "text": "内外边距",
+          "bindKey": "labelBox"
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "text": "外层容器样式",
+      "desc": "点击？查看样式设置用法指南",
+      "helpUrl": "",
+      "children": [
+        {
+          "type": "box",
+          "layoutType": "block",
+          "text": "内外边距",
+          "bindKey": "box"
+        }
+      ]
+    }
+  ]
+}
