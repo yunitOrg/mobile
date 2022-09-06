@@ -194,9 +194,9 @@ export default {
     initData() {
       if (!this.moduleObject.env || this.moduleObject.env == 'develop') {
         this.articleData = {
-          title: '国家卫健委：昨日新增692例本土确诊病例、1620例本土无症状感染者',
-          content: '<span>html标签在渲染的时候被源码输出</span>',
-          author: '成都商报红星新闻官方帐号',
+          title: '标题',
+          content: '<span>html标签包裹的文本</span>',
+          author: '作者',
           time: '2022-08-15 09:03'
         };
         return;
@@ -471,9 +471,10 @@ export default {
               }
               styleObject['font-weight'] = element.fontWeight && element.fontWeight.split(' ')[0];
               styleObject['font-style'] = element.fontStyle;
-              styleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              styleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               styleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -488,9 +489,10 @@ export default {
               titleStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
               titleStyleObject['font-style'] = element.fontStyle;
-              titleStyleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              titleStyleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               titleStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -505,9 +507,10 @@ export default {
               authorStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
               authorStyleObject['font-style'] = element.fontStyle;
-              authorStyleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              authorStyleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               authorStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -522,9 +525,10 @@ export default {
               contentStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
               contentStyleObject['font-style'] = element.fontStyle;
-              contentStyleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              contentStyleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               contentStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -539,9 +543,10 @@ export default {
               loadingStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
               loadingStyleObject['font-style'] = element.fontStyle;
-              loadingStyleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              loadingStyleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               loadingStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -556,9 +561,10 @@ export default {
               emptyStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
               emptyStyleObject['font-style'] = element.fontStyle;
-              emptyStyleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              emptyStyleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               emptyStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);

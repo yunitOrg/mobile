@@ -23,12 +23,14 @@
             >
               <use :xlink:href="`#${propData.titleIcon && propData.titleIcon[0]}`" />
             </svg>
-            <svg-icon v-else icon-class="application-icon" />
+            <svg-icon class="idm_filed_svg_icon" v-else icon-class="shu" />
           </div>
           <span v-if="propData.titleIconPosition === 'left'">{{ propData.title }}</span>
         </div>
       </div>
-      <div class="i-slideCard-header-more" v-if="propData.moreBtn" @click="moreClick">更多 ></div>
+      <div class="i-slideCard-header-more" v-if="propData.moreBtn" @click="moreClick">
+        更多<svg-icon iconClass="arrowRight" className="idm_filed_svg_icon"></svg-icon>
+      </div>
     </div>
     <div class="i-slideCard-content">
       <van-loading v-if="isLoading" :size="loadingSize" vertical>{{
@@ -52,7 +54,7 @@
           v-for="(record, i) in data"
           :key="i"
           :style="{
-            'margin-top': i != 0 && propData.rowMarginType == 'static' ? rowMargin + 'px' : 0,
+            'margin-top': i != 0 && propData.rowMarginType == 'static' ? rowMargin + 'px' : '',
             width: propData.layoutType == 'scroll' && propData.columNum == 0 ? 'auto' : '100%',
             'justify-content':
               propData.layoutType == 'scroll' && propData.columNum != 0
@@ -72,7 +74,7 @@
               'margin-left':
                 index != 0 && propData.layoutType == 'scroll' && propData.columNum == 0
                   ? itemMargin + 'px'
-                  : 0,
+                  : '',
               'flex-shrink': propData.layoutType == 'scroll' && propData.columNum == 0 ? 0 : 1
             }"
             @click.stop="itemClick(item)"
@@ -289,7 +291,7 @@ export default {
       this.propData = propData.compositeAttr || {};
       this.convertAttrToStyleObject();
       this.convertThemeListAttrToStyleObject();
-      this.setRows();
+      this.initData();
     },
     /**
      * 组件通信：接收消息的方法
@@ -377,12 +379,11 @@ export default {
      * 请求数据
      */
     initData() {
-      if (!this.moduleObject.env || this.moduleObject.env == 'develop') {
-        this.data = devResult;
-        this.setRows();
-        return;
-      }
       if (this.propData.dataType == 'dataSource' && this.propData.dataSource) {
+        if (!this.moduleObject.env || this.moduleObject.env == 'develop') {
+          this.setRows(devResult);
+          return;
+        }
         const dataSource = this.propData.dataSource;
         const url = `ctrl/dataSource/getDatas`;
         const urlObject = IDM.url.queryObject();
@@ -407,8 +408,7 @@ export default {
           .done(res => {
             if (res.type === 'success') {
               const resultData = this.customFormat(this.propData.customFunction, res.data);
-              this.data = resultData;
-              this.setRows();
+              this.setRows(resultData);
             }
             this.isLoading = false;
           })
@@ -417,17 +417,20 @@ export default {
             this.isLoading = false;
           });
       } else if (this.propData.dataType == 'static' && this.propData.dataStaticSet) {
-        this.data = this.propData.dataStaticSet;
-        this.setRows();
+        if (this.propData.dataStaticSet[0] && !this.propData.dataStaticSet[0].name) {
+          this.setRows(devResult);
+        } else {
+          this.setRows(this.propData.dataStaticSet);
+        }
       }
     },
-    setRows() {
+    setRows(orignData) {
       const data = [];
       if (this.propData.layoutType == 'scroll' && this.propData.columNum == 0) {
-        data[0] = this.data;
+        data[0] = orignData;
       } else {
         const columNum = this.propData.columNum || 3;
-        this.data.forEach((item, index) => {
+        orignData.forEach((item, index) => {
           if (data[parseInt(index / columNum)]) {
             data[parseInt(index / columNum)].push(item);
           } else {
@@ -472,7 +475,7 @@ export default {
       }
     },
     itemClick(item) {
-      if (!this.moduleObject.env || this.moduleObject.env == 'develop') {
+      if (!this.moduleObject.env || this.moduleObject.env == 'develop' || !item) {
         return;
       }
       if (this.propData.itemJumpTarget && this.propData.itemJumpTarget === 'custom') {
@@ -935,9 +938,10 @@ export default {
               titleStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
               titleStyleObject['font-style'] = element.fontStyle;
-              titleStyleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              titleStyleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               titleStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -948,7 +952,7 @@ export default {
               iconStyleObject['color'] = IDM.hex8ToRgbaString(element.hex8);
               break;
             case 'titleIconSize':
-              iconStyleObject['font-size'] = `calc(${element}px * #{$scale})`;
+              iconStyleObject['font-size'] = scale * element + 'px';
               break;
             case 'font':
               styleObject['font-family'] = element.fontFamily;
@@ -957,9 +961,10 @@ export default {
               }
               styleObject['font-weight'] = element.fontWeight && element.fontWeight.split(' ')[0];
               styleObject['font-style'] = element.fontStyle;
-              styleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              styleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               styleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -974,9 +979,10 @@ export default {
               loadingStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
               loadingStyleObject['font-style'] = element.fontStyle;
-              loadingStyleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              loadingStyleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               loadingStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -991,9 +997,10 @@ export default {
               emptyStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
               emptyStyleObject['font-style'] = element.fontStyle;
-              emptyStyleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              emptyStyleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               emptyStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -1008,9 +1015,10 @@ export default {
               moreBtnStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
               moreBtnStyleObject['font-style'] = element.fontStyle;
-              moreBtnStyleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              moreBtnStyleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               moreBtnStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -1025,9 +1033,10 @@ export default {
               mainTextStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
               mainTextStyleObject['font-style'] = element.fontStyle;
-              mainTextStyleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              mainTextStyleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               mainTextStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -1042,9 +1051,10 @@ export default {
               extraTextStyleObject['font-weight'] =
                 element.fontWeight && element.fontWeight.split(' ')[0];
               extraTextStyleObject['font-style'] = element.fontStyle;
-              extraTextStyleObject['font-size'] = `calc(${
-                element.fontSize + element.fontSizeUnit
-              } * #{$scale})`;
+              extraTextStyleObject['font-size'] =
+                element.fontSizeUnit === 'px'
+                  ? scale * element.fontSize + element.fontSizeUnit
+                  : element.fontSize + element.fontSizeUnit;
               extraTextStyleObject['line-height'] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
@@ -1219,16 +1229,15 @@ $scale: var(--i-slideCard-scale);
         .i-slideCard-header-tit-icon {
           display: inline-block;
           flex: 1;
+          margin-right: 5px;
         }
 
         span {
-          margin: 0 5px;
+          margin-right: 5px;
           width: 90%;
           overflow: hidden;
           flex: 8;
         }
-
-        transform: translateX(-5px);
 
         .idm_filed_svg_icon {
           font-size: 1em;
@@ -1242,9 +1251,18 @@ $scale: var(--i-slideCard-scale);
     }
 
     .i-slideCard-header-more {
-      color: red;
+      // color: red;
       &:active {
         opacity: 0.7;
+      }
+      .idm_filed_svg_icon {
+        margin-left: 5px;
+        font-size: 1em;
+        width: 1em;
+        height: 1em;
+        fill: currentColor;
+        vertical-align: -0.15em;
+        outline: none;
       }
     }
   }
@@ -1284,6 +1302,9 @@ $scale: var(--i-slideCard-scale);
         align-items: center;
         justify-content: space-between;
         flex-wrap: nowrap;
+        .i-slideCard-content-empty {
+          opacity: 0;
+        }
         .i-slideCard-content-item {
           height: 90px;
           width: 90px;

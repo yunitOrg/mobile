@@ -21,8 +21,7 @@
       "desc": "提供设置组件能达到展示效果的基本属性设置信息",
       "children": [
         {
-          "type": "radio",
-          "styleType": "radio",
+          "type": "select",
           "layoutType": "inline",
           "text": "显示模式",
           "desc": "设置内容过多时的显示模式，可以左右滑动或上下滑动",
@@ -83,27 +82,7 @@
           "display": "@[isShowTitleBar]"
         },
         {
-          "type": "radio",
-          "styleType": "radio",
-          "layoutType": "inline",
-          "text": "图片图标",
-          "desc": "设置图像区域的展示类型",
-          "bindKey": "displayType",
-          "dictionary": [
-            {
-              "label": "图片",
-              "value": "img"
-            },
-            {
-              "label": "图标",
-              "value": "icon"
-            }
-          ],
-          "default": "img"
-        },
-        {
-          "type": "radio",
-          "styleType": "radio",
+          "type": "select",
           "layoutType": "inline",
           "text": "数据来源",
           "desc": "设置数据来源",
@@ -118,11 +97,11 @@
               "value": "static"
             }
           ],
-          "default": "dataSource"
+          "default": "static"
         },
         {
           "type": "treeSelect",
-          "layoutType": "inline",
+          "layoutType": "block",
           "text": "组件数据源",
           "desc": "用于选择组件的数据源, 入参如下{id:数据源的id,pageId:页面id,...urlObject:当前路径参数}",
           "bindKey": "dataSource",
@@ -146,8 +125,15 @@
           "display": "@[dataType=='static']",
           "children": [
             {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "key标识",
+              "desc": "设置此项的唯一标识",
+              "bindKey": "key"
+            },
+            {
               "type": "uploadImage",
-              "layoutType": "block",
+              "layoutType": "inline",
               "text": "图片",
               "bindKey": "imgUrl",
               "multiple": false,
@@ -181,6 +167,24 @@
       "helpUrl": "",
       "children": [
         {
+          "type": "radio",
+          "layoutType": "inline",
+          "text": "图片图标",
+          "desc": "设置图像区域的展示类型",
+          "bindKey": "displayType",
+          "dictionary": [
+            {
+              "label": "图片",
+              "value": "img"
+            },
+            {
+              "label": "图标",
+              "value": "icon"
+            }
+          ],
+          "default": "img"
+        },
+        {
           "type": "switch",
           "layoutType": "inline",
           "text": "显示文字",
@@ -211,7 +215,7 @@
           "children": [
             {
               "type": "inputNumber",
-              "layoutType": "block",
+              "layoutType": "inline",
               "text": "图标大小",
               "bindKey": "emptyImageSize",
               "default": 70
@@ -239,7 +243,7 @@
           "children": [
             {
               "type": "inputNumber",
-              "layoutType": "block",
+              "layoutType": "inline",
               "text": "图标大小",
               "bindKey": "loadingSize",
               "default": 24
@@ -355,7 +359,7 @@
                     },
                     {
                       "label": "中",
-                      "value": "middle"
+                      "value": "center"
                     },
                     {
                       "label": "右",
@@ -514,7 +518,6 @@
             },
             {
               "type": "radio",
-              "styleType": "radio",
               "layoutType": "inline",
               "text": "行间类型",
               "desc": "设置行间距类型",
@@ -529,7 +532,7 @@
                   "value": "static"
                 }
               ],
-              "display": "@[layoutType！='scroll']",
+              "display": "@[layoutType!='scroll']",
               "default": "adapt"
             },
             {
@@ -625,7 +628,6 @@
       "children": [
         {
           "type": "radio",
-          "styleType": "radio",
           "layoutType": "inline",
           "text": "图标位置",
           "desc": "设置组件标题图标位置",
@@ -641,7 +643,7 @@
               "value": "right"
             }
           ],
-          "default": "right"
+          "default": "left"
         },
         {
           "type": "iconSelect",

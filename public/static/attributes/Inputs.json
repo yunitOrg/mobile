@@ -22,9 +22,9 @@
         "children": [
           {
             "type": "table",
-            "text": "添加页签",
+            "text": "添加组件",
             "bindKey": "tableComponent",
-            "tabText": "页签[index]",
+            "tabText": "组件[index]",
             "children": [
               {
                 "type": "input",
@@ -61,15 +61,12 @@
                   {
                     "label": "发送验证码",
                     "value": "sendPws"
+                  },
+                  {
+                    "label": "日历",
+                    "value": "calendar"
                   }
                 ]
-              },
-              {
-                "type": "switch",
-                "layoutType": "inline",
-                "text": "禁用",
-                "bindKey": "disabled",
-                "default": false
               },
               {
                 "type": "group",
@@ -80,15 +77,273 @@
                     "type": "switch",
                     "layoutType": "inline",
                     "text": "显示",
-                    "bindKey": "labelSwitch",
+                    "bindKey": "labelShow",
                     "default": true
+                  },
+                  {
+                    "type": "switch",
+                    "layoutType": "inline",
+                    "text": "一行显示",
+                    "bindKey": "labelBlock",
+                    "default": false
                   },
                   {
                     "type": "input",
                     "layoutType": "inline",
-                    "text": "文字",
-                    "bindKey": "labelText",
-                    "default": "文本"
+                    "text": "宽",
+                    "bindKey": "labelWidth",
+                    "default": "100px"
+                  },
+                  {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "高",
+                    "bindKey": "labelHeight",
+                    "default": "auto"
+                  },
+                  {
+                    "type": "font",
+                    "layoutType": "block",
+                    "text": "字体",
+                    "bindKey": "labelFont"
+                  },
+                  {
+                    "type": "box",
+                    "layoutType": "block",
+                    "text": "内外边距",
+                    "bindKey": "labelBox"
+                  }
+                ]
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "文本",
+                "bindKey": "label",
+                "default": "label"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "绑定字段",
+                "bindKey": "field"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "placeholder",
+                "bindKey": "placeholder"
+              },
+              {
+                "type": "switch",
+                "layoutType": "inline",
+                "text": "禁用",
+                "bindKey": "disabled",
+                "default": false
+              },
+              {
+                "type": "switch",
+                "layoutType": "inline",
+                "text": "是否必填",
+                "bindKey": "required",
+                "default": false
+              },
+              {
+                "type": "actionSelect",
+                "layoutType": "block",
+                "text": "校验函数",
+                "bindKey": "checkField",
+                "desc": "请填写检验函数",
+                "multiple": false
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "错误提示",
+                "bindKey": "errorFont",
+                "desc": "请填写错误提示语",
+                "default": "请输入"
+              },
+              {
+                "type": "select",
+                "layoutType": "inline",
+                "text": "输入框类型",
+                "bindKey": "inputType",
+                "display": "@[type=='input']",
+                "dictionary": [
+                  {
+                    "label": "手机号键盘",
+                    "value": "tel"
+                  },
+                  {
+                    "label": "纯数字键盘",
+                    "value": "digit"
+                  },
+                  {
+                    "label": "带符号纯数字键盘",
+                    "value": "number"
+                  }
+                ],
+                "default": "number"
+              },
+              {
+                "type": "select",
+                "layoutType": "inline",
+                "text": "输入框对齐方式",
+                "bindKey": "inputAlign",
+                "dictionary": [
+                  {
+                    "label": "居中",
+                    "value": "center"
+                  },
+                  {
+                    "label": "右对齐",
+                    "value": "right"
+                  },
+                  {
+                    "label": "左对齐",
+                    "value": "left"
+                  }
+                ],
+                "default": "right"
+              },
+              {
+                "type": "switch",
+                "layoutType": "inline",
+                "text": "高度自适应",
+                "bindKey": "autosize",
+                "default": true,
+                "display": "@[type=='textarea']"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "最小高度",
+                "bindKey": "rows",
+                "default": 3,
+                "display": "@[type=='textarea']"
+              },
+              {
+                "type": "switch",
+                "layoutType": "inline",
+                "text": "显示字数统计",
+                "bindKey": "showWordLimit",
+                "default": true,
+                "display": "@[type=='textarea']"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "最大字数",
+                "bindKey": "maxlength",
+                "default": 100,
+                "display": "@[type=='textarea']"
+              },
+              {
+                "type": "group",
+                "text": "验证码样式",
+                "layoutType": "block",
+                "desc": "提供设置组件能达到展示效果的基本属性设置信息",
+                "display": "@[type=='sendPws']",
+                "children": [
+                  {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "宽",
+                    "bindKey": "pwdWidth",
+                    "default": "35%",
+                    "display": "@[type=='sendPws']"
+                  },
+                  {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "宽",
+                    "bindKey": "pwdHeight",
+                    "default": "30px",
+                    "display": "@[type=='sendPws']"
+                  },
+                  {
+                    "type": "font",
+                    "layoutType": "block",
+                    "text": "字体",
+                    "bindKey": "pwdFont",
+                    "display": "@[type=='sendPws']"
+                  },
+                  {
+                    "type": "border",
+                    "layoutType": "block",
+                    "text": "分割线",
+                    "bindKey": "pwdBorder",
+                    "display": "@[type=='sendPws']"
+                  }
+                ]
+              },
+              {
+                "type": "group",
+                "text": "日历",
+                "layoutType": "block",
+                "desc": "提供设置组件能达到展示效果的基本属性设置信息",
+                "display": "@[type=='calendar']",
+                "children": [
+                  {
+                    "type": "select",
+                    "layoutType": "inline",
+                    "text": "日期类型",
+                    "bindKey": "dateType",
+                    "dictionary": [
+                      {
+                        "label": "单个日期",
+                        "value": "single"
+                      },
+                      {
+                        "label": "日期区间",
+                        "value": "range"
+                      },
+                      {
+                        "label": "多个日期",
+                        "value": "multiple"
+                      }
+                    ],
+                    "default": "single"
+                  },
+                  {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "自定义范围开始",
+                    "bindKey": "dateRangeStart",
+                    "placeholder": "new Date(2022, 0, 1)"
+                  },
+                  {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "自定义范围结束",
+                    "bindKey": "dateRangeEnd",
+                    "placeholder": "new Date(2022, 0, 1)"
+                  },
+                  {
+                    "type": "radio",
+                    "layoutType": "inline",
+                    "text": "弹出位置",
+                    "bindKey": "datePosition",
+                    "dictionary": [
+                      {
+                        "label": "上",
+                        "value": "top"
+                      },
+                      {
+                        "label": "右",
+                        "value": "right"
+                      },
+                      {
+                        "label": "下",
+                        "value": "bottom"
+                      },
+                      {
+                        "label": "左",
+                        "value": "left"
+                      }
+                    ],
+                    "default": "bottom"
                   }
                 ]
               }
@@ -98,10 +353,91 @@
       },
       {
         "type": "group",
+        "text": "外层容器样式",
+        "desc": "点击？查看样式设置用法指南",
+        "helpUrl": "",
+        "children": [
+          {
+            "type": "inlineGroup",
+            "text": "图片宽高",
+            "children": [
+                {
+                    "type": "input",
+                    "layoutType": "block",
+                    "text": "宽",
+                    "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
+                    "bindKey": "boxWidth",
+                    "width": "100%",
+                    "default": "auto"
+                },
+                {
+                    "type": "input",
+                    "layoutType": "block",
+                    "text": "高",
+                    "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
+                    "bindKey": "boxHeight",
+                    "width": "200px",
+                    "default": "auto"
+                }
+            ]
+          },
+          {
+            "type": "box",
+            "layoutType": "block",
+            "text": "内外边距",
+            "bindKey": "box"
+          },
+          {
+            "type": "colorPicker",
+            "layoutType": "block",
+            "text": "背景颜色",
+            "bindKey": "boxBg",
+            "placeholder": "请选择颜色",
+            "default": {}
+          }
+        ]
+      },
+      {
+        "type": "group",
+        "text": "内层容器样式",
+        "desc": "点击？查看样式设置用法指南",
+        "helpUrl": "",
+        "children": [
+          {
+            "type": "box",
+            "layoutType": "block",
+            "text": "组件间距",
+            "bindKey": "componentBox"
+          },
+          {
+            "type": "border",
+            "layoutType": "block",
+            "text": "分割线",
+            "bindKey": "componentBorder"
+          }
+        ]
+      },
+      {
+        "type": "group",
         "text": "高级",
         "desc": "点击？查看高级设置用法指南",
         "children": [
-   
+          {
+            "type": "pageModuleSelect",
+            "layoutType": "block",
+            "text": "tab菜单联动组件",
+            "desc": "选择点击tab需要联动的组件",
+            "bindKey": "triggerComponents",
+            "multiple": true
+          },
+          {
+            "type": "actionSelect",
+            "layoutType": "block",
+            "text": "发送验证码事件",
+            "desc": "发送验证码组件的按钮点击事件",
+            "bindKey": "sendBtnClick",
+            "multiple": true
+          }
         ]
       }
   ]
