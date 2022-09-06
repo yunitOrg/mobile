@@ -96,7 +96,7 @@
               "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
               "bindKey": "height",
               "width": "60px",
-              "default": "auto"
+              "default": "calc(100% - 80px)"
             }
           ]
         },
@@ -324,7 +324,7 @@
               "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
               "bindKey": "innerHeight",
               "width": "60px",
-              "default": "auto"
+              "default": "80px"
             }
           ]
         },

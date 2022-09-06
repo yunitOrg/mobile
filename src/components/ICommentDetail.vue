@@ -267,10 +267,10 @@ export default {
     convertAttrToStyleObject(pageSize = {}) {
       var styleObject = {},
         innerStyleObject = {},
-        titleStyleObject = {};
+        rootStyleObject = {};
 
       const scale = this.getScale(pageSize.width);
-      styleObject["--i-comment-detail-scale"] = scale;
+      rootStyleObject["--i-comment-detail-scale"] = scale;
 
       if (this.propData.bgSize && this.propData.bgSize == "custom") {
         styleObject["background-size"] =
@@ -562,24 +562,24 @@ export default {
                 element.radius.rightBottom.radiusUnit;
               break;
             case "font":
-              titleStyleObject["font-family"] = element.fontFamily;
+              styleObject["font-family"] = element.fontFamily;
               if (element.fontColors.hex8) {
-                titleStyleObject["color"] = IDM.hex8ToRgbaString(
+                styleObject["color"] = IDM.hex8ToRgbaString(
                   element.fontColors.hex8
                 );
               }
-              titleStyleObject["font-weight"] =
+              styleObject["font-weight"] =
                 element.fontWeight && element.fontWeight.split(" ")[0];
-              titleStyleObject["font-style"] = element.fontStyle;
-              titleStyleObject["font-size"] =
+              styleObject["font-style"] = element.fontStyle;
+              styleObject["font-size"] =
                 element.fontSize + element.fontSizeUnit;
-              titleStyleObject["line-height"] =
+              styleObject["line-height"] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == "-"
                   ? ""
                   : element.fontLineHeightUnit);
-              titleStyleObject["text-align"] = element.fontTextAlign;
-              titleStyleObject["text-decoration"] = element.fontDecoration;
+              styleObject["text-align"] = element.fontTextAlign;
+              styleObject["text-decoration"] = element.fontDecoration;
               break;
             case "boxShadow":
               styleObject["box-shadow"] = element;
@@ -590,6 +590,7 @@ export default {
           }
         }
       }
+      window.IDM.setStyleToPageHead(this.moduleObject.id, rootStyleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + ` .i-comment-detail-wrapper`, styleObject);
       window.IDM.setStyleToPageHead(
         this.moduleObject.id + ` .i-comment-detail-bar`,
