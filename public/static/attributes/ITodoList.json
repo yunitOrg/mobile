@@ -100,7 +100,7 @@
                     "text": "组件标题",
                     "bindKey": "htmlTitle",
                     "desc": "组件上方标题文字",
-                    "default": "消息提醒",
+                    "default": "待办列表",
                     "display": "@[isShowTitle]"
                 },
                 {

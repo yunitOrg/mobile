@@ -9,6 +9,7 @@
       :options="options"
       :formData="formData"
       :params="params"
+      @callFunc="handleClickCall"
     ></component>
   </div>
 </template>
@@ -20,13 +21,15 @@ import Vantswitch from "./Vantswitch.vue";
 import Vantcheckbox from "./Vantcheckbox.vue";
 import Vanttextarea from "./Vanttextarea.vue";
 import VantsendPws from "./VantsendPws.vue";
+import Vantcalendar from "./Vantcalendar.vue";
 const inputMap = {
   Vantinput,
   Vantpassword,
   Vantswitch,
   Vantcheckbox,
   Vanttextarea,
-  VantsendPws
+  VantsendPws,
+  Vantcalendar
 }
 export default{
   name: "InputFactory",
@@ -83,6 +86,9 @@ export default{
         IDM.style.setBorderStyle(styleObject, this.propData.componentBorder)
       }
       window.IDM.setStyleToPageHead(this.id + " .input-component", styleObject);
+    },
+    handleClickCall (val) {
+      this.$emit('callFunc', val)
     }
   },
   mounted () {

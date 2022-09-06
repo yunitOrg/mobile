@@ -3,7 +3,7 @@
     <div class="name" :style="computedStyle" v-if="params['labelShow']">
       {{label}}
     </div>
-    <van-switch v-model="formData[field]" :disabled="params['disabled']" />
+    <van-switch v-model="formData[field]" :disabled="params['disabled']"/>
   </div>
 </template>
 

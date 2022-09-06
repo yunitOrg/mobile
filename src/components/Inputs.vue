@@ -19,8 +19,9 @@
         :options="item.options"
         :formData="formData"
         :params="item"
+        @callFunc="handleClickCall"
       ></InputFactory>
-      <button @click="getParams">获取数据</button>
+      <button @click="getParams" v-if="isShow">获取数据</button>
     </div>
   </div>
 </template>
@@ -34,6 +35,7 @@ export default {
   },
   data () {
     return {
+      isShow: false,
       formData: {}, // 表单数据
       moduleObject: {},
       propData: this.$root.propData.compositeAttr||{
@@ -119,9 +121,11 @@ export default {
             label: '意见建议',
             field: 'textarea',
             autosize: true,
-            inputAlign: 'right',
+            inputAlign: 'left',
+            labelBlock: true,
             labelWidth: '150px',
             labelHeight: 'auto',
+            required: true,
             rows: 3,
             maxlength: 50,
             showWordLimit: true,
@@ -132,11 +136,29 @@ export default {
             type: 'sendPws',
             labelShow: true,
             label: '发送验证码',
+            required: true,
             maxTime: 60,
             placeholder: '请输入手机号',
             disabled: false,
             pwdWidth: '35%',
             pwdHeight: '30px'
+          },
+          {
+            key: '7',
+            type: 'calendar',
+            labelShow: true,
+            labelWidth: '100px',
+            field: 'calendar',
+            label: '时间范围',
+            required: true,
+            inputAlign: 'right',
+            labelBlock: true,
+            placeholder: '请输入日期',
+            disabled: false,
+            dateType: "range",
+            dateRangeStart: 'new Date(2010, 0, 1)',
+            dateRangeEnd: 'new Date(2033, 0, 31)',
+            datePosition: "bottom"
           }
         ]
       }
@@ -158,6 +180,7 @@ export default {
     },
     init () {
       console.log(this.propData, '数据源')
+      this.moduleObject.env == "production" ? this.isShow = false : this.isShow = true;
       let styleObject = {};
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
@@ -206,6 +229,28 @@ export default {
     },
     getParams () {
       console.log(this.formData, '数据')
+    },
+    /**
+    * 通过自定义函数
+    * name：属性名 会根据此属性名去propData中获取
+    * customFunctionList: 忽略name直接传自定义函数集合
+    */
+     changeEventFunHandle (name, customFunctionList, params) {
+      let that = this;
+      let customHandle = customFunctionList || that.propData[name];
+      customHandle && customHandle.forEach(item => {
+        window[item.name] && window[item.name].call(that, {
+          _that: that,
+          ...params
+        });
+      });
+    },
+    handleClickCall (val) {
+      switch (val) {
+        case 'VantsendPws':
+          this.changeEventFunHandle("sendBtnClick", "", {data: val});
+          break
+      }
     }
   }
 }
