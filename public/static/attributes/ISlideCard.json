@@ -125,8 +125,15 @@
           "display": "@[dataType=='static']",
           "children": [
             {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "key标识",
+              "desc": "设置此项的唯一标识",
+              "bindKey": "key"
+            },
+            {
               "type": "uploadImage",
-              "layoutType": "block",
+              "layoutType": "inline",
               "text": "图片",
               "bindKey": "imgUrl",
               "multiple": false,
