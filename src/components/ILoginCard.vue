@@ -80,6 +80,18 @@ export default {
         this.passwordTip = '请输入密码'
         return
       }
+      if (this.propData.loginCustomFunc && this.propData.loginCustomFunc[0]) {
+        const loginCustomFunc = this.propData.loginCustomFunc[0];
+        const func = window[loginCustomFunc.name];
+        const that = this;
+        func && func.call(this, {
+            mobile:this.mobile,
+            password:this.password,
+            ...that.commonParam(),
+            customParam: loginCustomFunc.param,
+            _this: that,
+          });
+      }
     },
     /**
      * 适配页面
