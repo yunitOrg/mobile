@@ -49,17 +49,7 @@
           "type": "box",
           "layoutType": "block",
           "text": "内外边距",
-          "bindKey": "box",
-          "default": {
-            "marginTopVal": "8px",
-            "marginRightVal": "8px",
-            "marginBottomVal": "8px",
-            "marginLeftVal": "8px",
-            "paddingTopVal": "16px",
-            "paddingRightVal": "16px",
-            "paddingBottomVal": "16px",
-            "paddingLeftVal": "16px"
-          }
+          "bindKey": "box"
         },
         {
           "type": "inlineGroup",
@@ -275,8 +265,7 @@
           "type": "input",
           "layoutType": "inline",
           "text": "边框阴影",
-          "bindKey": "boxShadow",
-          "default": "0px 2px 12px 0px rgba(0, 0, 0, 0.07)"
+          "bindKey": "boxShadow"
         },
         {
           "type": "font",

@@ -33,8 +33,8 @@
       </div>
       <div class="suffix-icon" @click="pwdHidden = !pwdHidden"><svg-icon :icon-class="pwdHidden?'hidden':'visiable'" /></div>
     </div>
-    <div class="btn-container" @click="login">
-      <button>登录</button>
+    <div class="btn-container">
+      <button @click="login">登录</button>
     </div>
   </div>
 </template>
@@ -437,16 +437,16 @@ $scale: var(--i-login-card-scale);
 .i-login-card-outer {
   width: auto;
   background-color: #fff;
-  margin: calc($scale * 20px);
-  padding: 0 calc($scale * 30px);
-  box-shadow: 0px calc($scale * 2px) calc($scale * 16px) 0px rgba(194,194,194,0.5);
+  margin: calc($scale * 12px);
+  padding: 0 calc($scale * 16px);
+  box-shadow: 0px calc($scale * 2px) calc($scale * 8px) 0px rgba(194,194,194,0.5);
   border-radius: calc($scale * 10px);
-  font-size: calc($scale * 30px);
+  font-size: calc($scale * 16px);
 
   .mobile-container,.password-container {
     display: flex;
-    height: calc($scale * 140px);
-    line-height: calc($scale * 140px);
+    height: calc($scale * 70px);
+    line-height: calc($scale * 70px);
     border-bottom: 1px solid #E1E1E1;
     
     input {
@@ -462,38 +462,38 @@ $scale: var(--i-login-card-scale);
     .pre-icon {
       color: rgb(196, 0, 0);
       margin-left: calc($scale * 10px);
-      font-size: calc($scale * 40px);
+      font-size: calc($scale * 20px);
     }
     
     .suffix-icon {
-      font-size: calc($scale * 40px);
+      font-size: calc($scale * 20px);
       color: #999;
     }
 
     .input-box {
       position: relative;
       flex: 1;
-      padding: 0 calc($scale * 42px);
+      padding: 0 calc($scale * 20px);
     }
 
     .msg-error {
       position: absolute;
       left: 0;
       bottom: 0;
-      line-height: calc($scale * 40px);
-      margin-left: calc($scale * 42px);
+      line-height: calc($scale * 20px);
+      margin-left: calc($scale * 20px);
       color: rgb(196, 0, 0);
     }
   }
 
   .btn-container  button{
     width: 100%;
-    height: calc($scale * 88px);
+    height: calc($scale * 44px);
     background-color: #E02020;
-    border-radius: calc($scale * 44px);
+    border-radius: calc($scale * 22px);
     border: none;
     color: #fff;
-    margin: calc($scale * 80px) 0;
+    margin: calc($scale * 40px) 0;
   }
 }
 </style>
