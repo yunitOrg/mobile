@@ -23,12 +23,14 @@
             >
               <use :xlink:href="`#${propData.titleIcon && propData.titleIcon[0]}`" />
             </svg>
-            <svg-icon v-else icon-class="application-icon" />
+            <svg-icon class="idm_filed_svg_icon" v-else icon-class="shu" />
           </div>
           <span v-if="propData.titleIconPosition === 'left'">{{ propData.title }}</span>
         </div>
       </div>
-      <div class="i-slideCard-header-more" v-if="propData.moreBtn" @click="moreClick">更多 ></div>
+      <div class="i-slideCard-header-more" v-if="propData.moreBtn" @click="moreClick">
+        更多<svg-icon iconClass="arrowRight" className="idm_filed_svg_icon"></svg-icon>
+      </div>
     </div>
     <div class="i-slideCard-content">
       <van-loading v-if="isLoading" :size="loadingSize" vertical>{{
@@ -1249,9 +1251,18 @@ $scale: var(--i-slideCard-scale);
     }
 
     .i-slideCard-header-more {
-      color: red;
+      // color: red;
       &:active {
         opacity: 0.7;
+      }
+      .idm_filed_svg_icon {
+        margin-left: 5px;
+        font-size: 1em;
+        width: 1em;
+        height: 1em;
+        fill: currentColor;
+        vertical-align: -0.15em;
+        outline: none;
       }
     }
   }
