@@ -469,6 +469,15 @@ $scale: var(--i-login-card-scale);
       &::-webkit-input-placeholder {
         color: #999;
       }
+      &:-webkit-autofill{
+        -webkit-text-fill-color: #999;
+      }
+      &:-internal-autofill-previewed{
+        transition: background-color 5000s ease-in-out 0s !important;
+      }
+      &:-internal-autofill-selected {
+          transition: background-color 5000s ease-in-out 0s !important;
+      } 
     }
      
     .pre-icon {
@@ -480,6 +489,7 @@ $scale: var(--i-login-card-scale);
     .suffix-icon {
       font-size: calc($scale * 20px);
       color: #999;
+      margin-right: calc($scale * 10px);
     }
 
     .input-box {
