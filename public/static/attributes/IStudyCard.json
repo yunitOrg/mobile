@@ -33,6 +33,44 @@
           "text": "更多页面",
           "bindKey": "showMoreUrl",
           "desc": "点击更多后触发跳转到的页面选择"
+        },
+        {
+          "type": "radio",
+          "styleType": "radio",
+          "layoutType": "inline",
+          "text": "显示更多",
+          "bindKey": "isShowMore",
+          "desc": "设置是否显示右侧更多",
+          "default": true,
+          "dictionary": [
+            {
+              "label": "显示",
+              "value": true
+            },
+            {
+              "label": "隐藏",
+              "value": false
+            }
+          ]
+        },
+        {
+          "type": "radio",
+          "styleType": "radio",
+          "layoutType": "inline",
+          "text": "视频播放量显示",
+          "bindKey": "isShowVideoNum",
+          "desc": "是否显示视屏播放量",
+          "default": true,
+          "dictionary": [
+            {
+              "label": "显示",
+              "value": true
+            },
+            {
+              "label": "隐藏",
+              "value": false
+            }
+          ]
         }
       ]
     },

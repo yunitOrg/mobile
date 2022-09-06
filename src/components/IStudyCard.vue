@@ -12,7 +12,7 @@
             </a-space>
             <div class="left-text">{{ propData.headText }}</div>
           </div>
-          <div class="right" @click="showMoreData">
+          <div class="right" @click="showMoreData" v-if="propData.isShowMore">
             <div class="right-text">
               更多
             </div>
@@ -27,8 +27,8 @@
               <img :src="item.image">
               <div class="videoData">
                 <div class="left-data">
-                  <svg-icon icon-class="youtube" color="white"/>
-                  <p class="video-data-text">{{ item.amountOfPlay }}</p>
+                  <svg-icon icon-class="youtube" color="white"  v-show="propData.isShowVideoNum"/>
+                  <p class="video-data-text"  v-show="propData.isShowVideoNum">{{ item.amountOfPlay }}</p>
                 </div>
                 <p class="video-data-text"> {{ item.releaseDate }}</p></div>
             </div>
@@ -54,7 +54,9 @@ export default {
           "mainColor": {
             "hex": "#0073CA",
             "hex8": "#0073CAFF"
-          }
+          },
+          "isShowMore":true,
+          "isShowVideoNum":true
         }
       },
       videoData: [
