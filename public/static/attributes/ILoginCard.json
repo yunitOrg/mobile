@@ -1,7 +1,7 @@
 {
-  "classId": "idm.component.mobile.icommentdetail",
-  "comName": "评论详情",
-  "className": "ICommentDetail",
+  "classId": "idm.component.mobile.ilogincard",
+  "comName": "登录卡片",
+  "className": "ILoginCard",
   "comType": "common",
   "comLangue": "vue",
   "compositeAttr": [
@@ -20,31 +20,6 @@
       "text": "基本属性",
       "desc": "提供设置组件能达到展示效果的基本属性设置信息",
       "children": [
-        {
-          "type": "input",
-          "layoutType": "inline",
-          "text": "为空描述",
-          "bindKey": "emptyDescription",
-          "desc": "回复为空时的文字提示",
-          "default": "暂无回复",
-          "placeholder": "示例：暂无回复"
-        },
-        {
-          "type": "input",
-          "layoutType": "inline",
-          "text": "加载完成",
-          "bindKey": "finishedTip",
-          "desc": "数据加载完成时的文字提示",
-          "default": "数据已加载全部",
-          "placeholder": "示例：数据已加载全部"
-        },
-        {
-          "type": "pageSelect",
-          "layoutType": "inline",
-          "text": "回复跳转",
-          "bindKey": "replyJump",
-          "desc": "回复查看更多跳转页面"
-        },
         {
           "type": "radio",
           "layoutType": "inline",
@@ -66,7 +41,7 @@
     },
     {
       "type": "group",
-      "text": "主体容器样式",
+      "text": "样式设置",
       "desc": "点击？查看样式设置用法指南",
       "helpUrl": "",
       "children": [
@@ -74,7 +49,17 @@
           "type": "box",
           "layoutType": "block",
           "text": "内外边距",
-          "bindKey": "box"
+          "bindKey": "box",
+          "default": {
+            "marginTopVal": "8px",
+            "marginRightVal": "8px",
+            "marginBottomVal": "8px",
+            "marginLeftVal": "8px",
+            "paddingTopVal": "16px",
+            "paddingRightVal": "16px",
+            "paddingBottomVal": "16px",
+            "paddingLeftVal": "16px"
+          }
         },
         {
           "type": "inlineGroup",
@@ -96,7 +81,7 @@
               "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
               "bindKey": "height",
               "width": "60px",
-              "default": "calc(100% - 80px)"
+              "default": "auto"
             }
           ]
         },
@@ -111,7 +96,10 @@
               "layoutType": "inline",
               "text": "背景色",
               "bindKey": "bgColor",
-              "placeholder": "请选择颜色"
+              "placeholder": "请选择颜色",
+              "default": {
+                "hex8": "#FFFFFFFF"
+              }
             },
             {
               "type": "uploadImage",
@@ -288,317 +276,13 @@
           "layoutType": "inline",
           "text": "边框阴影",
           "bindKey": "boxShadow",
-          "default": ""
+          "default": "0px 2px 12px 0px rgba(0, 0, 0, 0.07)"
         },
         {
           "type": "font",
           "layoutType": "block",
-          "text": "评论文字",
+          "text": "文字",
           "bindKey": "font"
-        }
-      ]
-    },
-    {
-      "type": "group",
-      "text": "底部容器样式",
-      "desc": "点击？查看样式设置用法指南",
-      "helpUrl": "",
-      "children": [
-        {
-          "type": "inlineGroup",
-          "text": "宽高",
-          "children": [
-            {
-              "type": "input",
-              "layoutType": "block",
-              "text": "宽",
-              "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
-              "bindKey": "innerWidth",
-              "width": "60px",
-              "default": "auto"
-            },
-            {
-              "type": "input",
-              "layoutType": "block",
-              "text": "高",
-              "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
-              "bindKey": "innerHeight",
-              "width": "60px",
-              "default": "80px"
-            }
-          ]
-        },
-        {
-          "type": "box",
-          "layoutType": "block",
-          "text": "内外边距",
-          "bindKey": "innerBox"
-        },
-        {
-          "type": "colorPicker",
-          "layoutType": "inline",
-          "text": "背景色",
-          "bindKey": "innerBgColor",
-          "placeholder": "请选择颜色",
-          "default": {
-            "hex8": "#FFFFFFFF"
-          }
-        },
-        {
-          "type": "uploadImage",
-          "layoutType": "inline",
-          "text": "背景图片",
-          "bindKey": "innerBgImgUrl",
-          "placeholder": "可输入图片地址或直接上传"
-        },
-        {
-          "type": "inputNumberUnit",
-          "layoutType": "inline",
-          "text": "横向偏移",
-          "bindKey": "innerPositionX",
-          "dictionary": [
-            {
-              "label": "px",
-              "value": "px"
-            },
-            {
-              "label": "%",
-              "value": "%"
-            },
-            {
-              "label": "em",
-              "value": "em"
-            }
-          ],
-          "display": "@[innerBgImgUrl]"
-        },
-        {
-          "type": "inputNumberUnit",
-          "layoutType": "inline",
-          "text": "纵向偏移",
-          "bindKey": "innerPositionY",
-          "dictionary": [
-            {
-              "label": "px",
-              "value": "px"
-            },
-            {
-              "label": "%",
-              "value": "%"
-            },
-            {
-              "label": "em",
-              "value": "em"
-            }
-          ],
-          "display": "@[innerBgImgUrl]"
-        },
-        {
-          "type": "radio",
-          "layoutType": "block",
-          "text": "背景大小",
-          "bindKey": "innerBgSize",
-          "dictionary": [
-            {
-              "label": "裁切显示",
-              "value": "cover"
-            },
-            {
-              "label": "完全显示",
-              "value": "contain"
-            },
-            {
-              "label": "自定义",
-              "value": "custom"
-            }
-          ],
-          "display": "@[innerBgImgUrl]"
-        },
-        {
-          "type": "inputNumberUnit",
-          "layoutType": "inline",
-          "text": "宽度",
-          "bindKey": "innerBgSizeWidth",
-          "dictionary": [
-            {
-              "label": "px",
-              "value": "px"
-            },
-            {
-              "label": "%",
-              "value": "%"
-            },
-            {
-              "label": "em",
-              "value": "em"
-            }
-          ],
-          "display": "@[innerBgSize=='custom']"
-        },
-        {
-          "type": "inputNumberUnit",
-          "layoutType": "inline",
-          "text": "高度",
-          "bindKey": "innerBgSizeHeight",
-          "dictionary": [
-            {
-              "label": "px",
-              "value": "px"
-            },
-            {
-              "label": "%",
-              "value": "%"
-            },
-            {
-              "label": "em",
-              "value": "em"
-            }
-          ],
-          "display": "@[innerBgSize=='custom']"
-        },
-        {
-          "type": "radio",
-          "layoutType": "block",
-          "text": "平铺模式",
-          "bindKey": "innerBgRepeat",
-          "dictionary": [
-            {
-              "label": "双向重复",
-              "value": "repeat"
-            },
-            {
-              "label": "水平重复",
-              "value": "repeat-x"
-            },
-            {
-              "label": "垂直重复",
-              "value": "repeat-y"
-            },
-            {
-              "label": "不重复",
-              "value": "no-repeat"
-            },
-            {
-              "label": "继承",
-              "value": "inherit"
-            }
-          ],
-          "display": "@[innerBgImgUrl]"
-        },
-        {
-          "type": "radio",
-          "layoutType": "inline",
-          "text": "背景模式",
-          "bindKey": "innerBgAttachment",
-          "dictionary": [
-            {
-              "label": "固定",
-              "value": "fixed"
-            },
-            {
-              "label": "滚动",
-              "value": "scroll"
-            },
-            {
-              "label": "继承",
-              "value": "inherit"
-            }
-          ],
-          "display": "@[innerBgImgUrl]"
-        },
-        {
-          "type": "border",
-          "layoutType": "block",
-          "text": "边框",
-          "bindKey": "innerBorder",
-          "default": {
-            "border": {
-              "top": {
-                "style": "",
-                "width": 0,
-                "widthUnit": "px",
-                "colors": {
-                  "hsl": {},
-                  "hex": "",
-                  "hex8": "",
-                  "rgba": {},
-                  "hsv": {},
-                  "oldHue": 0,
-                  "source": "hsva",
-                  "a": 1
-                }
-              },
-              "right": {
-                "style": "",
-                "width": 0,
-                "widthUnit": "px",
-                "colors": {
-                  "hsl": {},
-                  "hex": "",
-                  "hex8": "",
-                  "rgba": {},
-                  "hsv": {},
-                  "oldHue": 0,
-                  "source": "hsva",
-                  "a": 1
-                }
-              },
-              "bottom": {
-                "style": "",
-                "width": 0,
-                "widthUnit": "px",
-                "colors": {
-                  "hsl": {},
-                  "hex": "",
-                  "hex8": "",
-                  "rgba": {},
-                  "hsv": {},
-                  "oldHue": 0,
-                  "source": "hsva",
-                  "a": 1
-                }
-              },
-              "left": {
-                "style": "",
-                "width": 0,
-                "widthUnit": "px",
-                "colors": {
-                  "hsl": {},
-                  "hex": "",
-                  "hex8": "",
-                  "rgba": {},
-                  "hsv": {},
-                  "oldHue": 0,
-                  "source": "hsva",
-                  "a": 1
-                }
-              }
-            },
-            "radius": {
-              "leftTop": {
-                "radius": 10,
-                "radiusUnit": "px"
-              },
-              "rightTop": {
-                "radius": 10,
-                "radiusUnit": "px"
-              },
-              "leftBottom": {
-                "radius": 10,
-                "radiusUnit": "px"
-              },
-              "rightBottom": {
-                "radius": 10,
-                "radiusUnit": "px"
-              }
-            }
-          }
-        },
-        {
-          "type": "input",
-          "layoutType": "inline",
-          "text": "边框阴影",
-          "bindKey": "innerBoxShadow"
         }
       ]
     },
@@ -700,16 +384,8 @@
         {
           "type": "treeSelect",
           "layoutType": "inline",
-          "text": "评论数据",
-          "desc": "用于选择当前评论详情的数据源",
-          "bindKey": "detailDataSource",
-          "dataSourceUrl": "ctrl/dataSource/getDatasourceByGroup"
-        },
-        {
-          "type": "treeSelect",
-          "layoutType": "inline",
-          "text": "回复数据",
-          "desc": "用于选择当前评论回复的数据源",
+          "text": "数据源",
+          "desc": "用于选择时间轴的数据源",
           "bindKey": "dataSource",
           "dataSourceUrl": "ctrl/dataSource/getDatasourceByGroup"
         },
@@ -723,27 +399,27 @@
           "placeholder": "示例：data 或者 [0].data[0]"
         },
         {
-          "type": "select",
-          "layoutType": "inline",
-          "text": "刷新KEY",
-          "bindKey": "messageRefreshKey",
-          "desc": "根据组件接收到的消息KEY来刷新数据",
-          "default": "",
-          "multiple": true,
-          "placeholder": "示例：inbox,info",
-          "ctrlAttrObject": {
-            "mode": "tags"
-          },
-          "dictionary": [
-            {
-              "label": "inbox",
-              "value": "inbox"
+            "type": "select",
+            "layoutType": "inline",
+            "text": "刷新KEY",
+            "bindKey": "messageRefreshKey",
+            "desc": "根据组件接收到的消息KEY来刷新数据",
+            "default": "",
+            "multiple": true,
+            "placeholder": "示例：inbox,info",
+            "ctrlAttrObject": {
+                "mode": "tags"
             },
-            {
-              "label": "info",
-              "value": "info"
-            }
-          ]
+            "dictionary": [
+                {
+                    "label": "inbox",
+                    "value": "inbox"
+                },
+                {
+                    "label": "info",
+                    "value": "info"
+                }
+            ]
         }
       ]
     }

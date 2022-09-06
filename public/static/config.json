@@ -178,6 +178,13 @@
       "className": "ISearchBar",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.logincard",
+      "comName": "登录卡片",
+      "className": "ILoginCard",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }
