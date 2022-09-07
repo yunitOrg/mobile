@@ -106,7 +106,7 @@
       "classId": "idm.component.mobile.idialog",
       "comName": "弹窗",
       "className": "IDialog",
-      "comType": "common",
+      "comType": "dialog",
       "comLangue": "vue"
     },
     {
