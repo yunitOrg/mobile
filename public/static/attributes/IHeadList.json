@@ -38,8 +38,7 @@
                     "type": "iconSelect",
                     "layoutType": "inline",
                     "text": "图标",
-                    "bindKey": "titleIconClass",
-                    "default": ""
+                    "bindKey": "titleIconClass"
                 },
                 {
                     "type": "colorPicker",

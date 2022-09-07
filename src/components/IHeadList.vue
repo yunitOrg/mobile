@@ -53,9 +53,11 @@
               <svg
                 class="idm_svg_author_icon idm_button_svg_icon"
                 aria-hidden="true"
+                v-if="propData.titleIconClass && propData.titleIconClass.length"
               >
-                <use :xlink:href="`#${propData.titleIconClass}`"></use>
+                <use :xlink:href="`#${propData.titleIconClass[0]}`"></use>
               </svg>
+              <svg-icon v-else icon-class="phone" className="idm_svg_author_icon idm_button_svg_icon"></svg-icon>
             </div>
           </div>
         </li>
@@ -100,7 +102,6 @@ export default {
         authorshowIcon: true,
         authorIconmaxClass: 'icon-settingOutline',
         authorIcongirlClass: 'icon-settingOutline',
-        titleIconClass: 'icon-settingOutline',
         titleIconFontSize: 20,
         authorIconFontSize: 18,
         tagTable: [
