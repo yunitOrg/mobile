@@ -747,6 +747,21 @@
               "text": "更多文字",
               "desc": "更多文字样式设置",
               "bindKey": "moreFont"
+            },
+            {
+              "type": "inputNumber",
+              "layoutType": "inline",
+              "text": "图标大小",
+              "desc": "图标大小",
+              "bindKey": "moreIconSize",
+              "default": 22
+            },
+            {
+              "type": "colorPicker",
+              "layoutType": "inline",
+              "text": "图标颜色",
+              "desc": "图标颜色",
+              "bindKey": "moreIconColor"
             }
           ]
         }

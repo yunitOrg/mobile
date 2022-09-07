@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class="i-slideCard-header-more" v-if="propData.moreBtn" @click="moreClick">
-        更多<svg-icon iconClass="arrowRight" className="idm_filed_svg_icon"></svg-icon>
+        更多<svg-icon iconClass="arrowRight" className="more-icon idm_filed_svg_icon"></svg-icon>
       </div>
     </div>
     <div class="i-slideCard-content">
@@ -520,6 +520,7 @@ export default {
       const moreBtnStyleObject = {};
       const mainTextStyleObject = {};
       const extraTextStyleObject = {};
+      const moreBtnIconStyleObject = {};
 
       const scale = this.getScale(pageSize.width);
       styleObject['--i-slideCard-scale'] = scale;
@@ -1078,6 +1079,14 @@ export default {
                 styleObject['color'] = IDM.hex8ToRgbaString(element.hex8);
               }
               break;
+            case 'moreIconSize':
+              moreBtnIconStyleObject['font-size'] = `${element}px`;
+              break;
+            case 'moreIconColor':
+              if (element && element.hex8) {
+                moreBtnIconStyleObject['color'] = IDM.hex8ToRgbaString(element.hex8);
+              }
+              break;
             case 'itemBoxWidth':
               itemStyleObject['width'] = `${element}px`;
               break;
@@ -1109,6 +1118,10 @@ export default {
       window.IDM.setStyleToPageHead(
         this.moduleObject.id + ' .i-slideCard-header .i-slideCard-header-more',
         moreBtnStyleObject
+      );
+      window.IDM.setStyleToPageHead(
+        this.moduleObject.id + ' .i-slideCard-header .i-slideCard-header-more .more-icon',
+        moreBtnIconStyleObject
       );
       window.IDM.setStyleToPageHead(
         this.moduleObject.id + ' .i-slideCard-content .i-slideCard-content-item',
