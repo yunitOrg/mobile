@@ -70,15 +70,14 @@ export default {
       if(!this.mobile){
         this.mobileTip = '请输入手机号码'
         return
-      }
-      const reg = new RegExp(/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/)
-      if(!reg.test(this.mobile)){
-        this.mobileTip = '请正确的手机号码'
-        return
+      }else{
+        this.mobileTip = ''
       }
       if(!this.password){
         this.passwordTip = '请输入密码'
         return
+      }else{
+        this.passwordTip=''
       }
       if (this.propData.loginCustomFunc && this.propData.loginCustomFunc[0]) {
         const loginCustomFunc = this.propData.loginCustomFunc[0];
