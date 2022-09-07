@@ -4,38 +4,41 @@
        :idm-ctrl-id="moduleObject.id"
        class="IStudy-Card">
     <div class="container">
-      <div class="study-card">
-        <div class="study-card-header">
-          <div class="left">
-            <a-space class="icon">
-              <svg-icon icon-class="shu"/>
-            </a-space>
-            <div class="left-text">{{ propData.headText }}</div>
-          </div>
-          <div class="right" @click="showMoreData" v-if="propData.isShowMore">
-            <div class="right-text">
-              更多
+      <van-loading v-if="isLoading" size="24px" vertical>加载中...</van-loading>
+      <template v-else>
+        <div class="study-card">
+          <div class="study-card-header">
+            <div class="left">
+              <a-space class="icon">
+                <svg-icon icon-class="shu"/>
+              </a-space>
+              <div class="left-text">{{ propData.headText }}</div>
             </div>
-            <a-space class="icon">
-              <svg-icon icon-class="rightCircleOutLined"/>
-            </a-space>
+            <div class="right" @click="showMoreData" v-if="propData.isShowMore">
+              <div class="right-text">
+                更多
+              </div>
+              <a-space class="icon">
+                <svg-icon icon-class="rightCircleOutLined"/>
+              </a-space>
+            </div>
+          </div>
+          <div class="video-list">
+            <div class="video-card" v-for="item in videoData" :key="item.index" @click=toVideo(item)>
+              <div class="videoImg">
+                <img :src="item.image">
+                <div class="videoData">
+                  <div class="left-data">
+                    <svg-icon icon-class="youtube" color="white"  v-show="propData.isShowVideoNum"/>
+                    <p class="video-data-text"  v-show="propData.isShowVideoNum">{{ item.amountOfPlay }}</p>
+                  </div>
+                  <p class="video-data-text"> {{ item.releaseDate }}</p></div>
+              </div>
+              <p class="videoDetail">{{ item.videoIntroduction }}</p>
+            </div>
           </div>
         </div>
-        <div class="video-list">
-          <div class="video-card" v-for="item in videoData" :key="item.index" @click=toVideo(item)>
-            <div class="videoImg">
-              <img :src="item.image">
-              <div class="videoData">
-                <div class="left-data">
-                  <svg-icon icon-class="youtube" color="white"  v-show="propData.isShowVideoNum"/>
-                  <p class="video-data-text"  v-show="propData.isShowVideoNum">{{ item.amountOfPlay }}</p>
-                </div>
-                <p class="video-data-text"> {{ item.releaseDate }}</p></div>
-            </div>
-            <p class="videoDetail">{{ item.videoIntroduction }}</p>
-          </div>
-        </div>
-      </div>
+      </template>
     </div>
   </div>
 </template>
@@ -59,6 +62,7 @@ export default {
           "isShowVideoNum":true
         }
       },
+      isLoading: true,
       videoData: [
         {
           index: 1,
@@ -142,7 +146,59 @@ export default {
           this.moduleObject.id + ' .study-card',
           styleObject);
     },
+
+    /**
+     * 加载动态数据
+     */
     initData() {
+
+      if (!this.moduleObject.env || this.moduleObject.env == "develop") {
+        // mock数据
+        setTimeout(()=>{
+          this.infoList = [];
+          const res = {
+            data:[
+              {
+                index: 1,
+                image: "https://boot-img.xuexi.cn/lego/image/2562_newsSlider/dc0441f5511b41fc9f7606e415dea00c.png",
+                amountOfPlay: 1500,
+                releaseDate: "2022-9-7",
+                videoIntroduction: "安徽合肥：多彩过暑假，实践有收获",
+                videoUrl:"#1"
+              },
+              {
+                index: 2,
+                image: "https://boot-img.xuexi.cn/lego/image/2562_newsSlider/b4fbbb9fd80745f99c77a1f1682a3740.jpg",
+                amountOfPlay: 1500,
+                releaseDate: "2022-9-7",
+                videoIntroduction: "浙江宁波：植物观察 地质探索 假期研学快乐多",
+                videoUrl:"#2"
+              },
+              {
+                index: 3,
+                image: "https://boot-img.xuexi.cn/lego/image/2562_newsSlider/05776bf6034d40b882366297006da726.jpg",
+                amountOfPlay: 1500,
+                releaseDate: "2022-9-7",
+                videoIntroduction: "河南内乡：戏曲博物馆里过暑假，品味非遗文化",
+                videoUrl:"#3"
+              },
+              {
+                index: 4,
+                image: "https://boot-img.xuexi.cn/contribute_img/20220809100554/66386949742976920.jpg",
+                amountOfPlay: 1500,
+                releaseDate: "2022-9-7",
+                videoIntroduction: "河南鹤壁淇滨区:“双减”下的暑假劳动教育结硕果",
+                videoUrl:"#4"
+              }
+            ]
+          };
+          this.videoData = res.data
+          this.isLoading = false;
+        },1000)
+
+        return;
+      }
+      this.getDataSourceData()
       let dataSource = this.propData.dataSource;
       if (!dataSource) {
         this.isLoading = false;
@@ -412,6 +468,7 @@ export default {
       window.IDM.setStyleToPageHead(
           this.moduleObject.id + ' .videoDetail',
           videoDetailText);
+      this.initData()
     },
     /**
      * 主题颜色

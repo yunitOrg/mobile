@@ -57,7 +57,7 @@
           "type": "radio",
           "styleType": "radio",
           "layoutType": "inline",
-          "text": "视频播放量显示",
+          "text": "播放量",
           "bindKey": "isShowVideoNum",
           "desc": "是否显示视屏播放量",
           "default": true,
