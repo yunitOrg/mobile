@@ -2,7 +2,7 @@
   <div idm-ctrl="idm_module"
        :id="moduleObject.id"
        :idm-ctrl-id="moduleObject.id"
-       class="IStudy-Card">
+       class="IActivity-Statistics">
     <div class="container">
       <div class="container-card">
         <van-loading v-if="isLoading" size="24px" vertical>加载中...</van-loading>
@@ -44,15 +44,6 @@ export default {
   data() {
     return {
       moduleObject: {},
-      propData: this.$root.propData.compositeAttr || {
-        themeList: {
-          "key": "blue",
-          "mainColor": {
-            "hex": "#0073CA",
-            "hex8": "#0073CAFF"
-          }
-        }
-      },
       isLoading: true,
       activityList: [
         {
@@ -90,7 +81,19 @@ export default {
           personNum: 33,
           attendance: "25%",
         },
-      ]
+      ],
+      propData: this.$root.propData.compositeAttr || {
+        isShowLine: false,
+        themeList: [
+          {
+            "key": "blue",
+            "mainColor": {
+              "hex": "#0073CA",
+              "hex8": "#0073CAFF"
+            }
+          },
+        ]
+      },
     }
   },
   created() {
@@ -267,7 +270,6 @@ export default {
 
       const scale = this.getScale(pageSize.width);
       styleObject['--i-activitystatistics-scale'] = scale;
-
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
           const element = this.propData[key];
@@ -285,7 +287,7 @@ export default {
               }
               break;
             case "isShowLine":
-              if (this.propData.isShowLine){
+              if (this.propData.isShowLine) {
                 styleListItem["border-bottom"] = "calc(1px * #{ $scale }) solid #E5E5E5"
                 window.IDM.setStyleToPageHead(
                     this.moduleObject.id + ' .list-item',
@@ -294,7 +296,7 @@ export default {
                 window.IDM.setStyleToPageHead(
                     this.moduleObject.id + ' .list-item:last-child',
                     styleListItem);
-              }else {
+              } else {
                 styleListItem["border-bottom"] = "none"
                 window.IDM.setStyleToPageHead(
                     this.moduleObject.id + ' .list-item',
@@ -522,13 +524,16 @@ $scale: 1;
         padding-top: calc(17px * #{ $scale });
         padding-bottom: calc(20px * #{ $scale });
         border-bottom: calc(1px * #{ $scale }) solid #E5E5E5;
+
         .activity-icon {
           padding-right: calc(17px * #{ $scale });
+
           svg {
             width: calc(44px * #{ $scale });
             height: calc(44px * #{ $scale });
           }
-          img{
+
+          img {
             width: calc(44px * #{ $scale });
             height: calc(44px * #{ $scale });
           }
@@ -538,21 +543,21 @@ $scale: 1;
           width: calc(100px * #{ $scale });
           margin-right: calc(85px * #{ $scale });
 
-            .activity-name{
-              font-family: PingFangSC-Regular,serif;
-              font-size: calc(17px * #{ $scale });
-              line-height: calc(17px * #{ $scale });
-              color: #333333;
-              font-weight: 400;
-              margin-bottom: calc(6px * #{ $scale });
-            }
+          .activity-name {
+            font-family: PingFangSC-Regular, serif;
+            font-size: calc(17px * #{ $scale });
+            line-height: calc(17px * #{ $scale });
+            color: #333333;
+            font-weight: 400;
+            margin-bottom: calc(6px * #{ $scale });
+          }
 
-            .activity-personNum{
-              font-family: PingFangSC-Regular,serif;
-              font-size: calc(13px * #{ $scale });
-              color: #666666;
-              font-weight: 400;
-            }
+          .activity-personNum {
+            font-family: PingFangSC-Regular, serif;
+            font-size: calc(13px * #{ $scale });
+            color: #666666;
+            font-weight: 400;
+          }
         }
 
         .right-text {
@@ -561,9 +566,9 @@ $scale: 1;
           flex-direction: column;
           align-items: flex-end;
 
-          .activity-convene{
+          .activity-convene {
             margin-bottom: calc(6px * #{ $scale });
-            font-family: PingFangSC-Regular,serif;
+            font-family: PingFangSC-Regular, serif;
             font-size: calc(13px * #{ $scale });
             line-height: calc(17px * #{ $scale });
             color: #E02020;
@@ -571,15 +576,16 @@ $scale: 1;
             font-weight: 400;
           }
 
-          .activity-attendance{
-            font-family: PingFangSC-Regular,serif;
+          .activity-attendance {
+            font-family: PingFangSC-Regular, serif;
             font-size: calc(13px * #{ $scale });
             color: #666666;
             font-weight: 400;
           }
         }
       }
-      .list-item:last-child{
+
+      .list-item:last-child {
         border-bottom: none;
       }
     }
