@@ -388,6 +388,7 @@
                 },
                 {
                     "type": "treeSelect",
+                    "desc": "数据返回示例：{value: [], count: 0, moreUrl: ''}",
                     "layoutType": "inline",
                     "text": "数据源",
                     "bindKey": "dataSource",
