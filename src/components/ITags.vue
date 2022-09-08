@@ -93,6 +93,47 @@ export default {
       if (this.moduleObject.env == "production" && this.propData.tabDataType === 'dynamic') {
         this.getPageData()
       }
+      this.converThemeListObject()
+    },
+    converThemeListObject () {
+      let themeList = this.propData.themeList;
+      if (!themeList) {
+        return;
+      }
+      const themeNamePrefix =
+        IDM.setting &&
+        IDM.setting.applications &&
+        IDM.setting.applications.themeNamePrefix
+          ? IDM.setting.applications.themeNamePrefix
+          : "idm-theme-";
+      for (let i=0; i<themeList.length; i++) {
+        let item = themeList[i]
+        if(item.key!=IDM.theme.getCurrentThemeInfo()){
+            //此处比对是不渲染输出不用的样式，如果页面会刷新就可以把此处放开
+            continue;
+        }
+        let tempobj = {};
+        if (this.propData.tagActiveBorder) {
+          let element = this.propData.tagActiveBorder;
+          if (element.border.top.width > 0) {
+            tempobj["border-top-color"] = item.mainColor ? item.mainColor.hex8 : ""
+          }
+          if (element.border.right.width > 0) {
+            tempobj["border-right-color"] = item.mainColor ? item.mainColor.hex8 : ""
+          }
+          if (element.border.bottom.width > 0) {
+            tempobj["border-bottom-color"] = item.mainColor ? item.mainColor.hex8 : ""
+          }
+          if (element.border.left.width > 0) {
+            tempobj["border-left-color"] = item.mainColor ? item.mainColor.hex8 : ""
+          }
+        }
+        tempobj['color'] = item.mainColor ? item.mainColor.hex8 : "";
+        IDM.setStyleToPageHead(
+          `.${themeNamePrefix}${item.key} #${(this.moduleObject.id || "module_demo")} .idm-tips-ul .active`,
+          tempobj
+        );
+      }
     },
     /** 
      * 获取数据源
@@ -429,17 +470,17 @@ export default {
   .idm-tips-ul{
     span{
       display: inline-block;
-      padding: 5px 8px;
-      border-radius: 50px;
-      border: 1px solid #ccc;
+      // padding: 5px 8px;
+      // border-radius: 50px;
+      // border: 1px solid #ccc;
       // max-width: 100px;
       // width: 80px;
       text-align: center;
     }
-    // .active{
-    //   border: 1px solid #f00;
-    //   color: #f00;
-    // }
+    .active{
+      border: 1px solid #f00;
+      color: #f00;
+    }
   }
 }
 </style>

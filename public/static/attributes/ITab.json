@@ -258,15 +258,13 @@
             "key": "1",
             "tab": "支部简介",
             "disable": false,
-            "defaultActiveKey": false,
-            "tableFont": {}
+            "defaultActiveKey": false
           },
           {
             "key": "2",
             "tab": "支部党员",
             "disable": false,
-            "defaultActiveKey": false,
-            "tableFont": {}
+            "defaultActiveKey": false
           }
         ]
       },
