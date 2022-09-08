@@ -518,7 +518,7 @@ export default {
                     break
                 case '_child':
                     if (this.propData.pageList && this.propData.pageList.length > 0) {
-                        IDM.router.push(this.moduleObject.routerId, this.propData.pageList[0].id, true, item, '', '')
+                        IDM.router.push(this.moduleObject.pageid, this.propData.pageList[0].id, true, item, '', '')
                     } else {
                         IDM.message.warning('请选择要跳转的子页面')
                     }
