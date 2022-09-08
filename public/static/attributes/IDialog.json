@@ -775,9 +775,29 @@
             "text": "高级设置",
             "children": [
                 {
+                    "type": "select",
+                    "layoutType": "inline",
+                    "text": "显示条件",
+                    "bindKey": "dialogShowType",
+                    "desc": "选择弹窗显示条件",
+                    "dictionary": [
+                        {
+                            "label": "数据源",
+                            "value": "dataSource"
+                        },
+                        {
+                            "label": "自定义函数显示",
+                            "value": "action"
+                        }
+                    ],
+                    "default": "dataSource"
+                },
+                {
                     "type": "treeSelect",
                     "layoutType": "inline",
                     "text": "数据源",
+                    "desc": "数据源返回格式示例：{code: 200, data: { isShowDialog: true, username: \"用户名称\", avatar: \"头像url\", year:\"五\",empName: \"梦创\" }, message: \"success\"}, isShowDialog为true时显示弹窗",
+                    "display": "@[dialogShowType === 'dataSource']",
                     "bindKey": "dataSource",
                     "dataSourceUrl": "/ctrl/dataSource/getDatasourceByGroup"
                 },
@@ -800,30 +820,12 @@
                     "multiple": false
                 },
                 {
-                    "type": "select",
-                    "layoutType": "inline",
-                    "text": "显示条件",
-                    "bindKey": "dialogShowType",
-                    "desc": "选择弹窗显示条件",
-                    "dictionary": [
-                        {
-                            "label": "默认显示",
-                            "value": "default"
-                        },
-                        {
-                            "label": "自定义函数显示",
-                            "value": "action"
-                        }
-                    ],
-                    "default": "default"
-                },
-                {
                     "type": "actionSelect",
                     "layoutType": "inline",
                     "text": "显示函数",
                     "bindKey": "dialogFun",
                     "display": "@[dialogShowType=='action']",
-                    "desc": "函数返回 true （打开弹窗） 与 false （不打开弹窗）",
+                    "desc": "函数返回示例 return { isShowDialog: true, username: \"用户名称\", avatar: \"头像url\" }, message: \"success\"}, isShowDialog为true时显示弹窗",
                     "multiple": false
                 }
             ]

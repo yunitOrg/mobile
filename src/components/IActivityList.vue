@@ -14,11 +14,11 @@
                 <div
                     v-for="(item, index) in pageData.value"
                     :key="index"
-                    class="box-line d-flex just-b"
+                    class="box-line d-flex just-b position-r over-h"
                     @click="handleItemClick(item)"
                 >
                     <!-- 左侧内容 -->
-                    <div class="d-flex flex-d-c just-c align-c activity-list-left">
+                    <div class="d-flex flex-d-c just-c align-c activity-list-left" v-if="propData.isShowLeftContent">
                         <div class="activity-list-time text-o-e">{{ getDataField(propData.timeField, item) }}</div>
                         <div class="activity-list-week text-o-e">{{ getDataField(propData.weekField, item) }}</div>
                         <div
@@ -28,6 +28,14 @@
                         >
                             {{ getDataField(propData.activityField, item) }}
                         </div>
+                    </div>
+                    <!-- 右上角状态 -->
+                    <div
+                        class="activity-list-right-status"
+                        v-if="propData.isShowActivityStatus"
+                        :style="getActivityStatusStyle(getDataField(propData.activityField, item))"
+                    >
+                        {{ getDataField(propData.activityField, item) }}
                     </div>
                     <!-- 右侧内容 -->
                     <div class="flex-1">
@@ -390,7 +398,15 @@ export default {
 .box-line:last-child {
     border-bottom: 0 !important;
 }
-.nowrap{
+.nowrap {
     white-space: nowrap;
+}
+
+.activity-list-right-status {
+    position: absolute;
+    right: -40px;
+    top: -19px;
+    transform: rotate(40deg);
+    padding: 30px 30px 5px 30px;
 }
 </style>

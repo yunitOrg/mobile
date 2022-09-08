@@ -7,13 +7,13 @@
         :idm-ctrl-id="moduleObject.id"
     >
         <img
-            :src="IDM.url.getWebPath(userInfo.avatar)"
+            :src="IDM.url.getWebPath(componentData.avatar)"
             v-if="propData.styleType === 'politicalBirthday'"
             class="idm-dialog-congratulate-avatar"
             alt="头像加载失败"
         />
         <div class="idm-dialog-congratulate-username" v-if="propData.styleType === 'politicalBirthday'">
-            {{ userInfo.username }}
+            {{ componentData.username }}
         </div>
         <div class="idm-dialog-congratulate-text" v-html="textFilter(propData.congratulateText)"></div>
         <div class="d-flex just-a idm-dialog-congratulate-btn-group">
@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { getDatasInterfaceUrl } from '@/api/config'
 import html2Canvas from 'html2canvas'
 export default {
     data() {
@@ -35,14 +36,7 @@ export default {
             moduleObject: {},
             propData: this.$root.propData.compositeAttr || {},
             dialogVisible: false,
-            componentData: {
-                year: '五',
-                empName: 'XX'
-            },
-            userInfo: {
-                avatar: '',
-                username: '陈独秀'
-            }
+            componentData: {}
         }
     },
     created() {
@@ -97,7 +91,7 @@ export default {
                     const createDom = document.createElement('a')
                     document.body.appendChild(createDom)
                     createDom.href = dataURL
-                    createDom.download = '政治生日祝福'
+                    createDom.download = '祝福图片'
                     createDom.click()
                 })
             })
@@ -253,21 +247,55 @@ export default {
             this.initData()
         },
         initData() {
-            this.userInfo.avatar = IDM.url.getModuleAssetsWebPath(
-                require('../assets/default-avatar.png'),
-                this.moduleObject
-            )
+            if (this.moduleObject.env !== 'production') {
+                this.componentData = {
+                    username: '陈独秀',
+                    avatar: IDM.url.getModuleAssetsWebPath(require('../assets/default-avatar.png'), this.moduleObject),
+                    year: '五',
+                    empName: '梦创'
+                }
+                return
+            }
+
             switch (this.propData.dialogShowType) {
-                case 'default':
-                    // default open type
+                case 'dataSource':
+                    window.IDM.http
+                        .post(
+                            getDatasInterfaceUrl,
+                            {
+                                id: this.propData.dataSource && this.propData.dataSource.value,
+                                limit: this.propData.limit,
+                                start: 0
+                            },
+                            {
+                                headers: {
+                                    'Content-Type': 'application/json;charset=UTF-8'
+                                }
+                            }
+                        )
+                        .then((res) => {
+                            //res.data
+                            if (res.status == 200 && res.data.code == 200) {
+                                if (res.data.data.isShowDialog) {
+                                    this.componentData = res.data.data
+                                    this.handleOpen()
+                                }
+                            } else {
+                                IDM.message.error(res.data.message)
+                            }
+                        })
+                        .finally(() => {
+                            this.isLoading = false
+                        })
                     break
                 case 'action':
                     if (this.propData.dialogFun && this.propData.dialogFun.length > 0) {
                         const funcName = this.propData.dialogFun[0].name
                         if (window[funcName]) {
                             const result = window[funcName].call(this, {})
-                            if (result) {
+                            if (result.isShowDialog) {
                                 this.handleOpen()
+                                this.componentData = result
                             }
                         }
                     }
