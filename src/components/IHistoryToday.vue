@@ -4,7 +4,9 @@
         :id="moduleObject.id"
         :idm-ctrl-id="moduleObject.id"
         v-show="propData.defaultStatus != 'hidden'"
-    ></div>
+    >
+        
+    </div>
 </template>
 <script>
 export default {
@@ -28,27 +30,7 @@ export default {
             this.convertAttrToStyleObject()
         },
         convertAttrToStyleObject() {
-            var styleObject = {}
-            if (this.propData.bgSize && this.propData.bgSize == 'custom') {
-                styleObject['background-size'] =
-                    (this.propData.bgSizeWidth
-                        ? this.propData.bgSizeWidth.inputVal + this.propData.bgSizeWidth.selectVal
-                        : 'auto') +
-                    ' ' +
-                    (this.propData.bgSizeHeight
-                        ? this.propData.bgSizeHeight.inputVal + this.propData.bgSizeHeight.selectVal
-                        : 'auto')
-            } else if (this.propData.bgSize) {
-                styleObject['background-size'] = this.propData.bgSize
-            }
-            if (this.propData.positionX && this.propData.positionX.inputVal) {
-                styleObject['background-position-x'] =
-                    this.propData.positionX.inputVal + this.propData.positionX.selectVal
-            }
-            if (this.propData.positionY && this.propData.positionY.inputVal) {
-                styleObject['background-position-y'] =
-                    this.propData.positionY.inputVal + this.propData.positionY.selectVal
-            }
+            const styleObject = {}
             for (const key in this.propData) {
                 if (this.propData.hasOwnProperty.call(this.propData, key)) {
                     const element = this.propData[key]
@@ -59,6 +41,20 @@ export default {
                         case 'width':
                         case 'height':
                             styleObject[key] = element
+                            break
+                        case 'boxShadow':
+                            styleObject['box-shadow'] = element
+                            break
+                        case 'bgColor':
+                            if (element && element.hex8) {
+                                styleObject['background-color'] = IDM.hex8ToRgbaString(element.hex8)
+                            }
+                            break
+                        case 'box':
+                            IDM.style.setBoxStyle(styleObject, element)
+                            break
+                        case 'border':
+                            IDM.style.setBorderStyle(styleObject, element)
                             break
                     }
                 }
