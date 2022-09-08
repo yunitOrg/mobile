@@ -12,8 +12,9 @@
 
 视频跳转:   videoUrl
 
-数据源应为:{
-
+数据源应为:
+```
+{
     data:[
     {
         image:"url",
@@ -22,7 +23,6 @@
         videoIntroduction:"浙江宁波：植物观察 地质探索 假期研学快乐多",
         videoUrl:"url"
     },
-
     {
         image:"url",
         amountOfPlay:1500,
@@ -30,7 +30,6 @@
         videoIntroduction:"浙江宁波：植物观察 地质探索 假期研学快乐多",
         videoUrl:"url"
     }......
-
     ]
-
 }
+```
