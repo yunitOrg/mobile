@@ -176,3 +176,13 @@ export const activityData = {
     count: 3,
     moreUrl: ''
 }
+
+export function getMyMessageTopData () {
+    const _this = this
+    return {
+        avatar: IDM.url.getModuleAssetsWebPath(require('../assets/default-avatar.png'), _this.moduleObject),
+        username: '陈独秀',
+        partySeniority: 5,
+        partyBranch: '梦创'
+    }
+}

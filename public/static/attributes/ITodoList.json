@@ -114,17 +114,26 @@
                 {
                     "type": "select",
                     "layoutType": "inline",
-                    "text": "跳转方式",
+                    "text": "更多跳转",
+                    "display": "@[isShowTitle]",
                     "bindKey": "jumpStyle",
-                    "desc": "设置点击轮播图片时跳转方式, 链接打开时使用window.open配置的数据源链接",
+                    "desc": "设置点击更多跳转方式",
                     "dictionary": [
                         {
                             "label": "子页面打开",
                             "value": "_child"
                         },
                         {
-                            "label": "链接打开",
+                            "label": "接口链接打开",
                             "value": "_link"
+                        },
+                        {
+                            "label": "自定义链接",
+                            "value": "_custom_link"
+                        },
+                        {
+                            "label": "自定义函数",
+                            "value": "_custom_func"
                         }
                     ],
                     "default": "_link"
@@ -138,12 +147,72 @@
                     "desc": "选择要打开的子页面"
                 },
                 {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "更多链接",
+                    "desc": "自定义更多链接",
+                    "defaultValRegExp": false,
+                    "display": "@[jumpStyle === '_custom_link']",
+                    "bindKey": "customMoreLink"
+                },
+                {
+                    "type": "actionSelect",
+                    "layoutType": "block",
+                    "text": "自定义更多跳转函数",
+                    "display": "@[jumpStyle === '_custom_func']",
+                    "bindKey": "jumpMoreCustomFunc",
+                    "multiple": false
+                },
+                {
+                    "type": "select",
+                    "layoutType": "inline",
+                    "text": "单项跳转",
+                    "bindKey": "itemJumpStyle",
+                    "desc": "设置点击单项跳转方式",
+                    "dictionary": [
+                        {
+                            "label": "子页面打开",
+                            "value": "_child"
+                        },
+                        {
+                            "label": "接口链接打开",
+                            "value": "_link"
+                        },
+                        {
+                            "label": "自定义链接",
+                            "value": "_custom_link"
+                        },
+                        {
+                            "label": "自定义函数",
+                            "value": "_custom_func"
+                        }
+                    ],
+                    "default": "_link"
+                },
+                {
                     "type": "pageSelect",
                     "layoutType": "inline",
                     "text": "单项页面",
-                    "display": "@[jumpStyle === '_child']",
+                    "display": "@[itemJumpStyle === '_child']",
                     "bindKey": "itemPageList",
                     "desc": "选择要打开的子页面"
+                },
+                {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "单项链接",
+                    "defaultValRegExp": false,
+                    "desc": "自定义单项链接，可写表达式，从item中获取参数 示例：itemUrl?id=@[id]",
+                    "display": "@[itemJumpStyle === '_custom_link']",
+                    "bindKey": "customItemLink"
+                },
+                {
+                    "type": "actionSelect",
+                    "layoutType": "block",
+                    "text": "自定义单项跳转函数",
+                    "display": "@[itemJumpStyle === '_custom_func']",
+                    "bindKey": "jumpItemCustomFunc",
+                    "multiple": false
                 }
             ]
         },

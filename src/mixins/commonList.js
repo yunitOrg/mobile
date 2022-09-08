@@ -7,6 +7,15 @@ export default {
         }
     },
     methods: {
+        textFilter(text, dataObj) {
+            if (!text) return ''
+            text = text.replace(/\r/gi, '').replace(/\n/gi, '<br/>')
+            text = text.replace(/@\[.*\]/gi, (str) => {
+                if (str.length < 4) return str
+                return IDM.express.replace(str, dataObj, true)
+            })
+            return text
+        },
         /**
          * 获取自定义字段值
          * @param {*} field 自定义字段
@@ -27,7 +36,7 @@ export default {
                 return
             }
             let url = null
-            switch (this.propData.jumpStyle) {
+            switch (this.propData.itemJumpStyle) {
                 case '_link':
                     url = this.getDataField(this.propData.jumpUrlField, item)
                     if (!url) return
@@ -47,6 +56,16 @@ export default {
                         IDM.message.warning('请选择要跳转的子页面')
                     }
                     break
+                case '_custom_link':
+                    url = this.textFilter(this.propData.customItemLink, item)
+                    if (!url) return
+                    window.open(IDM.url.getWebPath(url))
+                    break
+                case '_custom_func':
+                    if (this.propData.jumpItemCustomFunc && this.propData.jumpItemCustomFunc.length > 0) {
+                        const funcName = this.propData.jumpItemCustomFunc[0].name
+                        window[funcName] && window[funcName].call(this)
+                    }
             }
         },
         /**
@@ -71,6 +90,16 @@ export default {
                         IDM.message.warning('请选择要跳转的子页面')
                     }
                     break
+                case '_custom_link':
+                    url = this.textFilter(this.propData.customMoreLink, this.pageData)
+                    if (!url) return
+                    window.open(IDM.url.getWebPath(url))
+                    break
+                case '_custom_func':
+                    if (this.propData.jumpMoreCustomFunc && this.propData.jumpMoreCustomFunc.length > 0) {
+                        const funcName = this.propData.jumpCustomFunc[0].name
+                        window[funcName] && window[funcName].call(this)
+                    }
             }
         },
         /**
