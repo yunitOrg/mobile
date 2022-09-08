@@ -1,0 +1,296 @@
+<template>
+    <div idm-ctrl="idm_module" class="idm-my-message-top d-flex" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id">
+        <img
+            :src="IDM.url.getWebPath(getDataField(propData.avatarField, pageData))"
+            class="idm-my-message-avatar"
+            alt=""
+        />
+        <div class="d-flex just-b flex-1 align-c">
+            <div class="flex-1">
+                <div class="idm-my-message-username">{{ getDataField(propData.usernameField, pageData) || '' }}</div>
+                <div class="idm-my-message-year">
+                    党龄：{{ getDataField(propData.yearField, pageData) || '0' }}年
+                </div>
+                <div class="idm-my-message-branch">{{ getDataField(propData.branchField, pageData) }}党支部</div>
+            </div>
+            <div @click="handleJump">
+                <svg-icon icon-class="arrowRight2" class-name="idm-my-message-icon"></svg-icon>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+import { getMyMessageTopData } from '../mock/mockData'
+import { getDatasInterfaceUrl } from '@/api/config'
+export default {
+    name: 'IMyMessageTop',
+    data() {
+        return {
+            moduleObject: {},
+            propData: this.$root.propData.compositeAttr || {
+                fontContent: 'Hello Word'
+            },
+            pageData: {}
+        }
+    },
+    created() {
+        this.moduleObject = this.$root.moduleObject
+        this.convertAttrToStyleObject()
+        this.convertThemeListAttrToStyleObject()
+    },
+    methods: {
+        propDataWatchHandle(propData) {
+            this.propData = propData.compositeAttr || {}
+            this.convertAttrToStyleObject()
+            this.convertThemeListAttrToStyleObject()
+        },
+        textFilter(text, dataObj) {
+            if (!text) return ''
+            console.log(text, this.pageData)
+            text = text.replace(/\r/gi, '').replace(/\n/gi, '<br/>')
+            text = text.replace(/@\[.*\]/gi, (str) => {
+                if (str.length < 4) return str
+                return IDM.express.replace(str, dataObj, true)
+            })
+            return text
+        },
+        handleJump() {
+            if (this.moduleObject.env === 'develop') {
+                return
+            }
+            let url = null
+            switch (this.propData.jumpStyle) {
+                case '_link':
+                    url = this.getDataField(this.propData.jumpUrlField, this.pageData)
+                    if (!url) return
+                    window.open(IDM.url.getWebPath(url))
+                    break
+                case '_child':
+                    if (this.propData.morePageList && this.propData.morePageList.length > 0) {
+                        IDM.router.push(this.moduleObject.routerId, this.propData.itemPageList[0].id, true, '', '')
+                    } else {
+                        IDM.message.warning('请选择要跳转的子页面')
+                    }
+                    break
+                case '_custom_link':
+                    url = this.textFilter(this.propData.customLink, this.pageData)
+                    if (!url) return
+                    window.open(IDM.url.getWebPath(url))
+                    break
+                case '_custom_func':
+                    if (this.propData.jumpCustomFunc && this.propData.jumpCustomFunc.length > 0) {
+                        const funcName = this.propData.jumpCustomFunc[0].name
+                        window[funcName] && window[funcName].call(this)
+                    }
+            }
+        },
+        getDataField(field, dataObject) {
+            if (!dataObject || !field) return ''
+            return IDM.express.replace(`@[${field}]`, dataObject, true)
+        },
+        convertAttrToStyleObject() {
+            const styleObject = {},
+                avatarObj = {},
+                usernameObj = {},
+                partySeniorityObj = {},
+                partyBranchObj = {},
+                iconObj = {}
+            if (this.propData.bgSize && this.propData.bgSize == 'custom') {
+                styleObject['background-size'] =
+                    (this.propData.bgSizeWidth
+                        ? this.propData.bgSizeWidth.inputVal + this.propData.bgSizeWidth.selectVal
+                        : 'auto') +
+                    ' ' +
+                    (this.propData.bgSizeHeight
+                        ? this.propData.bgSizeHeight.inputVal + this.propData.bgSizeHeight.selectVal
+                        : 'auto')
+            } else if (this.propData.bgSize) {
+                styleObject['background-size'] = this.propData.bgSize
+            }
+            if (this.propData.positionX && this.propData.positionX.inputVal) {
+                styleObject['background-position-x'] =
+                    this.propData.positionX.inputVal + this.propData.positionX.selectVal
+            }
+            if (this.propData.positionY && this.propData.positionY.inputVal) {
+                styleObject['background-position-y'] =
+                    this.propData.positionY.inputVal + this.propData.positionY.selectVal
+            }
+            for (const key in this.propData) {
+                if (this.propData.hasOwnProperty.call(this.propData, key)) {
+                    const element = this.propData[key]
+                    if (!element && element !== false && element != 0) {
+                        continue
+                    }
+                    switch (key) {
+                        case 'width':
+                        case 'height':
+                            styleObject[key] = element
+                            break
+                        case 'border':
+                            IDM.style.setBorderStyle(styleObject, element)
+                            break
+                        case 'box':
+                            IDM.style.setBoxStyle(styleObject, element)
+                            break
+                        case 'boxShadow':
+                            styleObject['box-shadow'] = element
+                            break
+                        case 'bgColor':
+                            if (element && element.hex8) {
+                                styleObject['background-color'] = IDM.hex8ToRgbaString(element.hex8) + ' !important'
+                            }
+                            break
+                        // 头像样式
+                        case 'avatarWidth':
+                            avatarObj['width'] = element
+                            break
+                        case 'avatarHeight':
+                            avatarObj['height'] = element
+                            break
+                        case 'avatarBorder':
+                            IDM.style.setBorderStyle(avatarObj, element)
+                            break
+                        case 'avatarBox':
+                            IDM.style.setBoxStyle(avatarObj, element)
+                            break
+                        // 用户昵称
+                        case 'usernameBox':
+                            IDM.style.setBoxStyle(usernameObj, element)
+                            break
+                        case 'usernameFont':
+                            IDM.style.setFontStyle(usernameObj, element)
+                            break
+                        // 党龄
+                        case 'yearBox':
+                            IDM.style.setBoxStyle(partySeniorityObj, element)
+                            break
+                        case 'yearFont':
+                            IDM.style.setFontStyle(partySeniorityObj, element)
+                            break
+                        // 支部
+                        case 'branchBox':
+                            IDM.style.setBoxStyle(partyBranchObj, element)
+                            break
+                        case 'branchFont':
+                            IDM.style.setFontStyle(partyBranchObj, element)
+                            break
+                        // icon
+                        case 'iconSize':
+                            iconObj['width'] = element + 'px'
+                            iconObj['height'] = element + 'px'
+                            break
+                        case 'iconColor':
+                            if (element && element.hex8) {
+                                iconObj['fill'] = IDM.hex8ToRgbaString(element.hex8)
+                            }
+                            break
+                        case 'iconBox':
+                            IDM.style.setBoxStyle(iconObj, element)
+                            break
+                    }
+                }
+            }
+            window.IDM.setStyleToPageHead(this.moduleObject.id, styleObject)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-my-message-avatar', avatarObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-my-message-username', usernameObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-my-message-year', partySeniorityObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-my-message-branch', partyBranchObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-my-message-icon', iconObj)
+            this.initData()
+        },
+        reload() {
+            //请求数据源
+            this.initData()
+        },
+        initData() {
+            if (this.moduleObject.env !== 'production') {
+                this.pageData = getMyMessageTopData.call(this)
+                return
+            }
+            window.IDM.http
+                .post(
+                    getDatasInterfaceUrl,
+                    {
+                        id: this.propData.dataSource && this.propData.dataSource.value,
+                        limit: this.propData.limit,
+                        start: 0
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json;charset=UTF-8'
+                        }
+                    }
+                )
+                .then((res) => {
+                    //res.data
+                    if (res.status == 200 && res.data.code == 200) {
+                        this.pageData = res.data.data
+                    } else {
+                        IDM.message.error(res.data.message)
+                    }
+                })
+        },
+        /**
+         * 主题颜色
+         */
+        convertThemeListAttrToStyleObject() {
+            var themeList = this.propData.themeList
+            if (!themeList) {
+                return
+            }
+            const themeNamePrefix =
+                IDM.setting && IDM.setting.applications && IDM.setting.applications.themeNamePrefix
+                    ? IDM.setting.applications.themeNamePrefix
+                    : 'idm-theme-'
+            for (var i = 0; i < themeList.length; i++) {
+                var item = themeList[i]
+                IDM.setStyleToPageHead(
+                    '.' + themeNamePrefix + item.key + (` #${this.moduleObject.id}` || 'module_demo'),
+                    {
+                        background: item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : ''
+                    }
+                )
+            }
+        },
+        receiveBroadcastMessage(object) {
+            console.log('组件收到消息', object)
+            if (object.type && object.type == 'linkageShowModule') {
+                this.showThisModuleHandle()
+            } else if (object.type && object.type == 'linkageHideModule') {
+                this.hideThisModuleHandle()
+            }
+        },
+        setContextValue(object) {
+            console.log('统一接口设置的值', object)
+            if (object.type != 'pageCommonInterface') {
+                return
+            }
+            //这里使用的是子表，所以要循环匹配所有子表的属性然后再去设置修改默认值
+            if (object.key == this.propData.dataName) {
+                // this.propData.fontContent = this.getExpressData(this.propData.dataName,this.propData.dataFiled,object.data);
+                this.$set(
+                    this.propData,
+                    'fontContent',
+                    this.getExpressData(this.propData.dataName, this.propData.dataFiled, object.data)
+                )
+            }
+        },
+        sendBroadcastMessage(object) {
+            window.IDM.broadcast && window.IDM.broadcast.send(object)
+        },
+        /**
+         * 通用的url参数对象
+         * 所有地址的url参数转换
+         */
+        commonParam() {
+            let urlObject = IDM.url.queryObject()
+            var params = {
+                pageId:
+                    window.IDM.broadcast && window.IDM.broadcast.pageModule ? window.IDM.broadcast.pageModule.id : '',
+                urlData: JSON.stringify(urlObject)
+            }
+            return params
+        }
+    }
+}
+</script>

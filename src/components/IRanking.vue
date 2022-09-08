@@ -158,7 +158,7 @@ export default {
                 },
               }
             )
-            .done((res) => {
+            .then((res) => {
               if (res.type === "success") {
                 that.pageDataList = res.data || [];
                 that.currentObj = res.data.find(item => item.id === that.propData.selfInterface)

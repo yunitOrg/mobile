@@ -21,12 +21,12 @@
         :params="item"
         @callFunc="handleClickCall"
       ></InputFactory>
-      <button @click="getParams" v-if="isShow">获取数据</button>
     </div>
   </div>
 </template>
 
 <script type="text/jsx">
+import { getDatasInterfaceUrl } from '@/api/config'
 import InputFactory from '../commonComponents/form/InputFactory.vue';
 export default {
   name: 'idm-form',
@@ -35,7 +35,6 @@ export default {
   },
   data () {
     return {
-      isShow: false,
       formData: {}, // 表单数据
       moduleObject: {},
       propData: this.$root.propData.compositeAttr||{
@@ -56,7 +55,7 @@ export default {
             key: '1',
             type: 'input',
             labelShow: true,
-            field: 'input',
+            field: 'name',
             label: '文本',
             disabled: false,
             placeholder: '请输入用户名',
@@ -180,7 +179,6 @@ export default {
     },
     init () {
       console.log(this.propData, '数据源')
-      this.moduleObject.env == "production" ? this.isShow = false : this.isShow = true;
       let styleObject = {};
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
@@ -202,7 +200,13 @@ export default {
               if (element) {
                 styleObject['background-color'] = element.hex
               }
-            break
+              break
+            case 'boxShadow':
+              styleObject['box-shadow'] = element
+              break
+            case 'boxBorder':
+              IDM.style.setBorderStyle(styleObject, element)
+              break
           }
         }
       }
@@ -212,6 +216,37 @@ export default {
         rangeModule: this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
         message: this.formData
       })
+      this.handleBackData();
+      if (!this.propData.labelBorderShow) {
+        window.IDM.setStyleToPageHead(this.moduleObject.id + " .idm-form .input-component:last-child", {
+          "border": 0
+        });
+      }
+    },
+    // 回填数据
+    handleBackData () {
+      if (this.moduleObject.env == "production") {
+        this.propData.dataSource &&
+          IDM.http
+            .post(
+              getDatasInterfaceUrl,
+              {
+                id: this.propData.dataSource && this.propData.dataSource.value,
+              },
+              {
+                headers: {
+                  "Content-Type": "application/json;charset=UTF-8",
+                },
+              }
+            )
+            .then((res) => {
+              if (res.status == 200 && res.data.code == 200) {
+                  this.formData = res.data.data
+              } else {
+                  IDM.message.error(res.data.message)
+              }
+            })
+      }
     },
     /**
      * 组件通信：发送消息的方法
@@ -226,9 +261,6 @@ export default {
      */
     sendBroadcastMessage(object) {
       window.IDM.broadcast && window.IDM.broadcast.send(object);
-    },
-    getParams () {
-      console.log(this.formData, '数据')
     },
     /**
     * 通过自定义函数

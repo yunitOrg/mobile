@@ -22,7 +22,6 @@
       <van-tab v-for="item in allTabList" :key="item.key" :name="item.key" :title="item.tab" :disabled="item.disable" title-class="tab-custom" :title-style="setFontStyle(item.tableFont)">
         <template v-if="propData.isDrag === 'container'">
           <div class="tab-conent drag_container"
-            v-if="item.opened"
             :class="`idm-tab-inner-${item.key}`"
             idm-ctrl-inner
             :idm-ctrl-id="moduleObject.id"
@@ -208,7 +207,7 @@ export default{
         chooseTabObject['height'] = this.propData.chooseHeight
       }
       if (this.propData.chooseBgColor) {
-        chooseTabObject['background-color'] = (this.propData.chooseBgColor || {}).hex
+        chooseTabObject['background-color'] = (this.propData.chooseBgColor || {}).hex + ' !important'
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .tab-ul .van-tabs__line", chooseTabObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .tab-ul", styleObject);
@@ -218,6 +217,35 @@ export default{
       this.initBaseAttrToModule();
       this.convertAttrToStyleObject();
       this.convertBorderStyleObject();
+      this.converThemeListObject();
+    },
+    // 设置主题
+    converThemeListObject () {
+      let themeList = this.propData.themeList;
+      if (!themeList) {
+        return;
+      }
+      const themeNamePrefix =
+        IDM.setting &&
+        IDM.setting.applications &&
+        IDM.setting.applications.themeNamePrefix
+          ? IDM.setting.applications.themeNamePrefix
+          : "idm-theme-";
+      for (let i=0; i<themeList.length; i++) {
+        let item = themeList[i]
+        if(item.key!=IDM.theme.getCurrentThemeInfo()){
+            //此处比对是不渲染输出不用的样式，如果页面会刷新就可以把此处放开
+            continue;
+        }
+        let tempobj = {};
+        tempobj = {
+          "background-color": item.mainColor ? item.mainColor.hex8 : "",
+        }
+        IDM.setStyleToPageHead(
+          `.${themeNamePrefix}${item.key} #${(this.moduleObject.id || "module_demo")} .tab-ul .van-tabs__line`,
+          tempobj
+        );
+      }
     },
     setFontStyle (item) {
       let obj = {};
@@ -254,9 +282,9 @@ export default{
             }
           })
         }
-        that.propData.staticTabPaneList.forEach(item => {
-          item.opened = this.moduleObject.env=='develop'?true: this.activeTab==item.key;
-        });
+        // that.propData.staticTabPaneList.forEach(item => {
+        //   item.opened = this.moduleObject.env=='develop'?true: this.activeTab==item.key;
+        // });
         that.allTabList = that.propData.staticTabPaneList;
       }
     },
@@ -268,13 +296,17 @@ export default{
       this.activeTab = key;
       this.allTabList.forEach(item=>{
         if(this.activeTab === item.key){
-          if(!item.opened){
-            item.opened = true;
-            that.$nextTick(function(params) {
+          that.$nextTick(function(params) {
               //去加载内部组件
               that.moduleObject.moduleReload&&that.moduleObject.moduleReload(that.moduleObject.packageid, item.key);
             })
-          }
+          // if(!item.opened){
+          //   item.opened = true;
+          //   that.$nextTick(function(params) {
+          //     //去加载内部组件
+          //     that.moduleObject.moduleReload&&that.moduleObject.moduleReload(that.moduleObject.packageid, item.key);
+          //   })
+          // }
         }
       })
       this.changeEventFunHandle("changeFunction");

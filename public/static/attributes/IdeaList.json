@@ -71,7 +71,7 @@
           {
             "type": "box",
             "layoutType": "block",
-            "text": "内外边距",
+            "text": "容器内外边距",
             "bindKey": "box",
             "default": {
               "marginTopVal": "",
@@ -106,6 +106,19 @@
             "text": "分割距离",
             "bindKey": "liSplitHeight",
             "default": "10px"
+          },
+          {
+            "type": "input",
+            "layoutType": "inline",
+            "text": "列表阴影",
+            "bindKey": "liBoxShadow",
+            "default": "0px  0px 20px 0px #ccc"
+          },
+          {
+            "type": "border",
+            "layoutType": "block",
+            "text": "列表边框",
+            "bindKey": "border"
           },
           {
             "type": "font",
@@ -162,32 +175,36 @@
           },
           {
             "type": "group",
-            "text": "页面数据绑定",
+            "text": "字段设置",
             "desc": "页面数据绑定",
             "children": [
               {
                 "type": "textarea",
                 "layoutType": "inline",
                 "text": "头像字段",
-                "bindKey": "ImgInterface"
+                "bindKey": "ImgInterface",
+                "default": "headImg"
               },
               {
                 "type": "textarea",
                 "layoutType": "inline",
                 "text": "标题字段",
-                "bindKey": "titleInterface"
+                "bindKey": "titleInterface",
+                "default": "title"
               },
               {
                 "type": "textarea",
                 "layoutType": "inline",
                 "text": "描述字段",
-                "bindKey": "descInterface"
+                "bindKey": "descInterface",
+                "default": "desc"
               },
               {
                 "type": "textarea",
                 "layoutType": "inline",
                 "text": "日期字段",
-                "bindKey": "TimeInterface"
+                "bindKey": "TimeInterface",
+                "default": "time"
               },
               {
                 "type": "textarea",
@@ -202,4 +219,3 @@
       }
   ]
 }
-    

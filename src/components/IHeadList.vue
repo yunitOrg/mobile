@@ -53,9 +53,11 @@
               <svg
                 class="idm_svg_author_icon idm_button_svg_icon"
                 aria-hidden="true"
+                v-if="propData.titleIconClass && propData.titleIconClass.length"
               >
-                <use :xlink:href="`#${propData.titleIconClass}`"></use>
+                <use :xlink:href="`#${propData.titleIconClass[0]}`"></use>
               </svg>
+              <svg-icon v-else icon-class="phone" className="idm_svg_author_icon idm_button_svg_icon"></svg-icon>
             </div>
           </div>
         </li>
@@ -100,7 +102,6 @@ export default {
         authorshowIcon: true,
         authorIconmaxClass: 'icon-settingOutline',
         authorIcongirlClass: 'icon-settingOutline',
-        titleIconClass: 'icon-settingOutline',
         titleIconFontSize: 20,
         authorIconFontSize: 18,
         tagTable: [
@@ -226,6 +227,35 @@ export default {
       this.converPaddingObject();
       this.converTitleStyleObject();
       this.converDescStyleObject();
+      this.converThemeListObject();
+    },
+    converThemeListObject () {
+      let themeList = this.propData.themeList;
+      if (!themeList) {
+        return;
+      }
+      const themeNamePrefix =
+        IDM.setting &&
+        IDM.setting.applications &&
+        IDM.setting.applications.themeNamePrefix
+          ? IDM.setting.applications.themeNamePrefix
+          : "idm-theme-";
+      for (let i=0; i<themeList.length; i++) {
+        let item = themeList[i]
+        if(item.key!=IDM.theme.getCurrentThemeInfo()){
+            //此处比对是不渲染输出不用的样式，如果页面会刷新就可以把此处放开
+            continue;
+        }
+        let tempobj = {};
+        tempobj = {
+          "color": item.mainColor ? item.mainColor.hex8 : "",
+          "fill": item.mainColor ? item.mainColor.hex8 : "",
+        }
+        IDM.setStyleToPageHead(
+          `.${themeNamePrefix}${item.key} #${(this.moduleObject.id || "module_demo")} .idm_button_svg_icon`,
+          tempobj
+        );
+      }
     },
     convertAttrToStyleObject () {
       let iconStyle = {}
@@ -299,6 +329,12 @@ export default {
         styleUlObject['background-color'] = (this.propData.bgColor || {}).hex
       } else {
         styleUlObject['background-color'] = '#ffffff'
+      }
+      if (this.propData.boxShadow) {
+        styleUlObject['box-shadow'] = this.propData.boxShadow
+      }
+      if (this.propData.boxBorder) {
+        IDM.style.setBorderStyle(styleUlObject, this.propData.boxBorder)
       }
       let listyleObject = {};
       if (this.propData.liBox) {
@@ -560,9 +596,6 @@ export default {
   }
   .iheadlist-ul{
     // margin: 0 10px;
-    border-radius: 10px;
-    background: #fff;
-    box-shadow: 0px 0px 10px 0px #e3dede;
     li{
       list-style: none;
       // padding: 0 20px;
