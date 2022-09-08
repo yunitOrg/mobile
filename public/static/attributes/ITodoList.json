@@ -749,6 +749,7 @@
                     "type": "treeSelect",
                     "layoutType": "inline",
                     "text": "数据源",
+                    "desc": "数据返回示例：{value: [], count: 0, moreUrl: ''}",
                     "bindKey": "dataSource",
                     "dataSourceUrl": "/ctrl/dataSource/getDatasourceByGroup"
                 },
