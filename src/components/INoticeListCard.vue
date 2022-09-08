@@ -748,7 +748,7 @@ $scale: var(--i-notice-list-card-scale);
     rgba(194, 194, 194, 0.5);
   border-radius: calc($scale * 10px);
   font-size: calc($scale * 16px);
-  font-size: 14px;
+  font-size: calc($scale * 14px);
   color: #333333;
   font-weight: 700;
 
@@ -764,7 +764,7 @@ $scale: var(--i-notice-list-card-scale);
     }
 
     .header-text {
-      font-size: 16px;
+      font-size: calc($scale * 16px);
       color: #333333;
       font-weight: 700;
     }
@@ -776,14 +776,14 @@ $scale: var(--i-notice-list-card-scale);
       flex-wrap: wrap;
 
       li {
-        min-height: 96px;
+        min-height: calc($scale * 96px);
         width: 50%;
-        margin-top: 46px;
+        margin-top: calc($scale * 46px);
 
         .i-notice-list-item {
           position: relative;
-          padding: 30% 14px 14px 14px;
-          box-shadow: 0px 2px 8px 0px rgba(194, 194, 194, 0.5);
+          padding: 30% calc($scale * 14px) calc($scale * 14px) calc($scale * 14px);
+          box-shadow: 0px 2px calc($scale * 8px) 0px rgba(194, 194, 194, 0.5);
           border: 1px solid rgba(227,227,227,1);
           text-align: center;
           height: 100%;
@@ -807,12 +807,12 @@ $scale: var(--i-notice-list-card-scale);
             margin: 0 auto;
             top: 0;
             border-radius: 50%;
-            box-shadow: -10px -10px 20px -14px rgba(194, 194, 194, 1) inset;
+            box-shadow: calc($scale * -10px) calc($scale * -10px) calc($scale * 20px) calc($scale * 14px)rgba(194, 194, 194, 1) inset;
             transform: translateY(-50%) rotate(45deg);
 
             .item-inner-circle {
               position: absolute;
-              border: 3px solid #cd0502;
+              border: calc($scale * 3px) solid #cd0502;
               width: 80%;
               height: 80%;
               left: 0;
@@ -836,12 +836,12 @@ $scale: var(--i-notice-list-card-scale);
                 flex-direction: column;
 
                 .circle-day {
-                  font-size: 15px;
+                  font-size: calc($scale * 15px);
                   font-weight: 600;
                 }
 
                 .circle-month {
-                  font-size: 14px;
+                  font-size: calc($scale * 14px);
                   font-weight: 500;
                 }
 
@@ -854,20 +854,20 @@ $scale: var(--i-notice-list-card-scale);
         }
 
         &:nth-child(odd) {
-          padding-right: 8px;
+          padding-right: calc($scale * 8px);
         }
         &:nth-child(even) {
-          padding-left: 8px;
+          padding-left: calc($scale * 8px);
         }
       }
     }
   }
 
   .loading-more {
-    font-size: 14px;
+    font-size: calc($scale * 14px);
     color: #666666;
     font-weight: normal;
-    padding: 16px 0;
+    padding: calc($scale * 16px) 0;
     text-align: center;
     font-family: PingFangSC-Regular;
   }
