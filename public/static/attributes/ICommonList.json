@@ -1223,7 +1223,7 @@
                             "layoutType": "inline",
                             "text": "图片字段",
                             "bindKey": "imageField",
-                            "default": "image"
+                            "default": "images"
                         },
                         {
                             "type": "input",

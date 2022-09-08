@@ -95,6 +95,9 @@
         更多评论
       </div>
     </div>
+    <div class="i-all-comment-mask" v-if="moduleObject.env !== 'production' && !propData.dataSource">
+      <span>！未绑定数据源</span>
+    </div>
   </div>
 </template>
 
@@ -907,6 +910,7 @@ export default {
 $scale: var(--i-all-comment-scale);
 
 .i-all-comment-outer {
+  position: relative;
   padding: calc(10px * #{$scale});
   color: #000;
   font-size: calc(14px * #{$scale});
@@ -1040,6 +1044,26 @@ $scale: var(--i-all-comment-scale);
       color: rgb(102, 102, 102);
       text-align: center;
       padding-bottom: calc(10px * #{$scale});
+    }
+  }
+
+  .i-all-comment-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: rgba(0,0,0,.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    span {
+      padding: calc(6px * #{ $scale }) calc(20px * #{ $scale });;
+      color: #e6a23c;
+      background: #fdf6ec;
+      border:calc(1px * #{ $scale }) solid #f5dab1;
+      border-radius: calc(4px * #{ $scale });;
     }
   }
 }

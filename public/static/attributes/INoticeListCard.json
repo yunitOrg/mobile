@@ -63,6 +63,13 @@
           "placeholder": "示例：暂无数据"
         },
         {
+          "type": "pageSelect",
+          "layoutType": "inline",
+          "text": "详情跳转",
+          "bindKey": "replyJump",
+          "desc": "公告详情跳转页面"
+        },
+        {
           "type": "radio",
           "layoutType": "inline",
           "text": "默认状态",
@@ -488,18 +495,31 @@
           "type": "treeSelect",
           "layoutType": "inline",
           "text": "数据源",
-          "desc": "用于选择时间轴的数据源",
+          "desc": "用于选择的数据源",
           "bindKey": "dataSource",
           "dataSourceUrl": "ctrl/dataSource/getDatasourceByGroup"
         },
         {
-          "type": "textarea",
-          "layoutType": "inline",
-          "text": "显示字段",
-          "bindKey": "dataFiled",
-          "desc": "根据接口返回数据格式指定结果集的字段，比如结果集名为resultData（自定义接口忽略）且它的值为{code:\"200\",data:{value:[{\"date\":\"2022-05-12\"}]}}，则这里应该填写data",
-          "default": "data",
-          "placeholder": "示例：data 或者 [0].data[0]"
+          "type": "group",
+          "text": "字段设置",
+          "desc": "页面数据绑定",
+          "children": [
+            {
+              "type": "textarea",
+              "layoutType": "inline",
+              "text": "日期",
+              "desc": "日期格式:2022-08-08",
+              "bindKey": "dateInterface",
+              "default": "dete"
+            },
+            {
+              "type": "textarea",
+              "layoutType": "inline",
+              "text": "公告标题",
+              "bindKey": "btInterface",
+              "default": "bt"
+            }
+          ]
         },
         {
             "type": "select",

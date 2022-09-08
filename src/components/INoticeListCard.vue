@@ -29,16 +29,16 @@
       <template v-if="infoList.length > 0">
         <ul>
           <li v-for="(notice, n) in infoList" :key="n">
-            <div class="i-notice-list-item" :class="{ hidden: !notice.id }">
+            <div class="i-notice-list-item">
               <div class="item-outer-circle">
                 <div class="item-inner-circle">
                   <div class="item-main-circle">
-                    <span class="circle-day">{{ notice.date | dayFilter}}</span>
-                    <span class="circle-month">{{ notice.date | monthFilter}}</span>
+                    <span class="circle-day">{{ notice[propData.dateInterface]  | dayFilter}}</span>
+                    <span class="circle-month">{{ notice[propData.dateInterface] | monthFilter}}</span>
                   </div>
                 </div>
               </div>
-              <span>{{ notice.bt }}</span>
+              <span>{{ notice[propData.btInterface] }}</span>
             </div>
           </li>
         </ul>
@@ -62,6 +62,9 @@
           />
         </template>
       </van-empty>
+    </div>
+    <div class="i-notice-list-card-mask" v-if="moduleObject.env !== 'production' && !propData.dataSource">
+      <span>！未绑定数据源</span>
     </div>
   </div>
 </template>
@@ -102,7 +105,10 @@ export default {
         defaultNumber: 4,
         isShowTitleBar:true,
         showIcon:true,
-        titleIconPosition:'left'
+        titleIconPosition:'left',
+        dataSource:"sss",
+        dateInterface:'date',
+        btInterface:'bt',
       },
       isLoading: true,
       isLoadingMore:false,
@@ -216,9 +222,13 @@ export default {
         .done((res) => {
           console.log(res, "接口数据");
           if (res.code === "200") {
-            this.infoList = this.propData.dataFiled
-              ? this.getExpressData("dataName", this.propData.dataFiled, res)
-              : res;
+            const result = res.data
+            this.total = result.total;
+            if(loadMore){
+              this.infoList = [...this.infoList, ...result.list];
+            }else{
+              this.infoList = result.list;
+            }
           } else {
             console.log(url + "请求失败");
           }
@@ -228,6 +238,7 @@ export default {
         })
         .always((res) => {
           this.isLoading = false;
+          this.isLoadingMore = false;
         });
     },
     /**
@@ -729,6 +740,7 @@ export default {
 $scale: var(--i-notice-list-card-scale);
 
 .i-notice-list-card-outer {
+  position: relative;
   width: auto;
   background-color: #fff;
   margin: calc($scale * 12px);
@@ -784,11 +796,6 @@ $scale: var(--i-notice-list-card-scale);
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
-          }
-
-          &.hidden {
-            opacity: 0;
-            pointer-events: none;
           }
 
           .item-outer-circle {
@@ -864,6 +871,26 @@ $scale: var(--i-notice-list-card-scale);
     padding: 16px 0;
     text-align: center;
     font-family: PingFangSC-Regular;
+  }
+
+  .i-notice-list-card-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: rgba(0,0,0,.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    span {
+      padding: calc(6px * #{ $scale }) calc(20px * #{ $scale });;
+      color: #e6a23c;
+      background: #fdf6ec;
+      border:calc(1px * #{ $scale }) solid #f5dab1;
+      border-radius: calc(4px * #{ $scale });;
+    }
   }
 }
 </style>

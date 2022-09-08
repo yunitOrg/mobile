@@ -63,6 +63,9 @@
         </template>
       </van-empty>
     </template>
+    <div class="i-time-axis-mask" v-if="moduleObject.env !== 'production' && !propData.dataSource">
+      <span>！未绑定数据源</span>
+    </div>
   </div>
 </template>
 
@@ -607,6 +610,7 @@ export default {
 $scale: var(--i-time-axis-scale);
 
 .i-time-axis-outer {
+  position: relative;
   margin: calc(8px * #{ $scale });
   padding: calc(16px * #{ $scale });
   background-color: #fff;
@@ -769,6 +773,26 @@ $scale: var(--i-time-axis-scale);
         margin-top: calc(12px * #{ $scale });
         margin-bottom: 0;
       }
+    }
+  }
+
+  .i-time-axis-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: rgba(0,0,0,.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    span {
+      padding: calc(6px * #{ $scale }) calc(20px * #{ $scale });;
+      color: #e6a23c;
+      background: #fdf6ec;
+      border:calc(1px * #{ $scale }) solid #f5dab1;
+      border-radius: calc(4px * #{ $scale });;
     }
   }
 }
