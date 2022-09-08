@@ -52,15 +52,17 @@ export default {
       moduleObject: {},
       propData: this.$root.propData.compositeAttr || {
         headText: "学习精选",
-        themeList:{
-          "key": "blue",
-          "mainColor": {
-            "hex": "#0073CA",
-            "hex8": "#0073CAFF"
-          }
-        },
         "isShowMore":true,
-        "isShowVideoNum":true
+        "isShowVideoNum":true,
+        themeList:[
+          {
+            "key": "blue",
+            "mainColor": {
+              "hex": "#0073CA",
+              "hex8": "#0073CAFF"
+            }
+          }
+        ]
       },
       isLoading: true,
       videoData: [
