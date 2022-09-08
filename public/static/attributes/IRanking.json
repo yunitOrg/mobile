@@ -42,7 +42,7 @@
                 {
                     "type": "input",
                     "layoutType": "block",
-                    "text": "宽",
+                    "text": "图片宽",
                     "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
                     "bindKey": "imgWidth",
                     "width": "100%",
@@ -51,7 +51,7 @@
                 {
                     "type": "input",
                     "layoutType": "block",
-                    "text": "高",
+                    "text": "图片高",
                     "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
                     "bindKey": "imgHeight",
                     "width": "200px",
@@ -203,7 +203,7 @@
           },
           {
             "type": "group",
-            "text": "页面数据绑定",
+            "text": "字段设置",
             "desc": "页面数据绑定",
             "children": [
               {
@@ -216,25 +216,29 @@
                 "type": "textarea",
                 "layoutType": "inline",
                 "text": "头像字段",
-                "bindKey": "ImgInterface"
+                "bindKey": "ImgInterface",
+                "default": "headImg"
               },
               {
                 "type": "textarea",
                 "layoutType": "inline",
                 "text": "标题字段",
-                "bindKey": "titleInterface"
+                "bindKey": "titleInterface",
+                "default": "title"
               },
               {
                 "type": "textarea",
                 "layoutType": "inline",
                 "text": "描述字段",
-                "bindKey": "descInterface"
+                "bindKey": "descInterface",
+                "default": "desc"
               },
               {
                 "type": "textarea",
                 "layoutType": "inline",
                 "text": "金额字段",
-                "bindKey": "moneyInterface"
+                "bindKey": "moneyInterface",
+                "default": "money"
               }
             ]
           }

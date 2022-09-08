@@ -192,6 +192,13 @@
       "className": "IMyMessageTop",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.iactivityStatistics",
+      "comName": "活动统计",
+      "className": "IActivityStatistics",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }

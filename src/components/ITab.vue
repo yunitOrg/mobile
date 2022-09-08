@@ -208,7 +208,7 @@ export default{
         chooseTabObject['height'] = this.propData.chooseHeight
       }
       if (this.propData.chooseBgColor) {
-        chooseTabObject['background-color'] = (this.propData.chooseBgColor || {}).hex
+        chooseTabObject['background-color'] = (this.propData.chooseBgColor || {}).hex + ' !important'
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .tab-ul .van-tabs__line", chooseTabObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .tab-ul", styleObject);
@@ -218,6 +218,35 @@ export default{
       this.initBaseAttrToModule();
       this.convertAttrToStyleObject();
       this.convertBorderStyleObject();
+      this.converThemeListObject();
+    },
+    // 设置主题
+    converThemeListObject () {
+      let themeList = this.propData.themeList;
+      if (!themeList) {
+        return;
+      }
+      const themeNamePrefix =
+        IDM.setting &&
+        IDM.setting.applications &&
+        IDM.setting.applications.themeNamePrefix
+          ? IDM.setting.applications.themeNamePrefix
+          : "idm-theme-";
+      for (let i=0; i<themeList.length; i++) {
+        let item = themeList[i]
+        if(item.key!=IDM.theme.getCurrentThemeInfo()){
+            //此处比对是不渲染输出不用的样式，如果页面会刷新就可以把此处放开
+            continue;
+        }
+        let tempobj = {};
+        tempobj = {
+          "background-color": item.mainColor ? item.mainColor.hex8 : "",
+        }
+        IDM.setStyleToPageHead(
+          `.${themeNamePrefix}${item.key} #${(this.moduleObject.id || "module_demo")} .tab-ul .van-tabs__line`,
+          tempobj
+        );
+      }
     },
     setFontStyle (item) {
       let obj = {};
