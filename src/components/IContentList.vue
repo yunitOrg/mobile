@@ -21,7 +21,7 @@
                             <div class="text-o-e-2">{{ getDataField(propData.titleField, item) }}</div>
                         </div>
                         <img
-                            v-if="item.images.length === 1"
+                            v-if="getDataField(propData.imageField, item).length === 1"
                             class="one-img"
                             :src="
                                 IDM.url.getWebPath(
@@ -32,9 +32,9 @@
                             alt="图片加载失败"
                         />
                     </div>
-                    <van-row gutter="10" v-if="item.images.length > 1">
+                    <van-row gutter="10" v-if="getDataField(propData.imageField, item).length > 1">
                         <van-col
-                            :span="item.images.length == 2 ? 12 : 8"
+                            :span="getDataField(propData.imageField, item).length == 2 ? 12 : 8"
                             v-for="(items, indexs) in getDataField(propData.imageField, item) || []"
                             class="flex-1"
                             :key="indexs"

@@ -213,6 +213,13 @@
       "className": "INoticeListCard",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.iselect",
+      "comName": "下拉框",
+      "className": "ISelect",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }
