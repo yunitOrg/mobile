@@ -207,6 +207,7 @@ export default {
       }
       const url = `ctrl/dataSource/getDatas`;
       const urlObject = IDM.url.queryObject();
+      const routerParams = this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId) : {};
       this.isLoading = true;
       IDM.http
         .post(
@@ -217,7 +218,8 @@ export default {
               window.IDM.broadcast && window.IDM.broadcast.pageModule
                 ? window.IDM.broadcast.pageModule.id
                 : '',
-            ...urlObject
+            ...urlObject,
+            ...routerParams
           },
           {
             headers: {
