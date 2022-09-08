@@ -67,6 +67,7 @@ export default {
       propData:this.$root.propData.compositeAttr||{
         waitTitle: "待回复",
         yetTitle: "已回复",
+        liBoxShadow: "0px  0px 20px 0px #ccc",
         activeInterface: "type == '1'",
         box:{
           marginTopVal: "0",
@@ -236,6 +237,13 @@ export default {
           listyleObject["padding-left"] = `${libox.paddingLeftVal}`;
         }
       }
+      if (this.propData.liBoxShadow) {
+        listyleObject['box-shadow'] = this.propData.liBoxShadow
+      }
+      if (this.propData.border) {
+        IDM.style.setBorderStyle(listyleObject, this.propData.border)
+      }
+      
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .idealist-ul", styleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .idealist-ul li", listyleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .idealist-ul li+li", {"margin-top": this.propData.liSplitHeight});
@@ -457,8 +465,6 @@ export default {
       list-style: none;
       display: flex;
       align-items: center;
-      border-radius: 5px;
-      box-shadow: 0px  0px 20px 0px #ccc;
       .idealist-img{
         width: 40px;
         height: 40px;
