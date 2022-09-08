@@ -106,7 +106,6 @@ export default {
         isShowTitleBar:true,
         showIcon:true,
         titleIconPosition:'left',
-        dataSource:"sss",
         dateInterface:'date',
         btInterface:'bt',
       },
