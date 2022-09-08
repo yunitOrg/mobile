@@ -206,6 +206,13 @@
       "className": "IHistoryToday",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.noticelistcard",
+      "comName": "通知公告卡片",
+      "className": "INoticeListCard",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }

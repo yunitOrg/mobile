@@ -1,7 +1,7 @@
 {
-  "classId": "idm.component.mobile.istudycard",
-  "comName": "学习内容卡片",
-  "className": "IStudyCard",
+  "classId": "idm.component.mobile.inoticelistcard",
+  "comName": "通知公告",
+  "className": "INoticeListCard",
   "comType": "common",
   "comLangue": "vue",
   "compositeAttr": [
@@ -24,53 +24,102 @@
           "type": "input",
           "layoutType": "inline",
           "text": "标题",
-          "bindKey": "headText",
-          "default": "学习精选"
+          "desc": "组件标题",
+          "bindKey": "title",
+          "default": "通知公告"
         },
         {
-          "type": "pageSelect",
+          "type": "switch",
           "layoutType": "inline",
-          "text": "更多页面",
-          "bindKey": "showMoreUrl",
-          "desc": "点击更多后触发跳转到的页面选择"
+          "text": "显示标题",
+          "desc": "是否显示标题栏",
+          "bindKey": "isShowTitleBar",
+          "default": "true"
         },
+        {
+          "type": "switch",
+          "layoutType": "inline",
+          "text": "显示图标",
+          "desc": "配置是否显示标题右侧图标",
+          "bindKey": "showIcon",
+          "default": "true",
+          "display": "@[isShowTitleBar]"
+        },
+        {
+          "type": "inputNumber",
+          "layoutType": "inline",
+          "text": "默认条数",
+          "desc": "默认请求条数",
+          "bindKey": "defaultNumber",
+          "default": 4
+        },
+        {
+          "type": "textarea",
+          "layoutType": "inline",
+          "text": "为空描述",
+          "bindKey": "emptyDescription",
+          "desc": "内容为空的时候描述文字提示",
+          "default": "暂无数据",
+          "placeholder": "示例：暂无数据"
+        },
+        {
+          "type": "radio",
+          "layoutType": "inline",
+          "text": "默认状态",
+          "bindKey": "defaultStatus",
+          "dictionary": [
+            {
+              "label": "普通",
+              "value": "default"
+            },
+            {
+              "label": "隐藏",
+              "value": "hidden"
+            }
+          ],
+          "default": "default"
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "text": "标题容器样式",
+      "desc": "点击？查看样式设置用法指南",
+      "display": "@[isShowTitleBar]",
+      "helpUrl": "",
+      "children": [
         {
           "type": "radio",
           "styleType": "radio",
           "layoutType": "inline",
-          "text": "显示更多",
-          "bindKey": "isShowMore",
-          "desc": "设置是否显示右侧更多",
-          "default": true,
+          "text": "图标位置",
+          "desc": "设置组件标题图标位置",
+          "bindKey": "titleIconPosition",
+          "display": "@[showIcon]",
           "dictionary": [
             {
-              "label": "显示",
-              "value": true
+              "label": "左边",
+              "value": "left"
             },
             {
-              "label": "隐藏",
-              "value": false
+              "label": "右边",
+              "value": "right"
             }
-          ]
+          ],
+          "default": "left"
         },
         {
-          "type": "radio",
-          "styleType": "radio",
-          "layoutType": "inline",
-          "text": "播放量",
-          "bindKey": "isShowVideoNum",
-          "desc": "是否显示视屏播放量",
-          "default": true,
-          "dictionary": [
-            {
-              "label": "显示",
-              "value": true
-            },
-            {
-              "label": "隐藏",
-              "value": false
+          "type": "font",
+          "layoutType": "block",
+          "text": "标题文字",
+          "desc": "标题文字样式设置",
+          "bindKey": "titleFont",
+          "default": {
+            "fontWeight": "800",
+            "fontColors": {
+              "hex8": "#333333FF"
             }
-          ]
+          }
         }
       ]
     },
@@ -80,6 +129,12 @@
       "desc": "点击？查看样式设置用法指南",
       "helpUrl": "",
       "children": [
+        {
+          "type": "box",
+          "layoutType": "block",
+          "text": "内外边距",
+          "bindKey": "box"
+        },
         {
           "type": "inlineGroup",
           "text": "宽高",
@@ -91,7 +146,7 @@
               "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
               "bindKey": "width",
               "width": "60px",
-              "default": "100%"
+              "default": "auto"
             },
             {
               "type": "input",
@@ -100,25 +155,9 @@
               "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
               "bindKey": "height",
               "width": "60px",
-              "default": "100%"
+              "default": "auto"
             }
           ]
-        },
-        {
-          "type": "box",
-          "layoutType": "block",
-          "text": "内外边距",
-          "bindKey": "box",
-          "default": {
-            "marginTopVal": "16px",
-            "marginRightVal": "10px",
-            "marginBottomVal": "16px",
-            "marginLeftVal": "10px",
-            "paddingTopVal": "0",
-            "paddingRightVal": "12px",
-            "paddingBottomVal": "0",
-            "paddingLeftVal": "12px"
-          }
         },
         {
           "type": "group",
@@ -301,199 +340,22 @@
           ]
         },
         {
-          "type": "group",
-          "text": "外层容器边框",
-          "desc": "点击？查看背景设置用法指南",
-          "helpUrl": "",
-          "children": [
-            {
-              "type": "border",
-              "layoutType": "block",
-              "text": "边框",
-              "bindKey": "border",
-              "default": {
-                "border": {
-                  "top": {
-                    "style": "solid",
-                    "width": 1,
-                    "widthUnit": "px",
-                    "colors": {
-                      "rgba": {
-                        "r": 243,
-                        "g": 243,
-                        "b": 243,
-                        "a": 1
-                      }
-                    }
-                  },
-                  "right": {
-                    "style": "solid",
-                    "width": 1,
-                    "widthUnit": "px",
-                    "colors": {
-                      "rgba": {
-                        "r": 243,
-                        "g": 243,
-                        "b": 243,
-                        "a": 1
-                      }
-                    }
-                  },
-                  "bottom": {
-                    "style": "solid",
-                    "width": 1,
-                    "widthUnit": "px",
-                    "colors": {
-                      "rgba": {
-                        "r": 243,
-                        "g": 243,
-                        "b": 243,
-                        "a": 1
-                      }
-                    }
-                  },
-                  "left": {
-                    "style": "solid",
-                    "width": 1,
-                    "widthUnit": "px",
-                    "colors": {
-                      "rgba": {
-                        "r": 243,
-                        "g": 243,
-                        "b": 243,
-                        "a": 1
-                      }
-                    }
-                  }
-                },
-                "radius": {
-                  "leftTop": {
-                    "radius": 6,
-                    "radiusUnit": "px"
-                  },
-                  "rightTop": {
-                    "radius": 6,
-                    "radiusUnit": "px"
-                  },
-                  "leftBottom": {
-                    "radius": 6,
-                    "radiusUnit": "px"
-                  },
-                  "rightBottom": {
-                    "radius": 6,
-                    "radiusUnit": "px"
-                  }
-                }
-              }
-            }
-          ]
-        },
-        {
-          "type": "group",
-          "text": "视频卡片边框",
-          "desc": "点击？查看背景设置用法指南",
-          "helpUrl": "",
-          "children": [
-            {
-              "type": "border",
-              "layoutType": "block",
-              "text": "视频卡片边框",
-              "bindKey": "videoBorder",
-              "default": {
-                "border": {
-                  "top": {
-                    "style": "solid",
-                    "width": 1,
-                    "widthUnit": "px",
-                    "colors": {
-                      "rgba": {
-                        "r": 237,
-                        "g": 237,
-                        "b": 237,
-                        "a": 1
-                      }
-                    }
-                  },
-                  "right": {
-                    "style": "solid",
-                    "width": 1,
-                    "widthUnit": "px",
-                    "colors": {
-                      "rgba": {
-                        "r": 237,
-                        "g": 237,
-                        "b": 237,
-                        "a": 1
-                      }
-                    }
-                  },
-                  "bottom": {
-                    "style": "solid",
-                    "width": 1,
-                    "widthUnit": "px",
-                    "colors": {
-                      "rgba": {
-                        "r": 237,
-                        "g": 237,
-                        "b": 237,
-                        "a": 1
-                      }
-                    }
-                  },
-                  "left": {
-                    "style": "solid",
-                    "width": 1,
-                    "widthUnit": "px",
-                    "colors": {
-                      "rgba": {
-                        "r": 237,
-                        "g": 237,
-                        "b": 237,
-                        "a": 1
-                      }
-                    }
-                  }
-                },
-                "radius": {
-                  "leftTop": {
-                    "radius": 4,
-                    "radiusUnit": "px"
-                  },
-                  "rightTop": {
-                    "radius": 4,
-                    "radiusUnit": "px"
-                  },
-                  "leftBottom": {
-                    "radius": 4,
-                    "radiusUnit": "px"
-                  },
-                  "rightBottom": {
-                    "radius": 4,
-                    "radiusUnit": "px"
-                  }
-                }
-              }
-            }
-          ]
+          "type": "border",
+          "layoutType": "block",
+          "text": "边框",
+          "bindKey": "border"
         },
         {
           "type": "input",
           "layoutType": "inline",
           "text": "边框阴影",
-          "bindKey": "boxShadow",
-          "default": "0px 2px 12px 0px rgba(0, 0, 0, 0.07)"
+          "bindKey": "boxShadow"
         },
         {
           "type": "font",
           "layoutType": "block",
-          "text": "标题文字",
-          "bindKey": "headerLeftFont"
-        },
-        {
-          "type": "font",
-          "layoutType": "block",
-          "text": "视频简介文字",
-          "bindKey": "videoBottomFont"
+          "text": "文字",
+          "bindKey": "font"
         }
       ]
     },
@@ -593,68 +455,11 @@
           ]
         },
         {
-          "type": "treeSelect",
-          "layoutType": "inline",
-          "text": "数据源",
-          "desc": "用于选择视频的数据源",
-          "bindKey": "dataSource",
-          "dataSourceUrl": "ctrl/dataSource/getDatasourceByGroup"
-        },
-        {
-          "type": "group",
-          "text": "字段设置",
-          "desc": "设置从列表项中展示的对应字段",
-          "children": [
-            {
-              "type": "textarea",
-              "layoutType": "inline",
-              "text": "显示字段",
-              "bindKey": "dataFiled",
-              "desc": "根据接口返回数据格式指定结果集的字段，比如结果集名为resultData（自定义接口忽略）且它的值为{code:\"200\",data:{value:[{\"date\":\"2022-05-12\"}]}}，则这里应该填写data",
-              "default": "data",
-              "placeholder": "示例：data 或者 [0].data[0]"
-            },
-            {
-              "type": "input",
-              "layoutType": "inline",
-              "text": "视频图片",
-              "desc": "每个视频的插图字段",
-              "bindKey": "videoImage",
-              "default": "image"
-            },
-            {
-              "type": "input",
-              "layoutType": "inline",
-              "text": "播放量",
-              "desc": "每个视频的播放量字段",
-              "bindKey": "videoAmountOfPlay",
-              "default": "amountOfPlay"
-            },
-            {
-              "type": "input",
-              "layoutType": "inline",
-              "text": "发布时间",
-              "desc": "每个视频的发布时间字段",
-              "bindKey": "videoReleaseDate",
-              "default": "releaseDate"
-            },
-            {
-              "type": "input",
-              "layoutType": "inline",
-              "text": "视频详情",
-              "desc": "每个视频的描述字段",
-              "bindKey": "videoIntroduction",
-              "default": "videoIntroduction"
-            },
-            {
-              "type": "input",
-              "layoutType": "inline",
-              "text": "视频跳转",
-              "desc": "每个点击视频后跳转的地址字段",
-              "bindKey": "videoUrl",
-              "default": "videoUrl"
-            }
-          ]
+          "type": "actionSelect",
+          "layoutType": "block",
+          "text": "登录自定义函数",
+          "bindKey": "loginCustomFunc",
+          "desc": "登录的自定义函数，参数：mobile,password"
         },
         {
           "type": "select",

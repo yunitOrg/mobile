@@ -217,9 +217,21 @@ export default {
       ).done((res) => {
         console.log(res, "接口数据");
         if (res.code === "200") {
-          this.videoData = this.propData.dataFiled
+          let tempList = []
+          this.videoData = []
+          tempList = this.propData.dataFiled
               ? this.getExpressData("dataName", this.propData.dataFiled, res)
               : res;
+          for(let i = 0;i<tempList.length;i++){
+            let tempItem={}
+            tempItem.index = i
+            tempItem.image = tempList[i][this.propData.videoImage]
+            tempItem.amountOfPlay = tempList[i][this.propData.videoAmountOfPlay]
+            tempItem.releaseDate = tempList[i][this.propData.videoReleaseDate]
+            tempItem.videoIntroduction = tempList[i][this.propData.videoIntroduction]
+            tempItem.videoUrl = tempList[i][this.propData.videoUrl]
+            this.videoData.push(tempItem)
+          }
         } else {
           console.log(url + "请求失败");
         }
