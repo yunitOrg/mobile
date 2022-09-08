@@ -807,7 +807,7 @@ $scale: var(--i-notice-list-card-scale);
             margin: 0 auto;
             top: 0;
             border-radius: 50%;
-            box-shadow: calc($scale * -10px) calc($scale * -10px) calc($scale * 20px) calc($scale * 14px)rgba(194, 194, 194, 1) inset;
+            box-shadow: calc($scale * -10px) calc($scale * -10px) calc($scale * 20px) calc($scale * -14px)rgba(194, 194, 194, 1) inset;
             transform: translateY(-50%) rotate(45deg);
 
             .item-inner-circle {
