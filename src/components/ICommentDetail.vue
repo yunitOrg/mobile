@@ -101,6 +101,9 @@
         </template>
       </van-field>
     </div>
+    <div class="i-comment-detail-mask" v-if="moduleObject.env !== 'production' && !propData.dataSource">
+      <span>！未绑定数据源</span>
+    </div>
   </div>
 </template>
 
@@ -907,6 +910,7 @@ export default {
 $scale: var(--i-comment-detail-scale);
 
 .i-comment-detail-outer {
+  position: relative;
   color: #000;
   font-size: calc(14px * #{$scale});
   height: 100vh;
@@ -1057,6 +1061,26 @@ $scale: var(--i-comment-detail-scale);
         padding: 0 6px;
         color: rgb(193, 0, 0);
       }
+    }
+  }
+
+  .i-comment-detail-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: rgba(0,0,0,.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    span {
+      padding: calc(6px * #{ $scale }) calc(20px * #{ $scale });;
+      color: #e6a23c;
+      background: #fdf6ec;
+      border:calc(1px * #{ $scale }) solid #f5dab1;
+      border-radius: calc(4px * #{ $scale });;
     }
   }
 }

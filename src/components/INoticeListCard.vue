@@ -29,16 +29,16 @@
       <template v-if="infoList.length > 0">
         <ul>
           <li v-for="(notice, n) in infoList" :key="n">
-            <div class="i-notice-list-item" :class="{ hidden: !notice.id }">
+            <div class="i-notice-list-item">
               <div class="item-outer-circle">
                 <div class="item-inner-circle">
                   <div class="item-main-circle">
-                    <span class="circle-day">{{ notice.date | dayFilter}}</span>
-                    <span class="circle-month">{{ notice.date | monthFilter}}</span>
+                    <span class="circle-day">{{ notice[propData.dateInterface]  | dayFilter}}</span>
+                    <span class="circle-month">{{ notice[propData.dateInterface] | monthFilter}}</span>
                   </div>
                 </div>
               </div>
-              <span>{{ notice.bt }}</span>
+              <span>{{ notice[propData.btInterface] }}</span>
             </div>
           </li>
         </ul>
@@ -62,6 +62,9 @@
           />
         </template>
       </van-empty>
+    </div>
+    <div class="i-notice-list-card-mask" v-if="moduleObject.env !== 'production' && !propData.dataSource">
+      <span>！未绑定数据源</span>
     </div>
   </div>
 </template>
@@ -102,7 +105,10 @@ export default {
         defaultNumber: 4,
         isShowTitleBar:true,
         showIcon:true,
-        titleIconPosition:'left'
+        titleIconPosition:'left',
+        dataSource:"sss",
+        dateInterface:'date',
+        btInterface:'bt',
       },
       isLoading: true,
       isLoadingMore:false,
@@ -123,6 +129,8 @@ export default {
     this.moduleObject = this.$root.moduleObject;
     this.convertAttrToStyleObject();
     this.convertThemeListAttrToStyleObject();
+    this.isLoading = true;
+    this.initData();
   },
   mounted() {},
   destroyed() {},
@@ -136,12 +144,20 @@ export default {
         return
       }
       this.isLoadingMore = true;
+      this.initData(true);
+    },
+    /**
+     * 重载
+     */
+    reload(){
+      this.isLoading = true;
+      this.infoList = [];
       this.initData();
     },
     /**
      * 加载动态数据
      */
-    initData() {
+    initData(loadMore) {
       if (!this.moduleObject.env || this.moduleObject.env == "develop") {
         // mock数据
         setTimeout(() => {
@@ -174,7 +190,11 @@ export default {
           };
           
           this.total = res.total;
-          this.infoList = [...this.infoList, ...res.list];
+          if(loadMore){
+            this.infoList = [...this.infoList, ...res.list];
+          }else{
+            this.infoList = res.list;
+          }
         }, 1000);
 
         return;
@@ -202,9 +222,13 @@ export default {
         .done((res) => {
           console.log(res, "接口数据");
           if (res.code === "200") {
-            this.infoList = this.propData.dataFiled
-              ? this.getExpressData("dataName", this.propData.dataFiled, res)
-              : res;
+            const result = res.data
+            this.total = result.total;
+            if(loadMore){
+              this.infoList = [...this.infoList, ...result.list];
+            }else{
+              this.infoList = result.list;
+            }
           } else {
             console.log(url + "请求失败");
           }
@@ -214,6 +238,7 @@ export default {
         })
         .always((res) => {
           this.isLoading = false;
+          this.isLoadingMore = false;
         });
     },
     /**
@@ -242,6 +267,8 @@ export default {
     convertAttrToStyleObject(pageSize = {}) {
       var styleObject = {};
       var titleFontStyleObject = {};
+      var outerCircleStyleObject = {};
+      var innerStyleObject = {};
 
       const scale = this.getScale(pageSize.width);
       styleObject["--i-notice-list-card-scale"] = scale;
@@ -284,6 +311,16 @@ export default {
                 styleObject["background-color"] = IDM.hex8ToRgbaString(
                   element.hex8
                 );
+                outerCircleStyleObject["background-color"]= IDM.hex8ToRgbaString(
+                  element.hex8
+                );
+              }
+              break;
+            case "innerBgColor":
+              if (element && element.hex8) {
+                innerStyleObject["background-color"] = IDM.hex8ToRgbaString(
+                  element.hex8
+                );
               }
               break;
             case "box":
@@ -310,6 +347,32 @@ export default {
               }
               if (element.paddingLeftVal) {
                 styleObject["padding-left"] = `${element.paddingLeftVal}`;
+              }
+              break;
+            case "innerBox":
+              if (element.marginTopVal) {
+                innerStyleObject["margin-top"] = `${element.marginTopVal}`;
+              }
+              if (element.marginRightVal) {
+                innerStyleObject["margin-right"] = `${element.marginRightVal}`;
+              }
+              if (element.marginBottomVal) {
+                innerStyleObject["margin-bottom"] = `${element.marginBottomVal}`;
+              }
+              if (element.marginLeftVal) {
+                innerStyleObject["margin-left"] = `${element.marginLeftVal}`;
+              }
+              if (element.paddingTopVal) {
+                innerStyleObject["padding-top"] = `${element.paddingTopVal}`;
+              }
+              if (element.paddingRightVal) {
+                innerStyleObject["padding-right"] = `${element.paddingRightVal}`;
+              }
+              if (element.paddingBottomVal) {
+                innerStyleObject["padding-bottom"] = `${element.paddingBottomVal}`;
+              }
+              if (element.paddingLeftVal) {
+                innerStyleObject["padding-left"] = `${element.paddingLeftVal}`;
               }
               break;
             case "bgImgUrl":
@@ -389,28 +452,87 @@ export default {
                 element.radius.rightBottom.radius +
                 element.radius.rightBottom.radiusUnit;
               break;
+            case "innerBorder":
+              if (element.border.top.width > 0) {
+                innerStyleObject["border-top-width"] =
+                  element.border.top.width + element.border.top.widthUnit;
+                innerStyleObject["border-top-style"] = element.border.top.style;
+                if (element.border.top.colors.hex8) {
+                  innerStyleObject["border-top-color"] = IDM.hex8ToRgbaString(
+                    element.border.top.colors.hex8
+                  );
+                }
+              }
+              if (element.border.right.width > 0) {
+                innerStyleObject["border-right-width"] =
+                  element.border.right.width + element.border.right.widthUnit;
+                innerStyleObject["border-right-style"] = element.border.right.style;
+                if (element.border.right.colors.hex8) {
+                  innerStyleObject["border-right-color"] = IDM.hex8ToRgbaString(
+                    element.border.right.colors.hex8
+                  );
+                }
+              }
+              if (element.border.bottom.width > 0) {
+                innerStyleObject["border-bottom-width"] =
+                  element.border.bottom.width + element.border.bottom.widthUnit;
+                innerStyleObject["border-bottom-style"] =
+                  element.border.bottom.style;
+                if (element.border.bottom.colors.hex8) {
+                  innerStyleObject["border-bottom-color"] = IDM.hex8ToRgbaString(
+                    element.border.bottom.colors.hex8
+                  );
+                }
+              }
+              if (element.border.left.width > 0) {
+                innerStyleObject["border-left-width"] =
+                  element.border.left.width + element.border.left.widthUnit;
+                innerStyleObject["border-left-style"] = element.border.left.style;
+                if (element.border.left.colors.hex8) {
+                  innerStyleObject["border-left-color"] = IDM.hex8ToRgbaString(
+                    element.border.left.colors.hex8
+                  );
+                }
+              }
+
+              innerStyleObject["border-top-left-radius"] =
+                element.radius.leftTop.radius +
+                element.radius.leftTop.radiusUnit;
+              innerStyleObject["border-top-right-radius"] =
+                element.radius.rightTop.radius +
+                element.radius.rightTop.radiusUnit;
+              innerStyleObject["border-bottom-left-radius"] =
+                element.radius.leftBottom.radius +
+                element.radius.leftBottom.radiusUnit;
+              innerStyleObject["border-bottom-right-radius"] =
+                element.radius.rightBottom.radius +
+                element.radius.rightBottom.radiusUnit;
+              break;
             case "boxShadow":
               styleObject["box-shadow"] = element;
               break;
+            case "innerBoxShadow":
+              innerStyleObject["box-shadow"] = element;
+              break;
             case "font":
-              styleObject["font-family"] = element.fontFamily;
+              innerStyleObject["font-family"] = element.fontFamily;
               if (element.fontColors.hex8) {
-                styleObject["color"] = IDM.hex8ToRgbaString(
+                innerStyleObject["color"] = IDM.hex8ToRgbaString(
                   element.fontColors.hex8
                 );
               }
-              styleObject["font-weight"] =
+              innerStyleObject["font-weight"] =
                 element.fontWeight && element.fontWeight.split(" ")[0];
-              styleObject["font-style"] = element.fontStyle;
-              styleObject["font-size"] =
+              innerStyleObject["font-style"] = element.fontStyle;
+              innerStyleObject["font-size"] =
                 element.fontSize + element.fontSizeUnit;
-              styleObject["line-height"] =
+              innerStyleObject["line-height"] =
                 element.fontLineHeight +
                 (element.fontLineHeightUnit == "-"
                   ? ""
                   : element.fontLineHeightUnit);
-              styleObject["text-align"] = element.fontTextAlign;
-              styleObject["text-decoration"] = element.fontDecoration;
+              innerStyleObject["text-align"] = element.fontTextAlign;
+              innerStyleObject["text-decoration"] = element.fontDecoration;
               break;
             case "titleFont":
               titleFontStyleObject["font-family"] = element.fontFamily;
@@ -437,8 +559,8 @@ export default {
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id, styleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + ` .i-notice-list-card-header .header-text`, titleFontStyleObject);
-      this.isLoading = true;
-      this.initData();
+      window.IDM.setStyleToPageHead(this.moduleObject.id + ` .i-notice-list-card-content .i-notice-list-item .item-outer-circle`, outerCircleStyleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + ` .i-notice-list-card-content .i-notice-list-item`, innerStyleObject);
     },
     /**
      * 主题颜色
@@ -584,14 +706,12 @@ export default {
               ? this.propData.messageRefreshKey
               : [this.propData.messageRefreshKey];
             if (messageData.badgeType && arr.includes(messageData.badgeType)) {
-              this.isLoading = true;
-              this.initData();
+              this.reload()
             }
           }
           break;
         case "linkageReload":
-          this.isLoading = true;
-          this.initData();
+          this.reload()
           break;
         case "pageResize":
           this.convertAttrToStyleObject(messageObject.message);
@@ -620,6 +740,7 @@ export default {
 $scale: var(--i-notice-list-card-scale);
 
 .i-notice-list-card-outer {
+  position: relative;
   width: auto;
   background-color: #fff;
   margin: calc($scale * 12px);
@@ -638,6 +759,9 @@ $scale: var(--i-notice-list-card-scale);
 
     .header-icon {
       color: #cd0502;
+      .svg-icon {
+        vertical-align: -0.2em;
+      }
     }
 
     .header-text {
@@ -664,6 +788,7 @@ $scale: var(--i-notice-list-card-scale);
           border: 1px solid rgba(227,227,227,1);
           text-align: center;
           height: 100%;
+          background-color: #fff;
 
           & > span {
             -webkit-line-clamp: 2;
@@ -671,11 +796,6 @@ $scale: var(--i-notice-list-card-scale);
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
-          }
-
-          &.hidden {
-            opacity: 0;
-            pointer-events: none;
           }
 
           .item-outer-circle {
@@ -751,6 +871,26 @@ $scale: var(--i-notice-list-card-scale);
     padding: 16px 0;
     text-align: center;
     font-family: PingFangSC-Regular;
+  }
+
+  .i-notice-list-card-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: rgba(0,0,0,.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    span {
+      padding: calc(6px * #{ $scale }) calc(20px * #{ $scale });;
+      color: #e6a23c;
+      background: #fdf6ec;
+      border:calc(1px * #{ $scale }) solid #f5dab1;
+      border-radius: calc(4px * #{ $scale });;
+    }
   }
 }
 </style>
