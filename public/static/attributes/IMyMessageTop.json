@@ -133,6 +133,12 @@
                     "bindKey": "border"
                 },
                 {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "阴影",
+                    "bindKey": "boxShadow"
+                },
+                {
                     "type": "group",
                     "text": "头像样式",
                     "children": [

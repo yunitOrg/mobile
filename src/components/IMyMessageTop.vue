@@ -1,17 +1,17 @@
 <template>
     <div idm-ctrl="idm_module" class="idm-my-message-top d-flex" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id">
         <img
-            :src="IDM.url.getWebPath(getDataField(propData.avatarField, componentData))"
+            :src="IDM.url.getWebPath(getDataField(propData.avatarField, pageData))"
             class="idm-my-message-avatar"
             alt=""
         />
         <div class="d-flex just-b flex-1 align-c">
             <div class="flex-1">
-                <div class="idm-my-message-username">{{ getDataField(propData.usernameField, componentData) }}</div>
+                <div class="idm-my-message-username">{{ getDataField(propData.usernameField, pageData) || '' }}</div>
                 <div class="idm-my-message-year">
-                    党龄：{{ getDataField(propData.yearField, componentData) || '0' }}年
+                    党龄：{{ getDataField(propData.yearField, pageData) || '0' }}年
                 </div>
-                <div class="idm-my-message-branch">{{ getDataField(propData.branchField, componentData) }}党支部</div>
+                <div class="idm-my-message-branch">{{ getDataField(propData.branchField, pageData) }}党支部</div>
             </div>
             <div @click="handleJump">
                 <svg-icon icon-class="arrowRight2" class-name="idm-my-message-icon"></svg-icon>
@@ -21,6 +21,7 @@
 </template>
 <script>
 import { getMyMessageTopData } from '../mock/mockData'
+import { getDatasInterfaceUrl } from '@/api/config'
 export default {
     name: 'IMyMessageTop',
     data() {
@@ -29,7 +30,7 @@ export default {
             propData: this.$root.propData.compositeAttr || {
                 fontContent: 'Hello Word'
             },
-            componentData: {}
+            pageData: {}
         }
     },
     created() {
@@ -45,7 +46,7 @@ export default {
         },
         textFilter(text, dataObj) {
             if (!text) return ''
-            console.log(text, this.componentData)
+            console.log(text, this.pageData)
             text = text.replace(/\r/gi, '').replace(/\n/gi, '<br/>')
             text = text.replace(/@\[.*\]/gi, (str) => {
                 if (str.length < 4) return str
@@ -60,7 +61,7 @@ export default {
             let url = null
             switch (this.propData.jumpStyle) {
                 case '_link':
-                    url = this.getDataField(this.propData.jumpUrlField, this.componentData)
+                    url = this.getDataField(this.propData.jumpUrlField, this.pageData)
                     if (!url) return
                     window.open(IDM.url.getWebPath(url))
                     break
@@ -72,7 +73,7 @@ export default {
                     }
                     break
                 case '_custom_link':
-                    url = this.textFilter(this.propData.customLink, this.componentData)
+                    url = this.textFilter(this.propData.customLink, this.pageData)
                     if (!url) return
                     window.open(IDM.url.getWebPath(url))
                     break
@@ -130,6 +131,9 @@ export default {
                             break
                         case 'box':
                             IDM.style.setBoxStyle(styleObject, element)
+                            break
+                        case 'boxShadow':
+                            styleObject['box-shadow'] = element
                             break
                         case 'bgColor':
                             if (element && element.hex8) {
@@ -199,47 +203,32 @@ export default {
             this.initData()
         },
         initData() {
-            if (this.moduleObject.env !== 'product') {
-                this.componentData = getMyMessageTopData.call(this)
+            if (this.moduleObject.env !== 'production') {
+                this.pageData = getMyMessageTopData.call(this)
+                return
             }
-            let that = this
-            //所有地址的url参数转换
-            var params = that.commonParam()
-            switch (this.propData.dataSourceType) {
-                case 'customInterface':
-                    this.propData.customInterfaceUrl &&
-                        window.IDM.http
-                            .get(this.propData.customInterfaceUrl, params)
-                            .then((res) => {
-                                //res.data
-                                that.$set(
-                                    that.propData,
-                                    'fontContent',
-                                    that.getExpressData('resultData', that.propData.dataFiled, res.data)
-                                )
-                                // that.propData.fontContent = ;
-                            })
-                            .catch(function (error) {})
-                    break
-                case 'pageCommonInterface':
-                    //使用通用接口直接跳过，在setContextValue执行
-                    break
-                case 'customFunction':
-                    if (this.propData.customFunction && this.propData.customFunction.length > 0) {
-                        var resValue = ''
-                        try {
-                            resValue =
-                                window[this.propData.customFunction[0].name] &&
-                                window[this.propData.customFunction[0].name].call(this, {
-                                    ...params,
-                                    ...this.propData.customFunction[0].param,
-                                    moduleObject: this.moduleObject
-                                })
-                        } catch (error) {}
-                        that.propData.fontContent = resValue
+            window.IDM.http
+                .post(
+                    getDatasInterfaceUrl,
+                    {
+                        id: this.propData.dataSource && this.propData.dataSource.value,
+                        limit: this.propData.limit,
+                        start: 0
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json;charset=UTF-8'
+                        }
                     }
-                    break
-            }
+                )
+                .then((res) => {
+                    //res.data
+                    if (res.status == 200 && res.data.code == 200) {
+                        this.pageData = res.data.data
+                    } else {
+                        IDM.message.error(res.data.message)
+                    }
+                })
         },
         /**
          * 主题颜色
