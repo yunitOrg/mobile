@@ -12,7 +12,7 @@
                  :key="index"
             >
               <div class="activity-icon">
-                <img :src="acitivity.icon">
+                <svg-icon :icon-class="activity.icon"/>
               </div>
               <div class="center-text">
                 <div class="activity-name">
@@ -35,6 +35,9 @@
         </template>
       </div>
     </div>
+    <div class="IActivity-Statistics-mask" v-if="moduleObject.env === 'develop' && !propData.dataSource">
+      <span>！未绑定数据源</span>
+    </div>
   </div>
 </template>
 
@@ -47,35 +50,35 @@ export default {
       isLoading: true,
       activityList: [
         {
-          icon: "",
+          icon: "dydh",
           name: "党员大会",
           convene: 15,
           personNum: 33,
           attendance: "25%",
         },
         {
-          icon: "",
+          icon: "zwh",
           name: "支委会",
           convene: 15,
           personNum: 33,
           attendance: "25%",
         },
         {
-          icon: "",
+          icon: "dxzh",
           name: "党小组会",
           convene: 15,
           personNum: 33,
           attendance: "25%",
         },
         {
-          icon: "",
+          icon: "dk",
           name: "党课",
           convene: 15,
           personNum: 33,
           attendance: "25%",
         },
         {
-          icon: "",
+          icon: "ztdr",
           name: "主题党日",
           convene: 15,
           personNum: 33,
@@ -146,35 +149,35 @@ export default {
           const res = {
             data: [
               {
-                icon: "",
+                icon: "dydh",
                 name: "党员大会",
                 convene: 15,
                 personNum: 33,
                 attendance: "25%",
               },
               {
-                icon: "",
+                icon: "zwh",
                 name: "支委会",
                 convene: 15,
                 personNum: 33,
                 attendance: "25%",
               },
               {
-                icon: "",
+                icon: "dxzh",
                 name: "党小组会",
                 convene: 15,
                 personNum: 33,
                 attendance: "25%",
               },
               {
-                icon: "",
+                icon: "dk",
                 name: "党课",
                 convene: 15,
                 personNum: 33,
                 attendance: "25%",
               },
               {
-                icon: "",
+                icon: "ztdr",
                 name: "主题党日",
                 convene: 15,
                 personNum: 33,
@@ -508,8 +511,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-//$scale: var(--i-activitystatistics-scale);
-$scale: 1;
+$scale: var(--i-activitystatistics-scale);
 
 .container {
   display: flex;
@@ -559,7 +561,6 @@ $scale: 1;
           flex-direction: column;
 
           .activity-name {
-            font-family: PingFangSC-Regular, serif;
             font-size: calc(17px * #{ $scale });
             line-height: calc(17px * #{ $scale });
             color: #333333;
@@ -568,7 +569,6 @@ $scale: 1;
           }
 
           .activity-personNum {
-            font-family: PingFangSC-Regular, serif;
             font-size: calc(13px * #{ $scale });
             color: #666666;
             font-weight: 400;
@@ -583,7 +583,6 @@ $scale: 1;
 
           .activity-convene {
             margin-bottom: calc(6px * #{ $scale });
-            font-family: PingFangSC-Regular, serif;
             font-size: calc(13px * #{ $scale });
             line-height: calc(17px * #{ $scale });
             color: #E02020;
@@ -592,7 +591,6 @@ $scale: 1;
           }
 
           .activity-attendance {
-            font-family: PingFangSC-Regular, serif;
             font-size: calc(13px * #{ $scale });
             color: #666666;
             font-weight: 400;
@@ -606,5 +604,23 @@ $scale: 1;
     }
   }
 }
-
+.IActivity-Statistics-mask{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span {
+    padding: 6px 20px;
+    color: #e6a23c;
+    background: #fdf6ec;
+    border: 1px solid #f5dab1;
+    border-radius: 4px;
+  }
+}
 </style>
