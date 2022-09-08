@@ -81,8 +81,7 @@
                     "type": "iconSelect",
                     "layoutType": "inline",
                     "text": "man图标",
-                    "bindKey": "authorIconmaxClass",
-                    "default": ""
+                    "bindKey": "authorIconmaxClass"
                 },
                 {
                   "type": "colorPicker",
@@ -95,8 +94,7 @@
                   "type": "iconSelect",
                   "layoutType": "inline",
                   "text": "girl图标",
-                  "bindKey": "authorIcongirlClass",
-                  "default": ""
+                  "bindKey": "authorIcongirlClass"
                 },
                 {
                   "type": "colorPicker",
@@ -254,6 +252,68 @@
                 "fontSize": 14,
                 "fontSizeUnit": "px"
             }
+          },
+          {
+            "type": "group",
+            "text": "标签样式",
+            "desc": "标签样式比如：字体、大小、颜色",
+            "helpUrl": "",
+            "children": [
+              {
+                "type": "font",
+                "layoutType": "block",
+                "text": "标题字体",
+                "bindKey": "tagStyle"
+              },
+              {
+                "type": "colorPicker",
+                "layoutType": "inline",
+                "desc": "背景颜色",
+                "text": "背景颜色",
+                "bindKey": "tagBg",
+                "default": {
+                  "hex": "#F7B503",
+                  "hex8": "#F7B503FF"
+                }
+              },
+              {
+                "type": "border",
+                "layoutType": "block",
+                "text": "边框",
+                "bindKey": "tagBorder"
+              }
+            ]
+          },
+          {
+            "type": "group",
+            "text": "激活样式",
+            "desc": "激活样式比如：字体、大小、颜色",
+            "helpUrl": "",
+            "children": [
+              {
+                "type": "font",
+                "layoutType": "block",
+                "text": "标题字体",
+                "bindKey": "activeStyle"
+              },
+              {
+                "type": "colorPicker",
+                "layoutType": "inline",
+                "desc": "背景颜色",
+                "text": "背景颜色",
+                "bindKey": "activeBg",
+                "default": {
+                  "hex": "#44D7B6",
+                  "hex8": "#44D7B6FF"
+                }
+              },
+              {
+                "type": "border",
+                "layoutType": "block",
+                "text": "边框",
+                "bindKey": "activeBorder"
+              }
+            ]
           }
         ]
       },
@@ -368,34 +428,20 @@
                 "text": "性别字段",
                 "bindKey": "sexInterface",
                 "default": "type == '1'"
-              }
-            ]
-          },
-          {
-            "type": "table",
-            "text": "标签字段",
-            "bindKey": "tagTable",
-            "tabText": "页签[index]",
-            "children": [
-              {
-                "type": "input",
-                "layoutType": "inline",
-                "text": "tab标识",
-                "bindKey": "key"
               },
               {
-                "type": "input",
+                "type": "textarea",
                 "layoutType": "inline",
                 "text": "标签字段",
-                "bindKey": "tab",
-                "desc": "取数据：为false, 标签字段是：填写对应数据的参数 eg: xxx。如果是判断: true, 标签字段是: 参数名='1' eg: xxx='1'"
+                "bindKey": "tagField",
+                "default": "tag"
               },
               {
-                "type": "switch",
+                "type": "textarea",
                 "layoutType": "inline",
-                "text": "判断还是取数据",
-                "bindKey": "defaultActiveKey",
-                "default": false
+                "text": "激活字段",
+                "bindKey": "activeField",
+                "default": "active"
               }
             ]
           },
