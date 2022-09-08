@@ -104,6 +104,44 @@
                     "display": "@[isShowTitle]"
                 },
                 {
+                    "type": "radio",
+                    "styleType": "radio",
+                    "layoutType": "inline",
+                    "text": "左侧内容",
+                    "bindKey": "isShowLeftContent",
+                    "desc": "设置列表单项是否显示左侧内容",
+                    "default": true,
+                    "dictionary": [
+                        {
+                            "label": "显示",
+                            "value": true
+                        },
+                        {
+                            "label": "隐藏",
+                            "value": false
+                        }
+                    ]
+                },
+                {
+                    "type": "radio",
+                    "styleType": "radio",
+                    "layoutType": "inline",
+                    "text": "活动状态",
+                    "bindKey": "isShowActivityStatus",
+                    "desc": "设置列表单项是否显示右上角活动状态",
+                    "default": false,
+                    "dictionary": [
+                        {
+                            "label": "显示",
+                            "value": true
+                        },
+                        {
+                            "label": "隐藏",
+                            "value": false
+                        }
+                    ]
+                },
+                {
                     "type": "inputNumber",
                     "layoutType": "inline",
                     "text": "最多显示",

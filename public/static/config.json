@@ -1,6 +1,6 @@
 {
   "version": "1.0.1",
-  "lasttime": "2022-09-07 18:12:52",
+  "lasttime": "2022-09-08 15:01:11",
   "author": "申龙",
   "className": "mobile",
   "module": [
@@ -197,6 +197,13 @@
       "classId": "idm.component.mobile.iactivityStatistics",
       "comName": "活动统计",
       "className": "IActivityStatistics",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.ihistorytoday",
+      "comName": "党史今日",
+      "className": "IHistoryToday",
       "comType": "common",
       "comLangue": "vue"
     }
