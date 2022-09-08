@@ -205,9 +205,20 @@ export default {
       ).done((res) => {
         console.log(res, "接口数据");
         if (res.code === "200") {
-          this.activityList = this.propData.dataFiled
+          let tempList = []
+          this.activityList = []
+          tempList = this.propData.dataFiled
               ? this.getExpressData("dataName", this.propData.dataFiled, res)
               : res;
+          for(let i = 0;i<tempList.length;i++){
+            let tempItem={}
+            tempItem.icon = tempList[i][this.propData.activityIcon]
+            tempItem.name = tempList[i][this.propData.activityName]
+            tempItem.personNum = tempList[i][this.propData.activityPersonNum]
+            tempItem.convene = tempList[i][this.propData.activityConvene]
+            tempItem.attendance = tempList[i][this.propData.activityAttendance]
+            this.activityList.push(tempItem)
+          }
         } else {
           console.log(url + "请求失败");
         }
@@ -508,7 +519,7 @@ $scale: 1;
   height: auto;
 
   &-card {
-    width: calc(383px * #{ $scale });
+    width: 100%;
     height: auto;
     border: calc(1px * #{ $scale }) solid rgba(243, 243, 243, 1);
     background-color: #ffffff;
@@ -527,6 +538,7 @@ $scale: 1;
 
         .activity-icon {
           padding-right: calc(17px * #{ $scale });
+          border-radius: 50%;
 
           svg {
             width: calc(44px * #{ $scale });
@@ -536,12 +548,15 @@ $scale: 1;
           img {
             width: calc(44px * #{ $scale });
             height: calc(44px * #{ $scale });
+            border-radius: 50%;
           }
         }
 
         .center-text {
-          width: calc(100px * #{ $scale });
-          margin-right: calc(85px * #{ $scale });
+          width: calc(190px * #{ $scale });
+          display: flex;
+          flex-wrap: nowrap;
+          flex-direction: column;
 
           .activity-name {
             font-family: PingFangSC-Regular, serif;
@@ -561,7 +576,7 @@ $scale: 1;
         }
 
         .right-text {
-          width: calc(100px * #{ $scale });
+          width: 100%;
           display: flex;
           flex-direction: column;
           align-items: flex-end;

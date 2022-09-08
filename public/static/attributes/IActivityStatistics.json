@@ -455,29 +455,6 @@
       "desc": "点击？查看高级设置用法指南",
       "children": [
         {
-          "type": "group",
-          "text": "适配设置",
-          "desc": "通过设置属性来适配移动端页面尺寸",
-          "children": [
-            {
-              "type": "inputNumber",
-              "layoutType": "inline",
-              "text": "基准值",
-              "desc": "此属性用于标记当前组件在显示效果最完美情况下的宽度大小（px），例如：此组件显示效果最佳宽度为414px，则此处设置为414即可，如果此组件最佳效果为当前配置的屏幕宽（px）的一半则只需要除以2即可。",
-              "bindKey": "baseValue",
-              "default": "414"
-            },
-            {
-              "type": "inputNumber",
-              "layoutType": "inline",
-              "text": "适配比例",
-              "desc": "与基准值配合使用，如果在实际预览屏幕宽为基准值的两倍，则此组件所有可适配的内容都会基于此处设置的适配比例相对应的进行放大缩小，例如此处设置1.2，则会相对应的放大至1.2倍",
-              "bindKey": "adaptationRatio",
-              "default": "1.2"
-            }
-          ]
-        },
-        {
           "type": "treeSelect",
           "layoutType": "inline",
           "text": "数据源",
@@ -486,13 +463,60 @@
           "dataSourceUrl": "ctrl/dataSource/getDatasourceByGroup"
         },
         {
-          "type": "textarea",
-          "layoutType": "inline",
-          "text": "显示字段",
-          "bindKey": "dataFiled",
-          "desc": "根据接口返回数据格式指定结果集的字段，比如结果集名为resultData（自定义接口忽略）且它的值为{code:\"200\",data:{value:[{\"date\":\"2022-05-12\"}]}}，则这里应该填写data",
-          "default": "data",
-          "placeholder": "示例：data 或者 [0].data[0]"
+          "type": "group",
+          "text": "字段设置",
+          "desc": "设置从列表项中展示的对应字段",
+          "children": [
+            {
+              "type": "textarea",
+              "layoutType": "inline",
+              "text": "显示字段",
+              "bindKey": "dataFiled",
+              "desc": "根据接口返回数据格式指定结果集的字段，比如结果集名为resultData（自定义接口忽略）且它的值为{code:\"200\",data:{value:[{\"date\":\"2022-05-12\"}]}}，则这里应该填写data",
+              "default": "data",
+              "placeholder": "示例：data 或者 [0].data[0]"
+            },
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "图标字段",
+              "desc": "每个活动的图标显示字段",
+              "bindKey": "activityIcon",
+              "default": "icon"
+            },
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "活动名称",
+              "desc": "每个活动的名称显示字段",
+              "bindKey": "activityName",
+              "default": "name"
+            },
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "参与人数",
+              "desc": "每个活动的累计参与人次字段",
+              "bindKey": "activityPersonNum",
+              "default": "personNum"
+            },
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "召开次数",
+              "desc": "每个活动的召开次数字段",
+              "bindKey": "activityConvene",
+              "default": "convene"
+            },
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "出席率",
+              "desc": "每个活动的出席率字段",
+              "bindKey": "activityAttendance",
+              "default": "attendance"
+            }
+          ]
         },
         {
           "type": "select",
@@ -516,6 +540,29 @@
               "value": "info"
             }
           ]
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "text": "适配设置",
+      "desc": "通过设置属性来适配移动端页面尺寸",
+      "children": [
+        {
+          "type": "inputNumber",
+          "layoutType": "inline",
+          "text": "基准值",
+          "desc": "此属性用于标记当前组件在显示效果最完美情况下的宽度大小（px），例如：此组件显示效果最佳宽度为414px，则此处设置为414即可，如果此组件最佳效果为当前配置的屏幕宽（px）的一半则只需要除以2即可。",
+          "bindKey": "baseValue",
+          "default": "414"
+        },
+        {
+          "type": "inputNumber",
+          "layoutType": "inline",
+          "text": "适配比例",
+          "desc": "与基准值配合使用，如果在实际预览屏幕宽为基准值的两倍，则此组件所有可适配的内容都会基于此处设置的适配比例相对应的进行放大缩小，例如此处设置1.2，则会相对应的放大至1.2倍",
+          "bindKey": "adaptationRatio",
+          "default": "1.2"
         }
       ]
     }
