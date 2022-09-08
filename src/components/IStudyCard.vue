@@ -57,10 +57,10 @@ export default {
           "mainColor": {
             "hex": "#0073CA",
             "hex8": "#0073CAFF"
-          },
-          "isShowMore":true,
-          "isShowVideoNum":true
-        }
+          }
+        },
+        "isShowMore":true,
+        "isShowVideoNum":true
       },
       isLoading: true,
       videoData: [
