@@ -7,10 +7,10 @@
   -->
     <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id">
         <div class="idm-signin">
-            <div class="signin-top">
+            <div class="signin-top d-flex flex-d-c align-c">
                 <div class="signin-title">打卡天数</div>
-                <div class="signin-img">1</div>
-                <div class="signin-btn">签到</div>
+                <div class="signin-img" :style="imgStyleObj">1</div>
+                <div class="signin-btn" @click="handleSign">签到</div>
             </div>
             <div class="signin-bottom">
                 <van-calendar
@@ -23,7 +23,6 @@
                     :show-confirm="false"
                     :min-date="minDate"
                     :max-date="maxDate"
-                    :formatter="formatter"
                     @select="dateSelect"
                 >
                     <template #title>
@@ -31,10 +30,11 @@
                             <div @click="handlePrev">
                                 <svg-icon icon-class="arrowLeft" class-name="idm-signin-calendar-arrow"></svg-icon>
                             </div>
-                            <div>{{ month }}&nbsp;&nbsp;&nbsp;{{ year }}</div>
-                            <div @click="handleNext">
+                            <div>{{ getShowMonth }}&nbsp;&nbsp;&nbsp;{{ new Date(maxDate).getFullYear() }}</div>
+                            <div @click="handleNext" v-if="rightArrowShow()">
                                 <svg-icon icon-class="arrowRight2" class-name="idm-signin-calendar-arrow"></svg-icon>
                             </div>
+                            <div v-else></div>
                         </div>
                     </template>
                     <template #bottom-info="scoped">
@@ -67,8 +67,45 @@ export default {
     created() {
         this.moduleObject = this.$root.moduleObject
         this.convertAttrToStyleObject()
+        this.convertThemeListAttrToStyleObject()
+    },
+    computed: {
+        imgStyleObj() {
+            return {
+                background: `url(${IDM.url.getModuleAssetsWebPath(require('../assets/daka.png'), this.moduleObject)}`,
+                'background-size': '100% 100%',
+                'background-repeat': 'no-repeat'
+            }
+        },
+        getShowMonth() {
+            const month = [
+                '一月',
+                '二月',
+                '三月',
+                '四月',
+                '五月',
+                '六月',
+                '七月',
+                '八月',
+                '九月',
+                '十月',
+                '十一月',
+                '十二月'
+            ]
+            return month[new Date(this.maxDate).getMonth()]
+        }
     },
     methods: {
+        rightArrowShow() {
+            if (
+                this.year === new Date(this.maxDate).getFullYear() &&
+                this.month === new Date(this.maxDate).getMonth()
+            ) {
+                return false
+            }
+            return true
+        },
+        handleSign() {},
         setMinMaxDay() {
             var firstDay = new Date(this.defaultDate)
             firstDay.setDate(1)
@@ -98,13 +135,15 @@ export default {
         propDataWatchHandle(propData) {
             this.propData = propData.compositeAttr || {}
             this.convertAttrToStyleObject()
+            this.convertThemeListAttrToStyleObject()
         },
         initData() {
             this.setMinMaxDay()
         },
         convertAttrToStyleObject() {
             let styleObject = {},
-                styleWrapObject = {}
+                styleWrapObject = {},
+                signinBtnObj = {}
             for (const key in this.propData) {
                 if (this.propData.hasOwnProperty.call(this.propData, key)) {
                     const element = this.propData[key]
@@ -128,6 +167,29 @@ export default {
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-time', styleWrapObject)
 
             this.initData()
+        },
+
+        /**
+         * 主题颜色
+         */
+        convertThemeListAttrToStyleObject() {
+            var themeList = this.propData.themeList
+            if (!themeList) {
+                return
+            }
+            const themeNamePrefix =
+                IDM.setting && IDM.setting.applications && IDM.setting.applications.themeNamePrefix
+                    ? IDM.setting.applications.themeNamePrefix
+                    : 'idm-theme-'
+            for (var i = 0; i < themeList.length; i++) {
+                var item = themeList[i]
+                IDM.setStyleToPageHead(
+                    '.' + themeNamePrefix + item.key + (` #${this.moduleObject.id}` || 'module_demo') + ' .signin-btn',
+                    {
+                        background: item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : ''
+                    }
+                )
+            }
         }
     }
 }
@@ -144,25 +206,21 @@ export default {
             text-align: center;
         }
         .signin-img {
+            padding: 10px 15px 0 15px;
             text-align: center;
-            font-size: 24px;
         }
         .signin-btn {
             position: absolute;
             top: 10px;
-            right: 20px;
-            padding: 5px 10px;
-            color: #fff;
-            background-color: #f00;
-            border-radius: 5px;
+            right: 10px;
             user-select: none;
         }
     }
     &::v-deep(.van-calendar__month-title) {
         display: none;
     }
-    &::v-deep(.van-calendar__selected-day){
-      border-radius: 50%;
+    &::v-deep(.van-calendar__selected-day) {
+        border-radius: 50%;
     }
     .signin-bottom {
         margin: 10px;
