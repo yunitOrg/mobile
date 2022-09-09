@@ -55,32 +55,25 @@
           :class="{ 'border-none': infoList.length - 1 === i }"
         >
           <div class="i-all-comment-content-left">
-            <img
-              class="content-left-avatar"
-              :src="
-                IDM.url.getModuleAssetsWebPath(
-                  require('../assets/default_avatar.png'),
-                  moduleObject
-                )
-              "
-            />
+            <img v-if="item[propData.imgInterface]" :src="IDM.url.getWebPath(item[propData.imgInterface])" class="content-left-avatar">
+            <img v-else src="../assets/default_avatar.png" class="content-left-avatar" />
           </div>
           <div class="i-all-comment-content-right">
             <div class="content-right-top">
-              <span class="comment-name">{{ item.avatar }}</span>
-              <span class="comment-time">{{ item.time }}</span>
+              <span class="comment-name">{{ item[propData.avatarInterface] }}</span>
+              <span class="comment-time">{{ item[propData.timeInterface] }}</span>
               <span
                 class="comment-star"
-                :class="{ active: item.star }"
+                :class="{ active: item[propData.starInterface] }"
                 @click="starClick(item)"
-                ><svg-icon icon-class="commentStar" />{{ item.starNum }}</span
+                ><svg-icon icon-class="commentStar" />{{ item[propData.starNumInterface] }}</span
               >
             </div>
-            <p class="content-right-center">{{ item.bt }}</p>
+            <p class="content-right-center">{{ item[propData.btInterface] }}</p>
             <div class="content-right-bottom">
-              <span class="comment-from">{{ item.from }}</span>
+              <span class="comment-from">{{ item[propData.fromInterface] }}</span>
               <span class="comment-total" @click="replyClick(item)"
-                >共{{ item.total }}条回复<van-icon name="play"
+                >共{{ item[propData.totalInterface] }}条回复<van-icon name="play"
               /></span>
               <span class="comment-del" @click="delClick(item)">删除</span>
             </div>
@@ -116,6 +109,15 @@ export default {
         title: "全部评论",
         emptyDescription: "暂无评论",
         finishedTip: "数据已加载全部",
+        imgInterface:'img',
+        idInterface:'id',
+        avatarInterface:'avatar',
+        timeInterface:'time',
+        starInterface:'star',
+        starNumInterface:'starNum',
+        btInterface:'bt',
+        fromInterface:'from',
+        totalInterface:'total'
       },
       loading: false,
       finished: false,
@@ -783,6 +785,8 @@ export default {
           url,
           {
             id: dataSource.value,
+            pageSize: this.pageSize,
+            start: this.start,
           },
           {
             headers: {
