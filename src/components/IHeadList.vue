@@ -22,29 +22,33 @@
                 <span class="iheadlist-author">{{item[propData.titleInterface] || item.author}}</span>
                 <template v-if="propData.authorshowIcon">
                   <svg
-                    v-if="hadnleActive(item, propData.sexInterface)"
+                    v-if="propData.authorIconmaxClass && propData.authorIconmaxClass.length && hadnleActive(item, propData.sexInterface)"
                     class="idm_svg_author_icon icon_author1"
                     aria-hidden="true"
                   >
-                    <use :xlink:href="`#${propData.authorIconmaxClass}`"></use>
+                    <use :xlink:href="`#${propData.authorIconmaxClass[0]}`"></use>
                   </svg>
-                  <svg
-                    v-else
-                    class="idm_svg_author_icon icon_author2"
-                    aria-hidden="true"
-                  >
-                    <use :xlink:href="`#${propData.authorIcongirlClass}`"></use>
-                  </svg>
+                  <!-- <svg-icon v-else icon-class="man" class-name="idm_svg_author_icon icon_author1"></svg-icon> -->
+                  <template v-else>
+                    <svg
+                      v-if="propData.authorIcongirlClass && propData.authorIcongirlClass.length"
+                      class="idm_svg_author_icon icon_author1"
+                      aria-hidden="true"
+                    >
+                      <use :xlink:href="`#${propData.authorIcongirlClass[0]}`"></use>
+                    </svg>
+                  </template>
+                 <!-- <svg-icon v-else icon-class="girl" class-name="idm_svg_author_icon icon_author1"></svg-icon> -->
                 </template>
-                <template v-if="propData.tagTable && propData.tagTable.length && propData.dataSource">
-                  <span v-for="subitem in propData.tagTable" :key="subitem.key" :class="subitem.defaultActiveKey ? 'color1' : 'color'">
-                    {{subitem.defaultActiveKey ? (hadnleActive(item, subitem.tab) && '已激活') : item[subitem.tab]}}
+                <template v-if="item[propData.tagField]">
+                  <span v-for="(subitem, subindex) in item[propData.tagField].split(',')" :key="subindex" class="color">
+                    {{subitem}}
                   </span>
                 </template>
-                <template v-else>
-                  <span class="color">{{item.tip1}}</span>
-                  <span class="color">{{item.tip2}}</span>
-                  <span class="color1" >{{item.active === 1 && '已激活'}}</span>
+                <template v-if="item[propData.activeField]">
+                  <span v-for="(subitem, subindex) in item[propData.activeField].split(',')" :key="subindex" class="color1">
+                    {{subitem}}
+                  </span>
                 </template>
               </div>
               <span class="iheadlist-desc">{{item[propData.descInterface] || item.desc}}</span>
@@ -75,53 +79,19 @@ export default {
   data () {
     return {
       pageDataList: [],
-      list: [
-        {
-          type: 1,
-          author: '宋尚朴',
-          img: 'http://116.236.111.158:8086/DreamWeb/resource/img/body-bg-shanghai.png',
-          desc: '中共上海市测试三支部',
-          tip1: '书记',
-          tip2: '组织部',
-          active: 1
-        },
-        {
-          type: 2,
-          author: '宋尚朴',
-          img: 'http://116.236.111.158:8086/DreamWeb/resource/img/body-bg-shanghai.png',
-          desc: '中共上海市测试三支部',
-          tip1: '书记',
-          tip2: '组织部',
-          active: 1
-        }
-      ],
+      list: [],
       searchVal: '',
       moduleObject:{},
       propData:this.$root.propData.compositeAttr||{
         showIcon: true,
         authorshowIcon: true,
-        authorIconmaxClass: 'icon-settingOutline',
-        authorIcongirlClass: 'icon-settingOutline',
         titleIconFontSize: 20,
         authorIconFontSize: 18,
-        tagTable: [
-          {
-            key: '1',
-            tab: 'tip1',
-          },
-          {
-            key: '2',
-            tab: 'tip2'
-          },
-          {
-            key: '3',
-            tab: "active == '1'",
-            defaultActiveKey: true
-          }
-        ],
         activeInterface: "active == '1'",
         sexInterface: "type == '1'",
         titleInterface: 'author',
+        tagField: 'tag',
+        activeField: 'active',
         bgColor: {
         },
         authorIconmaxColor: {
@@ -195,6 +165,29 @@ export default {
       return new Function(`return ${strFun}`)();
     },
     initData () {
+      if (this.moduleObject.env !== "production") {
+        this.list =  [
+          {
+              type: 1,
+              author: '宋尚朴',
+              img: 'http://116.236.111.158:8086/DreamWeb/resource/img/body-bg-shanghai.png',
+              desc: '中共上海市测试三支部',
+              tip1: '书记',
+              tip2: '组织部',
+              tag: '书记,组织部',
+              active: '已激活'
+            },
+            {
+              type: 2,
+              author: '宋尚朴',
+              img: 'http://116.236.111.158:8086/DreamWeb/resource/img/body-bg-shanghai.png',
+              desc: '中共上海市测试三支部',
+              tip1: '书记',
+              tip2: '组织部',
+              tag: '书记',
+            }
+        ]
+      }
       let that = this;
       const customInterfaceUrl = '/ctrl/dataSource/getDatas';
       if (this.moduleObject.env == "production") {
@@ -295,6 +288,38 @@ export default {
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .icon_author1, .icon_author2", authoriconStyle);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .icon_author1", authorColor1);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .icon_author2", authorColor2);
+      let tagStyleObj = {},
+          activeStyleObj = {};
+      for (const key in this.propData) {
+        if (this.propData.hasOwnProperty.call(this.propData, key)) {
+          const element = this.propData[key]
+          if (!element && element !== false && element != 0) {
+              continue
+          }
+          switch (key) {
+            case 'tagStyle':
+              IDM.style.setFontStyle(tagStyleObj, element)
+              break
+            case 'tagBg':
+              tagStyleObj['background-color'] = element && element.hex8
+              break
+            case 'tagBorder':
+              IDM.style.setBorderStyle(tagStyleObj, element)
+              break
+            case 'activeStyle':
+              IDM.style.setFontStyle(activeStyleObj, element)
+              break
+            case 'activeBg':
+              activeStyleObj['background-color'] = element && element.hex8
+              break
+            case 'activeBorder':
+              IDM.style.setBorderStyle(activeStyleObj, element)
+              break
+          }
+        }
+      }
+       window.IDM.setStyleToPageHead(this.moduleObject.id + " .iheadlist-line .color", tagStyleObj);
+       window.IDM.setStyleToPageHead(this.moduleObject.id + " .iheadlist-line .color1", activeStyleObj);
     },
     converPaddingObject () {
       let styleUlObject = {};
@@ -638,15 +663,9 @@ export default {
         }
         .color{
           padding: 3px 5px;
-          border-radius: 3px;
-          color: #fff;
-          background: #F7B503;
         }
         .color1{
           padding: 3px 5px;
-          border-radius: 3px;
-          color: #fff;
-          background: #44D7B6;
         }
       }
     }

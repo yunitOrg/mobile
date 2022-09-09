@@ -163,28 +163,33 @@ import { Empty, Loading, Image as VanImage } from 'vant';
 import 'vant/lib/empty/style';
 import 'vant/lib/loading/style';
 import 'vant/lib/image/style';
-const devResult = [
+const devResult = (_this) => [
   {
+    imgUrl: IDM.url.getModuleAssetsWebPath(require('../assets/logo.png'), _this.moduleObject),
     name: '学习强国',
     text1: '15篇文章',
     text2: '3.5w人已学习'
   },
   {
+    imgUrl: IDM.url.getModuleAssetsWebPath(require('../assets/logo.png'), _this.moduleObject),
     name: '学习强国',
     text1: '15篇文章',
     text2: '3.5w人已学习'
   },
   {
+    imgUrl: IDM.url.getModuleAssetsWebPath(require('../assets/logo.png'), _this.moduleObject),
     name: '学习强国',
     text1: '15篇文章',
     text2: '3.5w人已学习'
   },
   {
+    imgUrl: IDM.url.getModuleAssetsWebPath(require('../assets/logo.png'), _this.moduleObject),
     name: '学习强国',
     text1: '15篇文章',
     text2: '3.5w人已学习'
   },
   {
+    imgUrl: IDM.url.getModuleAssetsWebPath(require('../assets/logo.png'), _this.moduleObject),
     name: '学习强国',
     text1: '15篇文章',
     text2: '3.5w人已学习'
@@ -381,7 +386,7 @@ export default {
     initData() {
       if (this.propData.dataType == 'dataSource' && this.propData.dataSource) {
         if (!this.moduleObject.env || this.moduleObject.env == 'develop') {
-          this.setRows(devResult);
+          this.setRows(devResult(this));
           return;
         }
         const dataSource = this.propData.dataSource;
@@ -418,7 +423,7 @@ export default {
           });
       } else if (this.propData.dataType == 'static' && this.propData.dataStaticSet) {
         if (this.propData.dataStaticSet[0] && !this.propData.dataStaticSet[0].name) {
-          this.setRows(devResult);
+          this.setRows(devResult(this));
         } else {
           this.setRows(this.propData.dataStaticSet);
         }

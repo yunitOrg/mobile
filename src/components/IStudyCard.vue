@@ -40,6 +40,9 @@
         </div>
       </template>
     </div>
+    <div class="IStudy-Card-mask" v-if="moduleObject.env === 'develop' && !propData.dataSource">
+      <span>！未绑定数据源</span>
+    </div>
   </div>
 </template>
 
@@ -153,8 +156,9 @@ export default {
      * 加载动态数据
      */
     initData() {
-
-      if (!this.moduleObject.env || this.moduleObject.env == "develop") {
+      console.log(this.moduleObject.env)
+      console.log(!this.moduleObject.env || this.moduleObject.env == "develop")
+      if (!this.moduleObject.env || this.moduleObject.env === "develop") {
         // mock数据
         setTimeout(()=>{
           this.infoList = [];
@@ -197,11 +201,10 @@ export default {
           this.videoData = res.data
           this.isLoading = false;
         },1000)
-
-        return;
       }
-      this.getDataSourceData()
+
       let dataSource = this.propData.dataSource;
+      console.log("dataSource",dataSource)
       if (!dataSource) {
         this.isLoading = false;
         return;
@@ -742,6 +745,26 @@ $imgScale: var(--i-studycard-imgScale);
         }
       }
     }
+  }
+}
+
+.IStudy-Card-mask{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span {
+    padding: 6px 20px;
+    color: #e6a23c;
+    background: #fdf6ec;
+    border: 1px solid #f5dab1;
+    border-radius: 4px;
   }
 }
 </style>

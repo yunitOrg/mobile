@@ -54,7 +54,7 @@
           "default": 4
         },
         {
-          "type": "textarea",
+          "type": "input",
           "layoutType": "inline",
           "text": "为空描述",
           "bindKey": "emptyDescription",
@@ -505,15 +505,15 @@
           "desc": "页面数据绑定",
           "children": [
             {
-              "type": "textarea",
+              "type": "input",
               "layoutType": "inline",
               "text": "日期",
               "desc": "日期格式:2022-08-08",
               "bindKey": "dateInterface",
-              "default": "dete"
+              "default": "date"
             },
             {
-              "type": "textarea",
+              "type": "input",
               "layoutType": "inline",
               "text": "公告标题",
               "bindKey": "btInterface",

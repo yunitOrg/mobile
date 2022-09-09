@@ -420,30 +420,6 @@
               "display": "@[itemJumpTarget=='router']"
             },
             {
-              "type": "table",
-              "text": "参数配置",
-              "desc": "单页面模式下，跳转携带的参数，数据来源为item的数据，如item的id对应参数名为itemId，则这里填itemId",
-              "bindKey": "itemJumpPageParams",
-              "tabText": "参数[index]",
-              "display": "@[itemJumpTarget=='router']",
-              "children": [
-                {
-                  "type": "input",
-                  "layoutType": "inline",
-                  "text": "键名",
-                  "desc": "设置此项参数的键名",
-                  "bindKey": "key"
-                },
-                {
-                  "type": "input",
-                  "layoutType": "inline",
-                  "text": "键值",
-                  "desc": "设置此项参数的键值，来源为item的数据，如要取item的id，则这里应填id",
-                  "bindKey": "field"
-                }
-              ]
-            },
-            {
               "type": "actionSelect",
               "layoutType": "block",
               "text": "跳转自定义函数",
@@ -451,6 +427,30 @@
               "desc": "自定义跳转逻辑, 入参为{item:当前点击的item的单项数据}",
               "display": "@[itemJumpTarget=='custom']",
               "multiple": false
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "text": "item跳转参数配置",
+          "desc": "单页面模式下，跳转携带的参数，数据来源为item的数据，如item的id对应参数名为itemId，则这里填itemId",
+          "bindKey": "itemJumpPageParams",
+          "tabText": "参数[index]",
+          "display": "@[itemJumpTarget=='router']",
+          "children": [
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "键名",
+              "desc": "设置此项参数的键名",
+              "bindKey": "key"
+            },
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "键值",
+              "desc": "设置此项参数的键值，来源为item的数据，如要取item的id，则这里应填id",
+              "bindKey": "field"
             }
           ]
         },
