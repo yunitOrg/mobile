@@ -6,122 +6,102 @@
     idm-ctrl-id：组件的id，这个必须不能为空
   -->
   <div
-    class="i-notice-list-card-outer"
+    class="i-my-list-outer"
     idm-ctrl="idm_module"
     :id="moduleObject.id"
     :idm-ctrl-id="moduleObject.id"
     v-show="propData.defaultStatus != 'hidden'"
   >
-    <div v-show="propData.isShowTitleBar" class="i-notice-list-card-header">
-      <div class="header-icon" v-if="propData.showIcon && propData.titleIconPosition =='left'">
-        <svg-icon icon-class="shu" />
-      </div>
-      <div class="header-text">
-        {{ propData.title }}
-      </div>
-      <div class="header-icon" v-if="propData.showIcon && propData.titleIconPosition =='right'">
-        <svg-icon icon-class="shu" />
-      </div>
-    </div>
-    <van-loading v-if="isLoading" size="24px" vertical>加载中...</van-loading>
-
-    <div v-else class="i-notice-list-card-content">
-      <template v-if="infoList.length > 0">
-        <ul>
-          <li v-for="(notice, n) in infoList" :key="n">
-            <div class="i-notice-list-item">
-              <div class="item-outer-circle">
-                <div class="item-inner-circle">
-                  <div class="item-main-circle">
-                    <span class="circle-day">{{ notice[propData.dateInterface]  | dayFilter}}</span>
-                    <span class="circle-month">{{ notice[propData.dateInterface] | monthFilter}}</span>
-                  </div>
-                </div>
-              </div>
-              <span>{{ notice[propData.btInterface] }}</span>
-            </div>
-          </li>
-        </ul>
-        <p
-          class="loading-more"
-          v-if="infoList.length < total"
-          @click="loadData"
-        >
-          {{isLoadingMore?'加载中...':'加载更多'}}
-        </p>
-      </template>
-      <van-empty v-else :description="propData.emptyDescription">
-        <template #image>
-          <van-image
-            :src="
-              IDM.url.getModuleAssetsWebPath(
-                require('../assets/empty-default.png'),
-                moduleObject
-              )
-            "
-          />
-        </template>
-      </van-empty>
-    </div>
-    <div class="i-notice-list-card-mask" v-if="moduleObject.env !== 'production' && !propData.dataSource">
+    <ul v-if="propData.tabList">
+      <li v-for="(item,index) in propData.tabList" :key="index" @click="listClick(item)" :class="{'hidden-splitline':propData.showSplitLine === false}">
+        <div v-if="item.showLeftIcon" class="list-left-icon">
+          <img v-if="item.leftIconUrl" :src="IDM.url.getWebPath(item.leftIconUrl)" alt="">
+          <img v-else src="../assets/archives.png"/>
+        </div>
+        <div class="list-text">{{item.tabText}}</div>
+        <div v-if="item.showRightNum" class="list-right-num">22</div>
+        <div v-if="item.showRightIcon" class="list-right-icon">
+          <svg
+            v-if="item.rightIcon && item.rightIcon.length > 0"
+            class="idm_filed_svg_icon"
+            aria-hidden="true"
+          >
+            <use
+              :xlink:href="`#${item.rightIcon && item.rightIcon[0]}`"
+            ></use>
+          </svg>
+          <svg-icon v-else icon-class="arrowRight2" />
+        </div>
+      </li>
+    </ul>
+    <!-- <div class="i-my-list-mask" v-if="moduleObject.env !== 'production' && !propData.dataSource">
       <span>！未绑定数据源</span>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
-const months = {
-  "01":"一",
-  "02":"二",
-  "03":"三",
-  "04":"四",
-  "05":"五",
-  "06":"六",
-  "07":"七",
-  "08":"八",
-  "09":"九",
-  "10":"十",
-  "11":"十一",
-  "12":"十二",
-};
-import { Empty, Loading, Image as VanImage } from "vant";
-import "vant/lib/empty/style";
-import "vant/lib/loading/style";
-import "vant/lib/image/style";
 export default {
-  name: "INoticeListCard",
-  components: {
-    [Empty.name]: Empty,
-    [Loading.name]: Loading,
-    [VanImage.name]: VanImage,
-  },
+  name: "IMyList",
   data() {
     return {
       moduleObject: {},
       propData: this.$root.propData.compositeAttr || {
-        title: "通知公告",
-        columns: 2,
-        emptyDescription: "暂无数据",
-        defaultNumber: 4,
-        isShowTitleBar:true,
-        showIcon:true,
-        titleIconPosition:'left',
-        dateInterface:'date',
-        btInterface:'bt',
+        showSplitLine:false,
+        tabList:[
+          {
+            tabKey:"wddn",
+            tabText:"我的档案",
+            showLeftIcon:true,
+            leftIconUrl:'',
+            showRightIcon:true,
+            rightIcon:'',
+            rightIconColor:'#666666 ',
+            rightIconSize:{
+              inputVal:18,
+              selectVal:"px"
+            }
+          },
+          {
+            tabKey:"zzsh",
+            tabText:"组织生活",
+            showLeftIcon:true,
+            leftIcon:'',
+            leftIconColor:'#00BCD4',
+            leftIconSize:{
+              inputVal:18,
+              selectVal:"px"
+            },
+            showRightIcon:true,
+            rightIcon:'',
+            rightIconColor:'#666666 ',
+            rightIconSize:{
+              inputVal:18,
+              selectVal:"px"
+            },
+            showRightNum:true
+          },
+          {
+            tabKey:"wdsc",
+            tabText:"我的收藏",
+            showLeftIcon:true,
+            leftIcon:'',
+            leftIconColor:'#00BCD4',
+            leftIconSize:{
+              inputVal:18,
+              selectVal:"px"
+            },
+            showRightIcon:true,
+            rightIcon:'',
+            rightIconColor:'#666666 ',
+            rightIconSize:{
+              inputVal:18,
+              selectVal:"px"
+            }
+          }
+        ]
       },
-      isLoading: true,
-      isLoadingMore:false,
-      infoList: [],
-      total: 0,
     };
-  },
-  filters:{
-    dayFilter(value){
-      return value.split("-")[2] - 0
-    },
-    monthFilter(value){
-      return months[value.split("-")[1]] + '月'
-    },
   },
   props: {},
   created() {
@@ -135,22 +115,16 @@ export default {
   destroyed() {},
   methods: {
     /**
-     * 获取更多数据
+     * 列表点击
      */
-    loadData() {
-      if(this.isLoadingMore){
-        // 防抖
-        return
-      }
-      this.isLoadingMore = true;
-      this.initData(true);
+    listClick(item){
+      console.log(item,"点击了我")
     },
     /**
      * 重载
      */
     reload(){
       this.isLoading = true;
-      this.infoList = [];
       this.initData();
     },
     /**
@@ -270,7 +244,7 @@ export default {
       var innerStyleObject = {};
 
       const scale = this.getScale(pageSize.width);
-      styleObject["--i-notice-list-card-scale"] = scale;
+      styleObject["--i-my-list-scale"] = scale;
 
       if (this.propData.bgSize && this.propData.bgSize == "custom") {
         styleObject["background-size"] =
@@ -557,9 +531,6 @@ export default {
         }
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id, styleObject);
-      window.IDM.setStyleToPageHead(this.moduleObject.id + ` .i-notice-list-card-header .header-text`, titleFontStyleObject);
-      window.IDM.setStyleToPageHead(this.moduleObject.id + ` .i-notice-list-card-content .i-notice-list-item .item-outer-circle`, outerCircleStyleObject);
-      window.IDM.setStyleToPageHead(this.moduleObject.id + ` .i-notice-list-card-content .i-notice-list-item`, innerStyleObject);
     },
     /**
      * 主题颜色
@@ -584,7 +555,7 @@ export default {
             item.key +
             " #" +
             (this.moduleObject.packageid || "module_demo") +
-            " .i-notice-list-card-header .header-icon",
+            " .i-my-list-header .header-icon",
           {
             "color": item.mainColor
               ? IDM.hex8ToRgbaString(item.mainColor.hex8)
@@ -598,7 +569,7 @@ export default {
             item.key +
             " #" +
             (this.moduleObject.packageid || "module_demo") +
-            " .i-notice-list-card-content .i-notice-list-item .item-inner-circle",
+            " .i-my-list-content .i-notice-list-item .item-inner-circle",
           {
             "border-color": item.mainColor
               ? IDM.hex8ToRgbaString(item.mainColor.hex8)
@@ -612,7 +583,7 @@ export default {
             item.key +
             " #" +
             (this.moduleObject.packageid || "module_demo") +
-            " .i-notice-list-card-content .i-notice-list-item .item-main-circle",
+            " .i-my-list-content .i-notice-list-item .item-main-circle",
           {
             "background-color": item.mainColor
               ? IDM.hex8ToRgbaString(item.mainColor.hex8)
@@ -736,142 +707,60 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$scale: var(--i-notice-list-card-scale);
+$scale: var(--i-my-list-scale);
 
-.i-notice-list-card-outer {
+.i-my-list-outer {
   position: relative;
   width: auto;
   background-color: #fff;
-  margin: calc($scale * 12px);
-  padding: calc($scale * 16px) calc($scale * 16px) 0 calc($scale * 16px);
-  box-shadow: 0px calc($scale * 2px) calc($scale * 8px) 0px
-    rgba(194, 194, 194, 0.5);
-  border-radius: calc($scale * 10px);
+  margin: calc($scale * 10px);
+  box-shadow: 0px 2px 4px 4px rgba(238,238,238,0.5);
+  border-radius: calc($scale * 8px);
+  font-size: calc($scale * 16px);
+  color: #333333;
+  font-weight: 400;
 
-  .i-notice-list-card-header {
-    display: flex;
-    color: #cd0502;
-
-    .header-icon {
-      color: #cd0502;
-      .svg-icon {
-        vertical-align: -0.2em;
-      }
-    }
-
-    .header-text {
-      font-size: calc($scale * 16px);
-      color: #333333;
-      font-weight: 700;
-    }
-  }
-
-  .i-notice-list-card-content {
-    ul {
+  ul{
+    padding: 0 16px;
+    li {
       display: flex;
-      flex-wrap: wrap;
+      height: 50px;
+      // line-height: 50px;
+      border-bottom: 1px solid rgba(225,225,225,1);
+      align-items: center;
 
-      li {
-        min-height: calc($scale * 96px);
-        width: 50%;
-        margin-top: calc($scale * 46px);
+      &:last-child {
+        border: none;
+      }
 
-        .i-notice-list-item {
-          position: relative;
-          font-size: calc($scale * 14px);
-          color: #333333;
-          font-weight: 700;
-          padding: 30% calc($scale * 14px) calc($scale * 14px) calc($scale * 14px);
-          box-shadow: 0px 2px calc($scale * 8px) 0px rgba(194, 194, 194, 0.5);
-          border: 1px solid rgba(227,227,227,1);
-          text-align: center;
-          height: 100%;
-          background-color: #fff;
+      &.hidden-splitline {
+        border-bottom: none;
+      }
+      
+      .list-text {
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
 
-          & > span {
-            -webkit-line-clamp: 2;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
+      .list-right-num {
+        margin-right: 10px;
+        font-size: 16px;
+        color: #333333;
+        font-weight: 400;
+      }
 
-          .item-outer-circle {
-            position: absolute;
-            width: 46%;
-            padding-bottom: 46%;
-            background-color: #fff;
-            left: 0;
-            right: 0;
-            margin: 0 auto;
-            top: 0;
-            border-radius: 50%;
-            box-shadow: calc($scale * -10px) calc($scale * -10px) calc($scale * 20px) calc($scale * -14px)rgba(194, 194, 194, 1) inset;
-            transform: translateY(-50%) rotate(45deg);
-
-            .item-inner-circle {
-              position: absolute;
-              border: calc($scale * 3px) solid #cd0502;
-              width: 80%;
-              height: 80%;
-              left: 0;
-              right: 0;
-              bottom: 0;
-              top: 0;
-              margin: auto;
-              border-radius: 50%;
-              padding: 2px;
-
-              .item-main-circle {
-                width: 100%;
-                height: 100%;
-                background-color: #cd0502;
-                border-radius: 50%;
-                transform: rotate(-45deg);
-                color: #fff;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-
-                .circle-day {
-                  font-size: calc($scale * 15px);
-                  font-weight: 600;
-                }
-
-                .circle-month {
-                  font-size: calc($scale * 14px);
-                  font-weight: 500;
-                }
-
-                span {
-                  display: block;
-                }
-              }
-            }
-          }
-        }
-
-        &:nth-child(odd) {
-          padding-right: calc($scale * 8px);
-        }
-        &:nth-child(even) {
-          padding-left: calc($scale * 8px);
-        }
+      .list-left-icon img{
+        width: 18px;
+        height: 18px;
+        vertical-align: text-bottom;
+        margin-right: 16px;
       }
     }
   }
 
-  .loading-more {
-    font-size: calc($scale * 14px);
-    color: #666666;
-    font-weight: normal;
-    padding: calc($scale * 16px) 0;
-    text-align: center;
-    font-family: PingFangSC-Regular;
-  }
-
-  .i-notice-list-card-mask {
+  .i-my-list-mask {
     position: absolute;
     top: 0;
     left: 0;

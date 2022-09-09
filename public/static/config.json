@@ -220,6 +220,13 @@
       "className": "ISelect",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.imylist",
+      "comName": "我的列表",
+      "className": "IMyList",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }
