@@ -29,25 +29,38 @@
                             {{ getDataField(propData.activityField, item) }}
                         </div>
                     </div>
-                    <!-- 右上角状态 -->
+                    <!-- 右上角报名状态 -->
                     <div
-                        class="activity-list-right-status"
-                        v-if="propData.isShowActivityStatus"
-                        :style="getActivityStatusStyle(getDataField(propData.activityField, item))"
+                        class="activity-list-sign-status"
+                        v-if="propData.signStatusPosition === 'rightTop'"
+                        :style="getSignStatusStyle(getDataField(propData.signField, item))"
                     >
-                        {{ getDataField(propData.activityField, item) }}
+                        {{ getDataField(propData.signField, item) }}
                     </div>
                     <!-- 右侧内容 -->
                     <div class="flex-1">
                         <!-- 标题 -->
-                        <div class="activity-list-title-line d-flex align-c">
-                            <span class="activity-list-title">{{ getDataField(propData.titleField, item) }}</span>
-                            <span
-                                class="activity-list-user-status nowrap"
-                                v-if="getDataField(propData.activityField, item)"
-                                :style="getUserStatusStyle(getDataField(propData.userField, item))"
-                                >{{ getDataField(propData.userField, item) }}</span
+                        <div class="activity-list-title-line d-flex align-c just-b">
+                            <div class="d-flex align-c flex-1 white-nowrap">
+                                <span class="activity-list-title">{{ getDataField(propData.titleField, item) }}</span>
+                                <span
+                                    class="activity-list-user-status nowrap"
+                                    v-if="getDataField(propData.activityField, item)"
+                                    :style="getUserStatusStyle(getDataField(propData.userField, item))"
+                                    >{{ getDataField(propData.userField, item) }}</span
+                                >
+                            </div>
+                            <!-- 报名状态 -->
+                            <div
+                                v-if="
+                                    propData.signStatusPosition === 'titleLine' &&
+                                    getDataField(propData.signField, item)
+                                "
+                                class="activity-list-sign-status2 white-nowrap"
+                                :style="getSignStatusStyle(getDataField(propData.signField, item))"
                             >
+                                {{ getDataField(propData.signField, item) }}
+                            </div>
                         </div>
                         <!-- 标签 -->
                         <div class="activity-list-tags text-o-e">
@@ -153,6 +166,32 @@ export default {
         getActivityStatusStyle(text) {
             if (Array.isArray(this.propData.activityList) && this.propData.activityList.length > 0) {
                 const currentActivityStatus = this.propData.activityList.find((el) => el.statusText === text),
+                    styleObj = {}
+                if (currentActivityStatus) {
+                    if (Object.keys(currentActivityStatus.activityStatusFont).length > 0) {
+                        IDM.style.setFontStyle(styleObj, currentActivityStatus.activityStatusFont)
+                        this.adaptiveFontSize(styleObj, currentActivityStatus.activityStatusFont)
+                    }
+                    if (
+                        currentActivityStatus.activityStatusBgColor &&
+                        currentActivityStatus.activityStatusBgColor.hex8
+                    ) {
+                        styleObj['background-color'] = IDM.hex8ToRgbaString(
+                            currentActivityStatus.activityStatusBgColor.hex8
+                        )
+                    }
+                    return styleObj
+                }
+            }
+            return {}
+        },
+        /**
+         * 获取报名当前状态样式
+         * @param {*} text 活动状态文字
+         */
+        getSignStatusStyle(text) {
+            if (Array.isArray(this.propData.signStatusList) && this.propData.signStatusList.length > 0) {
+                const currentActivityStatus = this.propData.signStatusList.find((el) => el.statusText === text),
                     styleObj = {}
                 if (currentActivityStatus) {
                     if (Object.keys(currentActivityStatus.activityStatusFont).length > 0) {
@@ -402,11 +441,15 @@ export default {
     white-space: nowrap;
 }
 
-.activity-list-right-status {
+.activity-list-sign-status {
     position: absolute;
     right: -40px;
     top: -19px;
     transform: rotate(40deg);
     padding: 30px 30px 5px 30px;
+}
+.activity-list-sign-status2 {
+    border-radius: 100px;
+    padding: 3px 10px;
 }
 </style>

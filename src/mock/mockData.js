@@ -136,6 +136,7 @@ export const activityData = {
         {
             time: '10.12',
             weekDay: '周三',
+            signStatusText: '已报名',
             title: '第三次党员大会',
             tags: ['党员大会', '组织生活会'],
             location: '控江路街道社区党群服务中心',
@@ -149,6 +150,7 @@ export const activityData = {
         {
             time: '10.12',
             weekDay: '周三',
+            signStatusText: '未报名',
             title: '第三次党员大会',
             tags: ['党员大会', '组织生活会'],
             location: '控江路街道社区党群服务中心',
@@ -162,6 +164,7 @@ export const activityData = {
         {
             time: '10.12',
             weekDay: '周三',
+            signStatusText: '未报名',
             title: '第三次党员大会',
             tags: ['党员大会', '组织生活会'],
             location: '控江路街道社区党群服务中心',
@@ -177,7 +180,7 @@ export const activityData = {
     moreUrl: ''
 }
 
-export function getMyMessageTopData () {
+export function getMyMessageTopData() {
     const _this = this
     return {
         avatar: IDM.url.getModuleAssetsWebPath(require('../assets/default-avatar.png'), _this.moduleObject),
@@ -185,4 +188,10 @@ export function getMyMessageTopData () {
         partySeniority: 5,
         partyBranch: '梦创'
     }
+}
+
+export const historyTodayData = {
+    date: '5月17日',
+    content:
+        '2010年5月17日至19日 中共中央,国务院在北京召开新疆工作座谈会,2010年5月17日至19日中共中央,国务院在北京召开新疆工作座谈会2010年5月17日至19日 中共中央,国务院在北京召开新疆工作座谈会'
 }
