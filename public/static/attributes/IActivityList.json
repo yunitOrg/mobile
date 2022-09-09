@@ -123,31 +123,34 @@
                     ]
                 },
                 {
-                    "type": "radio",
-                    "styleType": "radio",
-                    "layoutType": "inline",
-                    "text": "活动状态",
-                    "bindKey": "isShowActivityStatus",
-                    "desc": "设置列表单项是否显示右上角活动状态",
-                    "default": false,
-                    "dictionary": [
-                        {
-                            "label": "显示",
-                            "value": true
-                        },
-                        {
-                            "label": "隐藏",
-                            "value": false
-                        }
-                    ]
-                },
-                {
                     "type": "inputNumber",
                     "layoutType": "inline",
                     "text": "最多显示",
                     "bindKey": "limit",
                     "desc": "设置组件列表最多显示几条",
                     "default": 3
+                },
+                {
+                    "type": "select",
+                    "layoutType": "inline",
+                    "text": "报名状态",
+                    "bindKey": "signStatusPosition",
+                    "desc": "设置列表单项报名状态位置",
+                    "default": false,
+                    "dictionary": [
+                        {
+                            "label": "右上角",
+                            "value": "rightTop"
+                        },
+                        {
+                            "label": "标题同行",
+                            "value": "titleLine"
+                        },
+                        {
+                            "label": "不显示",
+                            "value": false
+                        }
+                    ]
                 },
                 {
                     "type": "select",
@@ -1258,6 +1261,66 @@
         },
         {
             "type": "table",
+            "text": "报名状态列表样式",
+            "bindKey": "signStatusList",
+            "tabText": "状态[index]",
+            "default": [
+                {
+                    "statusText": "已报名",
+                    "activityStatusBgColor": {
+                        "hex": "#00BCE7FF",
+                        "hex8": "#00BCE7FF"
+                    },
+                    "activityStatusFont": {
+                        "fontColors": {
+                            "hex": "#FFFFFF",
+                            "hex8": "#FFFFFFFF"
+                        },
+                        "fontSize": 12,
+                        "fontSizeUnit": "px",
+                        "fontWeight": "400"
+                    }
+                },
+                {
+                    "statusText": "未报名",
+                    "activityStatusBgColor": {
+                        "hex": "#E8E8E8",
+                        "hex8": "#E8E8E8FF"
+                    },
+                    "activityStatusFont": {
+                        "fontColors": {
+                            "hex": "#333333",
+                            "hex8": "#333333FF"
+                        },
+                        "fontSize": 12,
+                        "fontSizeUnit": "px",
+                        "fontWeight": "400"
+                    }
+                }
+            ],
+            "children": [
+                {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "状态文本",
+                    "bindKey": "statusText"
+                },
+                {
+                    "type": "colorPicker",
+                    "layoutType": "inline",
+                    "text": "背景颜色",
+                    "bindKey": "activityStatusBgColor"
+                },
+                {
+                    "type": "font",
+                    "layoutType": "block",
+                    "text": "文字样式",
+                    "bindKey": "activityStatusFont"
+                }
+            ]
+        },
+        {
+            "type": "table",
             "text": "人物状态列表样式",
             "bindKey": "userStatusList",
             "tabText": "状态[index]",
@@ -1588,6 +1651,13 @@
                             "text": "活动状态",
                             "bindKey": "activityField",
                             "default": "activityText"
+                        },
+                        {
+                            "type": "input",
+                            "layoutType": "inline",
+                            "text": "报名状态",
+                            "bindKey": "signField",
+                            "default": "signStatusText"
                         },
                         {
                             "type": "input",

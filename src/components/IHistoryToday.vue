@@ -3,34 +3,87 @@
         idm-ctrl="idm_module"
         :id="moduleObject.id"
         :idm-ctrl-id="moduleObject.id"
-        v-show="propData.defaultStatus != 'hidden'"
+        class="idm-history-day d-flex just-b align-c position-r"
     >
-        
+        <!-- 左侧内容 -->
+        <div class="idm-history-day-left">
+            <div class="idm-history-day-title">{{ propData.title }}</div>
+            <div class="d-flex just-b align-c idm-history-day-bottom">
+                <div class="d-flex align-c">
+                    <svg
+                        v-if="propData.leftIcon && propData.leftIcon.length"
+                        class="idm-history-day-left-icon"
+                        aria-hidden="true"
+                    >
+                        <use :xlink:href="`#${propData.leftIcon[0]}`"></use>
+                    </svg>
+                    <svg-icon v-else icon-class="rili" className="idm-history-day-left-icon"></svg-icon>
+                </div>
+                <div class="idm-history-day-date">{{ getDataField(propData.dateField, componentData) }}</div>
+            </div>
+        </div>
+        <!-- 右侧内容 -->
+        <div class="d-flex just-b align-c flex-1 idm-history-day-right" @click="handleClick">
+            <div class="flex-1 idm-history-day-content">
+                <div class="text-o-e-2">
+                    {{ getDataField(propData.contentField, componentData) }}
+                </div>
+            </div>
+            <div class="d-flex align-c">
+                <svg
+                    v-if="propData.rightIcon && propData.rightIcon.length"
+                    class="idm-history-day-right-icon"
+                    aria-hidden="true"
+                >
+                    <use :xlink:href="`#${propData.rightIcon[0]}`"></use>
+                </svg>
+                <svg-icon v-else icon-class="arrowRight2" class-name="idm-history-day-right-icon"></svg-icon>
+            </div>
+        </div>
+        <ICommonMask :moduleObject="moduleObject" :propData="propData"></ICommonMask>
     </div>
 </template>
 <script>
+import ICommonMask from '../commonComponents/ICommonMask'
+import { historyTodayData } from '../mock/mockData'
+import { getDatasInterfaceUrl } from '@/api/config'
 export default {
     name: 'IHistoryToday',
+    components: {
+        ICommonMask
+    },
     data() {
         return {
             moduleObject: {},
             propData: this.$root.propData.compositeAttr || {
                 fontContent: 'Hello Word',
                 defaultStatus: ''
-            }
+            },
+            componentData: {}
         }
     },
     created() {
         this.moduleObject = this.$root.moduleObject
         this.convertAttrToStyleObject()
+        this.convertThemeListAttrToStyleObject()
     },
     methods: {
         propDataWatchHandle(propData) {
             this.propData = propData.compositeAttr || {}
             this.convertAttrToStyleObject()
+            this.convertThemeListAttrToStyleObject()
         },
         convertAttrToStyleObject() {
-            const styleObject = {}
+            const styleObject = {},
+                leftObj = {},
+                leftTitleObj = {},
+                leftBottomObj = {},
+                dateObj = {},
+                iconObj = {},
+                clampObj = {},
+                rightObj = {},
+                rightIconObj = {},
+                contentObj = {}
             for (const key in this.propData) {
                 if (this.propData.hasOwnProperty.call(this.propData, key)) {
                     const element = this.propData[key]
@@ -56,55 +109,173 @@ export default {
                         case 'border':
                             IDM.style.setBorderStyle(styleObject, element)
                             break
+                        // 左侧样式
+                        case 'leftBox':
+                            IDM.style.setBoxStyle(leftObj, element)
+                            break
+                        case 'titleFont':
+                            IDM.style.setFontStyle(leftTitleObj, element)
+                            break
+                        case 'leftBottomBox':
+                            IDM.style.setBoxStyle(leftBottomObj, element)
+                            break
+                        case 'leftBottomBorder':
+                            IDM.style.setBorderStyle(leftBottomObj, element)
+                            break
+                        case 'leftBottomBgColor':
+                            if (element && element.hex8) {
+                                leftBottomObj['background'] = IDM.hex8ToRgbaString(element.hex8)
+                            }
+                            break
+                        case 'timeFont':
+                            IDM.style.setFontStyle(dateObj, element)
+                            break
+                        case 'iconSize':
+                            iconObj['width'] = element + 'px'
+                            iconObj['height'] = element + 'px'
+                            break
+                        case 'iconColor':
+                            if (element && element.hex8) {
+                                iconObj['fill'] = IDM.hex8ToRgbaString(element.hex8)
+                            }
+                            break
+                        // 右侧内容
+                        case 'contentClamp':
+                            clampObj['line-clamp'] = element
+                            clampObj['-webkit-line-clamp'] = element
+                            break
+                        case 'rightBox':
+                            IDM.style.setBoxStyle(rightObj, element)
+                            break
+                        case 'rightBorder':
+                            IDM.style.setBorderStyle(rightObj, element)
+                            break
+                        case 'contentBox':
+                            IDM.style.setBoxStyle(contentObj, element)
+                            break
+                        case 'contentFont':
+                            IDM.style.setFontStyle(rightObj, element)
+                            break
+                        case 'rightIconSize':
+                            rightIconObj['width'] = element + 'px'
+                            rightIconObj['height'] = element + 'px'
+                            break
+                        case 'rightIconColor':
+                            if (element && element.hex8) {
+                                rightIconObj['fill'] = IDM.hex8ToRgbaString(element.hex8)
+                            }
+                            break
                     }
                 }
             }
             window.IDM.setStyleToPageHead(this.moduleObject.id, styleObject)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-history-day-left', leftObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-history-day-title', leftTitleObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-history-day-title', leftTitleObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-history-day-bottom', leftBottomObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-history-day-date', dateObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-history-day-left-icon', iconObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .text-o-e-2', clampObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-history-day-right', rightObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-history-day-right-icon', rightIconObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-history-day-content', contentObj)
             this.initData()
+        },
+        /**
+         * 主题颜色
+         */
+        convertThemeListAttrToStyleObject() {
+            var themeList = this.propData.themeList
+            if (!themeList) {
+                return
+            }
+            const themeNamePrefix =
+                IDM.setting && IDM.setting.applications && IDM.setting.applications.themeNamePrefix
+                    ? IDM.setting.applications.themeNamePrefix
+                    : 'idm-theme-'
+            for (var i = 0; i < themeList.length; i++) {
+                var item = themeList[i]
+                IDM.setStyleToPageHead(
+                    '.' +
+                        themeNamePrefix +
+                        item.key +
+                        (` #${this.moduleObject.id}` || 'module_demo') +
+                        ' .idm-history-day-title',
+                    {
+                        color: item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : ''
+                    }
+                )
+            }
+        },
+        /**
+         * 获取自定义字段值
+         * @param {*} field 自定义字段
+         * @param {*} dataObject 数据对象
+         * @returns 对应字段的值
+         */
+        getDataField(field, dataObject) {
+            if (!dataObject || !field) return ''
+            return IDM.express.replace(`@[${field}]`, dataObject, true)
+        },
+        handleClick() {
+            if (this.moduleObject.env === 'develop') {
+                return
+            }
+            let url = null
+            switch (this.propData.jumpStyle) {
+                case '_link':
+                    url = this.getDataField(this.propData.jumpUrlField, this.componentData)
+                    if (!url) return
+                    url = IDM.url.getWebPath(url)
+                    window.open(url)
+                    break
+                case '_child':
+                    if (this.propData.jumpPageList && this.propData.jumpPageList.length > 0) {
+                        IDM.router.push(this.moduleObject.pageid, this.propData.morePageList[0].id, true, '', '', '')
+                    } else {
+                        IDM.message.warning('请选择要跳转的子页面')
+                    }
+                    break
+                case '_custom_link':
+                    url = this.textFilter(this.propData.customLink, this.pageData)
+                    if (!url) return
+                    window.open(IDM.url.getWebPath(url))
+                    break
+                case '_custom_func':
+                    if (this.propData.jumpCustomFunc && this.propData.jumpCustomFunc.length > 0) {
+                        const funcName = this.propData.jumpCustomFunc[0].name
+                        window[funcName] && window[funcName].call(this)
+                    }
+            }
         },
         reload() {
             //请求数据源
             this.initData()
         },
         initData() {
-            let that = this
-            //所有地址的url参数转换
-            var params = that.commonParam()
-            switch (this.propData.dataSourceType) {
-                case 'customInterface':
-                    this.propData.customInterfaceUrl &&
-                        window.IDM.http
-                            .get(this.propData.customInterfaceUrl, params)
-                            .then((res) => {
-                                //res.data
-                                that.$set(
-                                    that.propData,
-                                    'fontContent',
-                                    that.getExpressData('resultData', that.propData.dataFiled, res.data)
-                                )
-                                // that.propData.fontContent = ;
-                            })
-                            .catch(function (error) {})
-                    break
-                case 'pageCommonInterface':
-                    //使用通用接口直接跳过，在setContextValue执行
-                    break
-                case 'customFunction':
-                    if (this.propData.customFunction && this.propData.customFunction.length > 0) {
-                        var resValue = ''
-                        try {
-                            resValue =
-                                window[this.propData.customFunction[0].name] &&
-                                window[this.propData.customFunction[0].name].call(this, {
-                                    ...params,
-                                    ...this.propData.customFunction[0].param,
-                                    moduleObject: this.moduleObject
-                                })
-                        } catch (error) {}
-                        that.propData.fontContent = resValue
-                    }
-                    break
+            if (this.moduleObject.env !== 'production') {
+                this.componentData = historyTodayData
             }
+            window.IDM.http
+                .post(
+                    getDatasInterfaceUrl,
+                    {
+                        id: this.propData.dataSource && this.propData.dataSource.value
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json;charset=UTF-8'
+                        }
+                    }
+                )
+                .then((res) => {
+                    //res.data
+                    if (res.status == 200 && res.data.code == 200) {
+                        this.componentData = res.data.data
+                    } else {
+                        IDM.message.error(res.data.message)
+                    }
+                })
         },
         receiveBroadcastMessage(object) {
             console.log('组件收到消息', object)
@@ -135,3 +306,9 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.idm-history-day-left-icon {
+    margin: 0 0 1px 0;
+}
+</style>

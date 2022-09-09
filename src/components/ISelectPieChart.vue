@@ -11,7 +11,11 @@
     :idm-ctrl-id="moduleObject.id"
     class="i-selectPieChart-outer"
   >
-    <div key="i-selectPieChart-header" class="i-selectPieChart-header" v-if="propData.isShowTitleBar">
+    <div
+      key="i-selectPieChart-header"
+      class="i-selectPieChart-header"
+      v-if="propData.isShowTitleBar"
+    >
       <div class="i-selectPieChart-header-main">
         <div class="i-selectPieChart-header-tit">
           <span v-if="propData.titleIconPosition === 'right'">{{ propData.title }}</span>
@@ -46,11 +50,20 @@
         v-show="!isLoading && chartData && chartData.length > 0"
         class="i-selectPieChart-content-wapper"
       >
-        <div key="i-selectPieChart-content-chart" :ref="`charts_container_${moduleObject.id}`" class="i-selectPieChart-content-chart" />
+        <div
+          key="i-selectPieChart-content-chart"
+          :ref="`charts_container_${moduleObject.id}`"
+          class="i-selectPieChart-content-chart"
+        />
         <div
           key="i-selectPieChart-content-table"
           class="i-selectPieChart-content-table"
-          v-if="propData.tableFields && propData.tableFields[0] && propData.tableFields[0].name"
+          v-if="
+            propData.showTable &&
+            propData.tableFields &&
+            propData.tableFields[0] &&
+            propData.tableFields[0].name
+          "
         >
           <div
             class="i-selectPieChart-content-table-row"
@@ -138,7 +151,7 @@ const devChartResult = [
   },
   {
     name: '论学学时',
-    value: 100,
+    value: 110,
     displayValue: '100h',
     ratio: '40%'
   },
@@ -170,22 +183,27 @@ export default {
     [Picker.name]: Picker
   },
   // {
-  //       colorType: 'field',
-  //       chartColorField: '',
-  //       chartType: 'hollow',
-  //       columnsType: 'static',
-  //       chartDataSource: '1',
-  //       showIcon: true,
-  //       title: '年度学时',
-  //       titleIconPosition: 'left',
-  //       isShowTitleBar: true,
-  //       selectBtn: true,
-  //       moreBtn: false,
-  //       pickerTitle: '选择年份',
-  //       showChartTip: true,
-  //       itemBorderWidth: 0,
-  //       tableFields: [{ name: 'name' }, { name: 'displayValue' }, { name: 'ratio' }]
-  //     }
+  //   colorType: 'field',
+  //   chartColorField: '',
+  //   chartType: 'hollow',
+  //   columnsType: 'none',
+  //   showTable: true,
+  //   showLegend: true,
+  //   showLabel: true,
+  //   chartDataSource: '1',
+  //   showIcon: true,
+  //   title: '年度学时',
+  //   titleIconPosition: 'left',
+  //   isShowTitleBar: false,
+  //   moreBtn: false,
+  //   pickerTitle: '选择年份',
+  //   showChartTip: true,
+  //   itemBorderWidth: 0,
+  //   seriesTop: '30',
+  //   seriesBottom: '20',
+  //   chartTitle: '标题',
+  //   tableFields: [{ name: 'name' }, { name: 'displayValue' }, { name: 'ratio' }]
+  // }
   data() {
     return {
       moduleObject: {},
@@ -326,18 +344,69 @@ export default {
       });
     },
     drawChart() {
+      const legendData = this.chartData?.map(item => item.name);
       const option = {
         color: this.colors,
+        legend: {
+          show: this.propData.showLegend,
+          left: 'center',
+          bottom: 0,
+          padding: 0,
+          itemWidth: this.propData.legendItemSize || 14,
+          itemHeight: this.propData.legendItemSize || 14,
+          data: legendData,
+          itemGap: this.propData.legendItemGap || 20,
+          textStyle: {
+            color:
+              this.propData.legendFontColor && this.propData.legendFontColor.hex8
+                ? this.propData.legendFontColor.hex8
+                : '#666666',
+            fontSize: this.propData.legendFontSize || 14
+          }
+        },
+        title: {
+          show: !!this.propData.chartTitle,
+          text: this.propData.chartTitle,
+          left: 'center',
+          top: 0,
+          textStyle: {
+            color:
+              this.propData.chartTitleFontColor && this.propData.chartTitleFontColor.hex8
+                ? this.propData.chartTitleFontColor.hex8
+                : '#666666',
+            fontSize: this.propData.chartTitleFontSize || 16,
+            fontWeight: this.propData.chartTitleFontWeight || 'bolder'
+          }
+        },
         series: [
           {
             type: 'pie',
+            bottom: this.propData.showLegend ? this.propData.seriesBottom : 0,
+            top: this.propData.chartTitle ? this.propData.seriesTop : 0,
             radius: this.propData.chartType == 'hollow' ? ['45%', '75%'] : [0, '75%'],
             itemStyle: {
               borderColor: '#fff',
               borderWidth: this.propData.itemBorderWidth || 0
             },
-            label: { show: false },
-            labelLine: { show: false },
+            label: {
+              show: this.propData.showLabel,
+              formatter: '{value|{c}}',
+              rich: {
+                value: {
+                  fontSize: this.propData.chartLabelFontSize || 12,
+                  color:
+                    this.propData.chartLabelFontColor && this.propData.chartLabelFontColor.hex8
+                      ? this.propData.chartLabelFontColor.hex8
+                      : '#666666'
+                }
+              }
+            },
+            labelLine: {
+              show: this.propData.showLabel,
+              smooth: 0.1,
+              length: 15,
+              length2: 30
+            },
             emphasis: { disabled: true },
             data: this.chartData
           }

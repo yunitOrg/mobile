@@ -1,14 +1,14 @@
-# 通用列表
+# 我的信息头部
 
 这里用来描述组件的具体作用说明，描述内容建议简明扼要。
 
 ## 组件类名（className）
 
-ICommonList
+IContentList
 
 ## 组件类 ID（classId）
 
-idm.component.mobile.icommonlist
+idm.component.mobile.icontentlist
 
 ## 组件开发语言（comLangue）
 
@@ -88,35 +88,10 @@ basics@1.0.0
 {
     code: 200,
     data: {
-        // 样式一 mock
-        value: [
-            {
-                jumpUrl: '',
-                title: '第三次党员大会',
-                location: '梦创双杨会议室',
-                personNumber: 14,
-                time: '2022-07-22 10:30-11:30',
-                image: IDM.url.getModuleAssetsWebPath(require('../assets/banner1.jpg'), _this.moduleObject)
-            },
-            {
-                jumpUrl: '',
-                title: '第三次党员大会',
-                location: '梦创双杨会议室',
-                personNumber: 14,
-                time: '2022-07-22 10:30-11:30',
-                image: IDM.url.getModuleAssetsWebPath(require('../assets/banner2.jpg'), _this.moduleObject)
-            },
-            {
-                jumpUrl: '',
-                title: '第三次党员大会',
-                location: '梦创双杨会议室',
-                personNumber: 14,
-                time: '2022-07-22 10:30-11:30',
-                image: IDM.url.getModuleAssetsWebPath(require('../assets/banner3.jpg'), _this.moduleObject)
-            }
-        ],
-        count: 3,
-        moreUrl: ''
+        avatar: IDM.url.getModuleAssetsWebPath(require('../assets/default-avatar.png'), _this.moduleObject),
+        username: '陈独秀',
+        partySeniority: 5,
+        partyBranch: '梦创'
     },
     message: 'success'
 }
