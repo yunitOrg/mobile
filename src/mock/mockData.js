@@ -136,6 +136,7 @@ export const activityData = {
         {
             time: '10.12',
             weekDay: '周三',
+            signStatusText: '已报名',
             title: '第三次党员大会',
             tags: ['党员大会', '组织生活会'],
             location: '控江路街道社区党群服务中心',
@@ -149,6 +150,7 @@ export const activityData = {
         {
             time: '10.12',
             weekDay: '周三',
+            signStatusText: '未报名',
             title: '第三次党员大会',
             tags: ['党员大会', '组织生活会'],
             location: '控江路街道社区党群服务中心',
@@ -162,6 +164,7 @@ export const activityData = {
         {
             time: '10.12',
             weekDay: '周三',
+            signStatusText: '未报名',
             title: '第三次党员大会',
             tags: ['党员大会', '组织生活会'],
             location: '控江路街道社区党群服务中心',

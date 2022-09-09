@@ -3,9 +3,20 @@
         idm-ctrl="idm_module"
         :id="moduleObject.id"
         :idm-ctrl-id="moduleObject.id"
-        v-show="propData.defaultStatus != 'hidden'"
+        class="idm-history-day d-flex just-b align-c"
     >
-        
+        <div>
+            <div>{{propData.title}}</div>
+            <div class="d-flex just-b align-c">
+
+            </div>
+        </div>
+        <div class="d-flex just-b align-c">
+            <div class="flex-1">
+
+            </div>
+            <svg-icon icon-class="arrowRight2" class-name="idm-my-message-icon"></svg-icon>
+        </div>
     </div>
 </template>
 <script>
