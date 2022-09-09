@@ -192,6 +192,7 @@ export function getMyMessageTopData() {
 
 export const historyTodayData = {
     date: '5月17日',
+    jumpUrl: '',
     content:
         '2010年5月17日至19日 中共中央,国务院在北京召开新疆工作座谈会,2010年5月17日至19日中共中央,国务院在北京召开新疆工作座谈会2010年5月17日至19日 中共中央,国务院在北京召开新疆工作座谈会'
 }

@@ -154,6 +154,7 @@
                             "text": "背景图片",
                             "bindKey": "bgImgUrl",
                             "default": "defaultImage",
+                            "desc": "弹窗背景图片,可自定义上传,值为defaultImage使用默认图片",
                             "placeholder": "可输入图片地址或直接上传"
                         },
                         {

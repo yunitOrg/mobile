@@ -1,5 +1,5 @@
 <template>
-    <div idm-ctrl="idm_module" class="idm-my-message-top d-flex" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id">
+    <div idm-ctrl="idm_module" class="idm-my-message-top d-flex position-r" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id">
         <img
             :src="IDM.url.getWebPath(getDataField(propData.avatarField, pageData))"
             class="idm-my-message-avatar"
@@ -17,13 +17,18 @@
                 <svg-icon icon-class="arrowRight2" class-name="idm-my-message-icon"></svg-icon>
             </div>
         </div>
+        <ICommonMask :moduleObject="moduleObject" :propData="propData"></ICommonMask>
     </div>
 </template>
 <script>
 import { getMyMessageTopData } from '../mock/mockData'
 import { getDatasInterfaceUrl } from '@/api/config'
+import ICommonMask from '../commonComponents/ICommonMask'
 export default {
     name: 'IMyMessageTop',
+    components: {
+        ICommonMask
+    },
     data() {
         return {
             moduleObject: {},
