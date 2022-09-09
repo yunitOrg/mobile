@@ -19,8 +19,11 @@
           <img v-else src="../assets/archives.png"/>
         </div>
         <div class="list-text">{{item.tabText}}</div>
-        <div v-if="item.showRightNum" class="list-right-num">22</div>
-        <div v-if="item.showRightIcon" class="list-right-icon">
+        <div v-if="item.showRightNum" class="list-right-num">
+          <span v-if="infoList && item.tabKey && infoList[item.tabKey]">{{infoList[item.tabKey][propData.numInterface]}}</span>
+          <span v-else>6</span>
+        </div>
+        <div v-if="item.showRightIcon" class="list-right-icon" :style="iconStyleObject(item)">
           <svg
             v-if="item.rightIcon && item.rightIcon.length > 0"
             class="idm_filed_svg_icon"
@@ -48,77 +51,65 @@ export default {
       moduleObject: {},
       propData: this.$root.propData.compositeAttr || {
         showSplitLine:false,
+        numInterface:"num",
         tabList:[
           {
             tabKey:"wddn",
             tabText:"我的档案",
             showLeftIcon:true,
             leftIconUrl:'',
-            showRightIcon:true,
-            rightIcon:'',
-            rightIconColor:'#666666 ',
-            rightIconSize:{
-              inputVal:18,
-              selectVal:"px"
-            }
+            showRightIcon:true
           },
           {
             tabKey:"zzsh",
             tabText:"组织生活",
             showLeftIcon:true,
-            leftIcon:'',
-            leftIconColor:'#00BCD4',
-            leftIconSize:{
-              inputVal:18,
-              selectVal:"px"
-            },
             showRightIcon:true,
-            rightIcon:'',
-            rightIconColor:'#666666 ',
-            rightIconSize:{
-              inputVal:18,
-              selectVal:"px"
-            },
             showRightNum:true
           },
           {
             tabKey:"wdsc",
             tabText:"我的收藏",
             showLeftIcon:true,
-            leftIcon:'',
-            leftIconColor:'#00BCD4',
-            leftIconSize:{
-              inputVal:18,
-              selectVal:"px"
-            },
             showRightIcon:true,
-            rightIcon:'',
-            rightIconColor:'#666666 ',
-            rightIconSize:{
-              inputVal:18,
-              selectVal:"px"
-            }
           }
         ]
       },
+      infoList:{}
     };
   },
   props: {},
   created() {
     this.moduleObject = this.$root.moduleObject;
     this.convertAttrToStyleObject();
-    this.convertThemeListAttrToStyleObject();
     this.isLoading = true;
     this.initData();
   },
   mounted() {},
   destroyed() {},
   methods: {
+    iconStyleObject(item){
+      let str = ''
+      if(item.rightIconColor){
+        str = `color:${IDM.hex8ToRgbaString(item.rightIconColor.hex8)};`
+      }
+      if(item.rightIconSize){
+        str = `font-size:${item.rightIconSize.inputVal + item.rightIconSize.selectVal};`;
+      }
+      return str
+    },
     /**
      * 列表点击
      */
     listClick(item){
-      console.log(item,"点击了我")
+      if(item.clickType && item.clickType=='customFunction'){
+        window[item.clickCustomFunction[0].name] &&
+        window[item.clickCustomFunction[0].name].call(this, {
+          ...this.commonParam(),
+          customParam: item.clickCustomFunction[0].param,
+          activeKey:item
+        });
+      }
     },
     /**
      * 重载
@@ -130,44 +121,20 @@ export default {
     /**
      * 加载动态数据
      */
-    initData(loadMore) {
+    initData() {
       if (!this.moduleObject.env || this.moduleObject.env == "develop") {
         // mock数据
         setTimeout(() => {
           this.isLoading = false;
-          this.isLoadingMore = false;
           const res = {
-            total: 10,
-            list: [
-              {
-                id: "1",
-                date: "2022-08-02",
-                bt: "关于十月份",
-              },
-              {
-                id: "2",
-                date: "2022-07-11",
-                bt: "关于十月份工作的通知细则",
-              },
-              {
-                id: "3",
-                date: "2022-10-24",
-                bt: "关于十月份工作的通知细则",
-              },
-              {
-                id: "4",
-                date: "2022-11-02",
-                bt: "关于十月份工作的通知细则",
-              }
-            ],
+            wddn:{
+              num:2
+            },
+            zzsh:{
+              num:5
+            }
           };
-          
-          this.total = res.total;
-          if(loadMore){
-            this.infoList = [...this.infoList, ...res.list];
-          }else{
-            this.infoList = res.list;
-          }
+          this.infoList = res;
         }, 1000);
 
         return;
@@ -196,12 +163,7 @@ export default {
           console.log(res, "接口数据");
           if (res.code === "200") {
             const result = res.data
-            this.total = result.total;
-            if(loadMore){
-              this.infoList = [...this.infoList, ...result.list];
-            }else{
-              this.infoList = result.list;
-            }
+            this.infoList = result;
           } else {
             console.log(url + "请求失败");
           }
@@ -211,7 +173,7 @@ export default {
         })
         .always((res) => {
           this.isLoading = false;
-          this.isLoadingMore = false;
+          this.showStatusHandle();
         });
     },
     /**
@@ -232,16 +194,46 @@ export default {
     propDataWatchHandle(propData) {
       this.propData = propData.compositeAttr || {};
       this.convertAttrToStyleObject();
-      this.convertThemeListAttrToStyleObject();
+      this.showStatusHandle();
+    },
+    /**
+     * tab是否现在判断
+     */
+    showStatusHandle(){
+      let that = this;
+      that.propData.tabList &&
+        that.propData.tabList.forEach(item => {
+          if (item.showType == 'default') {
+            item.showStatus = true
+            return;
+          }
+          switch (item.showType) {
+            case 'toggle':
+              //用当前选中的页签对象去执行表达式
+              if (item.dataFiled && item.tabKey && this.infoList[item.tabKey] && this.infoList[item.tabKey][item.dataFiled]) {
+                item.showStatus = true;
+              } else {
+                item.showStatus = false;
+              }
+              break;
+            case 'custom':
+              item.showStatus =
+                window[item.dataFunction[0].name] &&
+                window[item.dataFunction[0].name].call(this, {
+                  ...that.commonParam(),
+                  customParam: item.dataFunction[0].param,
+                  _this: that,
+                  curTab: item
+                });
+              break;
+          }
+        });
     },
     /**
      * 把属性转换成样式对象
      */
     convertAttrToStyleObject(pageSize = {}) {
       var styleObject = {};
-      var titleFontStyleObject = {};
-      var outerCircleStyleObject = {};
-      var innerStyleObject = {};
 
       const scale = this.getScale(pageSize.width);
       styleObject["--i-my-list-scale"] = scale;
@@ -284,16 +276,6 @@ export default {
                 styleObject["background-color"] = IDM.hex8ToRgbaString(
                   element.hex8
                 );
-                outerCircleStyleObject["background-color"]= IDM.hex8ToRgbaString(
-                  element.hex8
-                );
-              }
-              break;
-            case "innerBgColor":
-              if (element && element.hex8) {
-                innerStyleObject["background-color"] = IDM.hex8ToRgbaString(
-                  element.hex8
-                );
               }
               break;
             case "box":
@@ -320,32 +302,6 @@ export default {
               }
               if (element.paddingLeftVal) {
                 styleObject["padding-left"] = `${element.paddingLeftVal}`;
-              }
-              break;
-            case "innerBox":
-              if (element.marginTopVal) {
-                innerStyleObject["margin-top"] = `${element.marginTopVal}`;
-              }
-              if (element.marginRightVal) {
-                innerStyleObject["margin-right"] = `${element.marginRightVal}`;
-              }
-              if (element.marginBottomVal) {
-                innerStyleObject["margin-bottom"] = `${element.marginBottomVal}`;
-              }
-              if (element.marginLeftVal) {
-                innerStyleObject["margin-left"] = `${element.marginLeftVal}`;
-              }
-              if (element.paddingTopVal) {
-                innerStyleObject["padding-top"] = `${element.paddingTopVal}`;
-              }
-              if (element.paddingRightVal) {
-                innerStyleObject["padding-right"] = `${element.paddingRightVal}`;
-              }
-              if (element.paddingBottomVal) {
-                innerStyleObject["padding-bottom"] = `${element.paddingBottomVal}`;
-              }
-              if (element.paddingLeftVal) {
-                innerStyleObject["padding-left"] = `${element.paddingLeftVal}`;
               }
               break;
             case "bgImgUrl":
@@ -425,172 +381,33 @@ export default {
                 element.radius.rightBottom.radius +
                 element.radius.rightBottom.radiusUnit;
               break;
-            case "innerBorder":
-              if (element.border.top.width > 0) {
-                innerStyleObject["border-top-width"] =
-                  element.border.top.width + element.border.top.widthUnit;
-                innerStyleObject["border-top-style"] = element.border.top.style;
-                if (element.border.top.colors.hex8) {
-                  innerStyleObject["border-top-color"] = IDM.hex8ToRgbaString(
-                    element.border.top.colors.hex8
-                  );
-                }
-              }
-              if (element.border.right.width > 0) {
-                innerStyleObject["border-right-width"] =
-                  element.border.right.width + element.border.right.widthUnit;
-                innerStyleObject["border-right-style"] = element.border.right.style;
-                if (element.border.right.colors.hex8) {
-                  innerStyleObject["border-right-color"] = IDM.hex8ToRgbaString(
-                    element.border.right.colors.hex8
-                  );
-                }
-              }
-              if (element.border.bottom.width > 0) {
-                innerStyleObject["border-bottom-width"] =
-                  element.border.bottom.width + element.border.bottom.widthUnit;
-                innerStyleObject["border-bottom-style"] =
-                  element.border.bottom.style;
-                if (element.border.bottom.colors.hex8) {
-                  innerStyleObject["border-bottom-color"] = IDM.hex8ToRgbaString(
-                    element.border.bottom.colors.hex8
-                  );
-                }
-              }
-              if (element.border.left.width > 0) {
-                innerStyleObject["border-left-width"] =
-                  element.border.left.width + element.border.left.widthUnit;
-                innerStyleObject["border-left-style"] = element.border.left.style;
-                if (element.border.left.colors.hex8) {
-                  innerStyleObject["border-left-color"] = IDM.hex8ToRgbaString(
-                    element.border.left.colors.hex8
-                  );
-                }
-              }
-
-              innerStyleObject["border-top-left-radius"] =
-                element.radius.leftTop.radius +
-                element.radius.leftTop.radiusUnit;
-              innerStyleObject["border-top-right-radius"] =
-                element.radius.rightTop.radius +
-                element.radius.rightTop.radiusUnit;
-              innerStyleObject["border-bottom-left-radius"] =
-                element.radius.leftBottom.radius +
-                element.radius.leftBottom.radiusUnit;
-              innerStyleObject["border-bottom-right-radius"] =
-                element.radius.rightBottom.radius +
-                element.radius.rightBottom.radiusUnit;
-              break;
             case "boxShadow":
               styleObject["box-shadow"] = element;
               break;
-            case "innerBoxShadow":
-              innerStyleObject["box-shadow"] = element;
-              break;
             case "font":
-              innerStyleObject["font-family"] = element.fontFamily;
-              if (element.fontColors.hex8) {
-                innerStyleObject["color"] = IDM.hex8ToRgbaString(
-                  element.fontColors.hex8
-                );
-              }
-              innerStyleObject["font-weight"] =
-                element.fontWeight && element.fontWeight.split(" ")[0];
-              innerStyleObject["font-style"] = element.fontStyle;
-              innerStyleObject["font-size"] =
-                element.fontSize + element.fontSizeUnit;
-              innerStyleObject["line-height"] =
-                element.fontLineHeight +
-                (element.fontLineHeightUnit == "-"
-                  ? ""
-                  : element.fontLineHeightUnit);
-              innerStyleObject["text-align"] = element.fontTextAlign;
-              innerStyleObject["text-decoration"] = element.fontDecoration;
-              break;
-            case "titleFont":
-              titleFontStyleObject["font-family"] = element.fontFamily;
-              if (element.fontColors.hex8) {
-                titleFontStyleObject["color"] = IDM.hex8ToRgbaString(
-                  element.fontColors.hex8
-                );
-              }
-              titleFontStyleObject["font-weight"] =
-                element.fontWeight && element.fontWeight.split(" ")[0];
-              titleFontStyleObject["font-style"] = element.fontStyle;
-              titleFontStyleObject["font-size"] =
-                element.fontSize + element.fontSizeUnit;
-              titleFontStyleObject["line-height"] =
-                element.fontLineHeight +
-                (element.fontLineHeightUnit == "-"
-                  ? ""
-                  : element.fontLineHeightUnit);
-              titleFontStyleObject["text-align"] = element.fontTextAlign;
-              titleFontStyleObject["text-decoration"] = element.fontDecoration;
+              // innerStyleObject["font-family"] = element.fontFamily;
+              // if (element.fontColors.hex8) {
+              //   innerStyleObject["color"] = IDM.hex8ToRgbaString(
+              //     element.fontColors.hex8
+              //   );
+              // }
+              // innerStyleObject["font-weight"] =
+              //   element.fontWeight && element.fontWeight.split(" ")[0];
+              // innerStyleObject["font-style"] = element.fontStyle;
+              // innerStyleObject["font-size"] =
+              //   element.fontSize + element.fontSizeUnit;
+              // innerStyleObject["line-height"] =
+              //   element.fontLineHeight +
+              //   (element.fontLineHeightUnit == "-"
+              //     ? ""
+              //     : element.fontLineHeightUnit);
+              // innerStyleObject["text-align"] = element.fontTextAlign;
+              // innerStyleObject["text-decoration"] = element.fontDecoration;
               break;
           }
         }
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id, styleObject);
-    },
-    /**
-     * 主题颜色
-     */
-    convertThemeListAttrToStyleObject() {
-      const themeList = this.propData.themeList;
-      if (!themeList) {
-        return;
-      }
-      const themeNamePrefix =
-        IDM.setting &&
-        IDM.setting.applications &&
-        IDM.setting.applications.themeNamePrefix
-          ? IDM.setting.applications.themeNamePrefix
-          : "idm-theme-";
-      for (var i = 0; i < themeList.length; i++) {
-        var item = themeList[i];
-
-        IDM.setStyleToPageHead(
-          "." +
-            themeNamePrefix +
-            item.key +
-            " #" +
-            (this.moduleObject.packageid || "module_demo") +
-            " .i-my-list-header .header-icon",
-          {
-            "color": item.mainColor
-              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
-              : "",
-          }
-        );
-
-        IDM.setStyleToPageHead(
-          "." +
-            themeNamePrefix +
-            item.key +
-            " #" +
-            (this.moduleObject.packageid || "module_demo") +
-            " .i-my-list-content .i-notice-list-item .item-inner-circle",
-          {
-            "border-color": item.mainColor
-              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
-              : "",
-          }
-        );
-
-        IDM.setStyleToPageHead(
-          "." +
-            themeNamePrefix +
-            item.key +
-            " #" +
-            (this.moduleObject.packageid || "module_demo") +
-            " .i-my-list-content .i-notice-list-item .item-main-circle",
-          {
-            "background-color": item.mainColor
-              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
-              : "",
-          }
-        );
-      }
     },
     /**
      * 通用的url参数对象
@@ -606,46 +423,6 @@ export default {
         urlData: JSON.stringify(urlObject),
       };
       return params;
-    },
-    /**
-     * 通用的获取表达式匹配后的结果
-     */
-    getExpressData(dataName, dataFiled, resultData) {
-      //给defaultValue设置dataFiled的值
-      var _defaultVal = undefined;
-      if (dataFiled) {
-        var filedExp = dataFiled;
-        filedExp = dataName + (filedExp.startsWiths("[") ? "" : ".") + filedExp;
-        var dataObject = { IDM: window.IDM };
-        dataObject[dataName] = resultData;
-        _defaultVal = window.IDM.express.replace.call(
-          this,
-          "@[" + filedExp + "]",
-          dataObject
-        );
-      }
-      //对结果进行再次函数自定义
-      if (
-        this.propData.customFunction &&
-        this.propData.customFunction.length > 0
-      ) {
-        var params = this.commonParam();
-        var resValue = "";
-        try {
-          resValue =
-            window[this.propData.customFunction[0].name] &&
-            window[this.propData.customFunction[0].name].call(this, {
-              ...params,
-              ...this.propData.customFunction[0].param,
-              moduleObject: this.moduleObject,
-              expressData: _defaultVal,
-              interfaceData: resultData,
-            });
-        } catch (error) {}
-        _defaultVal = resValue;
-      }
-
-      return _defaultVal;
     },
     showThisModuleHandle() {
       this.propData.defaultStatus = "default";
@@ -735,6 +512,15 @@ $scale: var(--i-my-list-scale);
 
       &.hidden-splitline {
         border-bottom: none;
+      }
+
+      .idm_filed_svg_icon {
+        font-size: 1em;
+        width: 1em;
+        height: 1em;
+        fill: currentColor;
+        vertical-align: -0.15em;
+        outline: none;
       }
       
       .list-text {

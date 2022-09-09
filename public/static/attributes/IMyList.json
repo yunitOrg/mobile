@@ -63,7 +63,8 @@
           "type": "input",
           "layoutType": "inline",
           "text": "tab文字",
-          "bindKey": "tabText"
+          "bindKey": "tabText",
+          "default":"默认文字"
         },
         {
           "type": "switch",
@@ -84,6 +85,7 @@
             "height": "40px",
             "maxSize": 2097152
           },
+          "display":"@[showLeftIcon]",
           "dictionary": [
             "/resource/idm/img/6.png",
             "/resource/idm/img/12.png",
@@ -110,21 +112,24 @@
               "type": "iconSelect",
               "layoutType": "inline",
               "text": "自定义图标",
-              "bindKey": "rightIcon"
+              "bindKey": "rightIcon",
+              "display": "@[showRightIcon]"
             },
             {
               "type": "colorPicker",
               "layoutType": "inline",
               "text": "图标颜色",
-              "bindKey": "rightIconColor"
+              "bindKey": "rightIconColor",
+              "display": "@[showRightIcon]"
             },
             {
               "type": "inputNumberUnit",
               "layoutType": "inline",
               "text": "图标大小",
               "bindKey": "rightIconSize",
+              "display": "@[showRightIcon]",
               "default": {
-                "inputVal": 18,
+                "inputVal": 16,
                 "selectVal": "px"
               }
             }
@@ -202,7 +207,7 @@
           "text": "点击自定义函数",
           "bindKey": "clickCustomFunction",
           "display": "@[clickType=='customFunction']",
-          "desc": "当点击按钮时候会调用此函数，接收参数为格式为{...url参数,customParam:自定义的,activeKey,allKey,actionType:动作类型,selectDate:当前选中日期,allTabDataList}",
+          "desc": "当点击按钮时候会调用此函数，接收参数为格式为{...url参数,customParam:自定义的,activeKey:当前页签}",
           "multiple": true
         }
       ]
@@ -487,17 +492,9 @@
             {
               "type": "input",
               "layoutType": "inline",
-              "text": "日期",
-              "desc": "日期格式:2022-08-08",
-              "bindKey": "dateInterface",
-              "default": "date"
-            },
-            {
-              "type": "input",
-              "layoutType": "inline",
-              "text": "公告标题",
-              "bindKey": "btInterface",
-              "default": "bt"
+              "text": "右侧数字",
+              "bindKey": "numInterface",
+              "default": "num"
             }
           ]
         },
