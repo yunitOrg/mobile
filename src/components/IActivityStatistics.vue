@@ -189,8 +189,6 @@ export default {
           this.activityList = res.data
           this.isLoading = false;
         }, 1000)
-
-        return;
       }
       this.getDataSourceData()
       let dataSource = this.propData.dataSource;
