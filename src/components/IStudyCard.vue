@@ -211,7 +211,7 @@ export default {
       }
       let url = `ctrl/dataSource/getDatas`;
       IDM.http.post(url, {
-            id: dataSource && dataSource.value,
+            id: dataSource.value,
           }, {
             headers: {
               "Content-Type": "application/json;charset=UTF-8",

@@ -12,7 +12,8 @@
                  :key="index"
             >
               <div class="activity-icon">
-                <svg-icon :icon-class="activity.icon"/>
+                <svg-icon :icon-class="acitivity.icon" v-if="moduleObject.env === 'develop' && !propData.dataSource"/>
+                <img :src="acitivity.icon" v-if="!!propData.dataSource" alt=""/>
               </div>
               <div class="center-text">
                 <div class="activity-name">
