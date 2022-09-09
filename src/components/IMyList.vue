@@ -37,9 +37,9 @@
         </div>
       </li>
     </ul>
-    <!-- <div class="i-my-list-mask" v-if="moduleObject.env !== 'production' && !propData.dataSource">
+    <div class="i-my-list-mask" v-if="moduleObject.env !== 'production' && !propData.dataSource">
       <span>！未绑定数据源</span>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -91,10 +91,10 @@ export default {
     iconStyleObject(item){
       let str = ''
       if(item.rightIconColor){
-        str = `color:${IDM.hex8ToRgbaString(item.rightIconColor.hex8)};`
+        str += `color:${IDM.hex8ToRgbaString(item.rightIconColor.hex8)};`
       }
       if(item.rightIconSize){
-        str = `font-size:${item.rightIconSize.inputVal + item.rightIconSize.selectVal};`;
+        str += `font-size:${item.rightIconSize.inputVal + item.rightIconSize.selectVal};`;
       }
       return str
     },
@@ -102,7 +102,7 @@ export default {
      * 列表点击
      */
     listClick(item){
-      if(item.clickType && item.clickType=='customFunction'){
+      if(item.clickType && item.clickType=='customFunction' && item.clickCustomFunction[0]){
         window[item.clickCustomFunction[0].name] &&
         window[item.clickCustomFunction[0].name].call(this, {
           ...this.commonParam(),
@@ -149,9 +149,7 @@ export default {
         .post(
           url,
           {
-            id: dataSource.value,
-            start: this.infoList.length,
-            limit: this.propData.defaultNumber,
+            id: dataSource.value
           },
           {
             headers: {
@@ -385,24 +383,24 @@ export default {
               styleObject["box-shadow"] = element;
               break;
             case "font":
-              // innerStyleObject["font-family"] = element.fontFamily;
-              // if (element.fontColors.hex8) {
-              //   innerStyleObject["color"] = IDM.hex8ToRgbaString(
-              //     element.fontColors.hex8
-              //   );
-              // }
-              // innerStyleObject["font-weight"] =
-              //   element.fontWeight && element.fontWeight.split(" ")[0];
-              // innerStyleObject["font-style"] = element.fontStyle;
-              // innerStyleObject["font-size"] =
-              //   element.fontSize + element.fontSizeUnit;
-              // innerStyleObject["line-height"] =
-              //   element.fontLineHeight +
-              //   (element.fontLineHeightUnit == "-"
-              //     ? ""
-              //     : element.fontLineHeightUnit);
-              // innerStyleObject["text-align"] = element.fontTextAlign;
-              // innerStyleObject["text-decoration"] = element.fontDecoration;
+              styleObject["font-family"] = element.fontFamily;
+              if (element.fontColors.hex8) {
+                styleObject["color"] = IDM.hex8ToRgbaString(
+                  element.fontColors.hex8
+                );
+              }
+              styleObject["font-weight"] =
+                element.fontWeight && element.fontWeight.split(" ")[0];
+              styleObject["font-style"] = element.fontStyle;
+              styleObject["font-size"] =
+                element.fontSize + element.fontSizeUnit;
+              styleObject["line-height"] =
+                element.fontLineHeight +
+                (element.fontLineHeightUnit == "-"
+                  ? ""
+                  : element.fontLineHeightUnit);
+              styleObject["text-align"] = element.fontTextAlign;
+              styleObject["text-decoration"] = element.fontDecoration;
               break;
           }
         }
@@ -498,11 +496,10 @@ $scale: var(--i-my-list-scale);
   font-weight: 400;
 
   ul{
-    padding: 0 16px;
+    padding: 0 calc($scale * 16px);
     li {
       display: flex;
-      height: 50px;
-      // line-height: 50px;
+      height: calc($scale * 50px);
       border-bottom: 1px solid rgba(225,225,225,1);
       align-items: center;
 
@@ -531,17 +528,14 @@ $scale: var(--i-my-list-scale);
       }
 
       .list-right-num {
-        margin-right: 10px;
-        font-size: 16px;
-        color: #333333;
-        font-weight: 400;
+        margin-right: calc($scale * 10px);
       }
 
       .list-left-icon img{
-        width: 18px;
-        height: 18px;
+        width: calc($scale * 18px);
+        height: calc($scale * 18px);
         vertical-align: text-bottom;
-        margin-right: 16px;
+        margin-right: calc($scale * 16px);
       }
     }
   }
