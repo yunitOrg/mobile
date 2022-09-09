@@ -310,6 +310,7 @@
                         },
                         "fontWeight": "600 Semi Bold",
                         "fontStyle": "italic",
+                        "fontTextAlign": "center",
                         "fontSize": 18,
                         "fontSizeUnit": "px"
                     }
@@ -344,7 +345,7 @@
                             "layoutType": "inline",
                             "text": "图标大小",
                             "bindKey": "iconSize",
-                            "default": 16
+                            "default": 17
                         },
                         {
                             "type": "colorPicker",
