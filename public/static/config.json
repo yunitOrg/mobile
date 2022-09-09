@@ -227,6 +227,13 @@
       "className": "IMyList",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.ifootBtn",
+      "comName": "底部按钮",
+      "className": "IfootBtn",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }
