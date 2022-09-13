@@ -72,7 +72,7 @@ export default {
         },
         sendMessageToFootBtn() {
             if (this.propData.triggerComponents.length === 0) {
-                return IDM.message.warning('请配置菜单的联动组件')
+                return IDM.message.warning(`请配置${this.moduleObject.comName}的联动组件`)
             }
             this.sendBroadcastMessage({
                 type: 'i-checkbox-card-change',
@@ -232,8 +232,8 @@ export default {
         },
         initData() {
             // if (this.moduleObject.env !== 'production') {
-                this.componentData = getCheckboxCardData.call(this)
-                return
+            this.componentData = getCheckboxCardData.call(this)
+            return
             // }
             // window.IDM.http
             //     .post(
