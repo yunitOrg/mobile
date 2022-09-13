@@ -10,6 +10,16 @@
             @itemDataChange="itemDataChange"
             @subItemChange="subItemChange"
         ></ICheckboxCardItem>
+        <!-- empty placeholder -->
+        <ICommonEmpty
+            v-if="!isFirst && !isLoading && componentData.length === 0"
+            :moduleObject="moduleObject"
+            :propData="propData"
+        ></ICommonEmpty>
+        <!-- page loading -->
+        <div class="d-flex just-c" v-if="isLoading">
+            <van-loading size="24px" vertical>加载中...</van-loading>
+        </div>
         <ICommonMask :moduleObject="moduleObject" :propData="propData"></ICommonMask>
     </div>
 </template>
@@ -17,19 +27,25 @@
 import ICheckboxCardItem from '../commonComponents/ICheckboxCardItem'
 import { getCheckboxCardData } from '../mock/mockData'
 import ICommonMask from '../commonComponents/ICommonMask'
+import ICommonEmpty from '../commonComponents/ICommonEmpty'
+import adaptationScreenMixin from '../mixins/adaptationScreen'
 import { getDatasInterfaceUrl } from '@/api/config'
 export default {
     name: 'ICheckboxCard',
     components: {
         ICheckboxCardItem,
-        ICommonMask
+        ICommonMask,
+        ICommonEmpty
     },
+    mixins: [adaptationScreenMixin],
     data() {
         return {
             moduleObject: {},
             propData: this.$root.propData.compositeAttr || {
                 triggerComponents: []
             },
+            isLoading: false, // page is loading
+            isFirst: true, // page is first load
             componentData: []
         }
     },
@@ -141,6 +157,7 @@ export default {
                         // 标题
                         case 'titleFont':
                             IDM.style.setFontStyle(titleTextObj, element)
+                            this.adaptiveFontSize(titleTextObj, element)
                             break
                         case 'titleBox':
                             IDM.style.setBoxStyle(titleTextObj, element)
@@ -151,9 +168,11 @@ export default {
                         // 用户昵称
                         case 'usernameFont':
                             IDM.style.setFontStyle(usernameObj, element)
+                            this.adaptiveFontSize(usernameObj, element)
                             break
                         case 'timeFont':
                             IDM.style.setFontStyle(timeObj, element)
+                            this.adaptiveFontSize(timeObj, element)
                             break
                         // 图标
                         case 'iconBox':
@@ -178,6 +197,7 @@ export default {
                             break
                         case 'contentFont':
                             IDM.style.setFontStyle(contentObj, element)
+                            this.adaptiveFontSize(contentObj, element)
                             break
                         case 'contentClamp':
                             clampObj['line-clamp'] = element
@@ -199,7 +219,7 @@ export default {
             this.initData()
         },
         /**
-         * 主题颜色
+         * theme color
          */
         convertThemeListAttrToStyleObject() {
             var themeList = this.propData.themeList
@@ -227,40 +247,45 @@ export default {
             }
         },
         reload() {
-            //请求数据源
             this.initData()
         },
         initData() {
-            // if (this.moduleObject.env !== 'production') {
-            this.componentData = getCheckboxCardData.call(this)
-            return
-            // }
-            // window.IDM.http
-            //     .post(
-            //         getDatasInterfaceUrl,
-            //         {
-            //             id: this.propData.dataSource && this.propData.dataSource.value
-            //         },
-            //         {
-            //             headers: {
-            //                 'Content-Type': 'application/json;charset=UTF-8'
-            //             }
-            //         }
-            //     )
-            //     .then((res) => {
-            //         //res.data
-            //         if (res.status == 200 && res.data.code == 200) {
-            //             this.componentData = res.data.data
-            //             this.sendMessageToFootBtn()
-            //         } else {
-            //             IDM.message.error(res.data.message)
-            //         }
-            //     })
+            if (this.moduleObject.env !== 'production') {
+                this.componentData = getCheckboxCardData.call(this)
+                return
+            }
+            this.isFirst = false
+            this.isLoading = true
+            window.IDM.http
+                .post(
+                    getDatasInterfaceUrl,
+                    {
+                        id: this.propData.dataSource && this.propData.dataSource.value
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json;charset=UTF-8'
+                        }
+                    }
+                )
+                .then((res) => {
+                    //res.data
+                    if (res.status == 200 && res.data.code == 200) {
+                        this.componentData = res.data.data
+                        this.sendMessageToFootBtn()
+                    } else {
+                        IDM.message.error(res.data.message)
+                    }
+                })
+                .finally(() => {
+                    this.isLoading = false
+                })
         },
         receiveBroadcastMessage(object) {
             switch (object.type) {
                 case 'ifootbtn-all':
                     if (object.message) this.setAllCheckStatus(object.message.checkAll)
+                    break
             }
         },
         setContextValue(object) {

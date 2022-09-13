@@ -1,6 +1,6 @@
 <template>
     <div :id="`${moduleObject.id}-common-list`" class="over-h position-r">
-        <!-- 通用头 -->
+        <!-- header -->
         <i-common-header
             v-if="propData.isShowTitle"
             @handleClickMore="$emit('handleClickMore')"
@@ -8,11 +8,11 @@
             :propData="propData"
             :pageData="pageData"
         ></i-common-header>
-        <!-- 内层容器 -->
+        <!-- sub content container -->
         <div class="common-list-container">
-            <!-- 列表内容 -->
+            <!-- list slot -->
             <slot name="list"></slot>
-            <!-- 内容空占位 -->
+            <!-- empty placeholder -->
             <ICommonEmpty
                 v-if="!isFirst && !isLoading && pageData.value.length === 0"
                 :moduleObject="moduleObject"
@@ -23,7 +23,7 @@
                 <van-loading size="24px" vertical>加载中...</van-loading>
             </div>
         </div>
-        <!-- 数据源遮罩层 -->
+        <!-- data source masker -->
         <ICommonMask :moduleObject="moduleObject" :propData="propData"></ICommonMask>
     </div>
 </template>

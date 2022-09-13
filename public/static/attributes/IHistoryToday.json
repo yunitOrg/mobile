@@ -467,6 +467,8 @@
                     "text": "内容字体",
                     "bindKey": "contentFont",
                     "default": {
+                        "fontSize": 14,
+                        "fontSizeUnit": "px",
                         "fontColors": {
                             "hex": "#B99334",
                             "hex8": "#B99334FF"
