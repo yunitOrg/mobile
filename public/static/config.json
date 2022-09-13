@@ -1,6 +1,6 @@
 {
   "version": "1.0.1",
-  "lasttime": "2022-09-08 15:01:11",
+  "lasttime": "2022-09-09 15:15:19",
   "author": "申龙",
   "className": "mobile",
   "module": [
@@ -222,6 +222,12 @@
       "comLangue": "vue"
     },
     {
+      "classId": "idm.component.mobile.icheckboxcard",
+      "comName": "多选卡片",
+      "className": "ICheckboxCard",
+      "comType": "common",
+      "comLangue": "vue"
+    },{
       "classId": "idm.component.mobile.imylist",
       "comName": "我的列表",
       "className": "IMyList",
@@ -232,6 +238,13 @@
       "classId": "idm.component.mobile.ifootBtn",
       "comName": "底部按钮",
       "className": "IfootBtn",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.integral",
+      "comName": "我的积分",
+      "className": "Integral",
       "comType": "common",
       "comLangue": "vue"
     }

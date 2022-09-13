@@ -196,3 +196,56 @@ export const historyTodayData = {
     content:
         '2010年5月17日至19日 中共中央,国务院在北京召开新疆工作座谈会,2010年5月17日至19日中共中央,国务院在北京召开新疆工作座谈会2010年5月17日至19日 中共中央,国务院在北京召开新疆工作座谈会'
 }
+
+export function getCheckboxCardData() {
+    const _this = this
+    return [
+        {
+            title: '第三次党员大会',
+            isCheck: true,
+            children: [
+                {
+                    username: '陈独秀',
+                    avatar: IDM.url.getModuleAssetsWebPath(require('../assets/default_avatar.png'), _this.moduleObject),
+                    content: '关于《2021年9月党小组会》的请假单：因工作出差在外，无法参加活动，望批准。',
+                    time: '2022-09-24',
+                    isCheck: true
+                },
+                {
+                    username: '陈独秀',
+                    avatar: IDM.url.getModuleAssetsWebPath(require('../assets/default_avatar.png'), _this.moduleObject),
+                    content: '关于《2021年9月党小组会》的请假单：因工作出差在外，无法参加活动，望批准。',
+                    time: '2022-09-24',
+                    isCheck: true
+                }
+            ]
+        },
+        {
+            title: '第三次党员大会',
+            isCheck: true,
+            children: [
+                {
+                    username: '陈独秀',
+                    avatar: IDM.url.getModuleAssetsWebPath(require('../assets/default_avatar.png'), _this.moduleObject),
+                    content: '关于《2021年9月党小组会》的请假单：因工作出差在外，无法参加活动，望批准。',
+                    time: '2022-09-24',
+                    isCheck: true
+                },
+                {
+                    username: '陈独秀',
+                    avatar: IDM.url.getModuleAssetsWebPath(require('../assets/default_avatar.png'), _this.moduleObject),
+                    content: '关于《2021年9月党小组会》的请假单：因工作出差在外，无法参加活动，望批准。',
+                    time: '2022-09-24',
+                    isCheck: true
+                },
+                {
+                    username: '陈独秀',
+                    avatar: IDM.url.getModuleAssetsWebPath(require('../assets/default_avatar.png'), _this.moduleObject),
+                    content: '关于《2021年9月党小组会》的请假单：因工作出差在外，无法参加活动，望批准。',
+                    time: '2022-09-24',
+                    isCheck: true
+                }
+            ]
+        }
+    ]
+}

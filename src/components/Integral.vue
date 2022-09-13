@@ -9,10 +9,16 @@
   :id="moduleObject.id" 
   :idm-ctrl-id="moduleObject.id" 
   >
-    <div class="idm-footbtn">
-      <van-checkbox v-model="checked" class="footbtn-check" shape="square" @change="handleChange">{{allData.selectNumber}}/{{allData.total}}</van-checkbox>
-      <div class="footbtn-flex">
-        <div class="footbtn-btn" v-for="(item, index) in propData.table" :key="index" :style="computedStyle(item)" @click="handleClick(item)">{{item.tab}}</div>
+    <div class="idm-integral">
+      <div class="integral-img" :style="`width:${propData.imgWidth};height:${propData.imgHeight};background-color: ${propData.colorBg}`" v-if="propData.showImg">
+        <img :src="propData.topImgUrl || topimgUrl" alt="">
+        <div class="integral-position integral-white">
+          <div class="integral-top-title">累计积分</div>
+          <div class="integral-block">
+            <span>4551</span>
+            <b>今日已获得3积分</b>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -20,72 +26,16 @@
 
 <script>
 export default {
-  name: 'IfootBtn',
+  name: 'Integral',
   data () {
     return {
-      checked: false,
       moduleObject:{},
-      allData: {
-        selectNumber: 0,
-        total: 0
-      },
+      topimgUrl: IDM.url.getModuleAssetsWebPath(require("../assets/integral.png"), this.moduleObject),
       propData:this.$root.propData.compositeAttr||{
-        box: {
-          marginTopVal: "",
-          marginRightVal: "",
-          marginBottomVal: "",
-          marginLeftVal: "",
-          paddingTopVal: "",
-          paddingRightVal: "20px",
-          paddingBottomVal: "",
-          paddingLeftVal: "20px"
-        },
-        width: 'auto',
-        height: '60px',
-        boxShadow: "0px 0px 10px 0px #e3dede",
-        checkBorder: {
-          hex: "#f00",
-          hex8: "#f00"
-        },
-        checkBg:{
-          hex: "#f00",
-          hex8: "#f00"
-        },
-        table: [
-          {
-            key: "1",
-            tab: "拒绝",
-            itemWidth: "100px",
-            itemHeight: "40px",
-            btnSplit: "10px",
-            itemFontStyle: {
-              fontSize: 16,
-              fontSizeUnit: "px"
-            },
-            itemBg: {
-              hex: "#FFFFFF",
-              hex8: "FFFFFFFF"
-            }
-          },
-          {
-            key: "2",
-            tab: "同意",
-            itemWidth: "100px",
-            btnSplit: "10px",
-            itemHeight: "40px",
-            itemFontStyle: {
-              fontColors: {
-                hex: "#000000"
-              },
-              fontSize: 16,
-              fontSizeUnit: "px"
-            },
-            itemBg: {
-              hex: "#FFFFFF",
-              hex8: "FFFFFFFF"
-            }
-          }
-        ]
+        imgWidth: 'auto',
+        imgHeight: '200px',
+        showImg: true,
+        colorBg: "#DA1412"
       }
     }
   },
@@ -95,38 +45,6 @@ export default {
   },
 
   methods: {
-    computedStyle (item) {
-      let obj = {}
-      for (const key in item) {
-        if (item.hasOwnProperty.call(item, key)) {
-          const element = item[key]
-          if (!element && element !== false && element != 0) {
-              continue
-          }
-          switch (key) {
-            case 'itemWidth':
-              obj['width'] = element
-              break
-            case 'itemHeight':
-              obj['height'] = element;
-              obj['line-height'] = element;
-              break
-            case 'itemFontStyle':
-              IDM.style.setFontStyle(obj, element)
-              break
-            case 'itemBg':
-              obj['background-color'] = element && element.hex8
-              break
-            case 'itemBorder':
-              IDM.style.setBorderStyle(obj, element)
-              break
-            case 'btnSplit':
-              obj['margin-right'] = element
-          }
-        }
-      }
-      return obj
-    },
     propDataWatchHandle (propData) {
       this.propData = propData.compositeAttr||{};
       this.init();
@@ -272,24 +190,39 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.footbtn-check{
-  .van-checkbox__icon--checked .van-icon{
-    background-color: #fff;
-  }
-}
-</style>
-
 <style lang="scss" scoped>
-.idm-footbtn{
-  display: flex;
-  justify-content: space-between;
-  .footbtn-flex{
-    display: flex;
-    align-items: center;
-  }
-  .footbtn-btn{
-    text-align: center;
+.idm-integral{
+  .integral-img{
+    position: relative;
+    img{
+      width: 100%;
+      height: 100%;
+    }
+    .integral-white{
+      color: #fff;
+      position: absolute;
+      text-align: center;
+    }
+    .integral-position{
+      top: 35%;
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
+    .integral-top-title{
+      font-size: 16px;
+    }
+    .integral-block{
+      position: absolute;
+      top: 35px;
+      span{
+        font-size: 30px;
+      }
+      b{
+        position: absolute;
+        right: -123px;
+        top: 15px;
+      }
+    }
   }
 }
 </style>

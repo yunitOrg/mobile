@@ -467,6 +467,8 @@
                     "text": "内容字体",
                     "bindKey": "contentFont",
                     "default": {
+                        "fontSize": 14,
+                        "fontSizeUnit": "px",
                         "fontColors": {
                             "hex": "#B99334",
                             "hex8": "#B99334FF"
@@ -589,7 +591,7 @@
                 {
                     "type": "group",
                     "text": "字段设置",
-                    "desc": "设置从列表项中展示的对应字段",
+                    "desc": "设置组件中展示的对应字段",
                     "children": [
                         {
                             "type": "input",

@@ -163,7 +163,7 @@ import { Empty, Loading, Image as VanImage } from 'vant';
 import 'vant/lib/empty/style';
 import 'vant/lib/loading/style';
 import 'vant/lib/image/style';
-const devResult = (_this) => [
+const devResult = _this => [
   {
     imgUrl: IDM.url.getModuleAssetsWebPath(require('../assets/logo.png'), _this.moduleObject),
     name: '学习强国',
@@ -392,17 +392,21 @@ export default {
         const dataSource = this.propData.dataSource;
         const url = `ctrl/dataSource/getDatas`;
         const urlObject = IDM.url.queryObject();
+        const routerParams = this.moduleObject.routerId
+          ? IDM.router.getParam(this.moduleObject.routerId)
+          : {};
         this.isLoading = true;
         IDM.http
           .post(
             url,
             {
-              id: dataSource.value,
               pageId:
                 window.IDM.broadcast && window.IDM.broadcast.pageModule
                   ? window.IDM.broadcast.pageModule.id
                   : '',
-              ...urlObject
+              ...urlObject,
+              ...routerParams,
+              id: dataSource.value
             },
             {
               headers: {

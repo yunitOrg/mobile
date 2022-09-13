@@ -1263,16 +1263,20 @@ export default {
         const dataSource = this.propData.popularDataSource;
         const url = `ctrl/dataSource/getDatas`;
         const urlObject = IDM.url.queryObject();
+        const routerParams = this.moduleObject.routerId
+          ? IDM.router.getParam(this.moduleObject.routerId)
+          : {};
         IDM.http
           .post(
             url,
             {
-              id: dataSource.value,
               pageId:
                 window.IDM.broadcast && window.IDM.broadcast.pageModule
                   ? window.IDM.broadcast.pageModule.id
                   : '',
-              ...urlObject
+              ...urlObject,
+              ...routerParams,
+              id: dataSource.value
             },
             {
               headers: {
@@ -1319,17 +1323,21 @@ export default {
         const dataSource = this.propData.recordDataSource;
         const url = `ctrl/dataSource/getDatas`;
         const urlObject = IDM.url.queryObject();
+        const routerParams = this.moduleObject.routerId
+          ? IDM.router.getParam(this.moduleObject.routerId)
+          : {};
         IDM.http
           .post(
             url,
             {
-              id: dataSource.value,
-              type: this.propData.recordLocalDisplayMode,
               pageId:
                 window.IDM.broadcast && window.IDM.broadcast.pageModule
                   ? window.IDM.broadcast.pageModule.id
                   : '',
-              ...urlObject
+              ...urlObject,
+              ...routerParams,
+              id: dataSource.value,
+              type: this.propData.recordLocalDisplayMode
             },
             {
               headers: {
