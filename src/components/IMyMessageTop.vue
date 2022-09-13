@@ -23,12 +23,14 @@
 <script>
 import { getMyMessageTopData } from '../mock/mockData'
 import { getDatasInterfaceUrl } from '@/api/config'
+import adaptationScreenMixin from '../mixins/adaptationScreen'
 import ICommonMask from '../commonComponents/ICommonMask'
 export default {
     name: 'IMyMessageTop',
     components: {
         ICommonMask
     },
+    mixins: [adaptationScreenMixin],
     data() {
         return {
             moduleObject: {},
@@ -147,10 +149,10 @@ export default {
                             break
                         // 头像样式
                         case 'avatarWidth':
-                            avatarObj['width'] = element
+                            avatarObj['width'] = this.getAdaptiveSize(element) + 'px'
                             break
                         case 'avatarHeight':
-                            avatarObj['height'] = element
+                            avatarObj['height'] = this.getAdaptiveSize(element) + 'px'
                             break
                         case 'avatarBorder':
                             IDM.style.setBorderStyle(avatarObj, element)
@@ -164,6 +166,7 @@ export default {
                             break
                         case 'usernameFont':
                             IDM.style.setFontStyle(usernameObj, element)
+                            this.adaptiveFontSize(usernameObj, element)
                             break
                         // 党龄
                         case 'yearBox':
@@ -171,6 +174,7 @@ export default {
                             break
                         case 'yearFont':
                             IDM.style.setFontStyle(partySeniorityObj, element)
+                            this.adaptiveFontSize(partySeniorityObj, element)
                             break
                         // 支部
                         case 'branchBox':
@@ -178,11 +182,12 @@ export default {
                             break
                         case 'branchFont':
                             IDM.style.setFontStyle(partyBranchObj, element)
+                            this.adaptiveFontSize(partyBranchObj, element)
                             break
                         // icon
                         case 'iconSize':
-                            iconObj['width'] = element + 'px'
-                            iconObj['height'] = element + 'px'
+                            iconObj['width'] = this.getAdaptiveSize(element) + 'px'
+                            iconObj['height'] = this.getAdaptiveSize(element) + 'px'
                             break
                         case 'iconColor':
                             if (element && element.hex8) {

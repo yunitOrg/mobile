@@ -3,8 +3,8 @@
         <div class="d-flex align-s">
             <van-checkbox
                 :icon-size="propData && propData.iconSize"
-                shape="square"
-                class="idm-checkbox-card-checkbox"
+                :shape="propData.iconStyle"
+                class="idm-checkbox-card-checkbox margin-top-1"
                 :disabled="itemData.isDisabled || isDev"
                 @click="$emit('itemDataChange', { itemIndex: itemIndex })"
                 v-model="itemData.isCheck"
@@ -13,10 +13,10 @@
                 {{ IDM.express.replace(`@[${propData.titleField}]`, itemData, true) }}
             </div>
         </div>
-        <div v-for="(item, index) in itemData.children" :key="index" class="idm-checkbox-card-sub d-flex">
+        <div v-for="(item, index) in itemData.children" :key="index" class="idm-checkbox-card-sub d-flex align-s">
             <van-checkbox
                 :icon-size="propData && propData.iconSize"
-                shape="square"
+                :shape="propData.iconStyle"
                 class="idm-checkbox-card-checkbox"
                 :disabled="item.isDisabled || isDev"
                 @click="$emit('subItemChange', { index, itemIndex })"
@@ -83,6 +83,9 @@ export default {
     }
     &:last-child {
         margin-bottom: 0 !important;
+    }
+    .margin-top-1{
+        margin-top: 1px !important;
     }
 }
 </style>

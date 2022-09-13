@@ -47,6 +47,7 @@
 import ICommonMask from '../commonComponents/ICommonMask'
 import { historyTodayData } from '../mock/mockData'
 import { getDatasInterfaceUrl } from '@/api/config'
+import adaptationScreenMixin from '../mixins/adaptationScreen'
 export default {
     name: 'IHistoryToday',
     components: {
@@ -62,6 +63,7 @@ export default {
             componentData: {}
         }
     },
+    mixins: [adaptationScreenMixin],
     created() {
         this.moduleObject = this.$root.moduleObject
         this.convertAttrToStyleObject()
@@ -115,6 +117,7 @@ export default {
                             break
                         case 'titleFont':
                             IDM.style.setFontStyle(leftTitleObj, element)
+                            this.adaptiveFontSize(leftTitleObj, element)
                             break
                         case 'leftBottomBox':
                             IDM.style.setBoxStyle(leftBottomObj, element)
@@ -129,6 +132,7 @@ export default {
                             break
                         case 'timeFont':
                             IDM.style.setFontStyle(dateObj, element)
+                            this.adaptiveFontSize(dateObj, element)
                             break
                         case 'iconSize':
                             iconObj['width'] = element + 'px'
@@ -155,10 +159,11 @@ export default {
                             break
                         case 'contentFont':
                             IDM.style.setFontStyle(rightObj, element)
+                            this.adaptiveFontSize(rightObj, element)
                             break
                         case 'rightIconSize':
-                            rightIconObj['width'] = element + 'px'
-                            rightIconObj['height'] = element + 'px'
+                            rightIconObj['width'] = this.getAdaptiveSize(element) + 'px'
+                            rightIconObj['height'] = this.getAdaptiveSize(element) + 'px'
                             break
                         case 'rightIconColor':
                             if (element && element.hex8) {
