@@ -10,7 +10,16 @@
   :idm-ctrl-id="moduleObject.id" 
   >
     <div class="idm-integral">
-     ds
+      <div class="integral-img" :style="`width:${propData.imgWidth};height:${propData.imgHeight};background-color: ${propData.colorBg}`" v-if="propData.showImg">
+        <img :src="propData.topImgUrl || topimgUrl" alt="">
+        <div class="integral-position integral-white">
+          <div class="integral-top-title">累计积分</div>
+          <div class="integral-block">
+            <span>4551</span>
+            <b>今日已获得3积分</b>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -21,7 +30,13 @@ export default {
   data () {
     return {
       moduleObject:{},
-      propData:this.$root.propData.compositeAttr||{}
+      topimgUrl: IDM.url.getModuleAssetsWebPath(require("../assets/integral.png"), this.moduleObject),
+      propData:this.$root.propData.compositeAttr||{
+        imgWidth: 'auto',
+        imgHeight: '200px',
+        showImg: true,
+        colorBg: "#DA1412"
+      }
     }
   },
   created () {
@@ -177,6 +192,37 @@ export default {
 
 <style lang="scss" scoped>
 .idm-integral{
- 
+  .integral-img{
+    position: relative;
+    img{
+      width: 100%;
+      height: 100%;
+    }
+    .integral-white{
+      color: #fff;
+      position: absolute;
+      text-align: center;
+    }
+    .integral-position{
+      top: 35%;
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
+    .integral-top-title{
+      font-size: 16px;
+    }
+    .integral-block{
+      position: absolute;
+      top: 35px;
+      span{
+        font-size: 30px;
+      }
+      b{
+        position: absolute;
+        right: -123px;
+        top: 15px;
+      }
+    }
+  }
 }
 </style>
