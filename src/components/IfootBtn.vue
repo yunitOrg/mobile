@@ -10,7 +10,7 @@
   :idm-ctrl-id="moduleObject.id" 
   >
     <div class="idm-footbtn">
-      <van-checkbox v-model="checked" disabled @change="handleChange">复选框</van-checkbox>
+      <van-checkbox v-model="checked" class="footbtn-check" shape="square" @change="handleChange">{{allData.selectNumber}}/{{allData.total}}</van-checkbox>
       <div class="footbtn-flex">
         <div class="footbtn-btn" v-for="(item, index) in propData.table" :key="index" :style="computedStyle(item)" @click="handleClick(item)">{{item.tab}}</div>
       </div>
@@ -23,8 +23,12 @@ export default {
   name: 'IfootBtn',
   data () {
     return {
-      checked: true,
+      checked: false,
       moduleObject:{},
+      allData: {
+        selectNumber: 0,
+        total: 0
+      },
       propData:this.$root.propData.compositeAttr||{
         box: {
           marginTopVal: "",
@@ -39,6 +43,14 @@ export default {
         width: 'auto',
         height: '60px',
         boxShadow: "0px 0px 10px 0px #e3dede",
+        checkBorder: {
+          hex: "#f00",
+          hex8: "#f00"
+        },
+        checkBg:{
+          hex: "#f00",
+          hex8: "#f00"
+        },
         table: [
           {
             key: "1",
@@ -122,13 +134,13 @@ export default {
     init () {
       console.log(this.propData, '数据');
       this.converStyleObj();
+      this.converThemeListObject();
     },
     converStyleObj () {
       let styleObject = {},
-          itemStyleObject = {},
-          fontStyle = {},
-          chooseFontStyle = {},
-          selectFont = {};
+          numStyleObject = {},
+          checkStyleObject = {},
+          colorCheck = {};
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
           const element = this.propData[key]
@@ -154,21 +166,93 @@ export default {
             case 'boxBorder':
               IDM.style.setBorderStyle(styleObject, element)
               break
+            case 'numFont':
+              IDM.style.setFontStyle(numStyleObject, element)
+              break
+            case 'checkBorder':
+              checkStyleObject['border-color'] = element && element.hex8 + ' !important'
+              break
+            case 'checkBg':
+              colorCheck['color'] = element && element.hex8 + ' !important'
+              break
           }
         }
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .idm-footbtn", styleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .van-checkbox__label", numStyleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .van-checkbox__icon--checked .van-icon", checkStyleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .van-checkbox__icon--checked .van-icon-success:before", colorCheck);
     },
     handleClick (row) {
-      console.log(row)
+      let that = this;
+      let { customClickFunc, key } = row;
+      if (customClickFunc && customClickFunc.length > 0 ) {
+        customClickFunc.forEach(item => {
+          window[item.name] && window[item.name].call(that, {
+            value: key
+          });
+        })
+      }
+    },
+    // 设置主题
+    converThemeListObject () {
+      let themeList = this.propData.themeList;
+      if (!themeList) {
+        return;
+      }
+      const themeNamePrefix =
+        IDM.setting &&
+        IDM.setting.applications &&
+        IDM.setting.applications.themeNamePrefix
+          ? IDM.setting.applications.themeNamePrefix
+          : "idm-theme-";
+      for (let i=0; i<themeList.length; i++) {
+        let item = themeList[i]
+        if(item.key!=IDM.theme.getCurrentThemeInfo()){
+            //此处比对是不渲染输出不用的样式，如果页面会刷新就可以把此处放开
+            continue;
+        }
+        let tempobj = {};
+        tempobj = {
+          "border-color": item.mainColor ? item.mainColor.hex8 : "",
+        }
+        IDM.setStyleToPageHead(
+          `.${themeNamePrefix}${item.key} #${(this.moduleObject.id || "module_demo")} .van-checkbox__icon--checked .van-icon`,
+          tempobj
+        );
+        IDM.setStyleToPageHead(
+          `.${themeNamePrefix}${item.key} #${(this.moduleObject.id || "module_demo")} .van-checkbox__icon--checked .van-icon-success:before`,
+          {
+            "color": item.mainColor ? item.mainColor.hex8 : ""
+          }
+        );
+      }
     },
     handleChange (val) {
-      console.log(val)
       this.sendBroadcastMessage({
-        type: 'iselect_chooseData',
+        type: 'ifootbtn-all',
         rangeModule: this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
-        message: {}
+        message: { checkAll: val }
       })
+    },
+    /**
+     * 组件通信：接收消息的方法
+     * @param {
+     *  type:"发送消息的时候定义的类型，这里可以自己用来要具体做什么，统一规定的type：linkageResult（组件联动传结果值）、linkageDemand（组件联动传需求值）、linkageReload（联动组件重新加载）
+     * 、linkageOpenDialog（打开弹窗）、linkageCloseDialog（关闭弹窗）、linkageShowModule（显示组件）、linkageHideModule（隐藏组件）、linkageResetDefaultValue（重置默认值）"
+     *  message:{发送的时候传输的消息对象数据}
+     *  messageKey:"消息数据的key值，代表数据类型是什么，常用于表单交互上，比如通过这个key判断是什么数据"
+     *  isAcross:如果为true则代表发送来源是其他页面的组件，默认为false
+     * } object
+     */
+    receiveBroadcastMessage (object) {
+      switch (object.type) {
+        case 'i-checkbox-card-change':
+          console.log('接收消息', object.message)
+          this.allData = object.message || {}
+          this.checked = (object.message || {}).total === (object.message || {}).selectNumber
+          break;
+      }
     },
     /**
      * 组件通信：发送消息的方法
@@ -188,6 +272,14 @@ export default {
 }
 </script>
 
+<style lang="scss">
+.footbtn-check{
+  .van-checkbox__icon--checked .van-icon{
+    background-color: #fff;
+  }
+}
+</style>
+
 <style lang="scss" scoped>
 .idm-footbtn{
   display: flex;
@@ -198,9 +290,6 @@ export default {
   }
   .footbtn-btn{
     text-align: center;
-  }
-  .footbtn-btn:last-child{
-    margin-right: 0;
   }
 }
 </style>
