@@ -1,7 +1,7 @@
 {
-  "classId": "idm.component.mobile.itimeaxis",
-  "comName": "时间轴",
-  "className": "ITimeAxis",
+  "classId": "idm.component.mobile.inoticelistcard",
+  "comName": "通知公告",
+  "className": "INoticeListCard",
   "comType": "common",
   "comLangue": "vue",
   "compositeAttr": [
@@ -21,13 +21,12 @@
       "desc": "提供设置组件能达到展示效果的基本属性设置信息",
       "children": [
         {
-          "type": "textarea",
+          "type": "switch",
           "layoutType": "inline",
-          "text": "为空描述",
-          "bindKey": "emptyDescription",
-          "desc": "内容为空的时候描述文字提示",
-          "default": "暂无数据",
-          "placeholder": "示例：暂无数据"
+          "text": "分割线",
+          "desc": "是否显示分割线",
+          "bindKey": "showSplitLine",
+          "default": "true"
         },
         {
           "type": "radio",
@@ -49,82 +48,167 @@
       ]
     },
     {
-      "type": "group",
-      "text": "内容设置",
-      "desc": "设置时间轴相关内容",
+      "type": "table",
+      "text": "页签设置",
+      "bindKey": "tabList",
+      "tabText": "页签[index]",
       "children": [
         {
-          "type": "radio",
+          "type": "input",
           "layoutType": "inline",
-          "text": "圆点样式",
-          "bindKey": "circleStyle",
-          "desc": "设置一级节点圆点的样式，可选：实心，空心",
-          "dictionary": [
-            {
-              "label": "实心",
-              "value": "solid"
-            },
-            {
-              "label": "空心",
-              "value": "hollow"
-            }
-          ],
-          "default": "solid"
+          "text": "tab标识",
+          "bindKey": "tabKey"
         },
         {
-          "type": "radio",
+          "type": "input",
           "layoutType": "inline",
-          "text": "圆点位置",
-          "bindKey": "circlePostion",
-          "desc": "设置圆点的位置",
-          "dictionary": [
-            {
-              "label": "居上",
-              "value": "top"
-            },
-            {
-              "label": "居中",
-              "value": "center"
-            },
-            {
-              "label": "局下",
-              "value": "bottom"
-            }
-          ],
-          "default": "center"
+          "text": "tab文字",
+          "bindKey": "tabText",
+          "default":"默认文字"
         },
         {
-          "type": "radio",
+          "type": "switch",
           "layoutType": "inline",
-          "text": "分割线",
-          "bindKey": "connectLine",
-          "desc": "设置节点连接线的样式，可选：实线，虚线，点线",
-          "dictionary": [
-            {
-              "label": "实线",
-              "value": "solid"
-            },
-            {
-              "label": "虚线",
-              "value": "dashed"
-            },
-            {
-              "label": "点线",
-              "value": "dotted"
-            }
-          ],
-          "default": "solid"
+          "text": "左侧图标",
+          "desc": "是否显示左侧图标",
+          "bindKey": "showLeftIcon",
+          "default": true
         },
         {
-          "type": "colorPicker",
+          "type": "uploadImage",
           "layoutType": "inline",
-          "text": "卡片背景",
-          "bindKey": "cardbgColor",
-          "desc": "右侧卡片背景颜色",
-          "placeholder": "请选择颜色",
-          "default": {
-            "hex8": "#F8f8F8FF"
-          }
+          "text": "图标地址",
+          "bindKey": "leftIconUrl",
+          "desc": "左侧图标地址",
+          "default": "",
+          "ctrlAttrObject": {
+            "width": "40px",
+            "height": "40px",
+            "maxSize": 2097152
+          },
+          "display":"@[showLeftIcon]",
+          "dictionary": [
+            "/resource/idm/img/6.png",
+            "/resource/idm/img/12.png",
+            "/resource/idm/img/14.png",
+            "/resource/idm/img/19.png"
+          ]
+        },
+        {
+          "type": "switch",
+          "layoutType": "inline",
+          "text": "右侧图标",
+          "desc": "是否显示右侧图标",
+          "bindKey": "showRightIcon",
+          "default": true
+        },
+        {
+          "type": "group",
+          "text": "右侧图标设置",
+          "desc": "点击？查看样式设置用法指南",
+          "display": "@[showRightIcon]",
+          "children": [
+            {
+              "type": "iconSelect",
+              "layoutType": "inline",
+              "text": "自定义图标",
+              "bindKey": "rightIcon",
+              "display": "@[showRightIcon]"
+            },
+            {
+              "type": "colorPicker",
+              "layoutType": "inline",
+              "text": "图标颜色",
+              "bindKey": "rightIconColor",
+              "display": "@[showRightIcon]"
+            },
+            {
+              "type": "inputNumberUnit",
+              "layoutType": "inline",
+              "text": "图标大小",
+              "bindKey": "rightIconSize",
+              "display": "@[showRightIcon]",
+              "default": {
+                "inputVal": 16,
+                "selectVal": "px"
+              }
+            }
+          ]
+        },
+        {
+          "type": "switch",
+          "layoutType": "inline",
+          "text": "右侧数字",
+          "desc": "是否显示右侧数字",
+          "bindKey": "showRightNum",
+          "default": true
+        },
+        {
+          "type": "select",
+          "layoutType": "inline",
+          "text": "显示方式",
+          "bindKey": "showType",
+          "desc": "可以根据切换显示方式对每个按钮进行更高级的控制，更多使用方法请点击参考更详细的说明",
+          "dictionary": [
+            {
+              "label": "始终显示",
+              "value": "default"
+            },
+            {
+              "label": "切换依据显示",
+              "value": "toggle"
+            },
+            {
+              "label": "自定义函数显示",
+              "value": "custom"
+            }
+          ],
+          "default": "default"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "显示依据",
+          "desc": "当显示方式为“切换依据显示”的时候代表页签选项卡切换的时候会根据当前填写的依据字段来去匹配结果值，为true则显示，false则不显示，此处填写表达式，更多详细用法点击查看",
+          "bindKey": "dataFiled",
+          "display": "@[showType=='toggle']",
+          "placeholder": "示例:moreUrl 或者 [0].showSetting"
+        },
+        {
+          "type": "actionSelect",
+          "layoutType": "block",
+          "text": "自定义函数依据显示",
+          "bindKey": "dataFunction",
+          "display": "@[showType=='custom']",
+          "desc": "切换选项卡、数据勾选等动作会触发回调来控制是否显示，动态属性模式下也会调用此函数，接收参数为格式为{...url参数,customParam:自定义的,activeKey,allKey,actionType:动作类型,otherData}",
+          "multiple": false
+        },
+        {
+          "type": "select",
+          "layoutType": "inline",
+          "text": "点击事件",
+          "bindKey": "clickType",
+          "desc": "设置按钮点击响应事件的类型，更多使用方法请点击参考更详细的说明",
+          "dictionary": [
+            {
+              "label": "不响应",
+              "value": "none"
+            },
+            {
+              "label": "自定义动作函数",
+              "value": "customFunction"
+            }
+          ],
+          "default": "customFunction"
+        },
+        {
+          "type": "actionSelect",
+          "layoutType": "block",
+          "text": "点击自定义函数",
+          "bindKey": "clickCustomFunction",
+          "display": "@[clickType=='customFunction']",
+          "desc": "当点击按钮时候会调用此函数，接收参数为格式为{...url参数,customParam:自定义的,activeKey:当前页签}",
+          "multiple": true
         }
       ]
     },
@@ -138,17 +222,7 @@
           "type": "box",
           "layoutType": "block",
           "text": "内外边距",
-          "bindKey": "box",
-          "default": {
-            "marginTopVal": "8px",
-            "marginRightVal": "8px",
-            "marginBottomVal": "8px",
-            "marginLeftVal": "8px",
-            "paddingTopVal": "16px",
-            "paddingRightVal": "16px",
-            "paddingBottomVal": "16px",
-            "paddingLeftVal": "16px"
-          }
+          "bindKey": "box"
         },
         {
           "type": "inlineGroup",
@@ -364,81 +438,13 @@
           "type": "input",
           "layoutType": "inline",
           "text": "边框阴影",
-          "bindKey": "boxShadow",
-          "default": "0px 2px 12px 0px rgba(0, 0, 0, 0.07)"
+          "bindKey": "boxShadow"
         },
         {
           "type": "font",
           "layoutType": "block",
           "text": "文字",
           "bindKey": "font"
-        }
-      ]
-    },
-    {
-      "type": "table",
-      "text": "主题设置",
-      "desc": "点击？查看主题设置用法指南",
-      "bindKey": "themeList",
-      "tabText": "主题[index]",
-      "default": [
-        {
-          "key": "blue",
-          "mainColor": {
-            "hex": "#0073CA",
-            "hex8": "#0073CAFF"
-          }
-        },
-        {
-          "key": "red",
-          "mainColor": {
-            "hex": "#E21A1A",
-            "hex8": "#E21A1AFF"
-          }
-        },
-        {
-          "key": "green",
-          "mainColor": {
-            "hex": "#0EAF64",
-            "hex8": "#0EAF64FF"
-          }
-        }
-      ],
-      "children": [
-        {
-          "type": "select",
-          "layoutType": "inline",
-          "text": "主题标识",
-          "bindKey": "key",
-          "desc": "用于设置主题的标识，此项需要搭配自定义开发切换主题的功能，例如：蓝色标识为blue，用户切换主题的时候存储到数据库中的标识为blue，则这里填写为blue",
-          "default": "",
-          "placeholder": "例如：blue",
-          "ctrlAttrObject": {
-            "mode": "combobox"
-          },
-          "dictionary": [
-            {
-              "label": "blue",
-              "value": "blue"
-            },
-            {
-              "label": "red",
-              "value": "red"
-            },
-            {
-              "label": "green",
-              "value": "green"
-            }
-          ]
-        },
-        {
-          "type": "colorPicker",
-          "layoutType": "inline",
-          "text": "主要颜色",
-          "bindKey": "mainColor",
-          "desc": "主题的主要颜色",
-          "placeholder": "请选择颜色",
-          "display": "@[key]"
         }
       ]
     },
@@ -474,7 +480,7 @@
           "type": "treeSelect",
           "layoutType": "inline",
           "text": "数据源",
-          "desc": "用于选择时间轴的数据源",
+          "desc": "用于选择的数据源",
           "bindKey": "dataSource",
           "dataSourceUrl": "ctrl/dataSource/getDatasourceByGroup"
         },
@@ -486,62 +492,34 @@
             {
               "type": "input",
               "layoutType": "inline",
-              "text": "日期",
-              "bindKey": "labelInterface",
-              "default": "label"
-            },
-            {
-              "type": "input",
-              "layoutType": "inline",
-              "text": "标题",
-              "bindKey": "titleInterface",
-              "default": "title"
-            },
-            {
-              "type": "input",
-              "layoutType": "inline",
-              "text": "描述",
-              "bindKey": "descInterface",
-              "default": "desc"
-            },
-            {
-              "type": "input",
-              "layoutType": "inline",
-              "text": "图标路径",
-              "bindKey": "iconInterface",
-              "default": "icon"
-            },
-            {
-              "type": "input",
-              "layoutType": "inline",
-              "text": "图标描述",
-              "bindKey": "iconTextInterface",
-              "default": "iconText"
+              "text": "右侧数字",
+              "bindKey": "numInterface",
+              "default": "num"
             }
           ]
         },
         {
-            "type": "select",
-            "layoutType": "inline",
-            "text": "刷新KEY",
-            "bindKey": "messageRefreshKey",
-            "desc": "根据组件接收到的消息KEY来刷新数据",
-            "default": "",
-            "multiple": true,
-            "placeholder": "示例：inbox,info",
-            "ctrlAttrObject": {
-                "mode": "tags"
+          "type": "select",
+          "layoutType": "inline",
+          "text": "刷新KEY",
+          "bindKey": "messageRefreshKey",
+          "desc": "根据组件接收到的消息KEY来刷新数据",
+          "default": "",
+          "multiple": true,
+          "placeholder": "示例：inbox,info",
+          "ctrlAttrObject": {
+            "mode": "tags"
+          },
+          "dictionary": [
+            {
+              "label": "inbox",
+              "value": "inbox"
             },
-            "dictionary": [
-                {
-                    "label": "inbox",
-                    "value": "inbox"
-                },
-                {
-                    "label": "info",
-                    "value": "info"
-                }
-            ]
+            {
+              "label": "info",
+              "value": "info"
+            }
+          ]
         }
       ]
     }

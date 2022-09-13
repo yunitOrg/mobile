@@ -747,10 +747,6 @@ $scale: var(--i-notice-list-card-scale);
   box-shadow: 0px calc($scale * 2px) calc($scale * 8px) 0px
     rgba(194, 194, 194, 0.5);
   border-radius: calc($scale * 10px);
-  font-size: calc($scale * 16px);
-  font-size: calc($scale * 14px);
-  color: #333333;
-  font-weight: 700;
 
   .i-notice-list-card-header {
     display: flex;
@@ -782,6 +778,9 @@ $scale: var(--i-notice-list-card-scale);
 
         .i-notice-list-item {
           position: relative;
+          font-size: calc($scale * 14px);
+          color: #333333;
+          font-weight: 700;
           padding: 30% calc($scale * 14px) calc($scale * 14px) calc($scale * 14px);
           box-shadow: 0px 2px calc($scale * 8px) 0px rgba(194, 194, 194, 0.5);
           border: 1px solid rgba(227,227,227,1);

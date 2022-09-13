@@ -28,7 +28,7 @@
           :class="`${item.level === 2?'active':''} ${propData.circlePostion}`"
         >
           <div class="item-label">
-            <span>{{ item.label }}</span>
+            <span>{{ item[propData.labelInterface] }}</span>
           </div>
           <div class="item-style" >
             <div class="item-style-line"></div>
@@ -40,16 +40,15 @@
             </div>
             <div class="item-style-line"></div>
           </div>
-          <div class="item-desc" v-if="item.title">
+          <div class="item-desc" v-if="item[propData.titleInterface]">
             <div class="item-desc-left">
-              <span class="left-title">{{ item.title }}</span>
-              <span class="left-time">{{ item.desc }}</span>
+              <span class="left-title">{{ item[propData.titleInterface] }}</span>
+              <span class="left-time">{{ item[propData.descInterface] }}</span>
             </div>
             <div class="item-desc-right" v-if="item.iconText">
-              <span class="right-icon">
-                <svg-icon icon-class="partyCost" />
-              </span>
-              <span>{{ item.iconText }}</span>
+              <img v-if="item[propData.iconInterface]" :src="IDM.url.getWebPath(item[propData.iconInterface])" alt="">
+              <img v-else src="../assets/partyCost.svg"/>
+              <span>{{ item[propData.iconTextInterface] }}</span>
             </div>
           </div>
         </div>
@@ -89,7 +88,12 @@ export default {
         connectLine: "dashed",
         circleStyle: "hollow",
         circlePostion: "center",
-        emptyDescription:'暂无数据'
+        emptyDescription:'暂无数据',
+        labelInterface:'label',
+        titleInterface:'title',
+        descInterface:'desc',
+        iconInterface:'icon',
+        iconTextInterface:'iconText'
       },
       isLoading: true,
       infoList: [],
@@ -703,16 +707,22 @@ $scale: var(--i-time-axis-scale);
         color: rgb(214, 27, 22);
         font-size: 13px;
         margin-left: 24px;
-
-        .right-icon {
-          font-size: calc(24px * #{ $scale });
-          max-height: calc(24px * #{ $scale });
-          margin-bottom: calc(2px * #{ $scale });
-
-          .svg-icon {
-            vertical-align: baseline;
-          }
+        img {
+          width: 24px;
+          height: 24px;
         }
+
+        // .right-icon {
+        //   font-size: calc(24px * #{ $scale });
+        //   max-height: calc(24px * #{ $scale });
+        //   margin-bottom: calc(2px * #{ $scale });
+
+          
+
+        //   .svg-icon {
+        //     vertical-align: baseline;
+        //   }
+        // }
       }
     }
 

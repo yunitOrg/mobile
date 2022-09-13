@@ -17,11 +17,243 @@
     },
     {
       "type": "group",
-        "text": "基本属性",
-        "desc": "提供设置组件能达到展示效果的基本属性设置信息",
-        "children": [
-
-        ]
+      "text": "基本属性",
+      "desc": "提供设置组件能达到展示效果的基本属性设置信息",
+      "children": [
+        {
+          "type": "radio",
+          "layoutType": "inline",
+          "text": "展开方式",
+          "bindKey": "direction",
+          "dictionary": [
+            {
+              "label": "向上展开",
+              "value": "up"
+            },
+            {
+              "label": "向下展开",
+              "value": "down"
+            }
+          ],
+          "default": "down"
+        },
+        {
+          "type": "radio",
+          "layoutType": "inline",
+          "text": "遮罩层",
+          "bindKey": "overlay",
+          "dictionary": [
+            {
+              "label": "显示",
+              "value": true
+            },
+            {
+              "label": "不显示",
+              "value": false
+            }
+          ],
+          "default": true
+        },
+        {
+          "type": "table",
+          "text": "页签选项设置",
+          "bindKey": "tableMenu",
+          "tabText": "页签[index]",
+          "children": [
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "tab标识",
+              "bindKey": "key"
+            },
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "tab文字",
+              "bindKey": "title"
+            },
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "绑定字段",
+              "desc": "选中的值给这个字段",
+              "bindKey": "field"
+            },
+            {
+              "type": "select",
+              "layoutType": "inline",
+              "text": "数据类型",
+              "bindKey": "type",
+              "dictionary": [
+                {
+                  "label": "静态数据",
+                  "value": "static"
+                },
+                {
+                  "label": "接口获取",
+                  "value": "interface"
+                }
+              ],
+              "default": "static"
+            },
+            {
+              "type": "textarea",
+              "layoutType": "inline",
+              "text": "下拉数据",
+              "bindKey": "options",
+              "display": "@[type=='static']",
+              "default": "[{ text: '全部', value: 0 }, { text: '新款商品', value: 1 }, { text: '活动商品', value: 2 }]"
+            },
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "下拉数据绑定值",
+              "desc": "下拉数据绑定值",
+              "bindKey": "selectField",
+              "display": "@[type=='interface']",
+              "default": "name"
+            },
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "下拉默认值",
+              "desc": "下拉数据默认值",
+              "bindKey": "selectVal",
+              "default": "0"
+            },
+            {
+              "type": "switch",
+              "layoutType": "inline",
+              "text": "是否禁用",
+              "desc": "是否禁用",
+              "bindKey": "disabled",
+              "default": false
+            }
+          ],
+          "default": [
+            {
+              "key": "1",
+              "title": "类型:",
+              "field": "type",
+              "type": "static",
+              "selectVal": 0,
+              "disabled": false,
+              "options": "[{ text: '全部', value: 0 }, { text: '新款商品', value: 1 }, { text: '活动商品', value: 2 }]"
+            },
+            {
+              "key": "2",
+              "title": "状态:",
+              "field": "state",
+              "type": "static",
+              "selectVal": 0,
+              "disabled": false,
+              "options": "[{ text: '全部', value: 0 }, { text: '新款商品', value: 1 }, { text: '活动商品', value: 2 }]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "text": "外层容器样式",
+      "desc": "提供设置组件能达到展示效果的基本属性设置信息",
+      "children": [
+        {
+          "type": "inlineGroup",
+          "text": "宽高",
+          "children": [
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "容器宽",
+              "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
+              "bindKey": "width",
+              "width": "60px",
+              "default": "auto"
+            },
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "容器高",
+              "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
+              "bindKey": "height",
+              "width": "60px",
+              "default": "auto"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "layoutType": "block",
+          "text": "内外边距",
+          "bindKey": "box"
+        },
+        {
+          "type": "colorPicker",
+          "layoutType": "inline",
+          "text": "背景色",
+          "bindKey": "bgColor",
+          "placeholder": "请选择颜色",
+          "default": {
+            "hex": "#FFFFFF",
+            "hex8": "#FFFFFFFF"
+          }
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "容器阴影",
+          "bindKey": "boxShadow",
+          "default": "none"
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "text": "内层容器样式",
+      "desc": "提供设置组件能达到展示效果的基本属性设置信息",
+      "children": [
+        {
+          "type": "font",
+          "layoutType": "block",
+          "text": "tab字体",
+          "bindKey": "itemFontStyle"
+        },
+        {
+          "type": "font",
+          "layoutType": "block",
+          "text": "选中字体",
+          "bindKey": "chooseStyle"
+        },
+        {
+          "type": "font",
+          "layoutType": "block",
+          "text": "下拉字体",
+          "bindKey": "selectFont"
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "text": "高级",
+      "desc": "点击？查看高级设置用法指南",
+      "children": [
+        {
+          "type": "treeSelect",
+          "layoutType": "inline",
+          "text": "数据源",
+          "bindKey": "dataSource",
+          "dataSourceUrl": "/ctrl/dataSource/getDatasourceByGroup"
+        },
+        {
+          "type": "pageModuleSelect",
+          "layoutType": "block",
+          "text": "tab菜单联动组件",
+          "desc": "选择点击tab需要联动的组件",
+          "bindKey": "triggerComponents",
+          "multiple": true
+        }
+      ]
     }
   ]
 }

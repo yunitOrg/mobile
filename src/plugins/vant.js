@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import 'vant/lib/index.css';
-import {Tab, Tabs, Col, Row, Loading, Empty, Image as VanImage, Uploader, Form, Field, CellGroup, Search, Switch, Checkbox, CheckboxGroup, Calendar} from "vant";
+import {Tab, Tabs, Col, Row, Loading, Empty, Image as VanImage, Uploader, Form, Field, CellGroup, Search, Switch, Checkbox, CheckboxGroup, Calendar, DropdownMenu, DropdownItem} from "vant";
 
 Vue.use(Tab)
   .use(Tabs)
@@ -17,4 +17,6 @@ Vue.use(Tab)
   .use(Switch)
   .use(Checkbox)
   .use(CheckboxGroup)
-  .use(Calendar);
+  .use(Calendar)
+  .use(DropdownMenu)
+  .use(DropdownItem);
