@@ -240,6 +240,13 @@
       "className": "IfootBtn",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.integral",
+      "comName": "我的积分",
+      "className": "Integral",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }
