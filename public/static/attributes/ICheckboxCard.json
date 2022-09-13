@@ -547,6 +547,7 @@
                     "text": "联动组件",
                     "desc": "配置卡片选中状态改变时需要发送信息的组件",
                     "bindKey": "triggerComponents",
+                    "default": [],
                     "multiple": true
                 },
                 {

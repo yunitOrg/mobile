@@ -10,22 +10,26 @@
             @itemDataChange="itemDataChange"
             @subItemChange="subItemChange"
         ></ICheckboxCardItem>
+        <ICommonMask :moduleObject="moduleObject" :propData="propData"></ICommonMask>
     </div>
 </template>
 <script>
 import ICheckboxCardItem from '../commonComponents/ICheckboxCardItem'
 import { getCheckboxCardData } from '../mock/mockData'
-
+import ICommonMask from '../commonComponents/ICommonMask'
 import { getDatasInterfaceUrl } from '@/api/config'
 export default {
     name: 'ICheckboxCard',
     components: {
-        ICheckboxCardItem
+        ICheckboxCardItem,
+        ICommonMask
     },
     data() {
         return {
             moduleObject: {},
-            propData: this.$root.propData.compositeAttr || {},
+            propData: this.$root.propData.compositeAttr || {
+                triggerComponents: []
+            },
             componentData: []
         }
     },
@@ -72,7 +76,7 @@ export default {
             }
             this.sendBroadcastMessage({
                 type: 'i-checkbox-card-change',
-                rangeModule: this.triggerComponents.map((el) => el.moduleId),
+                rangeModule: this.propData.triggerComponents.map((el) => el.moduleId),
                 message: {
                     total: this.componentData.length,
                     selectNumber: this.componentData.filter((el) => el.isCheck).length
@@ -229,7 +233,6 @@ export default {
         initData() {
             // if (this.moduleObject.env !== 'production') {
                 this.componentData = getCheckboxCardData.call(this)
-                this.sendMessageToFootBtn()
                 return
             // }
             // window.IDM.http
