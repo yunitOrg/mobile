@@ -120,6 +120,16 @@ export default {
       propData: this.$root.propData.compositeAttr || {
         emptyDescription: "暂无回复",
         finishedTip: "数据已加载全部",
+        imgInterface:'img',
+        idInterface:'id',
+        avatarInterface:'avatar',
+        timeInterface:'time',
+        starInterface:'star',
+        starNumInterface:'starNum',
+        btInterface:'bt',
+        fromInterface:'from',
+        totalInterface:'total',
+        replyInterface:'reply'
       },
       loading: false,
       finished: false,
@@ -182,6 +192,7 @@ export default {
           url,
           {
             id: dataSource.value,
+            commentId: this.commonParam() && this.commonParam().commentId
           },
           {
             headers: {
