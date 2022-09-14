@@ -47,20 +47,6 @@
             "helpUrl": "",
             "children": [
                 {
-                    "type": "input",
-                    "layoutType": "inline",
-                    "text": "阴影",
-                    "bindKey": "boxShadow"
-                },
-                {
-                    "type": "colorPicker",
-                    "layoutType": "inline",
-                    "text": "背景色",
-                    "bindKey": "bgColor",
-                    "placeholder": "请选择颜色",
-                    "default": {}
-                },
-                {
                     "type": "inlineGroup",
                     "text": "宽高",
                     "children": [
@@ -81,6 +67,20 @@
                             "default": "auto"
                         }
                     ]
+                },
+                {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "阴影",
+                    "bindKey": "boxShadow"
+                },
+                {
+                    "type": "colorPicker",
+                    "layoutType": "inline",
+                    "text": "背景色",
+                    "bindKey": "bgColor",
+                    "placeholder": "请选择颜色",
+                    "default": {}
                 },
                 {
                     "type": "box",

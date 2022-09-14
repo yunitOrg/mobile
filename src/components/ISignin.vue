@@ -5,48 +5,100 @@
     id：使用moduleObject.id，如果id不使用这个将会被idm-ctrl-id属性替换
     idm-ctrl-id：组件的id，这个必须不能为空
   -->
-    <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id">
-        <div class="idm-signin">
-            <div class="signin-top d-flex flex-d-c align-c">
-                <div class="signin-title">打卡天数</div>
-                <div class="signin-img" :style="imgStyleObj">1</div>
-                <div class="signin-btn" @click="handleSign">签到</div>
-            </div>
-            <div class="signin-bottom">
-                <van-calendar
-                    class="signin-calendar"
-                    :show-mark="false"
-                    row-height="40"
-                    :show-subtitle="false"
-                    first-day-of-week="1"
-                    :poppable="false"
-                    :show-confirm="false"
-                    :min-date="minDate"
-                    :max-date="maxDate"
-                    @select="dateSelect"
-                >
-                    <template #title>
-                        <div class="d-flex just-b align-c idm-signin-calendar-title">
-                            <div @click="handlePrev">
-                                <svg-icon icon-class="arrowLeft" class-name="idm-signin-calendar-arrow"></svg-icon>
-                            </div>
-                            <div>{{ getShowMonth }}&nbsp;&nbsp;&nbsp;{{ new Date(maxDate).getFullYear() }}</div>
-                            <div @click="handleNext" v-if="rightArrowShow()">
-                                <svg-icon icon-class="arrowRight2" class-name="idm-signin-calendar-arrow"></svg-icon>
-                            </div>
-                            <div v-else></div>
+    <div idm-ctrl="idm_module" class="idm-signin" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id">
+        <div class="idm-signin-top d-flex flex-d-c align-c position-r">
+            <div class="idm-signin-title">打卡天数</div>
+            <div class="idm-signin-img" :style="imgStyleObj">{{ componentData.signTotal }}</div>
+            <div class="idm-signin-btn" @click="handleSign">签到</div>
+        </div>
+        <div class="idm-signin-bottom">
+            <van-calendar
+                class="idm-signin-calendar"
+                :show-mark="false"
+                row-height="40"
+                :show-subtitle="false"
+                first-day-of-week="1"
+                :poppable="false"
+                :show-confirm="false"
+                :min-date="minDate"
+                :max-date="maxDate"
+                @select="dateSelect"
+            >
+                <template #title>
+                    <div class="d-flex just-b align-c idm-signin-calendar-title">
+                        <div @click="handlePrev">
+                            <svg-icon icon-class="arrowLeft" class-name="idm-signin-calendar-arrow"></svg-icon>
                         </div>
-                    </template>
-                    <template #bottom-info="scoped">
-                        <span :class="getIsSign(scoped.date)"></span>
-                    </template>
-                </van-calendar>
+                        <div>{{ getShowMonth }}&nbsp;&nbsp;&nbsp;{{ new Date(maxDate).getFullYear() }}</div>
+                        <div @click="handleNext" v-if="rightArrowShow()">
+                            <svg-icon icon-class="arrowRight2" class-name="idm-signin-calendar-arrow"></svg-icon>
+                        </div>
+                        <div v-else></div>
+                    </div>
+                </template>
+                <template #bottom-info="scoped">
+                    <span
+                        v-if="getIsSign(scoped.date) === 'normal'"
+                        class="idm-signin-circle circle-bottom"
+                        :class="isCurrentDay(scoped.date) ? 'idm-signin-circle-current' : ''"
+                    ></span>
+                    <svg-icon
+                        v-else-if="getIsSign(scoped.date) === 'special'"
+                        iconClass="wujiaoxing"
+                        :className="[
+                            'idm-signin-intr-wujiaoxing',
+                            'wujiaoxing-bottom',
+                            isCurrentDay(scoped.date) ? 'idm-signin-wujiaoxing-current' : ''
+                        ]"
+                    ></svg-icon>
+                </template>
+            </van-calendar>
+            <div class="idm-signin-intr d-flex flex-d-r-r">
+                <div class="d-flex align-c">
+                    <svg-icon iconClass="wujiaoxing" className="idm-signin-intr-wujiaoxing"></svg-icon>
+                    <span>特殊打卡日</span>
+                    <!-- <svg-icon iconClass="wenhao" className="idm-signin-intr-wenhao"></svg-icon> -->
+                </div>
+                <div class="d-flex align-c">
+                    <span class="idm-signin-circle"></span>
+                    <span>已打卡</span>
+                </div>
             </div>
         </div>
+        <!-- popup -->
+        <van-popup
+            v-model="isShowPopup"
+            :close-on-click-overlay="false"
+            style="background: transparent"
+            position="center"
+        >
+            <div :style="popupStyle"></div>
+            <div class="idm-signin-popup-container">
+                <div class="idm-signin-popup-title">
+                    {{ componentData.questionTitle }}
+                </div>
+                <div class="idm-signin-popup-options">
+                    <div
+                        class="idm-signin-popup-option"
+                        v-for="(item, index) in componentData.questionOptions"
+                        :key="index"
+                        :class="currentAnswer.code === item.code ? 'idm-signin-popup-option-active' : ''"
+                        @click="handleOptionsClick(item)"
+                    >
+                        {{ item.text }}
+                    </div>
+                </div>
+                <div class="idm-signin-popup-group d-flex just-a">
+                    <div class="idm-signin-cancel-btn btn" @click="isShowPopup = false">取消</div>
+                    <div class="idm-signin-confirm-btn btn" @click="handleConfirm">确定</div>
+                </div>
+            </div>
+        </van-popup>
     </div>
 </template>
 
 <script>
+import { signinData } from '../mock/mockData'
 export default {
     data() {
         return {
@@ -61,7 +113,21 @@ export default {
             defaultDate: new Date(),
             year: new Date().getFullYear(),
             month: new Date().getMonth(),
-            nowDay: new Date().getDate()
+            nowDay: new Date().getDate(),
+            isShowPopup: false,
+            componentData: {},
+            currentAnswer: {},
+            currentDay: null
+        }
+    },
+    watch: {
+        isShowPopup: {
+            immediate: true,
+            handler(newV) {
+                if (newV) {
+                    this.currentAnswer = {}
+                }
+            }
         }
     },
     created() {
@@ -73,6 +139,15 @@ export default {
         imgStyleObj() {
             return {
                 background: `url(${IDM.url.getModuleAssetsWebPath(require('../assets/daka.png'), this.moduleObject)}`,
+                'background-size': '100% 100%',
+                'background-repeat': 'no-repeat'
+            }
+        },
+        popupStyle() {
+            return {
+                width: '320px',
+                height: '150px',
+                background: `url(${IDM.url.getModuleAssetsWebPath(require('../assets/dati.png'), this.moduleObject)}`,
                 'background-size': '100% 100%',
                 'background-repeat': 'no-repeat'
             }
@@ -105,7 +180,16 @@ export default {
             }
             return true
         },
-        handleSign() {},
+        handleConfirm() {
+            this.isShowPopup = false
+        },
+        handleOptionsClick(item) {
+            this.currentAnswer = item
+        },
+        handleSign() {
+            this.isShowPopup = true
+            if (this.moduleObject.env !== 'production') return
+        },
         setMinMaxDay() {
             var firstDay = new Date(this.defaultDate)
             firstDay.setDate(1)
@@ -117,17 +201,28 @@ export default {
         },
         getIsSign(date) {
             if (!date) return ''
-            date = new Date(date)
+            const dayTime = new Date(date).getTime() / 1000
+            const days = this.componentData.hasSignedDays
+            if (days.length === 0) return ''
+            const hasSignDay = days.filter((el) => el.date == dayTime)
+            if (hasSignDay.length === 0) return ''
+            return hasSignDay[0].type
         },
         dateSelect(date) {
-            console.log(date)
+            this.currentDay = new Date(date).getTime() / 1000
+        },
+        isCurrentDay(date) {
+            const selectTime = new Date(date).getTime() / 1000
+            return this.currentDay === selectTime
         },
         handlePrev() {
+            if (this.moduleObject.env !== 'production') return
             this.cont--
             this.defaultDate = new Date(this.year, this.month + this.cont, this.nowDay)
             this.setMinMaxDay()
         },
         handleNext() {
+            if (this.moduleObject.env !== 'production') return
             this.cont++
             this.defaultDate = new Date(this.year, this.month + this.cont, this.nowDay)
             this.setMinMaxDay()
@@ -139,11 +234,17 @@ export default {
         },
         initData() {
             this.setMinMaxDay()
+            if (this.moduleObject.env !== 'production') {
+                this.componentData = signinData
+                return
+            }
         },
         convertAttrToStyleObject() {
             let styleObject = {},
-                styleWrapObject = {},
-                signinBtnObj = {}
+                bottomStyleObj = {},
+                titleObj = {},
+                btnObj = {},
+                dateObj = {}
             for (const key in this.propData) {
                 if (this.propData.hasOwnProperty.call(this.propData, key)) {
                     const element = this.propData[key]
@@ -151,20 +252,72 @@ export default {
                         continue
                     }
                     switch (key) {
-                        case 'labelFont':
-                            IDM.style.setFontStyle(styleObject, element)
+                        // 顶部
+                        case 'width':
+                        case 'height':
+                            styleObject[key] = element
                             break
-                        case 'labelBox':
-                            IDM.style.setBoxStyle(styleObject, element)
+                        case 'boxShadow':
+                            styleObject['box-shadow'] = element
+                            break
+                        case 'bgColor':
+                            if (element && element.hex8) {
+                                styleObject['background-color'] = IDM.hex8ToRgbaString(element.hex8)
+                            }
                             break
                         case 'box':
-                            IDM.style.setBoxStyle(styleWrapObject, element)
+                            IDM.style.setBoxStyle(styleObject, element)
+                            break
+                        case 'border':
+                            IDM.style.setBorderStyle(styleObject, element)
+                            break
+                        case 'titleFont':
+                            IDM.style.setFontStyle(titleObj, element)
+                            break
+                        case 'dateFont':
+                            IDM.style.setFontStyle(dateObj, element)
+                            break
+
+                        // 按钮样式
+                        case 'btnBox':
+                            IDM.style.setBoxStyle(btnObj, element)
+                            break
+                        case 'btnBorder':
+                            IDM.style.setBorderStyle(btnObj, element)
+                            break
+                        case 'btnFont':
+                            IDM.style.setFontStyle(btnObj, element)
+                            break
+
+                        // 底部
+                        case 'bottomWidth':
+                            bottomStyleObj['width'] = element
+                            break
+                        case 'bottomHeight':
+                            bottomStyleObj['height'] = element
+                            break
+                        case 'bottomBoxShadow':
+                            bottomStyleObj['box-shadow'] = element
+                            break
+                        case 'bottomBgColor':
+                            if (element && element.hex8) {
+                                bottomStyleObj['background-color'] = IDM.hex8ToRgbaString(element.hex8)
+                            }
+                            break
+                        case 'bottomBox':
+                            IDM.style.setBoxStyle(bottomStyleObj, element)
+                            break
+                        case 'bottomBorder':
+                            IDM.style.setBorderStyle(bottomStyleObj, element)
                             break
                     }
                 }
             }
-            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .time-label', styleObject)
-            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-time', styleWrapObject)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-signin-top', styleObject)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-signin-title', titleObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-signin-btn', btnObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-signin-img', dateObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-signin-bottom', bottomStyleObj)
 
             this.initData()
         },
@@ -184,7 +337,10 @@ export default {
             for (var i = 0; i < themeList.length; i++) {
                 var item = themeList[i]
                 IDM.setStyleToPageHead(
-                    '.' + themeNamePrefix + item.key + (` #${this.moduleObject.id}` || 'module_demo') + ' .signin-btn',
+                    IDM.style.generateClassName(
+                        '.' + themeNamePrefix + item.key + (` #${this.moduleObject.id}` || 'module_demo'),
+                        [' .idm-signin-btn', ' .van-calendar__selected-day', ' .idm-signin-circle']
+                    ),
                     {
                         background: item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : ''
                     }
@@ -197,34 +353,107 @@ export default {
 
 <style lang="scss" scoped>
 .idm-signin {
-    .signin-top {
-        margin: 10px;
-        padding: 10px 20px;
-        box-shadow: 0px 0px 20px 0px #ccc;
-        position: relative;
-        .signin-title {
-            text-align: center;
+    .idm-signin-title {
+        margin: 0 0 3px 0;
+    }
+    .idm-signin-img {
+        padding: 10px 15px 0 15px;
+    }
+    .idm-signin-circle {
+        width: 6px;
+        height: 6px;
+        border-radius: 50px;
+        margin: 0 5px 1px 0;
+    }
+    .circle-bottom {
+        margin: 0 0 2px 0;
+    }
+    .idm-signin-circle-current {
+        background: #ffffff !important;
+    }
+    .idm-signin-intr {
+        background: #ffffff;
+        padding: 10px 10px 10px 0;
+        border-top: 1px solid #eee;
+        font-size: 12px;
+    }
+    .idm-signin-popup-container {
+        background: #ffffff;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        margin-top: -2px;
+    }
+    .idm-signin-popup-title {
+        color: #000;
+        line-height: 1.6;
+        font-size: 16px;
+        padding: 6px 15px 0;
+    }
+    .idm-signin-popup-options {
+        padding: 0 15px;
+        color: #000;
+    }
+    .idm-signin-popup-option {
+        background: #fef1f1;
+        margin: 10px 0 0 0;
+        padding: 10px 5px;
+    }
+
+    .idm-signin-popup-option-active {
+        background: #f42020;
+        color: #ffffff;
+    }
+
+    .idm-signin-popup-group {
+        font-size: 15px;
+        padding: 10px 0;
+        .btn {
+            padding: 8px 49px;
+            border-radius: 3px;
         }
-        .signin-img {
-            padding: 10px 15px 0 15px;
-            text-align: center;
+        .idm-signin-cancel-btn {
+            border: 1px solid #ccc;
+            color: #000000;
         }
-        .signin-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            user-select: none;
+        .idm-signin-confirm-btn {
+            color: #ffffff;
+            background: #f42020;
         }
+    }
+    .idm-signin-intr-wujiaoxing {
+        width: 11px;
+        height: 11px;
+        fill: #ff952e;
+        margin: 0 5px 2px 20px;
+    }
+    .idm-signin-wujiaoxing-current {
+        fill: #ffffff;
+    }
+    ::v-deep(.van-calendar__bottom-info) {
+        display: flex;
+        justify-content: center;
+        bottom: -1px;
+    }
+    .wujiaoxing-bottom {
+        margin: 0 0 0 2px;
+    }
+    .idm-signin-intr-wenhao {
+        fill: #999;
+        width: 14px;
+        height: 14px;
+        margin: 0 0 1px 5px;
+    }
+    .idm-signin-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        user-select: none;
     }
     &::v-deep(.van-calendar__month-title) {
         display: none;
     }
     &::v-deep(.van-calendar__selected-day) {
         border-radius: 50%;
-    }
-    .signin-bottom {
-        margin: 10px;
-        box-shadow: 0px 0px 20px 0px #ccc;
     }
     .idm-signin-calendar-title {
         padding: 0 10px;
