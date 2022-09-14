@@ -45,11 +45,9 @@
                     <svg-icon
                         v-else-if="getIsSign(scoped.date) === 'special'"
                         iconClass="wujiaoxing"
-                        :className="[
-                            'idm-signin-intr-wujiaoxing',
-                            'wujiaoxing-bottom',
+                        :className="`idm-signin-intr-wujiaoxing wujiaoxing-bottom ${
                             isCurrentDay(scoped.date) ? 'idm-signin-wujiaoxing-current' : ''
-                        ]"
+                        }`"
                     ></svg-icon>
                 </template>
             </van-calendar>
@@ -435,7 +433,7 @@ export default {
         bottom: -1px;
     }
     .wujiaoxing-bottom {
-        margin: 0 0 0 2px;
+        margin: 0;
     }
     .idm-signin-intr-wenhao {
         fill: #999;
