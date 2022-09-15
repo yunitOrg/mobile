@@ -647,12 +647,32 @@
               "default": "videoIntroduction"
             },
             {
-              "type": "input",
+              "type": "pageSelect",
               "layoutType": "inline",
-              "text": "视频跳转",
-              "desc": "每个点击视频后跳转的地址字段",
-              "bindKey": "videoUrl",
-              "default": "videoUrl"
+              "text": "左上视频",
+              "bindKey": "leftTopUrl",
+              "desc": "点击左上视频后触发跳转到的页面选择"
+            },
+            {
+              "type": "pageSelect",
+              "layoutType": "inline",
+              "text": "右上视频",
+              "bindKey": "rightTopUrl",
+              "desc": "点击右上视频后触发跳转到的页面选择"
+            },
+            {
+              "type": "pageSelect",
+              "layoutType": "inline",
+              "text": "左下视频",
+              "bindKey": "leftBottomUrl",
+              "desc": "点击左下视频后触发跳转到的页面选择"
+            },
+            {
+              "type": "pageSelect",
+              "layoutType": "inline",
+              "text": "右下视频",
+              "bindKey": "rightBottomUrl",
+              "desc": "点击右下视频后触发跳转到的页面选择"
             }
           ]
         },
