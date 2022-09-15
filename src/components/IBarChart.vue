@@ -23,7 +23,7 @@
             >
               <use :xlink:href="`#${propData.titleIcon && propData.titleIcon[0]}`" />
             </svg>
-            <svg-icon v-else icon-class="application-icon" />
+            <svg-icon class="idm_filed_svg_icon" v-else icon-class="shu" />
           </div>
           <span v-if="propData.titleIconPosition === 'left'">{{ propData.title }}</span>
         </div>
@@ -248,7 +248,7 @@ export default {
             show: false
           },
           axisLabel: {
-            fontSize: this.propData.xAxisLabelFontSize || 12,
+            fontSize: this.getScale() * (this.propData.xAxisLabelFontSize || 12),
             color:
               this.propData.xAxisLabelFontColor && this.propData.xAxisLabelFontColor.hex8
                 ? this.propData.xAxisLabelFontColor.hex8
@@ -268,7 +268,7 @@ export default {
             show: false
           },
           axisLabel: {
-            fontSize: this.propData.extraXAxisLabelFontSize || 12,
+            fontSize: this.getScale() * (this.propData.extraXAxisLabelFontSize || 12),
             color:
               this.propData.extraXAxisLabelFontColor && this.propData.extraXAxisLabelFontColor.hex8
                 ? this.propData.extraXAxisLabelFontColor.hex8
@@ -282,7 +282,7 @@ export default {
           show: this.propData.showYAxis,
           axisLabel: {
             show: this.propData.showYAxisLabel,
-            fontSize: this.propData.yAxisLabelFontSize || 12,
+            fontSize: this.getScale() * (this.propData.yAxisLabelFontSize || 12),
             color:
               this.propData.yAxisLabelFontColor && this.propData.yAxisLabelFontColor.hex8
                 ? this.propData.yAxisLabelFontColor.hex8
@@ -309,7 +309,7 @@ export default {
               this.propData.chartTitleFontColor && this.propData.chartTitleFontColor.hex8
                 ? this.propData.chartTitleFontColor.hex8
                 : '#666666',
-            fontSize: this.propData.chartTitleFontSize || 16,
+            fontSize: this.getScale() * (this.propData.chartTitleFontSize || 16),
             fontWeight: this.propData.chartTitleFontWeight || 'bolder'
           }
         },
@@ -343,7 +343,7 @@ export default {
             label: {
               show: this.propData.showLabel,
               position: this.propData.chartLayout == 'vertical' ? 'top' : 'right',
-              fontSize: this.propData.chartLabelFontSize || 12,
+              fontSize: this.getScale() * (this.propData.chartLabelFontSize || 12),
               color:
                 this.propData.chartLabelFontColor && this.propData.chartLabelFontColor.hex8
                   ? this.propData.chartLabelFontColor.hex8

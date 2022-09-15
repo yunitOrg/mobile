@@ -489,21 +489,23 @@ export default {
       }
       if (this.propData.itemJumpTarget && this.propData.itemJumpTarget === 'custom') {
         this.customFunctionHandle(this.propData.customItemJumpFunction, { item });
-      } else if (this.propData.itemJumpTarget && this.propData.itemJumpTarget === 'router') {
+      } else if (this.propData.itemJumpTarget && (this.propData.itemJumpTarget === 'router' || this.propData.itemJumpTarget === 'feild')) {
         const pageId =
           window.IDM.broadcast && window.IDM.broadcast.pageModule
             ? window.IDM.broadcast.pageModule.id
             : '';
-        const params = {};
-        this.propData.itemJumpPageParams?.forEach(param => {
-          params[param.key] = this.getExpressData('data', param.field, item);
-        });
-        IDM.router.push(
+        let itemJumpPageId = null
+        if (this.propData.itemJumpTarget === 'router') {
+          itemJumpPageId = this.propData.itemJumpPageId && this.propData.itemJumpPageId[0]?.id
+        } else if (this.propData.itemJumpTarget === 'feild') {
+          itemJumpPageId = this.propData.itemJumpPageFeild && this.getExpressData('data', this.propData.itemJumpPageFeild, item)
+        }
+        itemJumpPageId && IDM.router.push(
           pageId,
-          this.propData.itemJumpPageId && this.propData.itemJumpPageId[0]?.id,
+          itemJumpPageId,
           {
             keep: true,
-            params,
+            params: item,
             enterAnim: '',
             quitAnim: ''
           }

@@ -27,7 +27,7 @@
             >
               <use :xlink:href="`#${propData.titleIcon && propData.titleIcon[0]}`" />
             </svg>
-            <svg-icon v-else icon-class="application-icon" />
+            <svg-icon class="idm_filed_svg_icon" v-else icon-class="shu" />
           </div>
           <span v-if="propData.titleIconPosition === 'left'">{{ propData.title }}</span>
         </div>
@@ -361,7 +361,7 @@ export default {
               this.propData.legendFontColor && this.propData.legendFontColor.hex8
                 ? this.propData.legendFontColor.hex8
                 : '#666666',
-            fontSize: this.propData.legendFontSize || 14
+            fontSize: this.getScale() * (this.propData.legendFontSize || 14)
           }
         },
         title: {
@@ -374,7 +374,7 @@ export default {
               this.propData.chartTitleFontColor && this.propData.chartTitleFontColor.hex8
                 ? this.propData.chartTitleFontColor.hex8
                 : '#666666',
-            fontSize: this.propData.chartTitleFontSize || 16,
+            fontSize: this.getScale() * (this.propData.chartTitleFontSize || 16),
             fontWeight: this.propData.chartTitleFontWeight || 'bolder'
           }
         },
@@ -393,7 +393,7 @@ export default {
               formatter: '{value|{c}}',
               rich: {
                 value: {
-                  fontSize: this.propData.chartLabelFontSize || 12,
+                  fontSize: this.getScale() * (this.propData.chartLabelFontSize || 12),
                   color:
                     this.propData.chartLabelFontColor && this.propData.chartLabelFontColor.hex8
                       ? this.propData.chartLabelFontColor.hex8
