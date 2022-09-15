@@ -17,12 +17,15 @@
                     @click="handleItemClick(item)"
                 >
                     <img
+                        v-if="propData.isShowLeftImage"
                         :src="IDM.url.getWebPath(getDataField(propData.imageField, item))"
                         alt="图片加载失败"
                         class="common-list-left-image"
                     />
                     <div v-if="!propData.styleType || propData.styleType === 'styleOne'" class="flex-1">
-                        <div class="d-flex common-list-title text-o-e">{{ getDataField(propData.titleField, item) }}</div>
+                        <div class="d-flex common-list-title text-o-e">
+                            {{ getDataField(propData.titleField, item) }}
+                        </div>
                         <div class="d-flex common-list-style-one-time-box text-o-e">
                             <div class="d-flex align-c common-list-icon-container" v-if="propData.isShowTimeIcon">
                                 <svg
@@ -49,7 +52,7 @@
                             </div>
                             <span class="text-o-e"> {{ getDataField(propData.locationField, item) }}</span>
                         </div>
-                        <div class="d-flex just-b align-c common-list-style-one-person-box text-o-e">
+                        <div class="d-flex just-b align-c common-list-style-one-person-box text-o-e" v-if="propData.isShowPersonLine">
                             <div class="d-flex align-c">
                                 <div class="d-flex align-c common-list-icon-container" v-if="propData.isShowPersonIcon">
                                     <svg

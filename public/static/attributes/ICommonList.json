@@ -61,6 +61,44 @@
                     "type": "radio",
                     "styleType": "radio",
                     "layoutType": "inline",
+                    "text": "左侧图片",
+                    "bindKey": "isShowLeftImage",
+                    "desc": "设置是否显示左侧图片",
+                    "default": true,
+                    "dictionary": [
+                        {
+                            "label": "显示",
+                            "value": true
+                        },
+                        {
+                            "label": "隐藏",
+                            "value": false
+                        }
+                    ]
+                },
+                {
+                    "type": "radio",
+                    "styleType": "radio",
+                    "layoutType": "inline",
+                    "text": "人数行",
+                    "bindKey": "isShowPersonLine",
+                    "desc": "设置列表单项是否显示右侧底部人数行",
+                    "default": true,
+                    "dictionary": [
+                        {
+                            "label": "显示",
+                            "value": true
+                        },
+                        {
+                            "label": "隐藏",
+                            "value": false
+                        }
+                    ]
+                },
+                {
+                    "type": "radio",
+                    "styleType": "radio",
+                    "layoutType": "inline",
                     "text": "左侧图标",
                     "bindKey": "isShowLeftIcon",
                     "desc": "是否显示组件标题内的左侧图标",
@@ -948,7 +986,7 @@
                     "type": "group",
                     "layoutType": "block",
                     "text": "人数样式",
-                    "display": "@[styleType === 'styleOne']",
+                    "display": "@[styleType === 'styleOne' && isShowPersonLine]",
                     "children": [
                         {
                             "type": "radio",
@@ -1031,7 +1069,7 @@
                     "type": "group",
                     "layoutType": "block",
                     "text": "按钮样式",
-                    "display": "@[styleType === 'styleOne']",
+                    "display": "@[styleType === 'styleOne' && isShowPersonLine]",
                     "children": [
                         {
                             "type": "colorPicker",

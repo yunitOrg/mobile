@@ -393,8 +393,12 @@
                   "value": "_blank"
                 },
                 {
-                  "label": "单页面打开",
+                  "label": "静态单页面打开",
                   "value": "router"
+                },
+                {
+                  "label": "动态单页面打开",
+                  "value": "feild"
                 },
                 {
                   "label": "自定义函数",
@@ -420,6 +424,14 @@
               "display": "@[itemJumpTarget=='router']"
             },
             {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "跳转字段",
+              "desc": "单页面模式下，要跳转的页面",
+              "bindKey": "itemJumpPageFeild",
+              "display": "@[itemJumpTarget=='feild']"
+            },
+            {
               "type": "actionSelect",
               "layoutType": "block",
               "text": "跳转自定义函数",
@@ -427,30 +439,6 @@
               "desc": "自定义跳转逻辑, 入参为{item:当前点击的item的单项数据}",
               "display": "@[itemJumpTarget=='custom']",
               "multiple": false
-            }
-          ]
-        },
-        {
-          "type": "table",
-          "text": "item跳转参数配置",
-          "desc": "单页面模式下，跳转携带的参数，数据来源为item的数据，如item的id对应参数名为itemId，则这里填itemId",
-          "bindKey": "itemJumpPageParams",
-          "tabText": "参数[index]",
-          "display": "@[itemJumpTarget=='router']",
-          "children": [
-            {
-              "type": "input",
-              "layoutType": "inline",
-              "text": "键名",
-              "desc": "设置此项参数的键名",
-              "bindKey": "key"
-            },
-            {
-              "type": "input",
-              "layoutType": "inline",
-              "text": "键值",
-              "desc": "设置此项参数的键值，来源为item的数据，如要取item的id，则这里应填id",
-              "bindKey": "field"
             }
           ]
         },
