@@ -229,8 +229,8 @@ export default {
         this.propData.colorList[0].color &&
         this.propData.colorList[0].color.hex8
           ? this.propData.colorList.map(item => ({
-              ...item,
-              color: item.color?.hex8
+              offset: item.offset ? item.offset : 0,
+              color: item.color && item.color.hex8 ? item.color.hex8 : '#188df0'
             }))
           : [
               { offset: 0, color: '#188df0' },
@@ -316,9 +316,9 @@ export default {
         emphasis: { disabled: true },
         grid: {
           left: 0,
-          right: this.propData.chartLayout != 'vertical' ? this.propData.gridRight : 0,
+          right: this.propData.gridRight,
           bottom: 0,
-          top: this.propData.chartLayout == 'vertical' ? this.propData.gridTop : 0,
+          top: this.propData.gridTop,
           containLabel: true
         },
         xAxis: this.propData.chartLayout == 'vertical' ? xAxis : yAxis,

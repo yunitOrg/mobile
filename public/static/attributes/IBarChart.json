@@ -123,8 +123,7 @@
           "text": "顶部边距",
           "bindKey": "gridTop",
           "desc": "图像离容器上边缘的距离，请填入数字或百分比，给每个柱状上的数字以及图表标题预留空间，可适当增大此值",
-          "default": "45",
-          "display": "@[chartLayout=='vertical']"
+          "default": "45"
         },
         {
           "type": "input",
@@ -132,8 +131,7 @@
           "text": "右侧边距",
           "bindKey": "gridRight",
           "desc": "图像离容器右边缘的距离，请填入数字或百分比，给每个柱状上的数字预留空间，可适当增大此值",
-          "default": "20",
-          "display": "@[chartLayout=='horizontal']"
+          "default": "0"
         },
         {
           "type": "input",
