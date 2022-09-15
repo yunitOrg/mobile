@@ -464,12 +464,8 @@ export default {
       if (this.propData.moreTarget && this.propData.moreTarget === 'custom') {
         this.customFunctionHandle(this.propData.customMoreBtnFunction);
       } else if (this.propData.moreTarget && this.propData.moreTarget === 'router') {
-        const pageId =
-          window.IDM.broadcast && window.IDM.broadcast.pageModule
-            ? window.IDM.broadcast.pageModule.id
-            : '';
         IDM.router.push(
-          pageId,
+          this.moduleObject.pageid,
           this.propData.moreBtnToPageId && this.propData.moreBtnToPageId[0]?.id,
           {
             keep: true,
