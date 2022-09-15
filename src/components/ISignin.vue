@@ -8,7 +8,7 @@
     <div idm-ctrl="idm_module" class="idm-signin" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id">
         <div class="idm-signin-top d-flex flex-d-c align-c position-r">
             <div class="idm-signin-title">打卡天数</div>
-            <div class="idm-signin-img" :style="imgStyleObj">{{ componentData.signTotal }}</div>
+            <div class="idm-signin-img" :style="imgStyleObj">{{ componentData.hasSignedDays.length || '0' }}</div>
             <div class="idm-signin-btn" @click="handleSign">签到</div>
         </div>
         <div class="idm-signin-bottom">
@@ -71,7 +71,7 @@
             position="center"
         >
             <div :style="popupStyle"></div>
-            <div class="idm-signin-popup-container">
+            <div class="idm-signin-popup-container" style="width: 320px">
                 <div class="idm-signin-popup-title">
                     {{ componentData.questionTitle }}
                 </div>
@@ -113,7 +113,10 @@ export default {
             month: new Date().getMonth(),
             nowDay: new Date().getDate(),
             isShowPopup: false,
-            componentData: {},
+            componentData: {
+                questionOptions: [],
+                hasSignedDays: []
+            },
             currentAnswer: {},
             currentDay: null
         }
@@ -184,10 +187,19 @@ export default {
         handleOptionsClick(item) {
             this.currentAnswer = item
         },
+        // 签到弹框显示
         handleSign() {
+            const days = this.componentData.hasSignedDays
+            if (days.length > 0) {
+                const hasSignDay = days.filter((el) => el.date == this.currentDay)
+                if (hasSignDay.length > 0) {
+                    return IDM.message.warning('不能重复签到')
+                }
+            }
             this.isShowPopup = true
             if (this.moduleObject.env !== 'production') return
         },
+        // 月份变化
         setMinMaxDay() {
             var firstDay = new Date(this.defaultDate)
             firstDay.setDate(1)
@@ -197,6 +209,7 @@ export default {
             endDate.setDate(0)
             this.maxDate = new Date(this.year, this.month + this.cont, endDate.getDate())
         },
+        // 某天是否已经签到
         getIsSign(date) {
             if (!date) return ''
             const dayTime = new Date(date).getTime() / 1000
@@ -206,32 +219,46 @@ export default {
             if (hasSignDay.length === 0) return ''
             return hasSignDay[0].type
         },
+        // 日期选择
         dateSelect(date) {
             this.currentDay = new Date(date).getTime() / 1000
         },
+        // 是否当前选中天
         isCurrentDay(date) {
             const selectTime = new Date(date).getTime() / 1000
             return this.currentDay === selectTime
         },
+        // 上个月
         handlePrev() {
             if (this.moduleObject.env !== 'production') return
             this.cont--
             this.defaultDate = new Date(this.year, this.month + this.cont, this.nowDay)
             this.setMinMaxDay()
+            this.handleGetSignData()
         },
+        // 下个月
         handleNext() {
             if (this.moduleObject.env !== 'production') return
             this.cont++
             this.defaultDate = new Date(this.year, this.month + this.cont, this.nowDay)
             this.setMinMaxDay()
+            this.handleGetSignData()
         },
         propDataWatchHandle(propData) {
             this.propData = propData.compositeAttr || {}
             this.convertAttrToStyleObject()
             this.convertThemeListAttrToStyleObject()
         },
+        // 获取当月签到数据
+        handleGetSignData() {
+            console.log(new Date(this.maxDate).getFullYear())
+            console.log(new Date(this.maxDate).getMonth())
+        },
+        // 获取签到问题
+        handleGetQuestionData() {},
         initData() {
             this.setMinMaxDay()
+            this.handleGetSignData()
             if (this.moduleObject.env !== 'production') {
                 this.componentData = signinData
                 return

@@ -267,7 +267,6 @@ export const signinData = {
             code: 'C'
         }
     ],
-    signTotal: 4,
     hasSignedDays: [
         {
             type: 'normal',
