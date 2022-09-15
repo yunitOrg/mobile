@@ -21,7 +21,7 @@
     @change="changeCallback"
     :before-change="beforeChange">
       <van-tab v-for="item in allTabList" :key="item.key" :name="item.key" :title="item.tab" :disabled="item.disable" title-class="tab-custom" :title-style="setFontStyle(item.tableFont)">
-        <template v-if="propData.isDrag === 'container'">
+        <!-- <template v-if="propData.isDrag === 'container'">
           <div class="tab-conent drag_container"
             :class="`idm-tab-inner-${item.key}`"
             idm-ctrl-inner
@@ -29,10 +29,21 @@
             :idm-container-index="item.key"
             :idm-refresh-container="`flex-${item.key}`"
           ></div>
-        </template>
+        </template> -->
         <!-- <div v-else>{{item.key}}</div> -->
       </van-tab>
     </van-tabs>
+    <div v-show="propData.isDrag === 'container'">
+      <div v-for="item in allTabList" :key="item.key">
+        <div class="tab-conent drag_container"
+          v-show="activeTab === item.key"
+          :class="`idm-tab-inner-${item.key}`"
+          idm-ctrl-inner
+          :idm-ctrl-id="moduleObject.id"
+          :idm-container-index="item.key"
+        ></div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -45,6 +56,7 @@ export default{
       allTabList: [],
       moduleObject:{},
       propData:this.$root.propData.compositeAttr||{
+        isDrag: 'container',
         staticTabPaneList: [
           {
             key: '1',
