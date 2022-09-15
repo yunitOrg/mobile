@@ -26,7 +26,7 @@
           "text": "显示标题",
           "desc": "是否显示标题栏",
           "bindKey": "isShowTitleBar",
-          "default": "true"
+          "default": false
         },
         {
           "type": "input",
@@ -34,7 +34,7 @@
           "text": "组件标题",
           "desc": "组件标题",
           "bindKey": "title",
-          "default": "年度学时",
+          "default": "",
           "display": "@[isShowTitleBar]"
         },
         {
@@ -326,7 +326,7 @@
               "layoutType": "inline",
               "text": "文字字重",
               "bindKey": "xAxisLabelFontWeight",
-              "default": "bolder"
+              "default": "normal"
             },
             {
               "type": "colorPicker",
@@ -491,7 +491,7 @@
               "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
               "bindKey": "height",
               "width": "60px",
-              "default": "auto"
+              "default": "300px"
             }
           ]
         },
