@@ -64,7 +64,7 @@
           "layoutType": "inline",
           "text": "tab文字",
           "bindKey": "tabText",
-          "default":"默认文字"
+          "default": "默认文字"
         },
         {
           "type": "switch",
@@ -86,7 +86,7 @@
             "height": "40px",
             "maxSize": 2097152
           },
-          "display":"@[showLeftIcon]",
+          "display": "@[showLeftIcon]",
           "dictionary": [
             "/resource/idm/img/6.png",
             "/resource/idm/img/12.png",
@@ -184,31 +184,30 @@
           "multiple": false
         },
         {
-          "type": "select",
+          "type": "pageSelect",
           "layoutType": "inline",
-          "text": "点击事件",
-          "bindKey": "clickType",
-          "desc": "设置按钮点击响应事件的类型，更多使用方法请点击参考更详细的说明",
-          "dictionary": [
-            {
-              "label": "不响应",
-              "value": "none"
-            },
-            {
-              "label": "自定义动作函数",
-              "value": "customFunction"
-            }
-          ],
-          "default": "customFunction"
+          "text": "详情跳转",
+          "bindKey": "listJump",
+          "desc": "详情跳转页面"
         },
         {
-          "type": "actionSelect",
-          "layoutType": "block",
-          "text": "点击自定义函数",
-          "bindKey": "clickCustomFunction",
-          "display": "@[clickType=='customFunction']",
-          "desc": "当点击按钮时候会调用此函数，接收参数为格式为{...url参数,customParam:自定义的,activeKey:当前页签}",
-          "multiple": true
+          "type": "radio",
+          "styleType": "radio",
+          "layoutType": "inline",
+          "text": "是否缓存",
+          "bindKey": "isPageKeep",
+          "desc": "跳转列表页面时，是否缓存本页面",
+          "default": true,
+          "dictionary": [
+              {
+                  "label": "是",
+                  "value": true
+              },
+              {
+                  "label": "否",
+                  "value": false
+              }
+          ]
         }
       ]
     },
