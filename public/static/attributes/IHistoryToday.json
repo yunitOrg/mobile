@@ -62,6 +62,26 @@
                     "desc": "选择要跳转的页面"
                 },
                 {
+                    "type": "radio",
+                    "styleType": "radio",
+                    "layoutType": "inline",
+                    "text": "是否缓存",
+                    "display": "@[jumpStyle === '_child']",
+                    "bindKey": "isPageKeep",
+                    "desc": "跳转子页面时，是否缓存本页面",
+                    "default": true,
+                    "dictionary": [
+                        {
+                            "label": "是",
+                            "value": true
+                        },
+                        {
+                            "label": "否",
+                            "value": false
+                        }
+                    ]
+                },
+                {
                     "type": "input",
                     "layoutType": "inline",
                     "text": "跳转链接",

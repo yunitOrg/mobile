@@ -124,6 +124,13 @@
       "comLangue": "vue"
     },
     {
+      "classId": "idm.component.mobile.barChart",
+      "comName": "柱状统计图",
+      "className": "IBarChart",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
       "classId": "idm.component.mobile.iactivitylist",
       "comName": "活动列表",
       "className": "IActivityList",

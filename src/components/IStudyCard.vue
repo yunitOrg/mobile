@@ -200,7 +200,7 @@ export default {
           };
           this.videoData = res.data
           this.isLoading = false;
-        },1000)
+        },0)
       }
 
       let dataSource = this.propData.dataSource;
@@ -542,12 +542,12 @@ export default {
 
     //点击视频卡片后跳转函数
     toVideo(video){
-      console.log("跳转到视频地址")
-      // if(video.videoUrl !== ''){
-      //   IDM.router.push(this.moduleObject.routerId, video.videoUrl, {
-      //     keep: true
-      //   });
-      // }
+      console.log("跳转到视频地址",video)
+      if(video.videoUrl !== ''){
+        IDM.router.push(this.moduleObject.routerId, video.videoUrl, {
+          keep: true
+        });
+      }
     },
     /**
      * 组件通信：接收消息的方法

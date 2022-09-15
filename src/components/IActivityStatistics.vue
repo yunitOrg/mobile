@@ -3,10 +3,29 @@
        :id="moduleObject.id"
        :idm-ctrl-id="moduleObject.id"
        class="IActivity-Statistics">
+    <div class="header"  v-if="propData.isShowHeader">
+      <img class="header-background" src="../assets/dfjn-blue.png">
+      <div class="header-container">
+        <div class="header-tab">
+
+        </div>
+        <div class="price">{{dues}}</div>
+        <div class="payFont">应缴党费</div>
+        <div class="rule" @click="ruleDetail">计算规则</div>
+      </div>
+    </div>
     <div class="container">
       <div class="container-card">
         <van-loading v-if="isLoading" size="24px" vertical>加载中...</van-loading>
         <template v-else>
+          <div class="card-header" v-if="propData.isShowHeaderText">
+            <div class="left">
+              <a-space class="icon">
+                <svg-icon icon-class="shu"/>
+              </a-space>
+              <div class="left-text">{{ propData.headText }}</div>
+            </div>
+          </div>
           <div class="list">
             <div class="list-item" v-for="(acitivity,index) in activityList"
                  :key="index"
@@ -19,16 +38,18 @@
                 <div class="activity-name">
                   {{ acitivity.name }}
                 </div>
-                <div class="activity-personNum">
-                  累计{{ acitivity.personNum }}人次
+                <div class="activity-personNum" v-if="propData.isShowBottomText">
+                  {{ acitivity.personNum }}
                 </div>
               </div>
               <div class="right-text">
+
                 <div class="activity-convene">
-                  召开{{ acitivity.convene }}次
+                  <svg-icon icon-class="rmb" v-if="propData.isShowMoney"/>
+                  {{ acitivity.convene }}
                 </div>
-                <div class="activity-attendance">
-                  平均出席率{{ acitivity.attendance }}
+                <div class="activity-attendance"  v-if="propData.isShowBottomText">
+                  {{ acitivity.attendance }}
                 </div>
               </div>
             </div>
@@ -53,41 +74,43 @@ export default {
         {
           icon: "dydh",
           name: "党员大会",
-          convene: 15,
-          personNum: 33,
-          attendance: "25%",
+          convene: "召开15次",
+          personNum: "参会人数33人",
+          attendance: "出席率25%"
         },
         {
           icon: "zwh",
           name: "支委会",
-          convene: 15,
-          personNum: 33,
-          attendance: "25%",
+          convene: "召开15次",
+          personNum: "参会人数33人",
+          attendance: "出席率25%"
         },
         {
           icon: "dxzh",
           name: "党小组会",
-          convene: 15,
-          personNum: 33,
-          attendance: "25%",
+          convene: "召开15次",
+          personNum: "参会人数33人",
+          attendance: "出席率25%"
         },
         {
           icon: "dk",
           name: "党课",
-          convene: 15,
-          personNum: 33,
-          attendance: "25%",
+          convene: "召开15次",
+          personNum: "参会人数33人",
+          attendance: "出席率25%"
         },
         {
           icon: "ztdr",
           name: "主题党日",
-          convene: 15,
-          personNum: 33,
-          attendance: "25%",
+          convene: "召开15次",
+          personNum: "参会人数33人",
+          attendance: "出席率25%"
         },
       ],
+      dues:"",
+      computationRule:"",
       propData: this.$root.propData.compositeAttr || {
-        isShowLine: false,
+        isShowLine: true,
         themeList: [
           {
             "key": "blue",
@@ -96,7 +119,11 @@ export default {
               "hex8": "#0073CAFF"
             }
           },
-        ]
+        ],
+        headText:"党费缴纳",
+        isShowBottomText:true,
+        isShowMoney: false,
+        isShowHeader:true
       },
     }
   },
@@ -148,49 +175,55 @@ export default {
         setTimeout(() => {
           this.activityList = [];
           const res = {
-            data: [
-              {
-                icon: "dydh",
-                name: "党员大会",
-                convene: 15,
-                personNum: 33,
-                attendance: "25%",
-              },
-              {
-                icon: "zwh",
-                name: "支委会",
-                convene: 15,
-                personNum: 33,
-                attendance: "25%",
-              },
-              {
-                icon: "dxzh",
-                name: "党小组会",
-                convene: 15,
-                personNum: 33,
-                attendance: "25%",
-              },
-              {
-                icon: "dk",
-                name: "党课",
-                convene: 15,
-                personNum: 33,
-                attendance: "25%",
-              },
-              {
-                icon: "ztdr",
-                name: "主题党日",
-                convene: 15,
-                personNum: 33,
-                attendance: "25%",
-              },
-            ]
+            data:{
+              data: [
+                {
+                  icon: "dydh",
+                  name: "党员大会",
+                  convene: "召开15次",
+                  personNum: "参会人数33人",
+                  attendance: "出席率25%"
+                },
+                {
+                  icon: "zwh",
+                  name: "支委会",
+                  convene: "召开15次",
+                  personNum: "参会人数33人",
+                  attendance: "出席率25%"
+                },
+                {
+                  icon: "dxzh",
+                  name: "党小组会",
+                  convene: "召开15次",
+                  personNum: "参会人数33人",
+                  attendance: "出席率25%"
+                },
+                {
+                  icon: "dk",
+                  name: "党课",
+                  convene: "召开15次",
+                  personNum: "参会人数33人",
+                  attendance: "出席率25%"
+                },
+                {
+                  icon: "ztdr",
+                  name: "主题党日",
+                  convene: "召开15次",
+                  personNum: "参会人数33人",
+                  attendance: "出席率25%"
+                },
+              ],
+              dues:"20.00",
+              computationRule:"#"
+            }
+
           };
-          this.activityList = res.data
+          this.activityList = res.data.data
+          this.dues=res.data.dues
+          this.computationRule=res.data.computationRule
           this.isLoading = false;
-        }, 1000)
+        }, 0)
       }
-      this.getDataSourceData()
       let dataSource = this.propData.dataSource;
       if (!dataSource) {
         this.isLoading = false;
@@ -461,6 +494,15 @@ export default {
               : "idm-theme-";
       for (var i = 0; i < themeList.length; i++) {
         var item = themeList[i];
+        console.log(item)
+        if (item.key === "blue"){
+          let img = document.getElementsByClassName("header-background")[0];
+          img.setAttribute("src", "./assets/dfjn-blue.png");//把图片修改为目标路径
+        }
+        if (item.key === "red"){
+          let img = document.getElementsByClassName("header-background")[0];
+          img.setAttribute("src", "./assets/dfjn.png");//把图片修改为目标路径
+        }
         IDM.setStyleToPageHead(
             "." +
             themeNamePrefix +
@@ -468,6 +510,17 @@ export default {
             " #" +
             (this.moduleObject.packageid || "module_demo") +
             " .activity-convene",
+            {
+              "color": item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
+            }
+        );
+        IDM.setStyleToPageHead(
+            "." +
+            themeNamePrefix +
+            item.key +
+            " #" +
+            (this.moduleObject.packageid || "module_demo") +
+            " .left",
             {
               "color": item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
             }
@@ -505,13 +558,64 @@ export default {
           break;
       }
     },
+
+    //点击计算规则跳转的地址
+    ruleDetail(){
+      if (this.computationRule !=="")
+        IDM.router.push(
+            this.moduleObject.routerId,
+            this.computationRule,
+            {
+              keep: true,
+            }
+        );
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
 $scale: var(--i-activitystatistics-scale);
+$scale: 1;
+.header{
 
+  &-background{
+    height: calc(262px * #{ $scale });
+    position: absolute;
+    z-index: -1;
+  }
+
+  &-container{
+    display: flex;
+    padding-top: calc(118px * #{ $scale });
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    .price{
+      font-size: calc(28px * #{ $scale });
+      color: #FFFFFF;
+      text-align: center;
+      line-height: calc(41px * #{ $scale });
+      font-weight: 900;
+      margin-bottom: calc(6px * #{ $scale });
+    }
+    .payFont{
+      font-size: calc(17px * #{ $scale });
+      color: #FFFFFF;
+      text-align: center;
+      font-weight: 400;
+      margin-bottom: calc(12px * #{ $scale });
+    }
+    .rule{
+      font-size: calc(14px * #{ $scale });
+      color: #FFFFFF;
+      text-align: center;
+      font-weight: 400;
+      text-decoration:underline;
+    }
+  }
+
+}
 .container {
   display: flex;
   justify-content: center;
@@ -527,6 +631,43 @@ $scale: var(--i-activitystatistics-scale);
     border-radius: calc(6px * #{ $scale });
     margin: calc(16px * #{ $scale }) calc(10px * #{ $scale });
     padding: 0 calc(12px * #{ $scale });
+
+    .card-header{
+      margin: calc(18px * #{ $scale }) 0 calc(16px * #{ $scale }) 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      align-content: center;
+
+      .icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        svg {
+          width: calc(18px * #{ $scale });
+          height: calc(18px * #{ $scale });
+        }
+      }
+
+      .left{
+        display: flex;
+        justify-content: center;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        align-items: center;
+        color: rgb(205, 6, 3);
+        margin-left: calc(-4px * #{ $scale });
+
+        .left-text {
+          font-family: arial, helvetica, 'microsoft yahei',serif;
+          color: #333333FF;
+          font-size: calc(18px * #{ $scale });
+          line-height: calc(18px * #{ $scale });
+          font-weight: 800;
+        }
+      };
+    }
 
     .list {
       .list-item {
@@ -587,6 +728,10 @@ $scale: var(--i-activitystatistics-scale);
             color: #E02020;
             text-align: right;
             font-weight: 400;
+            svg {
+              width: calc(17px * #{ $scale });
+              height: calc(17px * #{ $scale });
+            }
           }
 
           .activity-attendance {

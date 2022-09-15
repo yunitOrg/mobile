@@ -147,6 +147,26 @@
                     "desc": "选择要打开的子页面"
                 },
                 {
+                    "type": "radio",
+                    "styleType": "radio",
+                    "layoutType": "inline",
+                    "text": "是否缓存",
+                    "display": "@[jumpStyle === '_child' && isShowTitle == true]",
+                    "bindKey": "isMoreKeep",
+                    "desc": "点击更多跳转子页面时，是否缓存本页面",
+                    "default": true,
+                    "dictionary": [
+                        {
+                            "label": "是",
+                            "value": true
+                        },
+                        {
+                            "label": "否",
+                            "value": false
+                        }
+                    ]
+                },
+                {
                     "type": "input",
                     "layoutType": "inline",
                     "text": "更多链接",
@@ -196,6 +216,26 @@
                     "display": "@[itemJumpStyle === '_child']",
                     "bindKey": "itemPageList",
                     "desc": "选择要打开的子页面"
+                },
+                {
+                    "type": "radio",
+                    "styleType": "radio",
+                    "layoutType": "inline",
+                    "text": "是否缓存",
+                    "display": "@[itemJumpStyle === '_child']",
+                    "bindKey": "isItemKeep",
+                    "desc": "单项页面跳转子页面时，是否缓存本页面",
+                    "default": true,
+                    "dictionary": [
+                        {
+                            "label": "是",
+                            "value": true
+                        },
+                        {
+                            "label": "否",
+                            "value": false
+                        }
+                    ]
                 },
                 {
                     "type": "input",
