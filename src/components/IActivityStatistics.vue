@@ -4,11 +4,8 @@
        :idm-ctrl-id="moduleObject.id"
        class="IActivity-Statistics">
     <div class="header"  v-if="propData.isShowHeader">
-      <img class="header-background" src="../assets/dfjn-blue.png">
+      <div class="header-background" :style="imgStyleObj"></div>
       <div class="header-container">
-        <div class="header-tab">
-
-        </div>
         <div class="price">{{dues}}</div>
         <div class="payFont">应缴党费</div>
         <div class="rule" @click="ruleDetail">计算规则</div>
@@ -126,6 +123,15 @@ export default {
         isShowHeader:true
       },
     }
+  },
+  computed:{
+    imgStyleObj() {
+      return {
+        "background": `url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn.png'), this.moduleObject)}`,
+        'background-size': '100% 100%',
+        'background-repeat': 'no-repeat',
+      }
+    },
   },
   created() {
     this.moduleObject = this.$root.moduleObject
@@ -497,11 +503,11 @@ export default {
         console.log(item)
         if (item.key === "blue"){
           let img = document.getElementsByClassName("header-background")[0];
-          img.setAttribute("src", "./assets/dfjn-blue.png");//把图片修改为目标路径
+          img.setAttribute("background",`url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn-blue.png'), this.moduleObject)}`,);//把图片修改为目标路径
         }
         if (item.key === "red"){
           let img = document.getElementsByClassName("header-background")[0];
-          img.setAttribute("src", "./assets/dfjn.png");//把图片修改为目标路径
+          img.setAttribute("background",`url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn.png'), this.moduleObject)}`,);//把图片修改为目标路径
         }
         IDM.setStyleToPageHead(
             "." +
@@ -576,11 +582,11 @@ export default {
 
 <style scoped lang="scss">
 $scale: var(--i-activitystatistics-scale);
-$scale: 1;
 .header{
 
   &-background{
     height: calc(262px * #{ $scale });
+    width: 100%;
     position: absolute;
     z-index: -1;
   }
