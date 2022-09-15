@@ -10,6 +10,7 @@
   :idm-ctrl-id="moduleObject.id" 
   >
     <van-tabs class="tab-ul" v-model="activeTab"
+    :lazy-render="false"
     :background="(propData.bgColor || {}).hex"
     :animated="propData.animated !== false ? true : false"
     :sticky="propData.sticky !== false ? true : false"
@@ -26,9 +27,9 @@
             idm-ctrl-inner
             :idm-ctrl-id="moduleObject.id"
             :idm-container-index="item.key"
+            :idm-refresh-container="`flex-${item.key}`"
           ></div>
         </template>
-        <!-- <div v-else>{{item.key}}</div> -->
       </van-tab>
     </van-tabs>
   </div>
@@ -43,6 +44,7 @@ export default{
       allTabList: [],
       moduleObject:{},
       propData:this.$root.propData.compositeAttr||{
+        isDrag: 'container',
         staticTabPaneList: [
           {
             key: '1',
@@ -296,10 +298,10 @@ export default{
       this.activeTab = key;
       this.allTabList.forEach(item=>{
         if(this.activeTab === item.key){
-          that.$nextTick(function(params) {
-              //去加载内部组件
-              that.moduleObject.moduleReload&&that.moduleObject.moduleReload(that.moduleObject.packageid, item.key);
-            })
+          // that.$nextTick(function(params) {
+          //     //去加载内部组件
+          //     that.moduleObject.moduleReload&&that.moduleObject.moduleReload(that.moduleObject.packageid, item.key);
+          //   })
           // if(!item.opened){
           //   item.opened = true;
           //   that.$nextTick(function(params) {

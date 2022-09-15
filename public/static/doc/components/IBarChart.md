@@ -1,14 +1,14 @@
-# 饼状图
+# 柱状图
 
-饼状图，带选择框。
+柱状图。
 
 ## 组件类名（className）
 
-ISelectPieChart
+IBarChart
 
 ## 组件类 ID（classId）
 
-idm.componet.mobile.selectPieChart
+idm.componet.mobile.barChart
 
 ## 组件开发语言（comLangue）
 
@@ -37,39 +37,6 @@ mobile@1.0.0
 
 <font color="#CCCCCC">此章节主要用于存放设置组件所需要的一些基本信息的属性，以达到组件具备使用的基础条件</font>
 
-#### 下拉数据源【columnsDataSource】
-
-用于选择下拉的数据源，获取对应的数据。
-入参：
-
-```json
-{
-  "id": "数据源id",
-  "pageId": "当前页面的唯一标识",
-  "...urlObject": "当前页面的网址url携带的参数",
-  "...routerParam": "单页面跳转携带的参数"
-}
-```
-
-接口返回格式示例：
-
-```json
-{
-  "code": "200",
-  "type": "success",
-  "message": "操作成功",
-  "metadata": null,
-  "token": "",
-  "data": [
-     { "text": "2015年", "value": 2015, "isDefault": false }
-    ...
-  ]
-}
-```
-
-- ⚠ <font color="#FF0000">**_注意事项：_**</font>
-  <font color="#FF0000">如果格式有差异，请使用自定义函数，并返回正确格式的数据</font>
-
 #### 图表数据源【chartDataSource】
 
 用于选择图表的数据源。
@@ -80,9 +47,7 @@ mobile@1.0.0
   "id": "数据源id",
   "pageId": "当前页面的唯一标识",
   "...urlObject": "当前页面的网址url携带的参数",
-  "...routerParam": "单页面跳转携带的参数",
-  "selectedValue": "下拉选中项的值",
-  "selectedItem": "下拉选中项的对象"
+  "...routerParam": "单页面跳转携带的参数"
 }
 ```
 
@@ -95,17 +60,10 @@ mobile@1.0.0
   "message": "操作成功",
   "metadata": null,
   "token": "",
-  "data": [
-    {
-      "name": "名称",
-      "value": "数值",
-      "displayValue": "数值的展示用字段",
-      "ratio": "占比，百分比",
-      "color": "可选字段，用于控制此项在图表中的颜色"
-      ...
-    },
-    ...
-  ]
+  "data": {
+    "nameList": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    "valueList": [10, 52, 200, 334, 390, 330, 220]
+  }
 }
 ```
 

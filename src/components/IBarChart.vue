@@ -9,17 +9,13 @@
     idm-ctrl="idm_module"
     :id="moduleObject.id"
     :idm-ctrl-id="moduleObject.id"
-    class="i-selectPieChart-outer"
+    class="i-barChart-outer"
   >
-    <div
-      key="i-selectPieChart-header"
-      class="i-selectPieChart-header"
-      v-if="propData.isShowTitleBar"
-    >
-      <div class="i-selectPieChart-header-main">
-        <div class="i-selectPieChart-header-tit">
+    <div key="i-barChart-header" class="i-barChart-header" v-if="propData.isShowTitleBar">
+      <div class="i-barChart-header-main">
+        <div class="i-barChart-header-tit">
           <span v-if="propData.titleIconPosition === 'right'">{{ propData.title }}</span>
-          <div class="i-selectPieChart-header-tit-icon" v-if="propData.showIcon">
+          <div class="i-barChart-header-tit-icon" v-if="propData.showIcon">
             <svg
               v-if="propData.titleIcon && propData.titleIcon.length > 0"
               class="idm_filed_svg_icon"
@@ -32,67 +28,23 @@
           <span v-if="propData.titleIconPosition === 'left'">{{ propData.title }}</span>
         </div>
       </div>
-      <div
-        :class="
-          showPicker ? 'i-selectPieChart-header-select-active' : 'i-selectPieChart-header-select'
-        "
-        v-if="propData.columnsType != 'none'"
-        @click="showPicker = true"
-      >
-        {{ pickerSelectText }}
-      </div>
     </div>
-    <div key="i-selectPieChart-content" class="i-selectPieChart-content">
+    <div key="i-barChart-content" class="i-barChart-content">
       <van-loading v-show="isLoading" :size="loadingSize" vertical>{{
         propData.loadingDescription || '加载中...'
       }}</van-loading>
       <div
-        v-show="!isLoading && chartData && chartData.length > 0"
-        class="i-selectPieChart-content-wapper"
+        v-show="!isLoading && chartData && Object.keys(chartData).length > 0"
+        class="i-barChart-content-wapper"
       >
         <div
-          key="i-selectPieChart-content-chart"
+          key="i-barChart-content-chart"
           :ref="`charts_container_${moduleObject.id}`"
-          class="i-selectPieChart-content-chart"
+          class="i-barChart-content-chart"
         />
-        <div
-          key="i-selectPieChart-content-table"
-          class="i-selectPieChart-content-table"
-          v-if="
-            propData.showTable &&
-            propData.tableFields &&
-            propData.tableFields[0] &&
-            propData.tableFields[0].name
-          "
-        >
-          <div
-            class="i-selectPieChart-content-table-row"
-            v-for="(item, index) in chartData"
-            :key="index"
-            @click.stop="tableRowCilck(item)"
-          >
-            <div class="col-legend" :style="{ 'background-color': colors[index] }" />
-            <div
-              class="col-text"
-              v-for="(field, i) in propData.tableFields"
-              :key="i"
-              :style="{
-                'text-align': field.textAlign
-                  ? field.textAlign
-                  : i == 0
-                  ? 'left'
-                  : i == propData.tableFields.length - 1
-                  ? 'right'
-                  : 'center'
-              }"
-            >
-              {{ getExpressData('data', field.name, item) }}
-            </div>
-          </div>
-        </div>
       </div>
       <van-empty
-        v-show="!isLoading && (!chartData || chartData.length == 0)"
+        v-show="!isLoading && (!chartData || Object.keys(chartData).length == 0)"
         :image-size="emptyImageSize"
         :description="propData.emptyDescription || '暂无数据'"
       >
@@ -106,7 +58,7 @@
       </van-empty>
     </div>
     <div
-      class="i-selectPieChart-mask"
+      class="i-barChart-mask"
       v-if="
         moduleObject.env !== 'production' &&
         ((propData.isShowTitleBar &&
@@ -135,46 +87,19 @@
 </template>
 
 <script>
+import * as echarts from 'echarts';
 import { Empty, Loading, Image as VanImage, Popup, Picker } from 'vant';
 import 'vant/lib/empty/style';
 import 'vant/lib/loading/style';
 import 'vant/lib/image/style';
 import 'vant/lib/popup/style';
 import 'vant/lib/picker/style';
-const devChartResult = [
-  {
-    name: '集中培训',
-    value: 100,
-    displayValue: '100h',
-    ratio: '30%',
-    color: 'red'
-  },
-  {
-    name: '论学学时',
-    value: 110,
-    displayValue: '100h',
-    ratio: '40%'
-  },
-  {
-    name: '在线学习',
-    value: 100,
-    displayValue: '100h',
-    ratio: '30%',
-    color: 'green'
-  }
-];
-const devColumns = [
-  { text: '2015年', value: '2015', isDefault: false },
-  { text: '2016年', value: '2016', isDefault: false },
-  { text: '2017年', value: '2017', isDefault: false },
-  { text: '2018年', value: '2018', isDefault: false },
-  { text: '2019年', value: '2019', isDefault: false },
-  { text: '2020年', value: '2020', isDefault: false },
-  { text: '2021年', value: '2021', isDefault: false },
-  { text: '2022年', value: '2022', isDefault: true }
-];
+const devChartResult = {
+  nameList: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+  valueList: [10, 52, 200, 334, 390, 330, 220]
+};
 export default {
-  name: 'ISelectPieChart',
+  name: 'IBarChart',
   components: {
     [Empty.name]: Empty,
     [Loading.name]: Loading,
@@ -182,37 +107,44 @@ export default {
     [Popup.name]: Popup,
     [Picker.name]: Picker
   },
-  // {
-  //   colorType: 'field',
-  //   chartColorField: '',
-  //   chartType: 'hollow',
-  //   columnsType: 'none',
-  //   showTable: true,
-  //   showLegend: true,
-  //   showLabel: true,
-  //   chartDataSource: '1',
-  //   showIcon: true,
-  //   title: '年度学时',
-  //   titleIconPosition: 'left',
-  //   isShowTitleBar: false,
-  //   moreBtn: false,
-  //   pickerTitle: '选择年份',
-  //   showChartTip: true,
-  //   itemBorderWidth: 0,
-  //   seriesTop: '30',
-  //   seriesBottom: '20',
-  //   chartTitle: '标题',
-  //   tableFields: [{ name: 'name' }, { name: 'displayValue' }, { name: 'ratio' }]
-  // }
+  // colorType: 'field',
+  // chartColorField: '',
+  // chartType: 'hollow',
+  // columnsType: 'none',
+  // showTable: true,
+  // showLegend: true,
+  // showLabel: true,
+  // chartDataSource: '1',
+  // showIcon: true,
+  // title: '年度学时',
+  // titleIconPosition: 'left',
+  // isShowTitleBar: false,
+  // moreBtn: false,
+  // pickerTitle: '选择年份',
+  // showChartTip: true,
+  // itemBorderWidth: 0,
+  // chartTitle: '标题',
+  // // colorList: [{ offset: 0, color: {hex8: '#83bff6'} }],
+  // gridTop: 45,
+  // gridRight: 0,
+  // barWidth: 16,
+  // borderRadiusTopLeft: 0,
+  // borderRadiusTopRight: 20,
+  // borderRadiusBottomLeft: 20,
+  // borderRadiusBottomRight: 0,
+  // showYAxisLabel: true,
+  // showYAxis: true,
+  // showExtraXAxis: true,
+  // showXAxisLine: false,
+  // chartLayout: 'horizontal',
+  // nameField: 'nameList',
+  // valueField: 'valueList',
   data() {
     return {
       moduleObject: {},
       propData: this.$root.propData.compositeAttr || {},
       isLoading: false,
-      showPicker: false,
-      columns: [],
-      pickerSelect: {},
-      chartData: [],
+      chartData: {},
       chart: null
     };
   },
@@ -223,40 +155,6 @@ export default {
     },
     loadingSize() {
       return this.getScale() * (this.propData.loadingSize || 24);
-    },
-    pickerSelectText() {
-      if (this.pickerSelect && this.pickerSelect.value) {
-        return this.pickerSelect.text;
-      }
-      return this.propData.selectBtnPlaceholder || '请选择';
-    },
-    columnsText() {
-      if (!this.columns) return [];
-      return this.columns.map(item => item.text);
-    },
-    colors() {
-      const defaultColors = [
-        '#FFBA00',
-        '#FF8500',
-        '#3296FA',
-        '#0071C1',
-        '#67C23B',
-        '#2495C7',
-        '#5B8FF9',
-        '#FF8F00'
-      ];
-      let chartColors = [];
-      if (this.propData.colorType == 'field') {
-        chartColors = this.propData.chartColorField
-          ? this.chartData.map(item =>
-              this.getExpressData('data', this.propData.chartColorField, item)
-            )
-          : [];
-      } else {
-        chartColors =
-          this.propData.chartColors?.map(item => item.color?.hex8).filter(item => !!item) || [];
-      }
-      return [...chartColors, ...defaultColors];
     }
   },
   created() {
@@ -279,7 +177,6 @@ export default {
       this.propData = propData.compositeAttr || {};
       this.convertAttrToStyleObject();
       this.convertThemeListAttrToStyleObject();
-      this.getColumns();
       this.drawChart();
       this.$nextTick(() => {
         this.chart.resize();
@@ -299,7 +196,7 @@ export default {
               ? this.propData.messageRefreshKey
               : [this.propData.messageRefreshKey];
             if (messageData.badgeType && arr.includes(messageData.badgeType)) {
-              this.getChartData();
+              this.initData();
             }
           }
           break;
@@ -323,47 +220,85 @@ export default {
       const width = this.moduleObject.env === 'production' ? window.innerWidth : pageWidth || 414;
       return (width / base - 1) * (ratio - 1) + 1;
     },
-    onConfirm(value, index) {
-      this.pickerSelect = this.columns && this.columns[index];
-      this.showPicker = false;
-      if (this.moduleObject.env == 'production') {
-        this.getChartData();
-        this.customFunctionHandle(this.propData.customSelectChange, {
-          selectedValue: this.pickerSelect.value,
-          selectedItem: this.pickerSelect,
-          chartData: this.chartData
-        });
-      }
-    },
-    tableRowCilck(item) {
-      this.customFunctionHandle(this.propData.customTableRowCilck, {
-        selectedValue: this.pickerSelect.value,
-        selectedItem: this.pickerSelect,
-        chartData: this.chartData,
-        record: item
-      });
-    },
     drawChart() {
-      const legendData = this.chartData?.map(item => item.name);
-      const option = {
-        color: this.colors,
-        legend: {
-          show: this.propData.showLegend,
-          left: 'center',
-          bottom: 0,
-          padding: 0,
-          itemWidth: this.propData.legendItemSize || 14,
-          itemHeight: this.propData.legendItemSize || 14,
-          data: legendData,
-          itemGap: this.propData.legendItemGap || 20,
-          textStyle: {
+      const nameList = this.getExpressData('data', this.propData.nameField, this.chartData);
+      const valueList = this.getExpressData('data', this.propData.valueField, this.chartData);
+      const colorList =
+        this.propData.colorList &&
+        this.propData.colorList.length > 0 &&
+        this.propData.colorList[0].color &&
+        this.propData.colorList[0].color.hex8
+          ? this.propData.colorList.map(item => ({
+              offset: item.offset ? item.offset : 0,
+              color: item.color && item.color.hex8 ? item.color.hex8 : '#188df0'
+            }))
+          : [
+              { offset: 0, color: '#188df0' },
+              { offset: 1, color: '#83bff6' }
+            ];
+      const xAxis = [
+        {
+          type: 'category',
+          data: nameList,
+          axisTick: {
+            show: false,
+            alignWithLabel: true
+          },
+          axisLine: {
+            show: false
+          },
+          axisLabel: {
+            fontSize: this.getScale() * (this.propData.xAxisLabelFontSize || 12),
             color:
-              this.propData.legendFontColor && this.propData.legendFontColor.hex8
-                ? this.propData.legendFontColor.hex8
+              this.propData.xAxisLabelFontColor && this.propData.xAxisLabelFontColor.hex8
+                ? this.propData.xAxisLabelFontColor.hex8
                 : '#666666',
-            fontSize: this.getScale() * (this.propData.legendFontSize || 14)
+            fontWeight: this.propData.xAxisLabelFontWeight || 'normal'
           }
         },
+        {
+          type: 'category',
+          data: valueList,
+          show: this.propData.showExtraXAxis,
+          axisTick: {
+            show: false,
+            alignWithLabel: true
+          },
+          axisLine: {
+            show: false
+          },
+          axisLabel: {
+            fontSize: this.getScale() * (this.propData.extraXAxisLabelFontSize || 12),
+            color:
+              this.propData.extraXAxisLabelFontColor && this.propData.extraXAxisLabelFontColor.hex8
+                ? this.propData.extraXAxisLabelFontColor.hex8
+                : '#666666'
+          }
+        }
+      ];
+      const yAxis = [
+        {
+          type: 'value',
+          show: this.propData.showYAxis,
+          axisLabel: {
+            show: this.propData.showYAxisLabel,
+            fontSize: this.getScale() * (this.propData.yAxisLabelFontSize || 12),
+            color:
+              this.propData.yAxisLabelFontColor && this.propData.yAxisLabelFontColor.hex8
+                ? this.propData.yAxisLabelFontColor.hex8
+                : '#666666'
+          },
+          splitLine: {
+            lineStyle: {
+              color:
+                this.propData.yAxisSplitLineColor && this.propData.yAxisSplitLineColor.hex8
+                  ? this.propData.yAxisSplitLineColor.hex8
+                  : '#cccccc'
+            }
+          }
+        }
+      ];
+      const option = {
         title: {
           show: !!this.propData.chartTitle,
           text: this.propData.chartTitle,
@@ -378,37 +313,52 @@ export default {
             fontWeight: this.propData.chartTitleFontWeight || 'bolder'
           }
         },
+        emphasis: { disabled: true },
+        grid: {
+          left: 0,
+          right: this.propData.gridRight,
+          bottom: 0,
+          top: this.propData.gridTop,
+          containLabel: true
+        },
+        xAxis: this.propData.chartLayout == 'vertical' ? xAxis : yAxis,
+        yAxis: this.propData.chartLayout == 'vertical' ? yAxis : xAxis,
         series: [
           {
-            type: 'pie',
-            bottom: this.propData.showLegend ? this.propData.seriesBottom : 0,
-            top: this.propData.chartTitle ? this.propData.seriesTop : 0,
-            radius: this.propData.chartType == 'hollow' ? ['45%', '75%'] : [0, '75%'],
-            itemStyle: {
-              borderColor: '#fff',
-              borderWidth: this.propData.itemBorderWidth || 0
+            type: 'bar',
+            barWidth: this.propData.barWidth,
+            showBackground: this.propData.showBackground,
+            backgroundStyle: {
+              borderRadius: [
+                this.propData.barborderRadiusTopLeft || 0,
+                this.propData.barborderRadiusTopRight || 0,
+                this.propData.barborderRadiusBottomLeft || 0,
+                this.propData.barborderRadiusBottomRight || 0
+              ],
+              color:
+                this.propData.barBgColor && this.propData.barBgColor.hex8
+                  ? this.propData.barBgColor.hex8
+                  : '#ffffff'
             },
             label: {
               show: this.propData.showLabel,
-              formatter: '{value|{c}}',
-              rich: {
-                value: {
-                  fontSize: this.getScale() * (this.propData.chartLabelFontSize || 12),
-                  color:
-                    this.propData.chartLabelFontColor && this.propData.chartLabelFontColor.hex8
-                      ? this.propData.chartLabelFontColor.hex8
-                      : '#666666'
-                }
-              }
+              position: this.propData.chartLayout == 'vertical' ? 'top' : 'right',
+              fontSize: this.getScale() * (this.propData.chartLabelFontSize || 12),
+              color:
+                this.propData.chartLabelFontColor && this.propData.chartLabelFontColor.hex8
+                  ? this.propData.chartLabelFontColor.hex8
+                  : '#666666'
             },
-            labelLine: {
-              show: this.propData.showLabel,
-              smooth: 0.1,
-              length: 15,
-              length2: 30
+            itemStyle: {
+              color: new echarts.graphic.LinearGradient(0, 1, 1, 0, colorList),
+              borderRadius: [
+                this.propData.barborderRadiusTopLeft || 0,
+                this.propData.barborderRadiusTopRight || 0,
+                this.propData.barborderRadiusBottomLeft || 0,
+                this.propData.barborderRadiusBottomRight || 0
+              ]
             },
-            emphasis: { disabled: true },
-            data: this.chartData
+            data: valueList
           }
         ]
       };
@@ -467,73 +417,13 @@ export default {
     initData() {
       if (!this.moduleObject.env || this.moduleObject.env == 'develop') {
         this.chartData = devChartResult;
-        this.columns = devColumns;
-        const pickerSelect = this.columns.find(item => item.isDefault);
-        this.pickerSelect = pickerSelect || {};
         this.drawChart();
         this.$nextTick(() => {
           this.chart.resize();
         });
         return;
       }
-      this.getColumns();
-    },
-    getColumns() {
-      if (!this.propData.isShowTitleBar || this.propData.columnsType == 'none') {
-        this.getChartData();
-      } else if (this.propData.columnsType == 'static' && this.propData.columnsList) {
-        if (this.propData.columnsList[0] && !this.propData.columnsList[0].value) {
-          this.columns = devColumns;
-        } else {
-          this.columns = this.propData.columnsList;
-        }
-        const pickerSelect = this.columns.find(item => item.isDefault);
-        this.pickerSelect = pickerSelect || {};
-        this.getChartData();
-      } else if (this.propData.columnsDataSource) {
-        if (!this.moduleObject.env || this.moduleObject.env == 'develop') {
-          return false;
-        }
-        const url = `ctrl/dataSource/getDatas`;
-        const urlObject = IDM.url.queryObject();
-        const routerParams = this.moduleObject.routerId
-          ? IDM.router.getParam(this.moduleObject.routerId)
-          : {};
-        this.isLoading = true;
-        IDM.http
-          .post(
-            url,
-            {
-              pageId:
-                window.IDM.broadcast && window.IDM.broadcast.pageModule
-                  ? window.IDM.broadcast.pageModule.id
-                  : '',
-              ...urlObject,
-              ...routerParams,
-              id: this.propData.columnsDataSource.value
-            },
-            {
-              headers: {
-                'Content-Type': 'application/json;charset=UTF-8'
-              }
-            }
-          )
-          .done(res => {
-            if (res.type === 'success') {
-              const resultData = this.customFormat(this.propData.columnsCustomFunction, res.data);
-              this.columns = resultData;
-              const pickerSelect = this.columns.find(item => item.isDefault);
-              this.pickerSelect = pickerSelect || {};
-              this.getChartData();
-            } else {
-              this.isLoading = false;
-            }
-          })
-          .error(err => {
-            console.log(err);
-            this.isLoading = false;
-          });
-      }
+      this.getChartData();
     },
     getChartData() {
       if (
@@ -559,9 +449,7 @@ export default {
                 : '',
             ...urlObject,
             ...routerParams,
-            id: this.propData.chartDataSource.value,
-            selectedValue: this.pickerSelect.value,
-            selectedItem: this.pickerSelect
+            id: this.propData.chartDataSource.value
           },
           {
             headers: {
@@ -595,13 +483,9 @@ export default {
       const iconStyleObject = {};
       const emptyStyleObject = {};
       const loadingStyleObject = {};
-      const chartStyleObject = {};
-      const tableStyleObject = {};
-      const tableIconStyleObject = {};
-      const selectStyleObject = {};
 
       const scale = this.getScale(pageSize.width);
-      styleObject['--i-selectPieChart-scale'] = scale;
+      styleObject['--i-barChart-scale'] = scale;
 
       if (this.propData.bgSize && this.propData.bgSize == 'custom') {
         styleObject['background-size'] =
@@ -655,18 +539,6 @@ export default {
             case 'width':
             case 'height':
               styleObject[key] = element;
-              break;
-            // case 'innerWidth':
-            //   innerCardStyleObject['width'] = element;
-            //   break;
-            // case 'innerHeight':
-            //   innerCardStyleObject['height'] = element;
-            //   break;
-            case 'chartHeight':
-              chartStyleObject['height'] = element;
-              break;
-            case 'tableHeight':
-              tableStyleObject['height'] = element;
               break;
             case 'bgColor':
               if (element && element.hex8) {
@@ -731,32 +603,6 @@ export default {
               }
               if (element.paddingLeftVal) {
                 innerCardStyleObject['padding-left'] = `${element.paddingLeftVal}`;
-              }
-              break;
-            case 'tableBox':
-              if (element.marginTopVal) {
-                tableStyleObject['margin-top'] = `${element.marginTopVal}`;
-              }
-              if (element.marginRightVal) {
-                tableStyleObject['margin-right'] = `${element.marginRightVal}`;
-              }
-              if (element.marginBottomVal) {
-                tableStyleObject['margin-bottom'] = `${element.marginBottomVal}`;
-              }
-              if (element.marginLeftVal) {
-                tableStyleObject['margin-left'] = `${element.marginLeftVal}`;
-              }
-              if (element.paddingTopVal) {
-                tableStyleObject['padding-top'] = `${element.paddingTopVal}`;
-              }
-              if (element.paddingRightVal) {
-                tableStyleObject['padding-right'] = `${element.paddingRightVal}`;
-              }
-              if (element.paddingBottomVal) {
-                tableStyleObject['padding-bottom'] = `${element.paddingBottomVal}`;
-              }
-              if (element.paddingLeftVal) {
-                tableStyleObject['padding-left'] = `${element.paddingLeftVal}`;
               }
               break;
             case 'bgImgUrl':
@@ -887,7 +733,6 @@ export default {
                   );
                 }
               }
-
               innerCardStyleObject['border-top-left-radius'] =
                 element.radius.leftTop.radius + element.radius.leftTop.radiusUnit;
               innerCardStyleObject['border-top-right-radius'] =
@@ -920,28 +765,6 @@ export default {
               break;
             case 'titleIconSize':
               iconStyleObject['font-size'] = scale * element + 'px';
-              break;
-            case 'tableIconSize':
-              tableIconStyleObject['width'] = scale * element + 'px';
-              tableIconStyleObject['height'] = scale * element + 'px';
-              break;
-            case 'tableFont':
-              tableStyleObject['font-family'] = element.fontFamily;
-              if (element.fontColors.hex8) {
-                tableStyleObject['color'] = IDM.hex8ToRgbaString(element.fontColors.hex8);
-              }
-              tableStyleObject['font-weight'] =
-                element.fontWeight && element.fontWeight.split(' ')[0];
-              tableStyleObject['font-style'] = element.fontStyle;
-              tableStyleObject['font-size'] =
-                element.fontSizeUnit === 'px'
-                  ? scale * element.fontSize + element.fontSizeUnit
-                  : element.fontSize + element.fontSizeUnit;
-              tableStyleObject['line-height'] =
-                element.fontLineHeight +
-                (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
-              tableStyleObject['text-align'] = element.fontTextAlign;
-              tableStyleObject['text-decoration'] = element.fontDecoration;
               break;
             case 'loadingFont':
               loadingStyleObject['font-family'] = element.fontFamily;
@@ -979,69 +802,30 @@ export default {
               emptyStyleObject['text-align'] = element.fontTextAlign;
               emptyStyleObject['text-decoration'] = element.fontDecoration;
               break;
-            case 'selectFont':
-              selectStyleObject['font-family'] = element.fontFamily;
-              if (element.fontColors.hex8) {
-                selectStyleObject['color'] = IDM.hex8ToRgbaString(element.fontColors.hex8);
-              }
-              selectStyleObject['font-weight'] =
-                element.fontWeight && element.fontWeight.split(' ')[0];
-              selectStyleObject['font-style'] = element.fontStyle;
-              selectStyleObject['font-size'] =
-                element.fontSizeUnit === 'px'
-                  ? scale * element.fontSize + element.fontSizeUnit
-                  : element.fontSize + element.fontSizeUnit;
-              selectStyleObject['line-height'] =
-                element.fontLineHeight +
-                (element.fontLineHeightUnit == '-' ? '' : element.fontLineHeightUnit);
-              selectStyleObject['text-align'] = element.fontTextAlign;
-              selectStyleObject['text-decoration'] = element.fontDecoration;
-              break;
           }
         }
       }
       // 内层容器高度适配，若外层有高度，则内层随外层缩放。若外层没有高度，则由内层容器的子元素撑起。前提设置的有外层容器高度属性，若无此值不走此逻辑，取下面style中的预设
-      if (styleObject.height && styleObject.height != 'auto') {
-        innerCardStyleObject.height = 0;
-      } else if (styleObject.height && styleObject.height == 'auto') {
-        innerCardStyleObject.height = 'auto';
-      }
+      // if (styleObject.height && styleObject.height != 'auto') {
+      //   innerCardStyleObject.height = 0;
+      // } else if (styleObject.height && styleObject.height == 'auto') {
+      //   innerCardStyleObject.height = 'auto';
+      // }
       window.IDM.setStyleToPageHead(this.moduleObject.id, styleObject);
       window.IDM.setStyleToPageHead(
-        this.moduleObject.id + ' .i-selectPieChart-content',
+        this.moduleObject.id + ' .i-barChart-content',
         innerCardStyleObject
       );
       window.IDM.setStyleToPageHead(
-        this.moduleObject.id + ' .i-selectPieChart-header-tit span',
+        this.moduleObject.id + ' .i-barChart-header-tit span',
         titleStyleObject
       );
       window.IDM.setStyleToPageHead(
         this.moduleObject.packageid +
           ' #' +
           this.moduleObject.id +
-          ' .i-selectPieChart-header-tit .i-selectPieChart-header-tit-icon',
+          ' .i-barChart-header-tit .i-barChart-header-tit-icon',
         iconStyleObject
-      );
-      window.IDM.setStyleToPageHead(
-        this.moduleObject.id + ' .i-selectPieChart-header .i-selectPieChart-header-select',
-        selectStyleObject
-      );
-      window.IDM.setStyleToPageHead(
-        this.moduleObject.id + ' .i-selectPieChart-header .i-selectPieChart-header-select-active',
-        selectStyleObject
-      );
-      window.IDM.setStyleToPageHead(
-        this.moduleObject.id + ' .i-selectPieChart-content .i-selectPieChart-content-chart',
-        chartStyleObject
-      );
-      window.IDM.setStyleToPageHead(
-        this.moduleObject.id + ' .i-selectPieChart-content .i-selectPieChart-content-table',
-        tableStyleObject
-      );
-      window.IDM.setStyleToPageHead(
-        this.moduleObject.id +
-          ' .i-selectPieChart-content .i-selectPieChart-content-table .col-legend',
-        tableIconStyleObject
       );
       window.IDM.setStyleToPageHead(this.moduleObject.id + ' .van-empty', emptyStyleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + ' .van-loading', loadingStyleObject);
@@ -1065,26 +849,13 @@ export default {
           color: item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : ''
         };
 
-        const selectStyleObject = {
-          color: item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : ''
-        };
-
         IDM.setStyleToPageHead(
           '.' +
             themeNamePrefix +
             item.key +
             ' #' +
             (this.moduleObject.packageid || 'module_demo') +
-            ' .i-selectPieChart-header .i-selectPieChart-header-select-active',
-          selectStyleObject
-        );
-        IDM.setStyleToPageHead(
-          '.' +
-            themeNamePrefix +
-            item.key +
-            ' #' +
-            (this.moduleObject.packageid || 'module_demo') +
-            ' .i-selectPieChart-header-tit .i-selectPieChart-header-tit-icon',
+            ' .i-barChart-header-tit .i-barChart-header-tit-icon',
           titleSvgStyleObject
         );
       }
@@ -1094,8 +865,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$scale: var(--i-selectPieChart-scale);
-.i-selectPieChart-outer {
+$scale: var(--i-barChart-scale);
+.i-barChart-outer {
   width: auto;
   box-sizing: border-box;
   padding: 10px;
@@ -1107,23 +878,23 @@ $scale: var(--i-selectPieChart-scale);
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  height: auto;
+  height: 300px;
   overflow: hidden;
 
-  .i-selectPieChart-header {
+  .i-barChart-header {
     display: flex;
     // height: calc(40px * #{ $scale });
     // line-height: calc(40px * #{ $scale });
     justify-content: space-between;
     align-items: center;
 
-    .i-selectPieChart-header-main {
+    .i-barChart-header-main {
       // width: 86%;
       flex-grow: 1;
       display: flex;
       align-items: center;
 
-      .i-selectPieChart-header-tit {
+      .i-barChart-header-tit {
         font-family: PingFangSC-Regular;
         color: #333333;
         font-style: normal;
@@ -1133,7 +904,7 @@ $scale: var(--i-selectPieChart-scale);
         display: flex;
         align-items: center;
 
-        .i-selectPieChart-header-tit-icon {
+        .i-barChart-header-tit-icon {
           margin-right: 5px;
           display: inline-block;
           flex: 1;
@@ -1157,53 +928,19 @@ $scale: var(--i-selectPieChart-scale);
       }
     }
 
-    .i-selectPieChart-header-more,
-    .i-selectPieChart-header-select,
-    .i-selectPieChart-header-select-active {
+    .i-barChart-header-more {
       // opacity: 0.5;
       margin: 0 5px;
       position: relative;
     }
-
-    .i-selectPieChart-header-select,
-    .i-selectPieChart-header-select-active {
-      padding-right: 13px;
-    }
-    .i-selectPieChart-header-select-active {
-      color: red;
-    }
-    .i-selectPieChart-header-select::after {
-      position: absolute;
-      top: 50%;
-      right: 0px;
-      margin-top: -5px;
-      border: 3px solid;
-      border-color: transparent transparent currentColor currentColor;
-      -webkit-transform: rotate(-45deg);
-      transform: rotate(-45deg);
-      opacity: 1;
-      content: '';
-    }
-    .i-selectPieChart-header-select-active::after {
-      position: absolute;
-      top: 50%;
-      right: 0px;
-      margin-top: -1px;
-      -webkit-transform: rotate(135deg);
-      transform: rotate(135deg);
-      border: 3px solid;
-      border-color: transparent transparent currentColor currentColor;
-      opacity: 1;
-      content: '';
-    }
   }
 
-  .i-selectPieChart-content {
+  .i-barChart-content {
     /* border-radius: calc(10px * #{$scale});
     padding: calc(10px * #{$scale}) calc(14px * #{$scale}); */
     flex-grow: 1;
     flex-shrink: 1;
-    height: auto;
+    height: 0;
 
     ::v-deep .van-loading {
       height: 100%;
@@ -1219,46 +956,21 @@ $scale: var(--i-selectPieChart-scale);
       font-size: inherit;
     }
 
-    .i-selectPieChart-content-wapper {
+    .i-barChart-content-wapper {
       height: 100%;
       display: flex;
       flex-direction: column;
       align-items: stretch;
-      .i-selectPieChart-content-chart {
+      .i-barChart-content-chart {
         width: 100%;
+        height: 100%;
         flex-grow: 1;
         flex-shrink: 1;
-        height: 150px;
-      }
-
-      .i-selectPieChart-content-table {
-        flex-grow: 1;
-        flex-shrink: 1;
-        overflow-y: auto;
-        overflow-x: hidden;
-        height: 150px;
-        padding: 0 12%;
-        .i-selectPieChart-content-table-row {
-          display: flex;
-          align-items: center;
-          padding: 8px 0;
-          line-height: 1;
-          .col-legend {
-            // width: calc(14px * #{$scale});
-            // height: calc(14px * #{$scale});
-            width: calc(14px * #{$scale});
-            height: calc(14px * #{$scale});
-            margin-right: calc(12px * #{$scale});
-          }
-          .col-text {
-            flex-grow: 1;
-          }
-        }
       }
     }
   }
 
-  .i-selectPieChart-mask {
+  .i-barChart-mask {
     position: absolute;
     top: 0;
     left: 0;

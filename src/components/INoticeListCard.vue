@@ -106,6 +106,7 @@ export default {
         isShowTitleBar:true,
         showIcon:true,
         titleIconPosition:'left',
+        listInterface:'list',
         dateInterface:'date',
         btInterface:'bt',
       },
@@ -192,7 +193,7 @@ export default {
           if(loadMore){
             this.infoList = [...this.infoList, ...res.list];
           }else{
-            this.infoList = res.list;
+            this.infoList = res[this.propData.listInterface];
           }
         }, 1000);
 
@@ -224,9 +225,9 @@ export default {
             const result = res.data
             this.total = result.total;
             if(loadMore){
-              this.infoList = [...this.infoList, ...result.list];
+              this.infoList = [...this.infoList, ...result[this.propData.listInterface]];
             }else{
-              this.infoList = result.list;
+              this.infoList = result[this.propData.listInterface];
             }
           } else {
             console.log(url + "请求失败");

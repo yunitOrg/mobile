@@ -507,6 +507,14 @@
             {
               "type": "input",
               "layoutType": "inline",
+              "text": "通知列表",
+              "desc": "通知公告通知列表字段",
+              "bindKey": "listInterface",
+              "default": "list"
+            },
+            {
+              "type": "input",
+              "layoutType": "inline",
               "text": "日期",
               "desc": "日期格式:2022-08-08",
               "bindKey": "dateInterface",
