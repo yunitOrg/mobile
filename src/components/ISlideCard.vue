@@ -356,11 +356,7 @@ export default {
             customParam: customFunction[0].param,
             moduleObject: this.moduleObject,
             resultData: resultData,
-            urlObject: IDM.url.queryObject(),
-            pageId:
-              window.IDM.broadcast && window.IDM.broadcast.pageModule
-                ? window.IDM.broadcast.pageModule.id
-                : ''
+            urlObject: IDM.url.queryObject()
           });
       }
       return resultData;
@@ -372,10 +368,6 @@ export default {
             customParam: customFunction[0].param,
             moduleObject: this.moduleObject,
             urlObject: IDM.url.queryObject(),
-            pageId:
-              window.IDM.broadcast && window.IDM.broadcast.pageModule
-                ? window.IDM.broadcast.pageModule.id
-                : '',
             ...param
           });
       }
@@ -400,10 +392,6 @@ export default {
           .post(
             url,
             {
-              pageId:
-                window.IDM.broadcast && window.IDM.broadcast.pageModule
-                  ? window.IDM.broadcast.pageModule.id
-                  : '',
               ...urlObject,
               ...routerParams,
               id: dataSource.value
@@ -486,10 +474,6 @@ export default {
       if (this.propData.itemJumpTarget && this.propData.itemJumpTarget === 'custom') {
         this.customFunctionHandle(this.propData.customItemJumpFunction, { item });
       } else if (this.propData.itemJumpTarget && (this.propData.itemJumpTarget === 'router' || this.propData.itemJumpTarget === 'feild')) {
-        const pageId =
-          window.IDM.broadcast && window.IDM.broadcast.pageModule
-            ? window.IDM.broadcast.pageModule.id
-            : '';
         let itemJumpPageId = null
         if (this.propData.itemJumpTarget === 'router') {
           itemJumpPageId = this.propData.itemJumpPageId && this.propData.itemJumpPageId[0]?.id
@@ -497,7 +481,7 @@ export default {
           itemJumpPageId = this.propData.itemJumpPageFeild && this.getExpressData('data', this.propData.itemJumpPageFeild, item)
         }
         itemJumpPageId && IDM.router.push(
-          pageId,
+          this.moduleObject.pageid,
           itemJumpPageId,
           {
             keep: true,
