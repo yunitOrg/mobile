@@ -3,11 +3,22 @@
        :id="moduleObject.id"
        :idm-ctrl-id="moduleObject.id"
        class="IActivity-Statistics">
+    <div class="header"  v-if="propData.isShowHeader">
+      <img class="header-background" src="../assets/dfjn-blue.png">
+      <div class="header-container">
+        <div class="header-tab">
+
+        </div>
+        <div class="price">{{dues}}</div>
+        <div class="payFont">应缴党费</div>
+        <div class="rule" @click="ruleDetail">计算规则</div>
+      </div>
+    </div>
     <div class="container">
       <div class="container-card">
         <van-loading v-if="isLoading" size="24px" vertical>加载中...</van-loading>
         <template v-else>
-          <div class="card-header" v-if="propData.isShowHeader">
+          <div class="card-header" v-if="propData.isShowHeaderText">
             <div class="left">
               <a-space class="icon">
                 <svg-icon icon-class="shu"/>
@@ -96,6 +107,8 @@ export default {
           attendance: "出席率25%"
         },
       ],
+      dues:"",
+      computationRule:"",
       propData: this.$root.propData.compositeAttr || {
         isShowLine: true,
         themeList: [
@@ -109,7 +122,8 @@ export default {
         ],
         headText:"党费缴纳",
         isShowBottomText:true,
-        isShowMoney: false
+        isShowMoney: false,
+        isShowHeader:true
       },
     }
   },
@@ -161,49 +175,55 @@ export default {
         setTimeout(() => {
           this.activityList = [];
           const res = {
-            data: [
-              {
-                icon: "dydh",
-                name: "党员大会",
-                convene: "召开15次",
-                personNum: "参会人数33人",
-                attendance: "出席率25%"
-              },
-              {
-                icon: "zwh",
-                name: "支委会",
-                convene: "召开15次",
-                personNum: "参会人数33人",
-                attendance: "出席率25%"
-              },
-              {
-                icon: "dxzh",
-                name: "党小组会",
-                convene: "召开15次",
-                personNum: "参会人数33人",
-                attendance: "出席率25%"
-              },
-              {
-                icon: "dk",
-                name: "党课",
-                convene: "召开15次",
-                personNum: "参会人数33人",
-                attendance: "出席率25%"
-              },
-              {
-                icon: "ztdr",
-                name: "主题党日",
-                convene: "召开15次",
-                personNum: "参会人数33人",
-                attendance: "出席率25%"
-              },
-            ]
+            data:{
+              data: [
+                {
+                  icon: "dydh",
+                  name: "党员大会",
+                  convene: "召开15次",
+                  personNum: "参会人数33人",
+                  attendance: "出席率25%"
+                },
+                {
+                  icon: "zwh",
+                  name: "支委会",
+                  convene: "召开15次",
+                  personNum: "参会人数33人",
+                  attendance: "出席率25%"
+                },
+                {
+                  icon: "dxzh",
+                  name: "党小组会",
+                  convene: "召开15次",
+                  personNum: "参会人数33人",
+                  attendance: "出席率25%"
+                },
+                {
+                  icon: "dk",
+                  name: "党课",
+                  convene: "召开15次",
+                  personNum: "参会人数33人",
+                  attendance: "出席率25%"
+                },
+                {
+                  icon: "ztdr",
+                  name: "主题党日",
+                  convene: "召开15次",
+                  personNum: "参会人数33人",
+                  attendance: "出席率25%"
+                },
+              ],
+              dues:"20.00",
+              computationRule:"#"
+            }
+
           };
-          this.activityList = res.data
+          this.activityList = res.data.data
+          this.dues=res.data.dues
+          this.computationRule=res.data.computationRule
           this.isLoading = false;
         }, 0)
       }
-      this.getDataSourceData()
       let dataSource = this.propData.dataSource;
       if (!dataSource) {
         this.isLoading = false;
@@ -474,6 +494,15 @@ export default {
               : "idm-theme-";
       for (var i = 0; i < themeList.length; i++) {
         var item = themeList[i];
+        console.log(item)
+        if (item.key === "blue"){
+          let img = document.getElementsByClassName("header-background")[0];
+          img.setAttribute("src", "./assets/dfjn-blue.png");//把图片修改为目标路径
+        }
+        if (item.key === "red"){
+          let img = document.getElementsByClassName("header-background")[0];
+          img.setAttribute("src", "./assets/dfjn.png");//把图片修改为目标路径
+        }
         IDM.setStyleToPageHead(
             "." +
             themeNamePrefix +
@@ -529,13 +558,64 @@ export default {
           break;
       }
     },
+
+    //点击计算规则跳转的地址
+    ruleDetail(){
+      if (this.computationRule !=="")
+        IDM.router.push(
+            this.moduleObject.routerId,
+            this.computationRule,
+            {
+              keep: true,
+            }
+        );
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
 $scale: var(--i-activitystatistics-scale);
+$scale: 1;
+.header{
 
+  &-background{
+    height: calc(262px * #{ $scale });
+    position: absolute;
+    z-index: -1;
+  }
+
+  &-container{
+    display: flex;
+    padding-top: calc(118px * #{ $scale });
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    .price{
+      font-size: calc(28px * #{ $scale });
+      color: #FFFFFF;
+      text-align: center;
+      line-height: calc(41px * #{ $scale });
+      font-weight: 900;
+      margin-bottom: calc(6px * #{ $scale });
+    }
+    .payFont{
+      font-size: calc(17px * #{ $scale });
+      color: #FFFFFF;
+      text-align: center;
+      font-weight: 400;
+      margin-bottom: calc(12px * #{ $scale });
+    }
+    .rule{
+      font-size: calc(14px * #{ $scale });
+      color: #FFFFFF;
+      text-align: center;
+      font-weight: 400;
+      text-decoration:underline;
+    }
+  }
+
+}
 .container {
   display: flex;
   justify-content: center;

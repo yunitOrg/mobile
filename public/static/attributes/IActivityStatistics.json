@@ -21,18 +21,30 @@
       "desc": "提供设置组件能达到展示效果的基本属性设置信息",
       "children": [
         {
-          "type": "input",
+          "type": "radio",
+          "styleType": "radio",
           "layoutType": "inline",
-          "text": "标题",
-          "bindKey": "headText",
-          "default": "党费缴纳"
+          "text": "头部信息",
+          "bindKey": "isShowHeader",
+          "desc": "设置是否该卡片的头部信息",
+          "default": true,
+          "dictionary": [
+            {
+              "label": "显示",
+              "value": true
+            },
+            {
+              "label": "隐藏",
+              "value": false
+            }
+          ]
         },
         {
           "type": "radio",
           "styleType": "radio",
           "layoutType": "inline",
           "text": "卡片标题",
-          "bindKey": "isShowHeader",
+          "bindKey": "isShowHeaderText",
           "desc": "设置是否该列表卡片的标题",
           "default": true,
           "dictionary": [
@@ -45,6 +57,14 @@
               "value": false
             }
           ]
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "标题",
+          "bindKey": "headText",
+          "default": "党费缴纳",
+          "display": "@[isShowHeaderText]"
         },
         {
           "type": "radio",
@@ -556,6 +576,49 @@
           "text": "字段设置",
           "desc": "设置从列表项中展示的对应字段",
           "children": [
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "应缴党费",
+              "desc": "应缴党费的具体费用字段",
+              "bindKey": "dues",
+              "display": "@[isShowHeader]",
+              "default": "dues"
+            },
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "计算规则",
+              "desc": "点击计算规则应该跳转的地址字段",
+              "bindKey": "computationRule",
+              "display": "@[isShowHeader]",
+              "default": "computationRule"
+            },
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "图标字段",
+              "desc": "每个活动的图标显示字段",
+              "bindKey": "activityIcon",
+              "default": "icon"
+            },
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "图标字段",
+              "desc": "每个活动的图标显示字段",
+              "bindKey": "activityIcon",
+              "default": "icon"
+            },
+            {
+              "type": "textarea",
+              "layoutType": "inline",
+              "text": "显示字段",
+              "bindKey": "dataFiled",
+              "desc": "根据接口返回数据格式指定结果集的字段，比如结果集名为resultData（自定义接口忽略）且它的值为{code:\"200\",data:{value:[{\"date\":\"2022-05-12\"}]}}，则这里应该填写data",
+              "default": "data",
+              "placeholder": "示例：data 或者 [0].data[0]"
+            },
             {
               "type": "textarea",
               "layoutType": "inline",
