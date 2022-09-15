@@ -144,7 +144,7 @@ export default {
       moduleObject: {},
       propData: this.$root.propData.compositeAttr || {},
       isLoading: false,
-      chartData: [],
+      chartData: {},
       chart: null
     };
   },
@@ -229,8 +229,8 @@ export default {
         this.propData.colorList[0].color &&
         this.propData.colorList[0].color.hex8
           ? this.propData.colorList.map(item => ({
-              ...item,
-              color: item.color?.hex8
+              offset: item.offset ? item.offset : 0,
+              color: item.color && item.color.hex8 ? item.color.hex8 : '#188df0'
             }))
           : [
               { offset: 0, color: '#188df0' },
@@ -316,9 +316,9 @@ export default {
         emphasis: { disabled: true },
         grid: {
           left: 0,
-          right: this.propData.chartLayout != 'vertical' ? this.propData.gridRight : 0,
+          right: this.propData.gridRight,
           bottom: 0,
-          top: this.propData.chartLayout == 'vertical' ? this.propData.gridTop : 0,
+          top: this.propData.gridTop,
           containLabel: true
         },
         xAxis: this.propData.chartLayout == 'vertical' ? xAxis : yAxis,
@@ -483,7 +483,6 @@ export default {
       const iconStyleObject = {};
       const emptyStyleObject = {};
       const loadingStyleObject = {};
-      const chartStyleObject = {};
 
       const scale = this.getScale(pageSize.width);
       styleObject['--i-barChart-scale'] = scale;
@@ -807,11 +806,11 @@ export default {
         }
       }
       // 内层容器高度适配，若外层有高度，则内层随外层缩放。若外层没有高度，则由内层容器的子元素撑起。前提设置的有外层容器高度属性，若无此值不走此逻辑，取下面style中的预设
-      if (styleObject.height && styleObject.height != 'auto') {
-        innerCardStyleObject.height = 0;
-      } else if (styleObject.height && styleObject.height == 'auto') {
-        innerCardStyleObject.height = 'auto';
-      }
+      // if (styleObject.height && styleObject.height != 'auto') {
+      //   innerCardStyleObject.height = 0;
+      // } else if (styleObject.height && styleObject.height == 'auto') {
+      //   innerCardStyleObject.height = 'auto';
+      // }
       window.IDM.setStyleToPageHead(this.moduleObject.id, styleObject);
       window.IDM.setStyleToPageHead(
         this.moduleObject.id + ' .i-barChart-content',
@@ -879,7 +878,7 @@ $scale: var(--i-barChart-scale);
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  height: 330px;
+  height: 300px;
   overflow: hidden;
 
   .i-barChart-header {

@@ -123,8 +123,7 @@
           "text": "顶部边距",
           "bindKey": "gridTop",
           "desc": "图像离容器上边缘的距离，请填入数字或百分比，给每个柱状上的数字以及图表标题预留空间，可适当增大此值",
-          "default": "45",
-          "display": "@[chartLayout=='vertical']"
+          "default": "45"
         },
         {
           "type": "input",
@@ -132,8 +131,7 @@
           "text": "右侧边距",
           "bindKey": "gridRight",
           "desc": "图像离容器右边缘的距离，请填入数字或百分比，给每个柱状上的数字预留空间，可适当增大此值",
-          "default": "20",
-          "display": "@[chartLayout=='horizontal']"
+          "default": "0"
         },
         {
           "type": "input",
@@ -183,6 +181,30 @@
           "default": false
         },
         {
+          "type": "table",
+          "text": "图表颜色",
+          "desc": "这里可设置图表各项的颜色，支持渐变色设置",
+          "bindKey": "colorList",
+          "tabText": "颜色[index]",
+          "children": [
+            {
+              "type": "inputNumber",
+              "layoutType": "inline",
+              "text": "偏移量",
+              "bindKey": "offset",
+              "desc": "渐变色时，用来设置当前颜色的显示区域，请设置0到1的数字，其中0为柱状起始位置，1为柱状结束位置。若为单色则0到1间任意值。",
+              "default": 0
+            },
+            {
+              "type": "colorPicker",
+              "layoutType": "inline",
+              "text": "颜色",
+              "bindKey": "color",
+              "placeholder": "请选择颜色"
+            }
+          ]
+        },
+        {
           "type": "group",
           "text": "柱状样式",
           "desc": "点击？查看样式设置用法指南",
@@ -223,30 +245,6 @@
               "text": "右下圆角",
               "bindKey": "barborderRadiusBottomRight",
               "default": 0
-            },
-            {
-              "type": "table",
-              "text": "图表颜色",
-              "desc": "这里可设置图表各项的颜色，支持渐变色设置",
-              "bindKey": "colorList",
-              "tabText": "颜色[index]",
-              "children": [
-                {
-                  "type": "inputNumber",
-                  "layoutType": "inline",
-                  "text": "偏移量",
-                  "bindKey": "offset",
-                  "desc": "渐变色时，用来设置当前颜色的显示区域，请设置0到1的数字，其中0为柱状起始位置，1为柱状结束位置。若为单色则0到1间任意值。",
-                  "default": 0
-                },
-                {
-                  "type": "colorPicker",
-                  "layoutType": "inline",
-                  "text": "颜色",
-                  "bindKey": "color",
-                  "placeholder": "请选择颜色"
-                }
-              ]
             },
             {
               "type": "colorPicker",
@@ -319,14 +317,14 @@
               "layoutType": "inline",
               "text": "文字大小",
               "bindKey": "xAxisLabelFontSize",
-              "default": 16
+              "default": 12
             },
             {
               "type": "input",
               "layoutType": "inline",
               "text": "文字字重",
               "bindKey": "xAxisLabelFontWeight",
-              "default": "bolder"
+              "default": "normal"
             },
             {
               "type": "colorPicker",
@@ -348,7 +346,7 @@
               "layoutType": "inline",
               "text": "文字大小",
               "bindKey": "extraXAxisLabelFontSize",
-              "default": 16
+              "default": 12
             },
             {
               "type": "colorPicker",
@@ -370,7 +368,7 @@
               "layoutType": "inline",
               "text": "文字大小",
               "bindKey": "yAxisLabelFontSize",
-              "default": 16,
+              "default": 12,
               "display": "@[showYAxisLabel]"
             },
             {
@@ -491,7 +489,7 @@
               "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
               "bindKey": "height",
               "width": "60px",
-              "default": "auto"
+              "default": "300px"
             }
           ]
         },
