@@ -1,6 +1,13 @@
 # 活动统计
 ## 组件数据源配置
+
+应缴党费: dues
+
+计算规则: computationRule
+
 显示字段: data
+
+列表字段: list
 
 图标字段: icon
 
@@ -15,22 +22,25 @@
 数据源应为:
 ```
 {
-    data:[
-    {
-        icon:"url",
-        name:"党会",
-        personNum:"参与人数",
-        convene:"召开次数",
-        attendance:"出席率"
-    },
-
-    {
-        icon:"url",
-        name:"党会",
-        personNum:"参与人数",
-        convene:"召开次数",
-        attendance:"出席率"
-    }......
-    ]
+    data:{
+        dues: "20.00",
+        computationRule:"#",
+        list:[
+            {       
+                icon:"url",
+                name:"党会",
+                personNum:"参与人数",
+                convene:"召开次数",
+                attendance:"出席率"
+            },
+            {       
+                icon:"url",
+                name:"党会",
+                personNum:"参与人数",
+                convene:"召开次数",
+                attendance:"出席率"
+            },......
+        ]
+    }
 }
 ```
