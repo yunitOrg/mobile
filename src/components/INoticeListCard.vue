@@ -158,9 +158,7 @@ export default {
           this.moduleObject.pageid,
           this.propData.replyJump[0].id,
           this.propData.isPageKeep,
-          {
-            id:notice.id,
-          },
+          notice,
           "",
           ""
         );
