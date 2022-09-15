@@ -173,12 +173,6 @@ export default {
       //请求数据源
       this.initData();
 
-      let styleObject = {};
-      const imgScale = this.getImgScale()
-      styleObject['--i-activitystatistics-imgScale'] = imgScale;
-      window.IDM.setStyleToPageHead(
-          this.moduleObject.id + ' .study-card',
-          styleObject);
     },
 
     /**
@@ -330,9 +324,13 @@ export default {
       let styleActivityName = {};
       let styleActivityConvene = {};
       let styleBottom = {};
+      let styleScale={}
 
-      const scale = this.getScale(pageSize.width);
-      styleObject['--i-activitystatistics-scale'] = scale;
+      const scale = this.getScale()
+      styleScale['--i-activitystatistics-scale'] = scale;
+      window.IDM.setStyleToPageHead(
+          this.moduleObject.id + ' .header,.container',
+          styleScale);
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
           const element = this.propData[key];
@@ -586,8 +584,10 @@ export default {
 
 <style scoped lang="scss">
 $scale: var(--i-activitystatistics-scale);
+
 .header{
 
+  $scale: var(--i-activitystatistics-scale);
   &-background{
     height: calc(262px * #{ $scale });
     width: 100%;
@@ -626,6 +626,7 @@ $scale: var(--i-activitystatistics-scale);
   }
 
 }
+
 .container {
   display: flex;
   justify-content: center;
@@ -758,6 +759,7 @@ $scale: var(--i-activitystatistics-scale);
     }
   }
 }
+
 .IActivity-Statistics-mask{
   position: absolute;
   top: 0;
