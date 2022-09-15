@@ -118,10 +118,10 @@ export default {
   },
   filters:{
     dayFilter(value){
-      return value.split("-")[2] - 0
+      return value.split(" ")[0].split("-")[2] - 0
     },
     monthFilter(value){
-      return months[value.split("-")[1]] + '月'
+      return months[value.split(" ")[0].split("-")[1]] + '月'
     },
   },
   props: {},
@@ -168,7 +168,7 @@ export default {
             list: [
               {
                 id: "1",
-                date: "2022-08-02",
+                date: "2022-08-02 18:00:00",
                 bt: "关于十月份",
               },
               {
