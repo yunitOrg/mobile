@@ -26,7 +26,7 @@
           "text": "显示标题",
           "desc": "是否显示标题栏",
           "bindKey": "isShowTitleBar",
-          "default": "true"
+          "default": false
         },
         {
           "type": "input",
@@ -34,7 +34,7 @@
           "text": "组件标题",
           "desc": "组件标题",
           "bindKey": "title",
-          "default": "年度学时",
+          "default": "",
           "display": "@[isShowTitleBar]"
         },
         {
