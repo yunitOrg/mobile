@@ -21,6 +21,70 @@
       "desc": "提供设置组件能达到展示效果的基本属性设置信息",
       "children": [
         {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "标题",
+          "bindKey": "headText",
+          "default": "党费缴纳"
+        },
+        {
+          "type": "radio",
+          "styleType": "radio",
+          "layoutType": "inline",
+          "text": "卡片标题",
+          "bindKey": "isShowHeader",
+          "desc": "设置是否该列表卡片的标题",
+          "default": true,
+          "dictionary": [
+            {
+              "label": "显示",
+              "value": true
+            },
+            {
+              "label": "隐藏",
+              "value": false
+            }
+          ]
+        },
+        {
+          "type": "radio",
+          "styleType": "radio",
+          "layoutType": "inline",
+          "text": "金钱图标",
+          "bindKey": "isShowMoney",
+          "desc": "设置是否显示列表每一项右上角金钱图标",
+          "default": true,
+          "dictionary": [
+            {
+              "label": "显示",
+              "value": true
+            },
+            {
+              "label": "隐藏",
+              "value": false
+            }
+          ]
+        },
+        {
+          "type": "radio",
+          "styleType": "radio",
+          "layoutType": "inline",
+          "text": "底部文字",
+          "bindKey": "isShowBottomText",
+          "desc": "设置是否显示列表每一项下方文字",
+          "default": true,
+          "dictionary": [
+            {
+              "label": "显示",
+              "value": true
+            },
+            {
+              "label": "隐藏",
+              "value": false
+            }
+          ]
+        },
+        {
           "type": "radio",
           "styleType": "radio",
           "layoutType": "inline",
@@ -365,13 +429,15 @@
         {
           "type": "font",
           "layoutType": "block",
-          "text": "活动名称",
+          "text": "左上文字",
+          "desc": "修改列表中每一项右上方文字样式",
           "bindKey": "activityNameFont"
         },
         {
           "type": "font",
           "layoutType": "block",
-          "text": "召开次数",
+          "text": "右上文字",
+          "desc": "修改列表中每一项右上方文字样式",
           "bindKey": "activityConveneFont"
         },
         {
@@ -521,6 +587,7 @@
               "text": "参与人数",
               "desc": "每个活动的累计参与人次字段",
               "bindKey": "activityPersonNum",
+              "display": "@[isShowBottomText]",
               "default": "personNum"
             },
             {
@@ -536,6 +603,7 @@
               "layoutType": "inline",
               "text": "出席率",
               "desc": "每个活动的出席率字段",
+              "display": "@[isShowBottomText]",
               "bindKey": "activityAttendance",
               "default": "attendance"
             }

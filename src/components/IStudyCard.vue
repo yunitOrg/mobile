@@ -200,7 +200,7 @@ export default {
           };
           this.videoData = res.data
           this.isLoading = false;
-        },1000)
+        },0)
       }
 
       let dataSource = this.propData.dataSource;
