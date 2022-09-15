@@ -249,3 +249,48 @@ export function getCheckboxCardData() {
         }
     ]
 }
+
+export const signinData = {
+    questionTitle:
+        '1978年5月11日，《光明日报》发表题为（）的特约评论员文章，从根本上否定了“两个凡是”的错误方针，揭开了真理标准讨论的序幕。',
+    questionOptions: [
+        {
+            text: '《实践是检验真理的唯一标准》',
+            code: 'A'
+        },
+        {
+            text: '《一切主管世界的东西都要接受实践的检验》',
+            code: 'B'
+        },
+        {
+            text: '《马克思主义的一个最基本的原则》',
+            code: 'C'
+        }
+    ],
+    hasSignedDays: [
+        {
+            type: 'normal',
+            date: '1661961600'
+        },
+        {
+            type: 'special',
+            date: '1662048000'
+        },
+        {
+            type: 'normal',
+            date: '1662393600'
+        },
+        {
+            type: 'normal',
+            date: '1662480000'
+        },
+        {
+            type: 'normal',
+            date: '1662566400'
+        },
+        {
+            type: 'special',
+            date: '1662652800'
+        }
+    ]
+}

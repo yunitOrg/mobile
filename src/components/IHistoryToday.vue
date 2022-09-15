@@ -236,7 +236,14 @@ export default {
                     break
                 case '_child':
                     if (this.propData.jumpPageList && this.propData.jumpPageList.length > 0) {
-                        IDM.router.push(this.moduleObject.pageid, this.propData.morePageList[0].id, true, '', '', '')
+                        IDM.router.push(
+                            this.moduleObject.pageid,
+                            this.propData.morePageList[0].id,
+                            this.propData.isPageKeep,
+                            this,
+                            '',
+                            ''
+                        )
                     } else {
                         IDM.message.warning('请选择要跳转的子页面')
                     }

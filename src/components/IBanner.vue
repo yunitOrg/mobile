@@ -118,6 +118,8 @@ export default {
                 centeredSlides: true,
                 slidesPerView: 'auto',
                 slideDuplicateClass: 'idm-banner-slide-duplicate',
+                observeParents: true,
+                observer: true,
                 coverflowEffect: {
                     rotate: 0, //旋转度数
                     // stretch: this.isSmallScreen ? this.propData.smallScreenStretch : this.propData.bigScreenStretch,

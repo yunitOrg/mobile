@@ -1,5 +1,10 @@
 <template>
-    <div idm-ctrl="idm_module" class="idm-my-message-top d-flex position-r" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id">
+    <div
+        idm-ctrl="idm_module"
+        class="idm-my-message-top d-flex position-r"
+        :id="moduleObject.id"
+        :idm-ctrl-id="moduleObject.id"
+    >
         <img
             :src="IDM.url.getWebPath(getDataField(propData.avatarField, pageData))"
             class="idm-my-message-avatar"
@@ -8,9 +13,7 @@
         <div class="d-flex just-b flex-1 align-c">
             <div class="flex-1">
                 <div class="idm-my-message-username">{{ getDataField(propData.usernameField, pageData) || '' }}</div>
-                <div class="idm-my-message-year">
-                    党龄：{{ getDataField(propData.yearField, pageData) || '0' }}年
-                </div>
+                <div class="idm-my-message-year">党龄：{{ getDataField(propData.yearField, pageData) || '0' }}年</div>
                 <div class="idm-my-message-branch">{{ getDataField(propData.branchField, pageData) }}党支部</div>
             </div>
             <div @click="handleJump">
@@ -74,7 +77,13 @@ export default {
                     break
                 case '_child':
                     if (this.propData.morePageList && this.propData.morePageList.length > 0) {
-                        IDM.router.push(this.moduleObject.pageid, this.propData.itemPageList[0].id, true, '', '')
+                        IDM.router.push(
+                            this.moduleObject.pageid,
+                            this.propData.itemPageList[0].id,
+                            this.propData.isPageKeep,
+                            this,
+                            ''
+                        )
                     } else {
                         IDM.message.warning('请选择要跳转的子页面')
                     }

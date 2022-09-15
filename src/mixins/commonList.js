@@ -47,7 +47,7 @@ export default {
                         IDM.router.push(
                             this.moduleObject.pageid,
                             this.propData.itemPageList[0].id,
-                            true,
+                            this.propData.isItemKeep,
                             item,
                             '',
                             ''
@@ -85,7 +85,14 @@ export default {
                     break
                 case '_child':
                     if (this.propData.morePageList && this.propData.morePageList.length > 0) {
-                        IDM.router.push(this.moduleObject.pageid, this.propData.morePageList[0].id, true, '', '', '')
+                        IDM.router.push(
+                            this.moduleObject.pageid,
+                            this.propData.morePageList[0].id,
+                            this.propData.isItemKeep,
+                            this,
+                            '',
+                            ''
+                        )
                     } else {
                         IDM.message.warning('请选择要跳转的子页面')
                     }
