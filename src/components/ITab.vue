@@ -10,6 +10,7 @@
   :idm-ctrl-id="moduleObject.id" 
   >
     <van-tabs class="tab-ul" v-model="activeTab"
+    :lazy-render="false"
     :background="(propData.bgColor || {}).hex"
     :animated="propData.animated !== false ? true : false"
     :sticky="propData.sticky !== false ? true : false"
@@ -26,6 +27,7 @@
             idm-ctrl-inner
             :idm-ctrl-id="moduleObject.id"
             :idm-container-index="item.key"
+            :idm-refresh-container="`flex-${item.key}`"
           ></div>
         </template>
         <!-- <div v-else>{{item.key}}</div> -->
