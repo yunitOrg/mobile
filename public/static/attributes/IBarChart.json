@@ -319,7 +319,7 @@
               "layoutType": "inline",
               "text": "文字大小",
               "bindKey": "xAxisLabelFontSize",
-              "default": 16
+              "default": 12
             },
             {
               "type": "input",
@@ -348,7 +348,7 @@
               "layoutType": "inline",
               "text": "文字大小",
               "bindKey": "extraXAxisLabelFontSize",
-              "default": 16
+              "default": 12
             },
             {
               "type": "colorPicker",
@@ -370,7 +370,7 @@
               "layoutType": "inline",
               "text": "文字大小",
               "bindKey": "yAxisLabelFontSize",
-              "default": 16,
+              "default": 12,
               "display": "@[showYAxisLabel]"
             },
             {
