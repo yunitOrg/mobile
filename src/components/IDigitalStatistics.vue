@@ -27,7 +27,7 @@
         >
           <div
             :class="`option option${option.key}`"
-            v-for="option in propData.optionList"
+            v-for="option in optionList"
             :key="option.key"
             @click.stop="optionClick(option, item)"
           >
@@ -92,6 +92,11 @@ const devResult = [
   { value: '100分钟', name: '今日学习时长', text: '排行榜' },
   { value: '100分钟', name: '今日学习时长', text: '查看详情' }
 ];
+const devOptionList = [
+  { key: '1', feild: 'value', type: 'feild' },
+  { key: '2', feild: 'name', type: 'feild' },
+  { key: '3', feild: 'text', type: 'feild' }
+];
 export default {
   name: 'IDigitalStatistics',
   components: {
@@ -99,17 +104,12 @@ export default {
     [Loading.name]: Loading,
     [VanImage.name]: VanImage
   },
+  // dataSource: '1',
+  // optionList: [{ key: '1' }]
   data() {
     return {
       moduleObject: {},
-      propData: this.$root.propData.compositeAttr || {
-        dataSource: '1',
-        optionList: [
-          { key: '1', feild: 'value', type: 'feild' },
-          { key: '2', feild: 'name', type: 'feild' },
-          { key: '3', feild: 'text', type: 'feild' }
-        ]
-      },
+      propData: this.$root.propData.compositeAttr || {},
       isLoading: false,
       data: []
     };
@@ -121,6 +121,16 @@ export default {
     },
     loadingSize() {
       return this.getScale() * (this.propData.loadingSize || 24);
+    },
+    optionList() {
+      if (
+        this.propData.optionList &&
+        this.propData.optionList[0] &&
+        this.propData.optionList[0].key
+      ) {
+        return this.propData.optionList;
+      }
+      return devOptionList;
     }
   },
   created() {
