@@ -229,7 +229,7 @@ export default {
         this.propData.colorList[0].color &&
         this.propData.colorList[0].color.hex8
           ? this.propData.colorList.map(item => ({
-              offset: item.offset &&  item.offset >= 0 && item.offset <= 1 ? item.offset : 0,
+              offset: item.offset && item.offset >= 0 && item.offset <= 1 ? item.offset : 0,
               color: item.color && item.color.hex8 ? item.color.hex8 : '#188df0'
             }))
           : [
@@ -464,6 +464,7 @@ export default {
           }
         )
         .done(res => {
+          this.isLoading = false;
           if (res.type === 'success') {
             const resultData = this.customFormat(this.propData.chartDataCustomFunction, res.data);
             this.chartData = resultData;
@@ -472,7 +473,6 @@ export default {
               this.chart.resize();
             });
           }
-          this.isLoading = false;
         })
         .error(err => {
           console.log(err);

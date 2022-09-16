@@ -549,10 +549,13 @@ export default {
         ? IDM.router.getParam(this.moduleObject.routerId)
         : {};
       this.isLoading = true;
-      const selectParams = this.propData.isShowTitleBar && this.propData.columnsType != 'none' ? {
-        selectedValue: this.pickerSelect.value,
-        selectedItem: this.pickerSelect
-      } : {}
+      const selectParams =
+        this.propData.isShowTitleBar && this.propData.columnsType != 'none'
+          ? {
+              selectedValue: this.pickerSelect.value,
+              selectedItem: this.pickerSelect
+            }
+          : {};
       IDM.http
         .post(
           url,
@@ -573,6 +576,7 @@ export default {
           }
         )
         .done(res => {
+          this.isLoading = false;
           if (res.type === 'success') {
             const resultData = this.customFormat(this.propData.chartDataCustomFunction, res.data);
             this.chartData = resultData;
@@ -581,7 +585,6 @@ export default {
               this.chart.resize();
             });
           }
-          this.isLoading = false;
         })
         .error(err => {
           console.log(err);
