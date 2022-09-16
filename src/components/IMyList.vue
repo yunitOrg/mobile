@@ -71,7 +71,7 @@ export default {
             tabKey:"wdsc",
             tabText:"我的收藏",
             showLeftIcon:true,
-            showRightIcon:true,
+            showRightIcon:true
           }
         ]
       },
@@ -102,13 +102,17 @@ export default {
      * 列表点击
      */
     listClick(item){
-      if(item.clickType && item.clickType=='customFunction' && item.clickCustomFunction[0]){
-        window[item.clickCustomFunction[0].name] &&
-        window[item.clickCustomFunction[0].name].call(this, {
-          ...this.commonParam(),
-          customParam: item.clickCustomFunction[0].param,
-          activeKey:item
-        });
+      if (item.listJump && item.listJump.length > 0) {
+        IDM.router.push(
+          this.moduleObject.pageid,
+          item.listJump[0].id,
+          item.isPageKeep,
+          item,
+          "",
+          ""
+        );
+      } else {
+        IDM.message.warning("请选择要跳转的子页面");
       }
     },
     /**

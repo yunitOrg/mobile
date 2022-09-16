@@ -13,13 +13,19 @@
     v-show="propData.defaultStatus != 'hidden'"
   >
     <div v-show="propData.isShowTitleBar" class="i-notice-list-card-header">
-      <div class="header-icon" v-if="propData.showIcon && propData.titleIconPosition =='left'">
+      <div
+        class="header-icon"
+        v-if="propData.showIcon && propData.titleIconPosition == 'left'"
+      >
         <svg-icon icon-class="shu" />
       </div>
       <div class="header-text">
         {{ propData.title }}
       </div>
-      <div class="header-icon" v-if="propData.showIcon && propData.titleIconPosition =='right'">
+      <div
+        class="header-icon"
+        v-if="propData.showIcon && propData.titleIconPosition == 'right'"
+      >
         <svg-icon icon-class="shu" />
       </div>
     </div>
@@ -28,13 +34,21 @@
     <div v-else class="i-notice-list-card-content">
       <template v-if="infoList.length > 0">
         <ul>
-          <li v-for="(notice, n) in infoList" :key="n">
+          <li
+            v-for="(notice, n) in infoList"
+            :key="n"
+            @click="noticeClick(notice)"
+          >
             <div class="i-notice-list-item">
               <div class="item-outer-circle">
                 <div class="item-inner-circle">
                   <div class="item-main-circle">
-                    <span class="circle-day">{{ notice[propData.dateInterface]  | dayFilter}}</span>
-                    <span class="circle-month">{{ notice[propData.dateInterface] | monthFilter}}</span>
+                    <span class="circle-day">{{
+                      notice[propData.dateInterface] | dayFilter
+                    }}</span>
+                    <span class="circle-month">{{
+                      notice[propData.dateInterface] | monthFilter
+                    }}</span>
                   </div>
                 </div>
               </div>
@@ -47,7 +61,7 @@
           v-if="infoList.length < total"
           @click="loadData"
         >
-          {{isLoadingMore?'加载中...':'加载更多'}}
+          {{ isLoadingMore ? "加载中..." : "加载更多" }}
         </p>
       </template>
       <van-empty v-else :description="propData.emptyDescription">
@@ -63,7 +77,10 @@
         </template>
       </van-empty>
     </div>
-    <div class="i-notice-list-card-mask" v-if="moduleObject.env !== 'production' && !propData.dataSource">
+    <div
+      class="i-notice-list-card-mask"
+      v-if="moduleObject.env !== 'production' && !propData.dataSource"
+    >
       <span>！未绑定数据源</span>
     </div>
   </div>
@@ -71,18 +88,18 @@
 
 <script>
 const months = {
-  "01":"一",
-  "02":"二",
-  "03":"三",
-  "04":"四",
-  "05":"五",
-  "06":"六",
-  "07":"七",
-  "08":"八",
-  "09":"九",
-  "10":"十",
-  "11":"十一",
-  "12":"十二",
+  "01": "一",
+  "02": "二",
+  "03": "三",
+  "04": "四",
+  "05": "五",
+  "06": "六",
+  "07": "七",
+  "08": "八",
+  "09": "九",
+  10: "十",
+  11: "十一",
+  12: "十二",
 };
 import { Empty, Loading, Image as VanImage } from "vant";
 import "vant/lib/empty/style";
@@ -103,25 +120,25 @@ export default {
         columns: 2,
         emptyDescription: "暂无数据",
         defaultNumber: 4,
-        isShowTitleBar:true,
-        showIcon:true,
-        titleIconPosition:'left',
-        listInterface:'list',
-        dateInterface:'date',
-        btInterface:'bt',
+        isShowTitleBar: true,
+        showIcon: true,
+        titleIconPosition: "left",
+        listInterface: "list",
+        dateInterface: "date",
+        btInterface: "bt",
       },
       isLoading: true,
-      isLoadingMore:false,
+      isLoadingMore: false,
       infoList: [],
       total: 0,
     };
   },
-  filters:{
-    dayFilter(value){
-      return value.split("-")[2] - 0
+  filters: {
+    dayFilter(value) {
+      return value.split(" ")[0].split("-")[2] - 0;
     },
-    monthFilter(value){
-      return months[value.split("-")[1]] + '月'
+    monthFilter(value) {
+      return months[value.split(" ")[0].split("-")[1]] + "月";
     },
   },
   props: {},
@@ -135,13 +152,27 @@ export default {
   mounted() {},
   destroyed() {},
   methods: {
+    noticeClick(notice) {
+      if (this.propData.replyJump && this.propData.replyJump.length > 0) {
+        IDM.router.push(
+          this.moduleObject.pageid,
+          this.propData.replyJump[0].id,
+          this.propData.isPageKeep,
+          notice,
+          "",
+          ""
+        );
+      } else {
+        IDM.message.warning("请选择要跳转的子页面");
+      }
+    },
     /**
      * 获取更多数据
      */
     loadData() {
-      if(this.isLoadingMore){
+      if (this.isLoadingMore) {
         // 防抖
-        return
+        return;
       }
       this.isLoadingMore = true;
       this.initData(true);
@@ -149,7 +180,7 @@ export default {
     /**
      * 重载
      */
-    reload(){
+    reload() {
       this.isLoading = true;
       this.infoList = [];
       this.initData();
@@ -168,7 +199,7 @@ export default {
             list: [
               {
                 id: "1",
-                date: "2022-08-02",
+                date: "2022-08-02 18:00:00",
                 bt: "关于十月份",
               },
               {
@@ -185,14 +216,14 @@ export default {
                 id: "4",
                 date: "2022-11-02",
                 bt: "关于十月份工作的通知细则",
-              }
+              },
             ],
           };
-          
+
           this.total = res.total;
-          if(loadMore){
+          if (loadMore) {
             this.infoList = [...this.infoList, ...res.list];
-          }else{
+          } else {
             this.infoList = res[this.propData.listInterface];
           }
         }, 1000);
@@ -222,11 +253,14 @@ export default {
         .done((res) => {
           console.log(res, "接口数据");
           if (res.code === "200") {
-            const result = res.data
+            const result = res.data;
             this.total = result.total;
-            if(loadMore){
-              this.infoList = [...this.infoList, ...result[this.propData.listInterface]];
-            }else{
+            if (loadMore) {
+              this.infoList = [
+                ...this.infoList,
+                ...result[this.propData.listInterface],
+              ];
+            } else {
               this.infoList = result[this.propData.listInterface];
             }
           } else {
@@ -311,9 +345,8 @@ export default {
                 styleObject["background-color"] = IDM.hex8ToRgbaString(
                   element.hex8
                 );
-                outerCircleStyleObject["background-color"]= IDM.hex8ToRgbaString(
-                  element.hex8
-                );
+                outerCircleStyleObject["background-color"] =
+                  IDM.hex8ToRgbaString(element.hex8);
               }
               break;
             case "innerBgColor":
@@ -357,7 +390,9 @@ export default {
                 innerStyleObject["margin-right"] = `${element.marginRightVal}`;
               }
               if (element.marginBottomVal) {
-                innerStyleObject["margin-bottom"] = `${element.marginBottomVal}`;
+                innerStyleObject[
+                  "margin-bottom"
+                ] = `${element.marginBottomVal}`;
               }
               if (element.marginLeftVal) {
                 innerStyleObject["margin-left"] = `${element.marginLeftVal}`;
@@ -366,10 +401,14 @@ export default {
                 innerStyleObject["padding-top"] = `${element.paddingTopVal}`;
               }
               if (element.paddingRightVal) {
-                innerStyleObject["padding-right"] = `${element.paddingRightVal}`;
+                innerStyleObject[
+                  "padding-right"
+                ] = `${element.paddingRightVal}`;
               }
               if (element.paddingBottomVal) {
-                innerStyleObject["padding-bottom"] = `${element.paddingBottomVal}`;
+                innerStyleObject[
+                  "padding-bottom"
+                ] = `${element.paddingBottomVal}`;
               }
               if (element.paddingLeftVal) {
                 innerStyleObject["padding-left"] = `${element.paddingLeftVal}`;
@@ -466,7 +505,8 @@ export default {
               if (element.border.right.width > 0) {
                 innerStyleObject["border-right-width"] =
                   element.border.right.width + element.border.right.widthUnit;
-                innerStyleObject["border-right-style"] = element.border.right.style;
+                innerStyleObject["border-right-style"] =
+                  element.border.right.style;
                 if (element.border.right.colors.hex8) {
                   innerStyleObject["border-right-color"] = IDM.hex8ToRgbaString(
                     element.border.right.colors.hex8
@@ -479,15 +519,15 @@ export default {
                 innerStyleObject["border-bottom-style"] =
                   element.border.bottom.style;
                 if (element.border.bottom.colors.hex8) {
-                  innerStyleObject["border-bottom-color"] = IDM.hex8ToRgbaString(
-                    element.border.bottom.colors.hex8
-                  );
+                  innerStyleObject["border-bottom-color"] =
+                    IDM.hex8ToRgbaString(element.border.bottom.colors.hex8);
                 }
               }
               if (element.border.left.width > 0) {
                 innerStyleObject["border-left-width"] =
                   element.border.left.width + element.border.left.widthUnit;
-                innerStyleObject["border-left-style"] = element.border.left.style;
+                innerStyleObject["border-left-style"] =
+                  element.border.left.style;
                 if (element.border.left.colors.hex8) {
                   innerStyleObject["border-left-color"] = IDM.hex8ToRgbaString(
                     element.border.left.colors.hex8
@@ -558,9 +598,20 @@ export default {
         }
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id, styleObject);
-      window.IDM.setStyleToPageHead(this.moduleObject.id + ` .i-notice-list-card-header .header-text`, titleFontStyleObject);
-      window.IDM.setStyleToPageHead(this.moduleObject.id + ` .i-notice-list-card-content .i-notice-list-item .item-outer-circle`, outerCircleStyleObject);
-      window.IDM.setStyleToPageHead(this.moduleObject.id + ` .i-notice-list-card-content .i-notice-list-item`, innerStyleObject);
+      window.IDM.setStyleToPageHead(
+        this.moduleObject.id + ` .i-notice-list-card-header .header-text`,
+        titleFontStyleObject
+      );
+      window.IDM.setStyleToPageHead(
+        this.moduleObject.id +
+          ` .i-notice-list-card-content .i-notice-list-item .item-outer-circle`,
+        outerCircleStyleObject
+      );
+      window.IDM.setStyleToPageHead(
+        this.moduleObject.id +
+          ` .i-notice-list-card-content .i-notice-list-item`,
+        innerStyleObject
+      );
     },
     /**
      * 主题颜色
@@ -587,7 +638,7 @@ export default {
             (this.moduleObject.packageid || "module_demo") +
             " .i-notice-list-card-header .header-icon",
           {
-            "color": item.mainColor
+            color: item.mainColor
               ? IDM.hex8ToRgbaString(item.mainColor.hex8)
               : "",
           }
@@ -706,12 +757,12 @@ export default {
               ? this.propData.messageRefreshKey
               : [this.propData.messageRefreshKey];
             if (messageData.badgeType && arr.includes(messageData.badgeType)) {
-              this.reload()
+              this.reload();
             }
           }
           break;
         case "linkageReload":
-          this.reload()
+          this.reload();
           break;
         case "pageResize":
           this.convertAttrToStyleObject(messageObject.message);
@@ -768,6 +819,7 @@ $scale: var(--i-notice-list-card-scale);
   }
 
   .i-notice-list-card-content {
+    padding-bottom: calc($scale * 16px);
     ul {
       display: flex;
       flex-wrap: wrap;
@@ -782,9 +834,10 @@ $scale: var(--i-notice-list-card-scale);
           font-size: calc($scale * 14px);
           color: #333333;
           font-weight: 700;
-          padding: 30% calc($scale * 14px) calc($scale * 14px) calc($scale * 14px);
+          padding: 30% calc($scale * 14px) calc($scale * 14px)
+            calc($scale * 14px);
           box-shadow: 0px 2px calc($scale * 8px) 0px rgba(194, 194, 194, 0.5);
-          border: 1px solid rgba(227,227,227,1);
+          border: 1px solid rgba(227, 227, 227, 1);
           text-align: center;
           height: 100%;
           background-color: #fff;
@@ -807,7 +860,9 @@ $scale: var(--i-notice-list-card-scale);
             margin: 0 auto;
             top: 0;
             border-radius: 50%;
-            box-shadow: calc($scale * -10px) calc($scale * -10px) calc($scale * 20px) calc($scale * -14px)rgba(194, 194, 194, 1) inset;
+            box-shadow: calc($scale * -10px) calc($scale * -10px)
+              calc($scale * 20px) calc($scale * -14px) rgba(194, 194, 194, 1)
+              inset;
             transform: translateY(-50%) rotate(45deg);
 
             .item-inner-circle {
@@ -868,6 +923,8 @@ $scale: var(--i-notice-list-card-scale);
     color: #666666;
     font-weight: normal;
     padding: calc($scale * 16px) 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
     text-align: center;
     font-family: PingFangSC-Regular;
   }
@@ -879,16 +936,16 @@ $scale: var(--i-notice-list-card-scale);
     width: 100%;
     height: 100%;
     z-index: 1;
-    background: rgba(0,0,0,.3);
+    background: rgba(0, 0, 0, 0.3);
     display: flex;
     justify-content: center;
     align-items: center;
     span {
-      padding: calc(6px * #{ $scale }) calc(20px * #{ $scale });;
+      padding: calc(6px * #{$scale}) calc(20px * #{$scale});
       color: #e6a23c;
       background: #fdf6ec;
-      border:calc(1px * #{ $scale }) solid #f5dab1;
-      border-radius: calc(4px * #{ $scale });;
+      border: calc(1px * #{$scale}) solid #f5dab1;
+      border-radius: calc(4px * #{$scale});
     }
   }
 }

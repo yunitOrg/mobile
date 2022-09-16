@@ -67,6 +67,7 @@ export default {
     return {
       moduleObject: {},
       isLoading: true,
+      theme:"red",
       activityList: [
         {
           icon: "dydh",
@@ -126,10 +127,18 @@ export default {
   },
   computed:{
     imgStyleObj() {
-      return {
-        "background": `url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn.png'), this.moduleObject)}`,
-        'background-size': '100% 100%',
-        'background-repeat': 'no-repeat',
+      if (this.theme==="red"){
+        return {
+          "background": `url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn.png'), this.moduleObject)}`,
+          'background-size': '100% 100%',
+          'background-repeat': 'no-repeat',
+        }
+      }else {
+        return {
+          "background": `url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn-blue.png'), this.moduleObject)}`,
+          'background-size': '100% 100%',
+          'background-repeat': 'no-repeat',
+        }
       }
     },
   },
@@ -164,12 +173,6 @@ export default {
       //请求数据源
       this.initData();
 
-      let styleObject = {};
-      const imgScale = this.getImgScale()
-      styleObject['--i-activitystatistics-imgScale'] = imgScale;
-      window.IDM.setStyleToPageHead(
-          this.moduleObject.id + ' .study-card',
-          styleObject);
     },
 
     /**
@@ -246,18 +249,20 @@ export default {
       ).done((res) => {
         console.log(res, "接口数据");
         if (res.code === "200") {
-          let tempList = []
+          let tempList = {}
           this.activityList = []
           tempList = this.propData.dataFiled
               ? this.getExpressData("dataName", this.propData.dataFiled, res)
               : res;
-          for(let i = 0;i<tempList.length;i++){
+          this.dues=tempList.dues
+          this.computationRule=tempList.computationRule
+          for(let i = 0;i<tempList.activityList.length;i++){
             let tempItem={}
-            tempItem.icon = tempList[i][this.propData.activityIcon]
-            tempItem.name = tempList[i][this.propData.activityName]
-            tempItem.personNum = tempList[i][this.propData.activityPersonNum]
-            tempItem.convene = tempList[i][this.propData.activityConvene]
-            tempItem.attendance = tempList[i][this.propData.activityAttendance]
+            tempItem.icon = tempList.activityList[i][this.propData.activityIcon]
+            tempItem.name = tempList.activityList[i][this.propData.activityName]
+            tempItem.personNum = tempList.activityList[i][this.propData.activityPersonNum]
+            tempItem.convene = tempList.activityList[i][this.propData.activityConvene]
+            tempItem.attendance = tempList.activityList[i][this.propData.activityAttendance]
             this.activityList.push(tempItem)
           }
         } else {
@@ -319,9 +324,13 @@ export default {
       let styleActivityName = {};
       let styleActivityConvene = {};
       let styleBottom = {};
+      let styleScale={}
 
-      const scale = this.getScale(pageSize.width);
-      styleObject['--i-activitystatistics-scale'] = scale;
+      const scale = this.getScale()
+      styleScale['--i-activitystatistics-scale'] = scale;
+      window.IDM.setStyleToPageHead(
+          this.moduleObject.id + ' .header,.container',
+          styleScale);
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
           const element = this.propData[key];
@@ -501,14 +510,7 @@ export default {
       for (var i = 0; i < themeList.length; i++) {
         var item = themeList[i];
         console.log(item)
-        if (item.key === "blue"){
-          let img = document.getElementsByClassName("header-background")[0];
-          img.setAttribute("background",`url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn-blue.png'), this.moduleObject)}`,);//把图片修改为目标路径
-        }
-        if (item.key === "red"){
-          let img = document.getElementsByClassName("header-background")[0];
-          img.setAttribute("background",`url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn.png'), this.moduleObject)}`,);//把图片修改为目标路径
-        }
+        this.theme=item.key
         IDM.setStyleToPageHead(
             "." +
             themeNamePrefix +
@@ -582,8 +584,10 @@ export default {
 
 <style scoped lang="scss">
 $scale: var(--i-activitystatistics-scale);
+
 .header{
 
+  $scale: var(--i-activitystatistics-scale);
   &-background{
     height: calc(262px * #{ $scale });
     width: 100%;
@@ -622,6 +626,7 @@ $scale: var(--i-activitystatistics-scale);
   }
 
 }
+
 .container {
   display: flex;
   justify-content: center;
@@ -754,6 +759,7 @@ $scale: var(--i-activitystatistics-scale);
     }
   }
 }
+
 .IActivity-Statistics-mask{
   position: absolute;
   top: 0;

@@ -24,7 +24,7 @@
             </div>
           </div>
           <div class="video-list">
-            <div class="video-card" v-for="item in videoData" :key="item.index" @click=toVideo(item)>
+            <div class="video-card" v-for="(item,index) in videoData" :key="item.index" @click=toVideo(index)>
               <div class="videoImg">
                 <img :src="item.image">
                 <div class="videoData">
@@ -541,12 +541,48 @@ export default {
     },
 
     //点击视频卡片后跳转函数
-    toVideo(video){
-      console.log("跳转到视频地址",video)
-      if(video.videoUrl !== ''){
-        IDM.router.push(this.moduleObject.routerId, video.videoUrl, {
-          keep: true
-        });
+    toVideo(index){
+      switch (index){
+        case 0:
+          if (this.propData.leftTopUrl && this.propData.leftTopUrl.id)
+            IDM.router.push(
+                this.moduleObject.routerId,
+                this.propData.leftTopUrl.id,
+                {
+                  keep: true,
+                }
+            );
+          break;
+        case 1:
+          if (this.propData.rightTopUrl && this.propData.rightTopUrl.id)
+            IDM.router.push(
+                this.moduleObject.routerId,
+                this.propData.rightTopUrl.id,
+                {
+                  keep: true,
+                }
+            );
+          break;
+        case 2:
+          if (this.propData.leftBottomUrl && this.propData.leftBottomUrl.id)
+            IDM.router.push(
+                this.moduleObject.routerId,
+                this.propData.leftBottomUrl.id,
+                {
+                  keep: true,
+                }
+            );
+          break;
+        case 3:
+          if (this.propData.rightBottomUrl && this.propData.rightBottomUrl.id)
+            IDM.router.push(
+                this.moduleObject.routerId,
+                this.propData.rightBottomUrl.id,
+                {
+                  keep: true,
+                }
+            );
+          break;
       }
     },
     /**
