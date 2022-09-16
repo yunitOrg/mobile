@@ -182,9 +182,13 @@
                   {
                     "label": "带符号纯数字键盘",
                     "value": "number"
+                  },
+                  {
+                    "label": "任何类型",
+                    "value": "any"
                   }
                 ],
-                "default": "number"
+                "default": "any"
               },
               {
                 "type": "select",

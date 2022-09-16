@@ -102,16 +102,19 @@ export default {
             field: 'switch',
             labelShow: true,
             label: '开关',
-            disabled: false
+            disabled: false,
+            labelWidth: '100px',
+            labelBlock: true,
           },
           {
             key: '4',
             type: 'checkbox',
             labelShow: true,
+            labelWidth: '100px',
+            inputAlign: 'right',
             label: '复选框',
             field: 'checkbox',
-            disabled: false,
-            labelBlock: true
+            disabled: false
           },
           {
             key: '5',
@@ -170,7 +173,13 @@ export default {
   },
   created () {
     this.moduleObject = this.$root.moduleObject;
-    this.init();
+    if (this.moduleObject.env == "production") {
+      this.handleBackData(() => {
+        this.init();
+      });
+    } else {
+      this.init();
+    }
   },
   methods: {
     propDataWatchHandle (propData) {
@@ -178,7 +187,7 @@ export default {
       this.init();
     },
     init () {
-      console.log(this.propData, '数据源')
+      console.log(this.propData, this.formData, '数据源')
       let styleObject = {};
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
@@ -216,7 +225,6 @@ export default {
         rangeModule: this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
         message: this.formData
       })
-      this.handleBackData();
       if (!this.propData.labelBorderShow) {
         window.IDM.setStyleToPageHead(this.moduleObject.id + " .idm-form .input-component:last-child", {
           "border": 0
@@ -224,7 +232,7 @@ export default {
       }
     },
     // 回填数据
-    handleBackData () {
+    handleBackData (fn) {
       if (this.moduleObject.env == "production") {
         this.propData.dataSource &&
           IDM.http
@@ -241,7 +249,9 @@ export default {
             )
             .then((res) => {
               if (res.status == 200 && res.data.code == 200) {
-                  this.formData = res.data.data
+                  this.formData = res.data.data;
+                  console.log(this.formData, res.data.data, '拿到接口数据')
+                  fn()
               } else {
                   IDM.message.error(res.data.message)
               }

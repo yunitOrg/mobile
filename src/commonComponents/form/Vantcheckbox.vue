@@ -1,9 +1,10 @@
+<!-- 复选框 -->
 <template>
   <div class="input-com" :style="computedBlock">
      <div class="name" :style="computedStyle" v-if="params['labelShow']">
       {{label}}
     </div>
-    <van-checkbox v-model="formData[field]" shape="square" :disabled="params['disabled']" />
+    <van-checkbox class="form-cel" v-model="formData[field]" shape="square" :disabled="params['disabled']" />
   </div>
 </template>
 
@@ -33,7 +34,7 @@ export default{
     computedBlock () {
       let styleObject = {}
       if (this.params['labelBlock']) {
-        styleObject['flex-wrap'] = 'wrap'
+        styleObject['display'] = 'block'
       }
       return styleObject
     }

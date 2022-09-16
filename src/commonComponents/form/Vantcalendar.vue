@@ -1,3 +1,4 @@
+<!-- 时间范围 -->
 <template>
   <div class="input-com" :style="computedBlock">
     <div class="name" :style="computedStyle" v-if="params['labelShow']">
@@ -5,6 +6,7 @@
       {{label}}
     </div>
     <van-field
+      class="form-cel"
       v-model="formData[field]"
       :placeholder="params['placeholder']"
       :input-align="params['inputAlign']"
@@ -65,7 +67,7 @@ export default{
     computedBlock () {
       let styleObject = {}
       if (this.params['labelBlock']) {
-        styleObject['flex-wrap'] = 'wrap'
+        styleObject['display'] = 'block'
       }
       return styleObject
     }
