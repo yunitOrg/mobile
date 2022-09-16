@@ -719,6 +719,7 @@ $scale: var(--i-time-axis-scale);
         img {
           width: 24px;
           height: 24px;
+          margin-bottom: 6px;
         }
 
         // .right-icon {
