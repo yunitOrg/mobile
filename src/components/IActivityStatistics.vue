@@ -129,13 +129,13 @@ export default {
     imgStyleObj() {
       if (this.theme === "red") {
         return {
-          "background": `url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn.png'), this.moduleObject)}`,
+          "background": `url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn.png'), this.moduleObject)})`,
           'background-size': '100% 100%',
           'background-repeat': 'no-repeat',
         }
       } else {
         return {
-          "background": `url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn-blue.png'), this.moduleObject)}`,
+          "background": `url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn-blue.png'), this.moduleObject)})`,
           'background-size': '100% 100%',
           'background-repeat': 'no-repeat',
         }
@@ -248,7 +248,7 @@ export default {
           }
       ).done((res) => {
         console.log(res, "接口数据");
-        if (res.code == "200" ||res.code == 200) {
+        if (res.code == "200" || res.code == 200) {
           let tempList = {}
           this.activityList = []
           tempList = this.propData.dataFiled
@@ -532,12 +532,12 @@ export default {
               "color": item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
             }
         );
-        let styleObj={
-          'background-repeat': 'no-repeat',
+        let styleObj = {
+          "background": `url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn.png'), this.moduleObject)})`,
           'background-size': '100% 100%',
-          "background": `url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn.png'), this.moduleObject)}`,
+          'background-repeat': 'no-repeat',
         }
-        if (item.key === "red"){
+        if (item.key === "red") {
           window.IDM.setStyleToPageHead(
               "." +
               themeNamePrefix +
@@ -546,8 +546,8 @@ export default {
               (this.moduleObject.packageid || "module_demo") +
               ' .header-background',
               styleObj);
-        }else {
-          styleObj.background=`url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn-blue.png'), this.moduleObject)}`;
+        } else {
+          styleObj.background = `url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn-blue.png'), this.moduleObject)})`;
           window.IDM.setStyleToPageHead(
               "." +
               themeNamePrefix +
