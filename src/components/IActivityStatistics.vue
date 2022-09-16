@@ -510,7 +510,6 @@ export default {
       for (var i = 0; i < themeList.length; i++) {
         var item = themeList[i];
         console.log(item)
-        this.theme = item.key
         IDM.setStyleToPageHead(
             "." +
             themeNamePrefix +
@@ -533,6 +532,33 @@ export default {
               "color": item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
             }
         );
+        if (item.key === "red"){
+          window.IDM.setStyleToPageHead(
+              "." +
+              themeNamePrefix +
+              item.key +
+              " #" +
+              (this.moduleObject.packageid || "module_demo") +
+              ' .header-background',
+              {
+                "background": `url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn.png'), this.moduleObject)}`,
+                'background-size': '100% 100%',
+                'background-repeat': 'no-repeat',
+              });
+        }else {
+          window.IDM.setStyleToPageHead(
+              "." +
+              themeNamePrefix +
+              item.key +
+              " #" +
+              (this.moduleObject.packageid || "module_demo") +
+              ' .header-background',
+              {
+                "background": `url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn-blue.png'), this.moduleObject)}`,
+                'background-size': '100% 100%',
+                'background-repeat': 'no-repeat',
+              });
+        }
       }
     },
     /**
@@ -594,6 +620,8 @@ $scale: var(--i-activitystatistics-scale);
 .header {
 
   $scale: var(--i-activitystatistics-scale);
+  position: relative;
+  z-index: 1;
 
   &-background {
     height: calc(262px * #{ $scale });
@@ -608,6 +636,8 @@ $scale: var(--i-activitystatistics-scale);
     flex-direction: column;
     flex-wrap: nowrap;
     align-items: center;
+    position: relative;
+    z-index: 2;
 
     .price {
       font-size: calc(28px * #{ $scale });
@@ -643,6 +673,8 @@ $scale: var(--i-activitystatistics-scale);
   align-items: center;
   width: 100%;
   height: auto;
+  position: relative;
+  z-index: 10;
 
   &-card {
     width: 100%;
@@ -778,7 +810,7 @@ $scale: var(--i-activitystatistics-scale);
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
+  z-index: 100;
   background: rgba(0, 0, 0, 0.3);
   display: flex;
   justify-content: center;
