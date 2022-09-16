@@ -9,7 +9,7 @@
   "message": "操作成功",
   "metadata": null,
   "token": "",
-  "data": {
+  "data": [
     {
         "label": "2021", // 时间
         "children": [ // 子集
@@ -29,7 +29,7 @@
           }
         ]
       }
-  }
+  ]
 }
 ```
 
@@ -43,7 +43,7 @@
   "metadata": null,
   "token": "",
   "data": [
-    {
+      {
         label: "1937年7月7日", // 日期
         title: "日本帝国主义者以制争",// 标题
         desc: "1937年7月7日 日本帝国主义者。",// 描述
