@@ -4,7 +4,7 @@
        :idm-ctrl-id="moduleObject.id"
        class="IActivity-Statistics">
     <div class="header" v-if="propData.isShowHeader">
-      <div class="header-background" :style="imgStyleObj"></div>
+      <div class="header-background"></div>
       <div class="header-container">
         <div class="price">{{ dues }}</div>
         <div class="payFont">应缴党费</div>
@@ -532,6 +532,11 @@ export default {
               "color": item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
             }
         );
+        let styleObj={
+          'background-repeat': 'no-repeat',
+          'background-size': '100% 100%',
+          "background": `url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn.png'), this.moduleObject)}`,
+        }
         if (item.key === "red"){
           window.IDM.setStyleToPageHead(
               "." +
@@ -540,12 +545,9 @@ export default {
               " #" +
               (this.moduleObject.packageid || "module_demo") +
               ' .header-background',
-              {
-                "background": `url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn.png'), this.moduleObject)}`,
-                'background-size': '100% 100%',
-                'background-repeat': 'no-repeat',
-              });
+              styleObj);
         }else {
+          styleObj.background=`url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn-blue.png'), this.moduleObject)}`;
           window.IDM.setStyleToPageHead(
               "." +
               themeNamePrefix +
@@ -553,11 +555,7 @@ export default {
               " #" +
               (this.moduleObject.packageid || "module_demo") +
               ' .header-background',
-              {
-                "background": `url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn-blue.png'), this.moduleObject)}`,
-                'background-size': '100% 100%',
-                'background-repeat': 'no-repeat',
-              });
+              styleObj);
         }
       }
     },
@@ -628,6 +626,8 @@ $scale: var(--i-activitystatistics-scale);
     width: 100%;
     position: absolute;
     z-index: -1;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
   }
 
   &-container {
