@@ -11,7 +11,7 @@
   >
     <div class="idm-idealist">
       <div class="idealist-ul">
-        <li v-for="(item, index) in pageDataList.length > 0 ? pageDataList : list" :key="index">
+        <li v-for="(item, index) in pageDataList.length > 0 ? pageDataList : list" :key="index" @click="handleJump(item)">
           <div class="idealist-img" v-if="propData.headImg">
             <img :src="item[propData.ImgInterface] || item.headImg" alt="">
           </div>
@@ -148,6 +148,47 @@ export default {
     },
     handleFunc(strFun) {
       return new Function(`return ${strFun}`)();
+    },
+    getDataField (field, dataObject) {
+      if (!dataObject || !field) return ''
+      
+    },
+    handleJump (row) {
+      if (this.moduleObject.env === 'develop') {
+          return
+      }
+      let url = null
+      switch (this.propData.jumpStyle) {
+        case '_link':
+          url = row[this.propData.jumpField]
+          if (!url) return
+          window.open(IDM.url.getWebPath(url))
+          break
+        case '_child':
+          if (this.propData.morePageList && this.propData.morePageList.length > 0) {
+                IDM.router.push(
+                    this.moduleObject.pageid,
+                    this.propData.morePageList[0].id,
+                    this.propData.isPageKeep,
+                    row,
+                    '',
+                    ''
+                )
+            } else {
+                IDM.message.warning('请选择要跳转的子页面')
+            }
+          break
+        case '_custom_link':
+          url = this.propData.customLink;
+          window.open(IDM.url.getWebPath(url))
+          break
+        case 'jumpCustomFunc':
+          if (this.propData.jumpCustomFunc && this.propData.jumpCustomFunc.length > 0) {
+            const funcName = this.propData.jumpCustomFunc[0].name
+            window[funcName] && window[funcName].call(this, row)
+          }
+          break
+      }
     },
     initData () {
       let that = this;
