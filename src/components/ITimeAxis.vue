@@ -484,6 +484,7 @@ export default {
         this.isLoading = false;
         return;
       }
+      this.infoList = [];
       let url = `ctrl/dataSource/getDatas`;
       IDM.http
         .post(
@@ -500,9 +501,17 @@ export default {
         .done((res) => {
           console.log(res, "接口数据");
           if (res.code === "200") {
-            this.infoList = this.propData.dataFiled
-              ? this.getExpressData("dataName", this.propData.dataFiled, res)
-              : res;
+            const data = res.data;
+            data.forEach((item) => {
+              item.level = 1;
+              this.infoList.push(item);
+              if (item.children) {
+                item.children.forEach((c) => {
+                  c.level = 2;
+                  this.infoList.push(c);
+                });
+              }
+            });
           } else {
             console.log(url + "请求失败");
           }
