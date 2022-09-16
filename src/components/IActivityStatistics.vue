@@ -248,7 +248,7 @@ export default {
           }
       ).done((res) => {
         console.log(res, "接口数据");
-        if (res.code === "200") {
+        if (res.code == "200" ||res.code == 200) {
           let tempList = {}
           this.activityList = []
           tempList = this.propData.dataFiled
@@ -256,7 +256,6 @@ export default {
               : res;
           this.dues = tempList.dues
           let activityName = this.propData.activityList
-          console.log(tempList,"---",activityName,"------",this.propData.activityName)
           for (let i = 0; i < tempList[activityName].length; i++) {
             let tempItem = {}
             tempItem.icon = tempList[activityName][i][this.propData.activityIcon]
