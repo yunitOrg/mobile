@@ -185,8 +185,8 @@ export function getMyMessageTopData() {
     return {
         avatar: IDM.url.getModuleAssetsWebPath(require('../assets/default-avatar.png'), _this.moduleObject),
         username: '陈独秀',
-        partySeniority: 5,
-        partyBranch: '梦创'
+        partySeniority: '党龄：5年',
+        partyBranch: '梦创党支部'
     }
 }
 

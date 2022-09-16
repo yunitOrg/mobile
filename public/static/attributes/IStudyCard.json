@@ -645,16 +645,15 @@
               "desc": "每个视频的描述字段",
               "bindKey": "videoIntroduction",
               "default": "videoIntroduction"
-            },
-            {
-              "type": "input",
-              "layoutType": "inline",
-              "text": "视频跳转",
-              "desc": "每个点击视频后跳转的地址字段",
-              "bindKey": "videoUrl",
-              "default": "videoUrl"
             }
           ]
+        },
+        {
+          "type": "pageSelect",
+          "layoutType": "inline",
+          "text": "视频跳转",
+          "bindKey": "listJumpUrl",
+          "desc": "设置视频跳转的页面"
         },
         {
           "type": "select",

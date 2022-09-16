@@ -1,10 +1,16 @@
+<!-- 输入框 -->
 <template>
   <div class="input-com" :style="computedBlock">
     <div class="name" :style="computedStyle" v-if="params['labelShow']">
       <span v-if="params.required" class="required">*</span>
       {{label}}
     </div>
+    <div class="form-cel" v-if="params['isImg']" :style="computedObj">
+      <img :src="formData[field]"  :style="computedImgStyle" />
+    </div>
     <van-field
+      v-else
+      class="form-cel"
       v-model="formData[field]"
       :placeholder="params['placeholder']"
       :input-align="params['inputAlign']"
@@ -44,13 +50,40 @@ export default{
       if (this.params.labelBox) {
         IDM.style.setBoxStyle(obj, this.params.labelBox)
       }
+      if (this.params.showAlign) {
+        switch (this.params.showAlign) {
+          case 'center':
+            obj['justify-content'] = 'center'
+            break
+          case 'left':
+            obj['justify-content'] = 'left'
+            break
+          case 'right':
+            obj['justify-content'] = 'end'
+            break
+        }
+      }
       return obj
     },
     computedBlock () {
       let styleObject = {}
       if (this.params['labelBlock']) {
-        styleObject['flex-wrap'] = 'wrap'
+        styleObject['display'] = 'block'
       }
+      return styleObject
+    },
+    computedImgStyle () {
+      let styleObject = {}
+      this.params.imgWidth && (styleObject['width'] = this.params.imgWidth);
+      this.params.imgHeight && (styleObject['height'] = this.params.imgHeight);
+      if (this.params.imgRadius) {
+        styleObject['border-radius'] = '50%'
+      }
+      return styleObject
+    },
+    computedObj () {
+      let styleObject = {}
+      this.params.inputAlign && (styleObject['text-align'] = this.params.inputAlign);
       return styleObject
     }
   },

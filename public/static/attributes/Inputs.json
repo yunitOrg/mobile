@@ -88,6 +88,27 @@
                     "default": false
                   },
                   {
+                    "type": "select",
+                    "layoutType": "inline",
+                    "text": "显示对齐",
+                    "bindKey": "showAlign",
+                    "dictionary": [
+                      {
+                        "label": "左对齐",
+                        "value": "left"
+                      },
+                      {
+                        "label": "居中",
+                        "value": "center"
+                      },
+                      {
+                        "label": "右对齐",
+                        "value": "right"
+                      }
+                    ],
+                    "default": "center"
+                  },
+                  {
                     "type": "input",
                     "layoutType": "inline",
                     "text": "宽",
@@ -149,6 +170,40 @@
                 "default": false
               },
               {
+                "type": "switch",
+                "layoutType": "inline",
+                "text": "图片显示",
+                "desc": "右侧是否显示图片",
+                "bindKey": "isImg",
+                "display": "@[type=='input']",
+                "default": false
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "图片宽",
+                "bindKey": "imgWidth",
+                "display": "@[isImg]",
+                "default": "30px"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "图片高",
+                "bindKey": "imgHeight",
+                "display": "@[isImg]",
+                "default": "30px"
+              },
+              {
+                "type": "switch",
+                "layoutType": "inline",
+                "text": "图片是否是圆形",
+                "desc": "图片是否是圆形",
+                "bindKey": "imgRadius",
+                "display": "@[isImg]",
+                "default": true
+              },
+              {
                 "type": "actionSelect",
                 "layoutType": "block",
                 "text": "校验函数",
@@ -182,9 +237,13 @@
                   {
                     "label": "带符号纯数字键盘",
                     "value": "number"
+                  },
+                  {
+                    "label": "任何类型",
+                    "value": "any"
                   }
                 ],
-                "default": "number"
+                "default": "any"
               },
               {
                 "type": "select",
@@ -290,6 +349,7 @@
                     "layoutType": "inline",
                     "text": "日期类型",
                     "bindKey": "dateType",
+                    "display": "@[type=='calendar']",
                     "dictionary": [
                       {
                         "label": "单个日期",
@@ -311,6 +371,7 @@
                     "layoutType": "inline",
                     "text": "自定义范围开始",
                     "bindKey": "dateRangeStart",
+                    "display": "@[type=='calendar']",
                     "placeholder": "new Date(2022, 0, 1)"
                   },
                   {
@@ -318,12 +379,14 @@
                     "layoutType": "inline",
                     "text": "自定义范围结束",
                     "bindKey": "dateRangeEnd",
+                    "display": "@[type=='calendar']",
                     "placeholder": "new Date(2022, 0, 1)"
                   },
                   {
                     "type": "radio",
                     "layoutType": "inline",
                     "text": "弹出位置",
+                    "display": "@[type=='calendar']",
                     "bindKey": "datePosition",
                     "dictionary": [
                       {

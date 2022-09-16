@@ -111,5 +111,8 @@ export default{
     color: red;
     padding-right: 5px;
   }
+  .form-cel{
+    flex: 1;
+  }
 }
 </style>

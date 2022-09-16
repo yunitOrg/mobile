@@ -1,3 +1,4 @@
+<!-- 发送验证码 -->
 <template>
   <div class="sendpws">
     <span v-if="params.required" class="required">*</span>

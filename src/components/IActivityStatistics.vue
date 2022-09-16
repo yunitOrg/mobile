@@ -3,10 +3,10 @@
        :id="moduleObject.id"
        :idm-ctrl-id="moduleObject.id"
        class="IActivity-Statistics">
-    <div class="header"  v-if="propData.isShowHeader">
+    <div class="header" v-if="propData.isShowHeader">
       <div class="header-background" :style="imgStyleObj"></div>
       <div class="header-container">
-        <div class="price">{{dues}}</div>
+        <div class="price">{{ dues }}</div>
         <div class="payFont">应缴党费</div>
         <div class="rule" @click="ruleDetail">计算规则</div>
       </div>
@@ -24,29 +24,29 @@
             </div>
           </div>
           <div class="list">
-            <div class="list-item" v-for="(acitivity,index) in activityList"
+            <div class="list-item" v-for="(activity,index) in activityList"
                  :key="index"
             >
               <div class="activity-icon">
-                <svg-icon :icon-class="acitivity.icon" v-if="moduleObject.env === 'develop' && !propData.dataSource"/>
-                <img :src="acitivity.icon" v-if="!!propData.dataSource" alt=""/>
+                <svg-icon :icon-class="activity.icon" v-if="moduleObject.env === 'develop' && !propData.dataSource"/>
+                <img :src="activity.icon" v-if="!!propData.dataSource" alt=""/>
               </div>
               <div class="center-text">
                 <div class="activity-name">
-                  {{ acitivity.name }}
+                  {{ activity.name }}
                 </div>
                 <div class="activity-personNum" v-if="propData.isShowBottomText">
-                  {{ acitivity.personNum }}
+                  {{ activity.personNum }}
                 </div>
               </div>
               <div class="right-text">
 
                 <div class="activity-convene">
                   <svg-icon icon-class="rmb" v-if="propData.isShowMoney"/>
-                  {{ acitivity.convene }}
+                  {{ activity.convene }}
                 </div>
-                <div class="activity-attendance"  v-if="propData.isShowBottomText">
-                  {{ acitivity.attendance }}
+                <div class="activity-attendance" v-if="propData.isShowBottomText">
+                  {{ activity.attendance }}
                 </div>
               </div>
             </div>
@@ -67,7 +67,7 @@ export default {
     return {
       moduleObject: {},
       isLoading: true,
-      theme:"red",
+      theme: "red",
       activityList: [
         {
           icon: "dydh",
@@ -105,8 +105,8 @@ export default {
           attendance: "出席率25%"
         },
       ],
-      dues:"",
-      computationRule:"",
+      dues: "",
+      computationRule: "",
       propData: this.$root.propData.compositeAttr || {
         isShowLine: true,
         themeList: [
@@ -118,22 +118,22 @@ export default {
             }
           },
         ],
-        headText:"党费缴纳",
-        isShowBottomText:true,
+        headText: "党费缴纳",
+        isShowBottomText: true,
         isShowMoney: false,
-        isShowHeader:true
+        isShowHeader: true
       },
     }
   },
-  computed:{
+  computed: {
     imgStyleObj() {
-      if (this.theme==="red"){
+      if (this.theme === "red") {
         return {
           "background": `url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn.png'), this.moduleObject)}`,
           'background-size': '100% 100%',
           'background-repeat': 'no-repeat',
         }
-      }else {
+      } else {
         return {
           "background": `url(${IDM.url.getModuleAssetsWebPath(require('../assets/dfjn-blue.png'), this.moduleObject)}`,
           'background-size': '100% 100%',
@@ -184,7 +184,7 @@ export default {
         setTimeout(() => {
           this.activityList = [];
           const res = {
-            data:{
+            data: {
               data: [
                 {
                   icon: "dydh",
@@ -222,14 +222,14 @@ export default {
                   attendance: "出席率25%"
                 },
               ],
-              dues:"20.00",
-              computationRule:"#"
+              dues: "20.00",
+              computationRule: "#"
             }
 
           };
           this.activityList = res.data.data
-          this.dues=res.data.dues
-          this.computationRule=res.data.computationRule
+          this.dues = res.data.dues
+          this.computationRule = res.data.computationRule
           this.isLoading = false;
         }, 0)
       }
@@ -254,15 +254,16 @@ export default {
           tempList = this.propData.dataFiled
               ? this.getExpressData("dataName", this.propData.dataFiled, res)
               : res;
-          this.dues=tempList.dues
-          this.computationRule=tempList.computationRule
-          for(let i = 0;i<tempList.activityList.length;i++){
-            let tempItem={}
-            tempItem.icon = tempList.activityList[i][this.propData.activityIcon]
-            tempItem.name = tempList.activityList[i][this.propData.activityName]
-            tempItem.personNum = tempList.activityList[i][this.propData.activityPersonNum]
-            tempItem.convene = tempList.activityList[i][this.propData.activityConvene]
-            tempItem.attendance = tempList.activityList[i][this.propData.activityAttendance]
+          this.dues = tempList.dues
+          let activityName = this.propData.activityList
+          console.log(tempList,"---",activityName,"------",this.propData.activityName)
+          for (let i = 0; i < tempList[activityName].length; i++) {
+            let tempItem = {}
+            tempItem.icon = tempList[activityName][i][this.propData.activityIcon]
+            tempItem.name = tempList[activityName][i][this.propData.activityName]
+            tempItem.personNum = tempList[activityName][i][this.propData.activityPersonNum]
+            tempItem.convene = tempList[activityName][i][this.propData.activityConvene]
+            tempItem.attendance = tempList[activityName][i][this.propData.activityAttendance]
             this.activityList.push(tempItem)
           }
         } else {
@@ -324,7 +325,7 @@ export default {
       let styleActivityName = {};
       let styleActivityConvene = {};
       let styleBottom = {};
-      let styleScale={}
+      let styleScale = {}
 
       const scale = this.getScale()
       styleScale['--i-activitystatistics-scale'] = scale;
@@ -510,7 +511,7 @@ export default {
       for (var i = 0; i < themeList.length; i++) {
         var item = themeList[i];
         console.log(item)
-        this.theme=item.key
+        this.theme = item.key
         IDM.setStyleToPageHead(
             "." +
             themeNamePrefix +
@@ -537,13 +538,13 @@ export default {
     },
     /**
      * 组件通信：接收消息的方法
-     * @param {
      *  type:"发送消息的时候定义的类型，这里可以自己用来要具体做什么，统一规定的type：linkageResult（组件联动传结果值）、linkageDemand（组件联动传需求值）、linkageReload（联动组件重新加载）
      * 、linkageOpenDialog（打开弹窗）、linkageCloseDialog（关闭弹窗）、linkageShowModule（显示组件）、linkageHideModule（隐藏组件）、linkageResetDefaultValue（重置默认值）"
      *  message:{发送的时候传输的消息对象数据}
      *  messageKey:"消息数据的key值，代表数据类型是什么，常用于表单交互上，比如通过这个key判断是什么数据"
      *  isAcross:如果为true则代表发送来源是其他页面的组件，默认为false
      * } object
+     * @param messageObject
      */
     receiveBroadcastMessage(messageObject) {
       switch (messageObject.type) {
@@ -568,15 +569,21 @@ export default {
     },
 
     //点击计算规则跳转的地址
-    ruleDetail(){
-      if (this.computationRule !=="")
+    ruleDetail() {
+
+      if (this.propData.computationRule !== {} && this.propData.computationRule.id !== "") {
         IDM.router.push(
             this.moduleObject.routerId,
-            this.computationRule,
+            this.propData.computationRule.id,
             {
               keep: true,
+              enterAnim: '',
+              quitAnim: ''
             }
         );
+      } else {
+        IDM.message.warning("请选择要跳转的子页面");
+      }
     }
   }
 }
@@ -585,23 +592,25 @@ export default {
 <style scoped lang="scss">
 $scale: var(--i-activitystatistics-scale);
 
-.header{
+.header {
 
   $scale: var(--i-activitystatistics-scale);
-  &-background{
+
+  &-background {
     height: calc(262px * #{ $scale });
     width: 100%;
     position: absolute;
     z-index: -1;
   }
 
-  &-container{
+  &-container {
     display: flex;
     padding-top: calc(118px * #{ $scale });
     flex-direction: column;
     flex-wrap: nowrap;
     align-items: center;
-    .price{
+
+    .price {
       font-size: calc(28px * #{ $scale });
       color: #FFFFFF;
       text-align: center;
@@ -609,19 +618,21 @@ $scale: var(--i-activitystatistics-scale);
       font-weight: 900;
       margin-bottom: calc(6px * #{ $scale });
     }
-    .payFont{
+
+    .payFont {
       font-size: calc(17px * #{ $scale });
       color: #FFFFFF;
       text-align: center;
       font-weight: 400;
       margin-bottom: calc(12px * #{ $scale });
     }
-    .rule{
+
+    .rule {
       font-size: calc(14px * #{ $scale });
       color: #FFFFFF;
       text-align: center;
       font-weight: 400;
-      text-decoration:underline;
+      text-decoration: underline;
     }
   }
 
@@ -643,7 +654,7 @@ $scale: var(--i-activitystatistics-scale);
     margin: calc(16px * #{ $scale }) calc(10px * #{ $scale });
     padding: 0 calc(12px * #{ $scale });
 
-    .card-header{
+    .card-header {
       margin: calc(18px * #{ $scale }) 0 calc(16px * #{ $scale }) 0;
       display: flex;
       justify-content: space-between;
@@ -661,7 +672,7 @@ $scale: var(--i-activitystatistics-scale);
         }
       }
 
-      .left{
+      .left {
         display: flex;
         justify-content: center;
         flex-wrap: nowrap;
@@ -671,13 +682,14 @@ $scale: var(--i-activitystatistics-scale);
         margin-left: calc(-4px * #{ $scale });
 
         .left-text {
-          font-family: arial, helvetica, 'microsoft yahei',serif;
+          font-family: arial, helvetica, 'microsoft yahei', serif;
           color: #333333FF;
           font-size: calc(18px * #{ $scale });
           line-height: calc(18px * #{ $scale });
           font-weight: 800;
         }
-      };
+      }
+    ;
     }
 
     .list {
@@ -739,6 +751,7 @@ $scale: var(--i-activitystatistics-scale);
             color: #E02020;
             text-align: right;
             font-weight: 400;
+
             svg {
               width: calc(17px * #{ $scale });
               height: calc(17px * #{ $scale });
@@ -760,7 +773,7 @@ $scale: var(--i-activitystatistics-scale);
   }
 }
 
-.IActivity-Statistics-mask{
+.IActivity-Statistics-mask {
   position: absolute;
   top: 0;
   left: 0;
@@ -771,6 +784,7 @@ $scale: var(--i-activitystatistics-scale);
   display: flex;
   justify-content: center;
   align-items: center;
+
   span {
     padding: 6px 20px;
     color: #e6a23c;

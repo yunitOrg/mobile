@@ -292,7 +292,8 @@
                 },
                 {
                     "type": "group",
-                    "text": "党龄样式",
+                    "text": "第一行样式",
+                    "desc": "(昵称/用户名)下面的第一行样式",
                     "children": [
                         {
                             "type": "box",
@@ -328,7 +329,8 @@
                 },
                 {
                     "type": "group",
-                    "text": "支部样式",
+                    "text": "第二行样式",
+                    "desc": "(昵称/用户名)下面的第二行样式",
                     "children": [
                         {
                             "type": "box",
@@ -341,6 +343,43 @@
                             "layoutType": "block",
                             "text": "字体",
                             "bindKey": "branchFont",
+                            "default": {
+                                "fontSize": 14,
+                                "fontSizeUnit": "px",
+                                "fontColors": {
+                                    "hex": "#FFFFFF",
+                                    "hex8": "#FFFFFFFF"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "text": "第三行样式",
+                    "desc": "(昵称/用户名)下面的第三行样式",
+                    "children": [
+                        {
+                            "type": "box",
+                            "layoutType": "block",
+                            "text": "内外边距",
+                            "bindKey": "phoneBox",
+                            "default": {
+                                "marginTopVal": "3px",
+                                "marginRightVal": "",
+                                "marginBottomVal": "3px",
+                                "marginLeftVal": "",
+                                "paddingTopVal": "",
+                                "paddingRightVal": "",
+                                "paddingBottomVal": "",
+                                "paddingLeftVal": ""
+                            }
+                        },
+                        {
+                            "type": "font",
+                            "layoutType": "block",
+                            "text": "字体",
+                            "bindKey": "phoneFont",
                             "default": {
                                 "fontSize": 14,
                                 "fontSizeUnit": "px",
@@ -508,23 +547,33 @@
                         {
                             "type": "input",
                             "layoutType": "inline",
-                            "text": "党龄字段",
+                            "text": "第一字段",
+                            "desc": "名称下面显示的第一行数据，没有返回数据就不显示",
                             "bindKey": "yearField",
                             "default": "partySeniority"
                         },
                         {
                             "type": "input",
                             "layoutType": "inline",
-                            "text": "支部字段",
+                            "text": "第二字段",
+                            "desc": "名称下面显示的第二行数据，没有返回数据就不显示",
                             "bindKey": "branchField",
                             "default": "partyBranch"
                         },
                         {
                             "type": "input",
                             "layoutType": "inline",
+                            "text": "第三字段",
+                            "desc": "名称下面显示的第三行数据，没有返回数据就不显示",
+                            "bindKey": "phoneField",
+                            "default": "phone"
+                        },
+                        {
+                            "type": "input",
+                            "layoutType": "inline",
                             "text": "右侧跳转",
                             "desc": "右侧跳转链接字段",
-                            "bindKey": "jumpField",
+                            "bindKey": "jumpUrlField",
                             "default": "jumpUrl"
                         }
                     ]
