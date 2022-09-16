@@ -524,7 +524,7 @@
                             "layoutType": "inline",
                             "text": "右侧跳转",
                             "desc": "右侧跳转链接字段",
-                            "bindKey": "jumpField",
+                            "bindKey": "jumpUrlField",
                             "default": "jumpUrl"
                         }
                     ]
