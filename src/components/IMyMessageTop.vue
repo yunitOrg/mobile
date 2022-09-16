@@ -79,7 +79,7 @@ export default {
                     if (this.propData.morePageList && this.propData.morePageList.length > 0) {
                         IDM.router.push(
                             this.moduleObject.pageid,
-                            this.propData.itemPageList[0].id,
+                            this.propData.morePageList[0].id,
                             this.propData.isPageKeep,
                             this,
                             ''
