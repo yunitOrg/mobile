@@ -35,7 +35,9 @@ export default {
   },
   data () {
     return {
-      formData: {}, // 表单数据
+      formData: {
+        name: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2F1113%2F052420110515%2F200524110515-1-1200.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665903945&t=6d8f964b1ec1c7c524fe9e77e525e7ad'
+      }, // 表单数据
       moduleObject: {},
       propData: this.$root.propData.compositeAttr||{
         boxWidth: '100%',
@@ -63,6 +65,10 @@ export default {
             checkField: [{name: 'search'}],
             labelWidth: '100px',
             labelHeight: 'auto',
+            imgWidth: '30px',
+            imgHeight: '30px',
+            imgRadius: true,
+            isImg: true,
             labelBlock: false,
             inputAlign: 'right',
             required: true,

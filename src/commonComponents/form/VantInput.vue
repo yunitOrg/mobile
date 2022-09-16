@@ -5,7 +5,11 @@
       <span v-if="params.required" class="required">*</span>
       {{label}}
     </div>
+    <div class="form-cel" v-if="params['isImg']" :style="computedObj">
+      <img :src="formData[field]"  :style="computedImgStyle" />
+    </div>
     <van-field
+      v-else
       class="form-cel"
       v-model="formData[field]"
       :placeholder="params['placeholder']"
@@ -66,6 +70,20 @@ export default{
       if (this.params['labelBlock']) {
         styleObject['display'] = 'block'
       }
+      return styleObject
+    },
+    computedImgStyle () {
+      let styleObject = {}
+      this.params.imgWidth && (styleObject['width'] = this.params.imgWidth);
+      this.params.imgHeight && (styleObject['height'] = this.params.imgHeight);
+      if (this.params.imgRadius) {
+        styleObject['border-radius'] = '50%'
+      }
+      return styleObject
+    },
+    computedObj () {
+      let styleObject = {}
+      this.params.inputAlign && (styleObject['text-align'] = this.params.inputAlign);
       return styleObject
     }
   },

@@ -170,6 +170,40 @@
                 "default": false
               },
               {
+                "type": "switch",
+                "layoutType": "inline",
+                "text": "图片显示",
+                "desc": "右侧是否显示图片",
+                "bindKey": "isImg",
+                "display": "@[type=='input']",
+                "default": false
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "图片宽",
+                "bindKey": "imgWidth",
+                "display": "@[isImg]",
+                "default": "30px"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "图片高",
+                "bindKey": "imgHeight",
+                "display": "@[isImg]",
+                "default": "30px"
+              },
+              {
+                "type": "switch",
+                "layoutType": "inline",
+                "text": "图片是否是圆形",
+                "desc": "图片是否是圆形",
+                "bindKey": "imgRadius",
+                "display": "@[isImg]",
+                "default": true
+              },
+              {
                 "type": "actionSelect",
                 "layoutType": "block",
                 "text": "校验函数",
@@ -315,6 +349,7 @@
                     "layoutType": "inline",
                     "text": "日期类型",
                     "bindKey": "dateType",
+                    "display": "@[type=='calendar']",
                     "dictionary": [
                       {
                         "label": "单个日期",
@@ -336,6 +371,7 @@
                     "layoutType": "inline",
                     "text": "自定义范围开始",
                     "bindKey": "dateRangeStart",
+                    "display": "@[type=='calendar']",
                     "placeholder": "new Date(2022, 0, 1)"
                   },
                   {
@@ -343,12 +379,14 @@
                     "layoutType": "inline",
                     "text": "自定义范围结束",
                     "bindKey": "dateRangeEnd",
+                    "display": "@[type=='calendar']",
                     "placeholder": "new Date(2022, 0, 1)"
                   },
                   {
                     "type": "radio",
                     "layoutType": "inline",
                     "text": "弹出位置",
+                    "display": "@[type=='calendar']",
                     "bindKey": "datePosition",
                     "dictionary": [
                       {
