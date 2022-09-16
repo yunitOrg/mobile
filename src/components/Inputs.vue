@@ -35,7 +35,9 @@ export default {
   },
   data () {
     return {
-      formData: {}, // 表单数据
+      formData: {
+        name: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2F1113%2F052420110515%2F200524110515-1-1200.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665903945&t=6d8f964b1ec1c7c524fe9e77e525e7ad'
+      }, // 表单数据
       moduleObject: {},
       propData: this.$root.propData.compositeAttr||{
         boxWidth: '100%',
@@ -56,12 +58,17 @@ export default {
             type: 'input',
             labelShow: true,
             field: 'name',
+            showAlign: 'left',
             label: '文本',
             disabled: false,
             placeholder: '请输入用户名',
             checkField: [{name: 'search'}],
             labelWidth: '100px',
             labelHeight: 'auto',
+            imgWidth: '30px',
+            imgHeight: '30px',
+            imgRadius: true,
+            isImg: true,
             labelBlock: false,
             inputAlign: 'right',
             required: true,
@@ -89,6 +96,7 @@ export default {
             field: 'password',
             labelShow: true,
             disabled: false,
+            showAlign: 'left',
             labelBlock: true,
             label: '旧密码',
             placeholder: '请输入旧密码',
@@ -102,22 +110,28 @@ export default {
             field: 'switch',
             labelShow: true,
             label: '开关',
-            disabled: false
+            showAlign: 'left',
+            disabled: false,
+            labelWidth: '100px',
+            labelBlock: true,
           },
           {
             key: '4',
             type: 'checkbox',
             labelShow: true,
+            labelWidth: '100px',
+            inputAlign: 'right',
+            showAlign: 'left',
             label: '复选框',
             field: 'checkbox',
-            disabled: false,
-            labelBlock: true
+            disabled: false
           },
           {
             key: '5',
             type: 'textarea',
             labelShow: true,
             label: '意见建议',
+            showAlign: 'left',
             field: 'textarea',
             autosize: true,
             inputAlign: 'left',
@@ -149,6 +163,7 @@ export default {
             labelWidth: '100px',
             field: 'calendar',
             label: '时间范围',
+            showAlign: 'left',
             required: true,
             inputAlign: 'right',
             labelBlock: true,
@@ -170,7 +185,7 @@ export default {
   },
   created () {
     this.moduleObject = this.$root.moduleObject;
-    this.init();
+    this.init()
   },
   methods: {
     propDataWatchHandle (propData) {
@@ -178,7 +193,7 @@ export default {
       this.init();
     },
     init () {
-      console.log(this.propData, '数据源')
+      console.log(this.propData, this.formData, '数据源')
       let styleObject = {};
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
@@ -241,7 +256,8 @@ export default {
             )
             .then((res) => {
               if (res.status == 200 && res.data.code == 200) {
-                  this.formData = res.data.data
+                  this.formData = res.data.data;
+                  console.log(this.formData, res.data.data, '拿到接口数据')
               } else {
                   IDM.message.error(res.data.message)
               }

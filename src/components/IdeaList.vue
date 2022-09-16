@@ -12,17 +12,17 @@
     <div class="idm-idealist">
       <div class="idealist-ul">
         <li v-for="(item, index) in pageDataList.length > 0 ? pageDataList : list" :key="index">
-          <div class="idealist-img">
+          <div class="idealist-img" v-if="propData.headImg">
             <img :src="item[propData.ImgInterface] || item.headImg" alt="">
           </div>
           <div class="idealist-content">
             <div class="idealist-title">
               <b>{{item[propData.titleInterface] || item.title}}</b>
-              <span>{{item[propData.TimeInterface] || item.time}}</span>
+              <span v-if="propData.isDate">{{item[propData.TimeInterface] || item.time}}</span>
             </div>
-            <span class="idealist-desc">{{item[propData.descInterface] || item.desc}}</span>
+            <span class="idealist-desc" v-if="propData.isDesc">{{item[propData.descInterface] || item.desc}}</span>
           </div>
-          <div class="idealist-right" :class="hadnleActive(item, propData.activeInterface) ? 'waitStyle' : 'yetStyle'">
+          <div class="idealist-right"  v-if="propData.isType" :class="hadnleActive(item, propData.activeInterface) ? 'waitStyle' : 'yetStyle'">
             {{hadnleActive(item, propData.activeInterface) ? propData.waitTitle : propData.yetTitle}}
           </div>
         </li>
@@ -67,6 +67,10 @@ export default {
       propData:this.$root.propData.compositeAttr||{
         waitTitle: "待回复",
         yetTitle: "已回复",
+        headImg: true,
+        isDesc: true,
+        isDate: true,
+        isType: true,
         liBoxShadow: "0px  0px 20px 0px #ccc",
         activeInterface: "type == '1'",
         box:{

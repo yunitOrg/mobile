@@ -10,7 +10,7 @@
 
 视频详情: videoIntroduction
 
-视频跳转:   videoUrl
+视频跳转url字段无需设置，与后端传入字段同名
 
 数据源应为:
 ```
@@ -21,14 +21,14 @@
         amountOfPlay:1500,
         releaseDate:"2022-9-7",
         videoIntroduction:"浙江宁波：植物观察 地质探索 假期研学快乐多",
-        videoUrl:"url"
+        jumpUrl:"url"
     },
     {
         image:"url",
         amountOfPlay:1500,
         releaseDate:"2022-9-7",
         videoIntroduction:"浙江宁波：植物观察 地质探索 假期研学快乐多",
-        videoUrl:"url"
+        jumpUrl:"url"
     }......
     ]
 }

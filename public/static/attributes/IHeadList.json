@@ -21,6 +21,30 @@
         "desc": "提供设置组件能达到展示效果的基本属性设置信息",
         "children": [
           {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "头像显示",
+            "desc":"头像是否显示",
+            "bindKey": "headImg",
+            "default": true
+          },
+          {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "标签显示",
+            "desc":"标签是否显示",
+            "bindKey": "isTag",
+            "default": true
+          },
+          {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "描述显示",
+            "desc":"描述是否显示",
+            "bindKey": "isDesc",
+            "default": true
+          },
+          {
             "type": "group",
             "text": "右侧图标",
             "desc": "右侧图标",

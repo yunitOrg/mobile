@@ -13,7 +13,7 @@
       <van-search v-if="false" class="idm-search" v-model="searchVal" placeholder="请输入党员姓名关键词快速查找内容" />
       <div class="iheadlist-ul">
         <li v-for="(item, index) in pageDataList.length > 0 ? pageDataList : list" :key="index">
-          <div class="iheadlist-img">
+          <div class="iheadlist-img" v-if="propData.headImg">
             <img :src="item[propData.ImgInterface] || item.img" alt="">
           </div>
           <div class="iheadlist-right">
@@ -40,18 +40,18 @@
                   </template>
                  <!-- <svg-icon v-else icon-class="girl" class-name="idm_svg_author_icon icon_author1"></svg-icon> -->
                 </template>
-                <template v-if="item[propData.tagField]">
+                <template v-if="item[propData.tagField] && propData.isTag">
                   <span v-for="(subitem, subindex) in item[propData.tagField].split(',')" :key="subindex" class="color">
                     {{subitem}}
                   </span>
                 </template>
-                <template v-if="item[propData.activeField]">
+                <template v-if="item[propData.activeField] && propData.isTag">
                   <span v-for="(subitem, subindex) in item[propData.activeField].split(',')" :key="subindex" class="color1">
                     {{subitem}}
                   </span>
                 </template>
               </div>
-              <span class="iheadlist-desc">{{item[propData.descInterface] || item.desc}}</span>
+              <span class="iheadlist-desc" v-if="propData.isDesc">{{item[propData.descInterface] || item.desc}}</span>
             </div>
             <div class="iheadlist-icon" v-if="propData.showIcon" @click="handleClick(item)">
               <svg
@@ -84,6 +84,9 @@ export default {
       moduleObject:{},
       propData:this.$root.propData.compositeAttr||{
         showIcon: true,
+        headImg: true,
+        isDesc: true,
+        isTag: true,
         authorshowIcon: true,
         titleIconFontSize: 20,
         authorIconFontSize: 18,

@@ -1,9 +1,12 @@
+<!-- switch -->
 <template>
   <div class="input-com" :style="computedBlock">
     <div class="name" :style="computedStyle" v-if="params['labelShow']">
       {{label}}
     </div>
-    <van-switch v-model="formData[field]" :disabled="params['disabled']"/>
+    <div>
+      <van-switch class="form-cel" v-model="formData[field]" :disabled="params['disabled']"/>
+    </div>
   </div>
 </template>
 
@@ -28,12 +31,25 @@ export default{
       if (this.params.labelBox) {
         IDM.style.setBoxStyle(obj, this.params.labelBox)
       }
+      if (this.params.showAlign) {
+        switch (this.params.showAlign) {
+          case 'center':
+            obj['justify-content'] = 'center'
+            break
+          case 'left':
+            obj['justify-content'] = 'left'
+            break
+          case 'right':
+            obj['justify-content'] = 'end'
+            break
+        }
+      }
       return obj
     },
     computedBlock () {
       let styleObject = {}
       if (this.params['labelBlock']) {
-        styleObject['flex-wrap'] = 'wrap'
+        styleObject['display'] = 'block'
       }
       return styleObject
     }

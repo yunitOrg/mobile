@@ -1,3 +1,4 @@
+<!-- 时间范围 -->
 <template>
   <div class="input-com" :style="computedBlock">
     <div class="name" :style="computedStyle" v-if="params['labelShow']">
@@ -5,6 +6,7 @@
       {{label}}
     </div>
     <van-field
+      class="form-cel"
       v-model="formData[field]"
       :placeholder="params['placeholder']"
       :input-align="params['inputAlign']"
@@ -60,12 +62,25 @@ export default{
       if (this.params.labelBox) {
         IDM.style.setBoxStyle(obj, this.params.labelBox)
       }
+      if (this.params.showAlign) {
+        switch (this.params.showAlign) {
+          case 'center':
+            obj['justify-content'] = 'center'
+            break
+          case 'left':
+            obj['justify-content'] = 'left'
+            break
+          case 'right':
+            obj['justify-content'] = 'end'
+            break
+        }
+      }
       return obj
     },
     computedBlock () {
       let styleObject = {}
       if (this.params['labelBlock']) {
-        styleObject['flex-wrap'] = 'wrap'
+        styleObject['display'] = 'block'
       }
       return styleObject
     }
