@@ -56,6 +56,7 @@ export default {
             type: 'input',
             labelShow: true,
             field: 'name',
+            showAlign: 'left',
             label: '文本',
             disabled: false,
             placeholder: '请输入用户名',
@@ -89,6 +90,7 @@ export default {
             field: 'password',
             labelShow: true,
             disabled: false,
+            showAlign: 'left',
             labelBlock: true,
             label: '旧密码',
             placeholder: '请输入旧密码',
@@ -102,6 +104,7 @@ export default {
             field: 'switch',
             labelShow: true,
             label: '开关',
+            showAlign: 'left',
             disabled: false,
             labelWidth: '100px',
             labelBlock: true,
@@ -112,6 +115,7 @@ export default {
             labelShow: true,
             labelWidth: '100px',
             inputAlign: 'right',
+            showAlign: 'left',
             label: '复选框',
             field: 'checkbox',
             disabled: false
@@ -121,6 +125,7 @@ export default {
             type: 'textarea',
             labelShow: true,
             label: '意见建议',
+            showAlign: 'left',
             field: 'textarea',
             autosize: true,
             inputAlign: 'left',
@@ -152,6 +157,7 @@ export default {
             labelWidth: '100px',
             field: 'calendar',
             label: '时间范围',
+            showAlign: 'left',
             required: true,
             inputAlign: 'right',
             labelBlock: true,
@@ -173,13 +179,7 @@ export default {
   },
   created () {
     this.moduleObject = this.$root.moduleObject;
-    if (this.moduleObject.env == "production") {
-      this.handleBackData(() => {
-        this.init();
-      });
-    } else {
-      this.init();
-    }
+    this.init()
   },
   methods: {
     propDataWatchHandle (propData) {
@@ -225,6 +225,7 @@ export default {
         rangeModule: this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
         message: this.formData
       })
+      this.handleBackData();
       if (!this.propData.labelBorderShow) {
         window.IDM.setStyleToPageHead(this.moduleObject.id + " .idm-form .input-component:last-child", {
           "border": 0
@@ -232,7 +233,7 @@ export default {
       }
     },
     // 回填数据
-    handleBackData (fn) {
+    handleBackData () {
       if (this.moduleObject.env == "production") {
         this.propData.dataSource &&
           IDM.http
@@ -251,7 +252,6 @@ export default {
               if (res.status == 200 && res.data.code == 200) {
                   this.formData = res.data.data;
                   console.log(this.formData, res.data.data, '拿到接口数据')
-                  fn()
               } else {
                   IDM.message.error(res.data.message)
               }

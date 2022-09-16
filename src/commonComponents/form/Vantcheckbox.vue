@@ -29,6 +29,19 @@ export default{
       if (this.params.labelBox) {
         IDM.style.setBoxStyle(obj, this.params.labelBox)
       }
+      if (this.params.showAlign) {
+        switch (this.params.showAlign) {
+          case 'center':
+            obj['justify-content'] = 'center'
+            break
+          case 'left':
+            obj['justify-content'] = 'left'
+            break
+          case 'right':
+            obj['justify-content'] = 'end'
+            break
+        }
+      }
       return obj
     },
     computedBlock () {

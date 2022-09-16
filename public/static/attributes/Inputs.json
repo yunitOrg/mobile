@@ -88,6 +88,27 @@
                     "default": false
                   },
                   {
+                    "type": "select",
+                    "layoutType": "inline",
+                    "text": "显示对齐",
+                    "bindKey": "showAlign",
+                    "dictionary": [
+                      {
+                        "label": "左对齐",
+                        "value": "left"
+                      },
+                      {
+                        "label": "居中",
+                        "value": "center"
+                      },
+                      {
+                        "label": "右对齐",
+                        "value": "right"
+                      }
+                    ],
+                    "default": "center"
+                  },
+                  {
                     "type": "input",
                     "layoutType": "inline",
                     "text": "宽",
