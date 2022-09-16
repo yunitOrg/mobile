@@ -12,9 +12,10 @@
         />
         <div class="d-flex just-b flex-1 align-c">
             <div class="flex-1">
-                <div class="idm-my-message-username">{{ getDataField(propData.usernameField, pageData) || '' }}</div>
-                <div class="idm-my-message-year">党龄：{{ getDataField(propData.yearField, pageData) || '0' }}年</div>
-                <div class="idm-my-message-branch">{{ getDataField(propData.branchField, pageData) }}党支部</div>
+                <div class="idm-my-message-username" v-if="getDataField(propData.usernameField, pageData)">{{ getDataField(propData.usernameField, pageData) || '暂无' }}</div>
+                <div class="idm-my-message-year" v-if="getDataField(propData.yearField, pageData)">{{ getDataField(propData.yearField, pageData) || '暂无' }}</div>
+                <div class="idm-my-message-branch" v-if="getDataField(propData.branchField, pageData)">{{ getDataField(propData.branchField, pageData) || '暂无' }}</div>
+                <div class="idm-my-message-phone" v-if="getDataField(propData.phoneField, pageData)">{{ getDataField(propData.phoneField, pageData) || '暂无' }}</div>
             </div>
             <div @click="handleJump">
                 <svg-icon icon-class="arrowRight2" class-name="idm-my-message-icon"></svg-icon>
@@ -110,7 +111,8 @@ export default {
                 usernameObj = {},
                 partySeniorityObj = {},
                 partyBranchObj = {},
-                iconObj = {}
+                iconObj = {},
+                phoneObj = {}
             if (this.propData.bgSize && this.propData.bgSize == 'custom') {
                 styleObject['background-size'] =
                     (this.propData.bgSizeWidth
@@ -193,6 +195,14 @@ export default {
                             IDM.style.setFontStyle(partyBranchObj, element)
                             this.adaptiveFontSize(partyBranchObj, element)
                             break
+                        // phone
+                        case 'phoneBox':
+                            IDM.style.setBoxStyle(phoneObj, element)
+                            break
+                        case 'phoneFont':
+                            IDM.style.setFontStyle(phoneObj, element)
+                            this.adaptiveFontSize(phoneObj, element)
+                            break
                         // icon
                         case 'iconSize':
                             iconObj['width'] = this.getAdaptiveSize(element) + 'px'
@@ -215,6 +225,7 @@ export default {
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-my-message-year', partySeniorityObj)
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-my-message-branch', partyBranchObj)
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-my-message-icon', iconObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-my-message-phone', phoneObj)
             this.initData()
         },
         reload() {
