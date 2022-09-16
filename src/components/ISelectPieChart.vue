@@ -549,6 +549,10 @@ export default {
         ? IDM.router.getParam(this.moduleObject.routerId)
         : {};
       this.isLoading = true;
+      const selectParams = this.propData.isShowTitleBar && this.propData.columnsType != 'none' ? {
+        selectedValue: this.pickerSelect.value,
+        selectedItem: this.pickerSelect
+      } : {}
       IDM.http
         .post(
           url,
@@ -560,8 +564,7 @@ export default {
             ...urlObject,
             ...routerParams,
             id: this.propData.chartDataSource.value,
-            selectedValue: this.pickerSelect.value,
-            selectedItem: this.pickerSelect
+            ...selectParams
           },
           {
             headers: {
