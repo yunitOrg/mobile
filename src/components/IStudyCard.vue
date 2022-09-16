@@ -24,7 +24,7 @@
             </div>
           </div>
           <div class="video-list">
-            <div class="video-card" v-for="(item,index) in videoData" :key="item.index" @click=toVideo(index)>
+            <div class="video-card" v-for="(item) in videoData" :key="item.index" @click=toVideo(item)>
               <div class="videoImg">
                 <img :src="item.image">
                 <div class="videoData">
@@ -156,8 +156,6 @@ export default {
      * 加载动态数据
      */
     initData() {
-      console.log(this.moduleObject.env)
-      console.log(!this.moduleObject.env || this.moduleObject.env == "develop")
       if (!this.moduleObject.env || this.moduleObject.env === "develop") {
         // mock数据
         setTimeout(()=>{
@@ -204,7 +202,6 @@ export default {
       }
 
       let dataSource = this.propData.dataSource;
-      console.log("dataSource",dataSource)
       if (!dataSource) {
         this.isLoading = false;
         return;
@@ -228,11 +225,13 @@ export default {
           for(let i = 0;i<tempList.length;i++){
             let tempItem={}
             tempItem.index = i
+            for (let name in tempList[i]) {
+              tempItem[name]=tempList[i][name]
+            }
             tempItem.image = tempList[i][this.propData.videoImage]
             tempItem.amountOfPlay = tempList[i][this.propData.videoAmountOfPlay]
             tempItem.releaseDate = tempList[i][this.propData.videoReleaseDate]
             tempItem.videoIntroduction = tempList[i][this.propData.videoIntroduction]
-            tempItem.videoUrl = tempList[i][this.propData.videoUrl]
             this.videoData.push(tempItem)
           }
         } else {
@@ -541,48 +540,21 @@ export default {
     },
 
     //点击视频卡片后跳转函数
-    toVideo(index){
-      switch (index){
-        case 0:
-          if (this.propData.leftTopUrl && this.propData.leftTopUrl.id)
-            IDM.router.push(
-                this.moduleObject.routerId,
-                this.propData.leftTopUrl.id,
-                {
-                  keep: true,
-                }
-            );
-          break;
-        case 1:
-          if (this.propData.rightTopUrl && this.propData.rightTopUrl.id)
-            IDM.router.push(
-                this.moduleObject.routerId,
-                this.propData.rightTopUrl.id,
-                {
-                  keep: true,
-                }
-            );
-          break;
-        case 2:
-          if (this.propData.leftBottomUrl && this.propData.leftBottomUrl.id)
-            IDM.router.push(
-                this.moduleObject.routerId,
-                this.propData.leftBottomUrl.id,
-                {
-                  keep: true,
-                }
-            );
-          break;
-        case 3:
-          if (this.propData.rightBottomUrl && this.propData.rightBottomUrl.id)
-            IDM.router.push(
-                this.moduleObject.routerId,
-                this.propData.rightBottomUrl.id,
-                {
-                  keep: true,
-                }
-            );
-          break;
+    toVideo(item){
+      if (this.propData.listJumpUrl !=={} && this.propData.listJumpUrl.id !== "") {
+        IDM.router.push(
+            this.moduleObject.routerId,
+            this.propData.listJumpUrl.id,
+            {
+              keep: true,
+              params: item,
+              enterAnim: '',
+              quitAnim: ''
+            }
+        );
+      }
+      else {
+        IDM.message.warning("请选择要跳转的子页面");
       }
     },
     /**

@@ -586,10 +586,10 @@
               "default": "dues"
             },
             {
-              "type": "input",
+              "type": "pageSelect",
               "layoutType": "inline",
               "text": "计算规则",
-              "desc": "点击计算规则应该跳转的地址字段",
+              "desc": "点击计算规则应该跳转的页面",
               "bindKey": "computationRule",
               "display": "@[isShowHeader]",
               "default": "computationRule"

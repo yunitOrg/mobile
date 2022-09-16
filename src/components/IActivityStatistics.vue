@@ -255,7 +255,6 @@ export default {
               ? this.getExpressData("dataName", this.propData.dataFiled, res)
               : res;
           this.dues=tempList.dues
-          this.computationRule=tempList.computationRule
           for(let i = 0;i<tempList.activityList.length;i++){
             let tempItem={}
             tempItem.icon = tempList.activityList[i][this.propData.activityIcon]
@@ -569,14 +568,21 @@ export default {
 
     //点击计算规则跳转的地址
     ruleDetail(){
-      if (this.computationRule !=="")
+
+      if (this.propData.computationRule !=={} && this.propData.computationRule.id !== "") {
         IDM.router.push(
             this.moduleObject.routerId,
-            this.computationRule,
+            this.propData.computationRule.id,
             {
               keep: true,
+              enterAnim: '',
+              quitAnim: ''
             }
         );
+      }
+      else {
+        IDM.message.warning("请选择要跳转的子页面");
+      }
     }
   }
 }
