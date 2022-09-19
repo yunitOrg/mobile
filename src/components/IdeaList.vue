@@ -40,29 +40,7 @@ export default {
   data () {
     return {
       pageDataList: [],
-      list: [
-        {
-          headImg: 'http://116.236.111.158:8086/DreamWeb/resource/img/body-bg-shanghai.png',
-          title: '白继伟',
-          desc: "书记，我的思想汇报有误",
-          time: '2021-08-25',
-          type: 1
-        },
-        {
-          headImg: 'http://116.236.111.158:8086/DreamWeb/resource/img/body-bg-shanghai.png',
-          title: '白继伟',
-          desc: "书记，我的思想汇报有误",
-          time: '2021-08-25',
-          type: 1
-        },
-        {
-          headImg: 'http://116.236.111.158:8086/DreamWeb/resource/img/body-bg-shanghai.png',
-          title: '白继伟',
-          desc: "书记，我的思想汇报有误",
-          time: '2021-08-25',
-          type: 2
-        }
-      ],
+      list: [],
       moduleObject:{},
       propData:this.$root.propData.compositeAttr||{
         waitTitle: "待回复",

@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import { getDatasInterfaceUrl } from '@/api/config'
 export default{
   name: 'ITab',
   data () {
@@ -43,6 +44,7 @@ export default{
       activeTab: '',
       allTabList: [],
       moduleObject:{},
+      dataList: [],
       propData:this.$root.propData.compositeAttr||{
         isDrag: 'container',
         staticTabPaneList: [
@@ -53,7 +55,7 @@ export default{
           {
             key: '2',
             tab: '支部党员',
-            defaultActiveKey: true
+            defaultActiveKey: true,
           }
         ],
         tableStyleFont: {
@@ -216,10 +218,39 @@ export default{
     },
     initAttrToModule () {
       console.log(this.propData, '数据源');
-      this.initBaseAttrToModule();
+      this.handleBackData(() => {
+        this.initBaseAttrToModule();
+      });
       this.convertAttrToStyleObject();
       this.convertBorderStyleObject();
       this.converThemeListObject();
+    },
+    handleBackData (fn) {
+      if (this.moduleObject.env == "production" && this.propData.requireFlag) {
+        this.propData.dataSource &&
+          IDM.http
+            .post(
+              getDatasInterfaceUrl,
+              {
+                id: this.propData.dataSource && this.propData.dataSource.value,
+              },
+              {
+                headers: {
+                  "Content-Type": "application/json;charset=UTF-8",
+                },
+              }
+            )
+            .then((res) => {
+              if (res.status == 200 && res.data.code == 200) {
+                  this.dataList = res.data.data;
+                  fn()
+              } else {
+                  IDM.message.error(res.data.message)
+              }
+            })
+      } else {
+        fn();
+      }
     },
     // 设置主题
     converThemeListObject () {
@@ -287,7 +318,15 @@ export default{
         // that.propData.staticTabPaneList.forEach(item => {
         //   item.opened = this.moduleObject.env=='develop'?true: this.activeTab==item.key;
         // });
-        that.allTabList = that.propData.staticTabPaneList;
+        if (this.dataList && this.dataList.length > 0) {
+          this.dataList.forEach(item => {
+            this.propData.staticTabPaneList.forEach(k => {
+              k.tab = item[k.field] || k.tab
+            })
+          })
+        } else {
+          that.allTabList = that.propData.staticTabPaneList;
+        }
       }
     },
     /** 

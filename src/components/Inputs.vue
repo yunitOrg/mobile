@@ -272,11 +272,17 @@ export default {
      * }
      */
     getContextValue ()  {
+      const routerParams = this.moduleObject.routerId
+        ? IDM.router.getParam(this.moduleObject.routerId)
+        : {};
       let result = {
         type: "success",
         message: '',
         key: this.propData.formFiledKey || this.propData.ctrlId,
-        data: this.formData
+        data: {
+          form: this.formData,
+          ...routerParams
+        }
       };
       return result;
     },

@@ -173,7 +173,7 @@
                 "type": "switch",
                 "layoutType": "inline",
                 "text": "图片显示",
-                "desc": "右侧是否显示图片",
+                "desc": "右侧是否显示图片，应用于我的信息头像显示",
                 "bindKey": "isImg",
                 "display": "@[type=='input']",
                 "default": false
