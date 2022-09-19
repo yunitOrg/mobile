@@ -60,8 +60,8 @@ export default {
                 case '_interface_child':
                     if (pageId) {
                         IDM.router.push(
+                            this.moduleObject.pageid,
                             pageId,
-                            this.propData.itemPageList[0].id,
                             this.propData.isItemKeep,
                             item,
                             '',
