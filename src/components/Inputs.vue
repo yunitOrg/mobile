@@ -184,6 +184,7 @@ export default {
   created () {
     this.moduleObject = this.$root.moduleObject;
     this.init()
+    this.getPrevPageRouterParams();
   },
   methods: {
     propDataWatchHandle (propData) {
@@ -230,12 +231,21 @@ export default {
         rangeModule: this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
         message: this.formData
       })
+      
       this.handleBackData();
       if (!this.propData.labelBorderShow) {
         window.IDM.setStyleToPageHead(this.moduleObject.id + " .idm-form .input-component:last-child", {
           "border": 0
         });
       }
+    },
+    // 获取router的数据
+    getRouterParams () {
+      return this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId): {};
+    },
+    // 回填从router获取到的数据
+    getPrevPageRouterParams () {
+      this.formData = this.getRouterParams()
     },
     // 回填数据
     handleBackData () {
@@ -272,17 +282,14 @@ export default {
      * }
      */
     getContextValue ()  {
-      const routerParams = this.moduleObject.routerId
-        ? IDM.router.getParam(this.moduleObject.routerId)
-        : {};
+      // 接收到跳转页面的router参数
+      const routerParams = this.getRouterParams(),
+        resultData = Object.assign(routerParams, this.formData);
       let result = {
         type: "success",
         message: '',
         key: this.propData.formFiledKey || this.propData.ctrlId,
-        data: {
-          form: this.formData,
-          ...routerParams
-        }
+        data: resultData
       };
       return result;
     },

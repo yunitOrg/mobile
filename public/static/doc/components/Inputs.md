@@ -52,6 +52,33 @@ mobile@1.0.0
 
 ```
 
+#### 消息传参
+```js
+// 组件传递数据给其他组件方法、1：消息 sendBroadcastMessage   2：传递到上下文 getContextValue
+第一种：this.sendBroadcastMessage({
+        type: 'sendFormData',
+        rangeModule: this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
+        message: this.formData
+      })
+第二种：getContextValue ()  {
+      // 接收到跳转页面的router参数
+      const routerParams = this.moduleObject.routerId
+        ? IDM.router.getParam(this.moduleObject.routerId)
+        : {};
+      let result = {
+        type: "success",
+        message: '',
+        key: this.propData.formFiledKey || this.propData.ctrlId,
+        data: {
+          form: this.formData,
+          ...routerParams
+        }
+      };
+      return result;
+    },
+```
+
+
 
 
 注：校验函数是失去焦点才校验 会传两个参数： 
