@@ -124,10 +124,6 @@
                             "value": "_child"
                         },
                         {
-                            "label": "接口子页面",
-                            "value": "_interface_child"
-                        },
-                        {
                             "label": "接口链接打开",
                             "value": "_link"
                         },
@@ -197,6 +193,10 @@
                         {
                             "label": "子页面打开",
                             "value": "_child"
+                        },
+                        {
+                            "label": "接口子页面",
+                            "value": "_interface_child"
                         },
                         {
                             "label": "接口链接打开",
