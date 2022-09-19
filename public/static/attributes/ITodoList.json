@@ -124,6 +124,10 @@
                             "value": "_child"
                         },
                         {
+                            "label": "接口子页面",
+                            "value": "_interface_child"
+                        },
+                        {
                             "label": "接口链接打开",
                             "value": "_link"
                         },
@@ -881,6 +885,15 @@
                             "text": "标题字段",
                             "bindKey": "titleField",
                             "default": "title"
+                        },
+                        {
+                            "type": "input",
+                            "layoutType": "inline",
+                            "text": "子页面id",
+                            "desc": "单项点击设置接口子页面跳转时，子页面id字段",
+                            "bindKey": "subPageField",
+                            "display": "@[itemJumpStyle === '_interface_child']",
+                            "default": "pageId"
                         },
                         {
                             "type": "input",

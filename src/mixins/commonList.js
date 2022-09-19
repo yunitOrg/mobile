@@ -36,6 +36,7 @@ export default {
                 return
             }
             let url = null
+            const pageId = this.getDataField(this.propData.subPageField, item)
             switch (this.propData.itemJumpStyle) {
                 case '_link':
                     url = this.getDataField(this.propData.jumpUrlField, item)
@@ -54,6 +55,20 @@ export default {
                         )
                     } else {
                         IDM.message.warning('请选择要跳转的子页面')
+                    }
+                    break
+                case '_interface_child':
+                    if (pageId) {
+                        IDM.router.push(
+                            pageId,
+                            this.propData.itemPageList[0].id,
+                            this.propData.isItemKeep,
+                            item,
+                            '',
+                            ''
+                        )
+                    } else {
+                        IDM.message.warning('接口没有返回子页面id')
                     }
                     break
                 case '_custom_link':
