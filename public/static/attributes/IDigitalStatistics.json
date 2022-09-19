@@ -187,15 +187,13 @@
           "type": "font",
           "layoutType": "block",
           "text": "字段文字样式",
-          "bindKey": "optionFont",
-          "default": {}
+          "bindKey": "optionFont"
         },
         {
           "type": "font",
           "layoutType": "block",
-          "text": "字段文字发样式",
-          "bindKey": "optionActiveFont",
-          "default": {}
+          "text": "字段文字触发样式",
+          "bindKey": "optionActiveFont"
         }
       ]
     },
@@ -280,6 +278,22 @@
       "desc": "点击？查看样式设置用法指南",
       "helpUrl": "",
       "children": [
+        {
+          "type": "switch",
+          "layoutType": "inline",
+          "text": "分割线",
+          "bindKey": "isSplitLine",
+          "default": false
+        },
+        {
+          "type": "colorPicker",
+          "layoutType": "inline",
+          "text": "背景色",
+          "bindKey": "splitLineColor",
+          "placeholder": "请选择颜色",
+          "display": "@[isSplitLine]",
+          "default": {}
+        },
         {
           "type": "box",
           "layoutType": "block",
@@ -579,6 +593,62 @@
                 }
               ],
               "display": "@[bgImgUrl]"
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "text": "为空样式",
+          "desc": "点击？查看为空样式用法指南",
+          "helpUrl": "",
+          "children": [
+            {
+              "type": "inputNumber",
+              "layoutType": "inline",
+              "text": "图标大小",
+              "bindKey": "emptyImageSize",
+              "default": 70
+            },
+            {
+              "type": "font",
+              "layoutType": "block",
+              "text": "文字",
+              "bindKey": "emptyFont",
+              "default": {
+                "fontColors": {
+                  "hex8": "#969799"
+                },
+                "fontSize": 14,
+                "fontSizeUnit": "px"
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "text": "加载样式",
+          "desc": "点击？查看加载样式用法指南",
+          "helpUrl": "",
+          "children": [
+            {
+              "type": "inputNumber",
+              "layoutType": "inline",
+              "text": "图标大小",
+              "bindKey": "loadingSize",
+              "default": 24
+            },
+            {
+              "type": "font",
+              "layoutType": "block",
+              "text": "文字",
+              "bindKey": "loadingFont",
+              "default": {
+                "fontColors": {
+                  "hex8": "#969799"
+                },
+                "fontSize": 14,
+                "fontSizeUnit": "px"
+              }
             }
           ]
         }

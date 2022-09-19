@@ -362,6 +362,7 @@ export default {
       const loadingStyleObject = {};
       const itemStyleObject = {};
       const itemActiveStyleObject = {};
+      const splitLineStyleObject = {};
 
       const scale = this.getScale(pageSize.width);
       styleObject['--i-digitalStatistics-scale'] = scale;
@@ -390,7 +391,7 @@ export default {
             optionStyleObject['text-decoration'] = element.fontDecoration;
             window.IDM.setStyleToPageHead(
               this.moduleObject.id +
-                ` .i-slideCard-content .i-slideCard-content-item .option${option.key}`,
+                ` .i-digitalStatistics-content .i-digitalStatistics-content-item .option${option.key}`,
               optionStyleObject
             );
           }
@@ -415,7 +416,7 @@ export default {
             optionActiveStyleObject['text-decoration'] = element.fontDecoration;
             window.IDM.setStyleToPageHead(
               this.moduleObject.id +
-                ` .i-slideCard-content .i-slideCard-content-item .option${option.key}:active`,
+                ` .i-digitalStatistics-content .i-digitalStatistics-content-item .option${option.key}:active`,
               optionActiveStyleObject
             );
           }
@@ -465,6 +466,11 @@ export default {
             case 'itemActiveBgColor':
               if (element && element.hex8) {
                 itemActiveStyleObject['background-color'] = IDM.hex8ToRgbaString(element.hex8);
+              }
+              break;
+            case 'splitLineColor':
+              if (element && element.hex8) {
+                splitLineStyleObject['background'] = `linear-gradient(to bottom, transparent, ${IDM.hex8ToRgbaString(element.hex8)}, transparent)`;
               }
               break;
             case 'boxShadow':
@@ -773,12 +779,18 @@ export default {
       window.IDM.setStyleToPageHead(this.moduleObject.id + ' .van-empty', emptyStyleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + ' .van-loading', loadingStyleObject);
       window.IDM.setStyleToPageHead(
-        this.moduleObject.id + ' .i-slideCard-content .i-slideCard-content-item',
+        this.moduleObject.id + ' .i-digitalStatistics-content .i-digitalStatistics-content-item',
         itemStyleObject
       );
       window.IDM.setStyleToPageHead(
-        this.moduleObject.id + ' .i-slideCard-content .i-slideCard-content-item:active',
+        this.moduleObject.id +
+          ' .i-digitalStatistics-content .i-digitalStatistics-content-item:active',
         itemActiveStyleObject
+      );
+      window.IDM.setStyleToPageHead(
+        this.moduleObject.id +
+          ' .i-digitalStatistics-content .i-digitalStatistics-content-item:not(:last-child):after',
+        { ...splitLineStyleObject, display: this.propData.isSplitLine ? 'block' : 'none'}
       );
     },
     /**
@@ -809,10 +821,41 @@ export default {
                   item.key +
                   ' #' +
                   (this.moduleObject.packageid || 'module_demo') +
-                  ` .i-slideCard-content .i-slideCard-content-item .option${option.key}`,
+                  ` .i-digitalStatistics-content .i-digitalStatistics-content-item .option${option.key}`,
                 colorObj
               );
+            } else {
+              IDM.setStyleToPageHead(
+                '.' +
+                  themeNamePrefix +
+                  item.key +
+                  ' #' +
+                  (this.moduleObject.packageid || 'module_demo') +
+                  ` .i-digitalStatistics-content .i-digitalStatistics-content-item .option${option.key}`,
+                { color: '' }
+              );
             }
+            // if (option.isActiveThemeColor) {
+            //   IDM.setStyleToPageHead(
+            //     '.' +
+            //       themeNamePrefix +
+            //       item.key +
+            //       ' #' +
+            //       (this.moduleObject.packageid || 'module_demo') +
+            //       ` .i-digitalStatistics-content .i-digitalStatistics-content-item .option${option.key}:active`,
+            //     colorObj
+            //   );
+            // } else {
+            //   IDM.setStyleToPageHead(
+            //     '.' +
+            //       themeNamePrefix +
+            //       item.key +
+            //       ' #' +
+            //       (this.moduleObject.packageid || 'module_demo') +
+            //       ` .i-digitalStatistics-content .i-digitalStatistics-content-item .option${option.key}:active`,
+            //     { color: '' }
+            //   );
+            // }
           });
       }
     }
@@ -863,10 +906,20 @@ $scale: var(--i-digitalStatistics-scale);
       .i-digitalStatistics-content-item {
         flex-grow: 1;
         flex-shrink: 1;
-        margin: 10px;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        position: relative;
+        &:not(:last-child):after{
+          content: '';
+          right: 0;
+          top: 0;
+          bottom: 0;
+          position: absolute;
+          border: 0;
+          padding-right: 1px;
+          background: linear-gradient(to bottom, transparent, #d0d0d5, transparent);
+        }
         .option {
           width: 100%;
           text-align: center;
