@@ -224,6 +224,7 @@ export default {
         }
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .idm-form", styleObject);
+      // 组件传递数据给其他组件方法、1：消息 sendBroadcastMessage   2：传递到上下文 getContextValue
       this.sendBroadcastMessage({
         type: 'sendFormData',
         rangeModule: this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
@@ -255,12 +256,29 @@ export default {
             .then((res) => {
               if (res.status == 200 && res.data.code == 200) {
                   this.formData = res.data.data;
-                  console.log(this.formData, res.data.data, '拿到接口数据')
               } else {
                   IDM.message.error(res.data.message)
               }
             })
       }
+    },
+    /**
+     * 交互功能：获取需要返回的值，返回格式如下
+     * @return {
+     *    type:"success",
+     *    message:"type为失败的时候原因",
+     *    key:"定义的key标识，一般组件定义了一个属性，然后获取指定属性填写的值，这样返回后就能识别对应的字段或者元数据",
+     *    data:{要返回的值，内容为：字符串 or 数组 or 对象},
+     * }
+     */
+    getContextValue ()  {
+      let result = {
+        type: "success",
+        message: '',
+        key: this.propData.formFiledKey || this.propData.ctrlId,
+        data: this.formData
+      };
+      return result;
     },
     /**
      * 组件通信：发送消息的方法
