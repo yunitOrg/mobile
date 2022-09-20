@@ -46,7 +46,7 @@
                         <span v-if="getDataField(propData.originField, item)"
                             >来源：{{ getDataField(propData.originField, item) }}</span
                         >
-                        <span v-if="getDataField(propData.originField, item)"
+                        <span v-if="getDataField(propData.timeField, item)"
                             >发布时间：{{ getDataField(propData.timeField, item) }}</span
                         >
                     </div>
