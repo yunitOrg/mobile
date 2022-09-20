@@ -9,6 +9,13 @@
   :id="moduleObject.id" 
   :idm-ctrl-id="moduleObject.id" >
     <div class="idm-form">
+      <div class="form-title" v-if="propData.boxTitleShow">
+        <svg class="form-icon" aria-hidden="true" v-if="propData.boxtitleIcon && propData.boxtitleIcon.length">
+          <use :xlink:href="`#${propData.boxtitleIcon[0]}`"></use>
+        </svg>
+        <svg-icon v-else icon-class="redFlag" className="form-icon"></svg-icon>
+        {{propData.boxTitle}}
+      </div> 
       <InputFactory
         v-for="item in propData.tableComponent"
         :key="item.key"
@@ -21,6 +28,9 @@
         :params="item"
         @callFunc="handleClickCall"
       ></InputFactory>
+    </div>
+    <div class="form-btn-box" v-if="propData.btnFootShow">
+      <div class="form-btn" v-for="(item, index) in propData.btnTable" :key="index" :style="computedStyle(item)" @click="handleSubmit(item)">{{item.tab}}</div>
     </div>
   </div>
 </template>
@@ -40,6 +50,26 @@ export default {
       propData: this.$root.propData.compositeAttr||{
         boxWidth: '100%',
         boxHeight: 'auto',
+        boxTitleShow: true,
+        btnFootShow: true,
+        boxIconShow: true,
+        titleWidth: 'auto',
+        titleHeight: '40px',
+        boxTitle: '第一次党员大会',
+        btnTable: [
+          {
+            key: '1',
+            tab: '请假',
+            itemWidth: '100px',
+            itemHeight: '40px'
+          },
+          {
+            key: '1',
+            tab: '立即报名',
+            itemWidth: '100px',
+            itemHeight: '40px'
+          }
+        ],
         box: {
           marginTopVal: "",
           marginRightVal: "",
@@ -190,10 +220,89 @@ export default {
     propDataWatchHandle (propData) {
       this.propData = propData.compositeAttr||{};
       this.init();
+      this.footBtnStyle();
+    },
+    computedStyle (item) {
+      let obj = {}
+      for (const key in item) {
+        if (item.hasOwnProperty.call(item, key)) {
+          const element = item[key]
+          if (!element && element !== false && element != 0) {
+              continue
+          }
+          switch (key) {
+            case 'itemWidth':
+              obj['width'] = element
+              break
+            case 'itemHeight':
+              obj['height'] = element;
+              obj['line-height'] = element;
+              break
+            case 'itemFontStyle':
+              IDM.style.setFontStyle(obj, element)
+              break
+            case 'itemBg':
+              obj['background-color'] = element && element.hex8
+              break
+            case 'itemBorder':
+              IDM.style.setBorderStyle(obj, element)
+              break
+            case 'btnSplit':
+              obj['margin-right'] = element
+          }
+        }
+      }
+      return obj
+    },
+    footBtnStyle () {
+      let styleObject = {};
+      for (const key in this.propData) {
+        if (this.propData.hasOwnProperty.call(this.propData, key)) {
+          const element = this.propData[key]
+          if (!element && element !== false && element != 0) {
+            continue
+          }
+          switch (key) {
+            case 'btnFootBoxWidth':
+              styleObject['width'] = element;
+              break
+            case 'btnFootBoxHeight':
+              styleObject['height'] = element;
+              break
+            case 'btnFootBox':
+              IDM.style.setBoxStyle(styleObject, element)
+              break
+            case 'btnFootBoxColor':
+              styleObject['background-color'] = element && element.hex8
+              break
+            case 'btnFootBoxShadown':
+              styleObject['box-shadow'] = element
+              break
+            case 'btnFootBoxBorder':
+              IDM.style.setBorderStyle(styleObject, element)
+              break
+            case 'btnTop':
+              styleObject['top'] = element
+              break
+            case 'btnRight':
+              styleObject['right'] = element
+              break
+            case 'btnBottom':
+              styleObject['bottom'] = element
+              break
+            case 'btnLeft':
+              styleObject['left'] = element
+              break
+          }
+        }
+      }
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .form-btn-box", styleObject);
     },
     init () {
       console.log(this.propData, this.formData, '数据源')
       let styleObject = {};
+      let styleTitleObj = {};
+      let styleIconObj = {};
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
           const element = this.propData[key]
@@ -221,10 +330,35 @@ export default {
             case 'boxBorder':
               IDM.style.setBorderStyle(styleObject, element)
               break
+            case 'componentBox':
+              IDM.style.setBoxStyle(styleTitleObj, element)
+              break
+            case 'componentBorder':
+              IDM.style.setBorderStyle(styleTitleObj, element)
+              break
+            case 'titleWidth':
+              styleTitleObj['width'] = element;
+              break
+            case 'titleHeight':
+              styleTitleObj['height'] = element;
+              break
+            case 'titleFont':
+              IDM.style.setFontStyle(styleTitleObj, element)
+              break
+            case 'titleIconColor':
+              styleIconObj['color'] = element && element.hex + ' !important'
+              styleIconObj['fill'] = element && element.hex + ' !important'
+              break
+            case 'titleIconSize':
+              styleIconObj['width'] = element + 'px'
+              styleIconObj['height'] = element + 'px'
+              break
           }
         }
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .idm-form", styleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .form-title", styleTitleObj);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .form-icon", styleIconObj);
       // 组件传递数据给其他组件方法、1：消息 sendBroadcastMessage   2：传递到上下文 getContextValue
       this.sendBroadcastMessage({
         type: 'sendFormData',
@@ -330,7 +464,34 @@ export default {
           this.changeEventFunHandle("sendBtnClick", "", {data: val});
           break
       }
+    },
+    // 按钮
+    handleSubmit (row) {
+      let that = this;
+      let { customClickFunc, key } = row;
+      if (customClickFunc && customClickFunc.length > 0 ) {
+        customClickFunc.forEach(item => {
+          window[item.name] && window[item.name].call(that, {
+            form: this.formData,
+            router: this.getRouterParams(),
+            value: key
+          });
+        })
+      }
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.form-icon{
+  margin-right: 10px;
+}
+.form-btn-box{
+  position: fixed;
+  display: flex;
+  .form-btn{
+    cursor: pointer;
+  }
+}
+</style>

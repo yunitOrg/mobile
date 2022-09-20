@@ -63,7 +63,7 @@
               {
                 "type": "font",
                 "layoutType": "inline",
-                "text": "字体名称",
+                "text": "字体样式",
                 "bindKey": "itemFontStyle"
               },
               {

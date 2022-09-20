@@ -21,6 +21,106 @@
         "desc": "提供设置组件能达到展示效果的基本属性设置信息",
         "children": [
           {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "标题显示",
+            "bindKey": "boxTitleShow",
+            "default": true
+          },
+          {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "标题icon",
+            "bindKey": "boxIconShow",
+            "default": true
+          },
+          {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "底部按钮",
+            "bindKey": "btnFootShow",
+            "default": true
+          },
+          {
+            "type": "input",
+            "layoutType": "inline",
+            "text": "标题",
+            "bindKey": "boxTitle",
+            "default": "标题"
+          },
+          {
+            "type": "table",
+            "text": "按钮选项设置",
+            "bindKey": "btnTable",
+            "tabText": "按钮[index]",
+            "children": [
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "tab标识",
+                "bindKey": "key"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "tab文字",
+                "bindKey": "tab"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "宽",
+                "bindKey": "itemWidth",
+                "default": "100px"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "高",
+                "bindKey": "itemHeight",
+                "default": "40px"
+              },
+              {
+                "type": "font",
+                "layoutType": "inline",
+                "text": "字体样式",
+                "bindKey": "itemFontStyle"
+              },
+              {
+                "type": "colorPicker",
+                "layoutType": "inline",
+                "text": "背景色",
+                "bindKey": "itemBg",
+                "placeholder": "请选择颜色",
+                "default": {
+                  "hex": "#FFFFFF",
+                  "hex8": "#FFFFFFFF"
+                }
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "分割间距",
+                "desc": "按钮距右侧的间距",
+                "bindKey": "btnSplit"
+              },
+              {
+                "type": "border",
+                "layoutType": "block",
+                "text": "容器边框",
+                "bindKey": "itemBorder"
+              },
+              {
+                "type": "actionSelect",
+                "layoutType": "block",
+                "text": "点击自定义函数",
+                "bindKey": "customClickFunc",
+                "desc": "点击自定义函数",
+                "multiple": true
+              }
+            ]
+          },
+          {
             "type": "table",
             "text": "添加组件",
             "bindKey": "tableComponent",
@@ -495,6 +595,165 @@
       },
       {
         "type": "group",
+        "text": "底部按钮容器样式",
+        "desc": "点击？查看样式设置用法指南",
+        "helpUrl": "",
+        "display": "@[btnFootShow]",
+        "children": [
+          {
+            "type": "group",
+            "text": "按钮定位",
+            "children": [
+              {
+                "type": "input",
+                "layoutType": "block",
+                "text": "top",
+                "desc": "使用px、%、vw等单位，比如100%、100px、100vw等等",
+                "bindKey": "btnTop",
+                "default": "auto"
+              },
+              {
+                "type": "input",
+                "layoutType": "block",
+                "text": "right",
+                "desc": "使用px、%、vw等单位，比如100%、100px、100vw等等",
+                "bindKey": "btnRight",
+                "default": "auto"
+              },
+              {
+                "type": "input",
+                "layoutType": "block",
+                "text": "bottom",
+                "desc": "使用px、%、vw等单位，比如100%、100px、100vw等等",
+                "bindKey": "btnBottom",
+                "default": "auto"
+              },
+              {
+                "type": "input",
+                "layoutType": "block",
+                "text": "left",
+                "desc": "使用px、%、vw等单位，比如100%、100px、100vw等等",
+                "bindKey": "btnLeft",
+                "default": "auto"
+              }
+            ]
+          },
+          {
+            "type": "inlineGroup",
+            "text": "宽高",
+            "children": [
+              {
+                "type": "input",
+                "layoutType": "block",
+                "text": "容器宽",
+                "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
+                "bindKey": "btnFootBoxWidth",
+                "width": "60px",
+                "default": "100%"
+              },
+              {
+                "type": "input",
+                "layoutType": "block",
+                "text": "容器高",
+                "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
+                "bindKey": "btnFootBoxHeight",
+                "width": "60px",
+                "default": "60px"
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layoutType": "block",
+            "text": "内外边距",
+            "bindKey": "btnFootBox",
+            "default": {
+              "marginTopVal": "",
+              "marginRightVal": "",
+              "marginBottomVal": "",
+              "marginLeftVal": "",
+              "paddingTopVal": "",
+              "paddingRightVal": "10px",
+              "paddingBottomVal": "",
+              "paddingLeftVal": "10px"
+            }
+          },
+          {
+            "type": "colorPicker",
+            "layoutType": "inline",
+            "text": "背景色",
+            "bindKey": "btnFootBoxColor",
+            "placeholder": "请选择颜色",
+            "default": {
+              "hex": "#FFFFFFFF",
+              "hex8": "#FFFFFFFF"
+            }
+          },
+          {
+            "type": "input",
+            "layoutType": "inline",
+            "text": "容器阴影",
+            "bindKey": "btnFootBoxShadown",
+            "default": "0px 0px 10px 0px #e3dede"
+          },
+          {
+            "type": "border",
+            "layoutType": "block",
+            "text": "容器边框",
+            "bindKey": "btnFootBoxBorder"
+          }
+        ]
+      },
+      {
+        "type": "group",
+        "text": "标题容器样式",
+        "desc": "点击？查看样式设置用法指南",
+        "helpUrl": "",
+        "display": "@[boxTitleShow]",
+        "children": [
+          {
+            "type": "input",
+            "layoutType": "inline",
+            "text": "宽",
+            "bindKey": "titleWidth",
+            "default": "auto"
+          },
+          {
+            "type": "input",
+            "layoutType": "inline",
+            "text": "高",
+            "bindKey": "titleHeight",
+            "default": "40px"
+          },
+          {
+            "type": "font",
+            "layoutType": "block",
+            "text": "标题字体",
+            "bindKey": "titleFont"
+          },
+          {
+            "type": "iconSelect",
+            "layoutType": "inline",
+            "text": "自定义图标",
+            "bindKey": "boxtitleIcon"
+          },
+          {
+            "type": "colorPicker",
+            "layoutType": "inline",
+            "text": "图标颜色",
+            "bindKey": "titleIconColor"
+          },
+          {
+            "type": "inputNumber",
+            "layoutType": "inline",
+            "text": "图标大小",
+            "bindKey": "titleIconSize",
+            "default": 20
+          }
+        ]
+      },
+      {
+        "type": "group",
         "text": "内层容器样式",
         "desc": "点击？查看样式设置用法指南",
         "helpUrl": "",
@@ -529,8 +788,8 @@
           {
             "type": "treeSelect",
             "layoutType": "inline",
-            "text": "数据源",
-            "desc": "用于回填数据使用",
+            "text": "form数据源",
+            "desc": "用于form回填数据使用",
             "bindKey": "dataSource",
             "dataSourceUrl": "/ctrl/dataSource/getDatasourceByGroup"
           },

@@ -18,6 +18,27 @@ mobile@1.0.0
 - 默认值：`@[packageid]`
 ### 基本属性
 
+
+```js
+- 增加了标题 form标题能够控制标题是否显示
+
+- 增加了底部按钮显示， 底部按钮可以随意定位，点击底部按钮自己处理点击事件，
+传递的参数有：form整个表单数据 router跳转过来的页面数据  value当前点击的key
+ handleSubmit (row) {
+  let that = this;
+  let { customClickFunc, key } = row;
+  if (customClickFunc && customClickFunc.length > 0 ) {
+    customClickFunc.forEach(item => {
+      window[item.name] && window[item.name].call(that, {
+        form: this.formData,
+        router: this.getRouterParams(),
+        value: key
+      });
+    })
+  }
+}
+```
+
 ```js
 
 - 添加组件table，可供选择的组件有 输入框、密码框、开关、复选框、多行文本、发送验证码
@@ -36,7 +57,7 @@ mobile@1.0.0
 ```
 
 
-#### 数据源  使用数据源回填数据
+#### form回填数据源  使用数据源回填数据
 需要在添加组件的 [绑定字段] 属性中 添加接口返回的key， 比如：name 
 ```json
 {
