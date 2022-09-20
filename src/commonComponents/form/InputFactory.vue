@@ -22,6 +22,7 @@ import Vantcheckbox from "./Vantcheckbox.vue";
 import Vanttextarea from "./Vanttextarea.vue";
 import VantsendPws from "./VantsendPws.vue";
 import Vantcalendar from "./Vantcalendar.vue";
+import VantactionSheet from "./VantactionSheet.vue";
 const inputMap = {
   Vantinput,
   Vantpassword,
@@ -29,7 +30,8 @@ const inputMap = {
   Vantcheckbox,
   Vanttextarea,
   VantsendPws,
-  Vantcalendar
+  Vantcalendar,
+  VantactionSheet
 }
 export default{
   name: "InputFactory",
@@ -112,6 +114,9 @@ export default{
     padding-right: 5px;
   }
   .form-cel{
+    flex: 1;
+  }
+  .celright{
     flex: 1;
   }
 }

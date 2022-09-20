@@ -19,7 +19,8 @@ import {
     Calendar,
     DropdownMenu,
     DropdownItem,
-    Popup
+    Popup,
+    ActionSheet
 } from 'vant'
 
 Vue.use(Tab)
@@ -41,3 +42,4 @@ Vue.use(Tab)
     .use(DropdownMenu)
     .use(DropdownItem)
     .use(Popup)
+    .use(ActionSheet)

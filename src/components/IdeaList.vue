@@ -40,7 +40,20 @@ export default {
   data () {
     return {
       pageDataList: [],
-      list: [],
+      list: [
+        {
+          headImg: 'http://116.236.111.158:8086/DreamWeb/resource/img/body-bg-shanghai.png',
+          title: '白继伟',
+          time: '2021-08-25',
+          desc: '书记，我的思想汇报汇报'
+        },
+        {
+          headImg: 'http://116.236.111.158:8086/DreamWeb/resource/img/body-bg-shanghai.png',
+          title: '白继伟',
+          time: '2021-08-25',
+          desc: '书记，我的思想汇报汇报'
+        }
+      ],
       moduleObject:{},
       propData:this.$root.propData.compositeAttr||{
         waitTitle: "待回复",

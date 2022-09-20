@@ -51,7 +51,7 @@ export default {
         boxWidth: '100%',
         boxHeight: 'auto',
         boxTitleShow: true,
-        btnFootShow: true,
+        btnFootShow: false,
         boxIconShow: true,
         titleWidth: 'auto',
         titleHeight: '40px',
@@ -201,6 +201,20 @@ export default {
             dateRangeStart: 'new Date(2010, 0, 1)',
             dateRangeEnd: 'new Date(2033, 0, 31)',
             datePosition: "bottom"
+          },
+          {
+            key: '8',
+            type: 'actionSheet',
+            labelShow: true,
+            labelWidth: '100px',
+            field: 'sssshh',
+            selectType: 'static',
+            selectOptions: "[{ name: '全部', value: 0 }, { name: '新款商品', value: 1 }, { name: '活动商品', value: 2 }]",
+            label: '意见类型',
+            inputAlign: 'right',
+            disabled: true,
+            showAlign: 'left',
+            placeholder: '请选择类型',
           }
         ]
       }
@@ -220,7 +234,7 @@ export default {
     propDataWatchHandle (propData) {
       this.propData = propData.compositeAttr||{};
       this.init();
-      this.footBtnStyle();
+      
     },
     computedStyle (item) {
       let obj = {}
@@ -270,28 +284,28 @@ export default {
               styleObject['height'] = element;
               break
             case 'btnFootBox':
-              IDM.style.setBoxStyle(styleObject, element)
+              IDM.style.setBoxStyle(styleObject, element);
               break
             case 'btnFootBoxColor':
-              styleObject['background-color'] = element && element.hex8
+              styleObject['background-color'] = element && element.hex8;
               break
             case 'btnFootBoxShadown':
-              styleObject['box-shadow'] = element
+              styleObject['box-shadow'] = element;
               break
             case 'btnFootBoxBorder':
-              IDM.style.setBorderStyle(styleObject, element)
+              IDM.style.setBorderStyle(styleObject, element);
               break
             case 'btnTop':
-              styleObject['top'] = element
+              styleObject['top'] = element;
               break
             case 'btnRight':
-              styleObject['right'] = element
+              styleObject['right'] = element;
               break
             case 'btnBottom':
-              styleObject['bottom'] = element
+              styleObject['bottom'] = element;
               break
             case 'btnLeft':
-              styleObject['left'] = element
+              styleObject['left'] = element;
               break
           }
         }
@@ -299,6 +313,7 @@ export default {
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .form-btn-box", styleObject);
     },
     init () {
+      this.footBtnStyle();
       console.log(this.propData, this.formData, '数据源')
       let styleObject = {};
       let styleTitleObj = {};

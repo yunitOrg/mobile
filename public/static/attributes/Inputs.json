@@ -165,6 +165,10 @@
                   {
                     "label": "日历",
                     "value": "calendar"
+                  },
+                  {
+                    "label": "动作面板",
+                    "value": "actionSheet"
                   }
                 ]
               },
@@ -509,6 +513,33 @@
                     "default": "bottom"
                   }
                 ]
+              },
+              {
+                "type": "select",
+                "layoutType": "inline",
+                "text": "数据类型",
+                "desc": "下拉数据源",
+                "display": "@[type=='actionSheet']",
+                "bindKey": "selectType",
+                "dictionary": [
+                  {
+                    "label": "静态数据",
+                    "value": "static"
+                  },
+                  {
+                    "label": "接口获取",
+                    "value": "interface"
+                  }
+                ],
+                "default": "static"
+              },
+              {
+                "type": "textarea",
+                "layoutType": "inline",
+                "text": "下拉数据",
+                "bindKey": "selectOptions",
+                "display": "@[selectType=='static']",
+                "default": "[{ name: '全部', value: 0 }, { name: '新款商品', value: 1 }, { name: '活动商品', value: 2 }]"
               }
             ],
             "default": [
@@ -626,7 +657,7 @@
                 "text": "bottom",
                 "desc": "使用px、%、vw等单位，比如100%、100px、100vw等等",
                 "bindKey": "btnBottom",
-                "default": "auto"
+                "default": "0"
               },
               {
                 "type": "input",
