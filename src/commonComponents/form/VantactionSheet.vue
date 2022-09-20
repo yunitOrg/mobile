@@ -4,17 +4,7 @@
     <div class="name" :style="computedStyle" v-if="params['labelShow']">
       {{label}}
     </div>
-    <van-field
-      class="form-cel"
-      v-model="formData[field]"
-      :placeholder="params['placeholder']"
-      :input-align="params['inputAlign']"
-      :disabled="params['disabled']"
-      :type="params['inputType']"
-      @click="handleShowSheet"
-      :error-message="!fieldCheck ? params['errorFont'] : ''"
-      :error-message-align="params['inputAlign']"
-    />
+    <div class="celright" :style="`text-align:${params['inputAlign']}`" @click="handleShowSheet">{{formData[field] ? formData[field] : params['placeholder']}}</div>
     <van-action-sheet v-model="sheetShow" :actions="handleActiion" @select="onSelect" />
   </div>
 </template>
@@ -36,7 +26,9 @@ export default{
       if (this.params['selectType'] === 'static') {
         result = this.handleOption(this.params.selectOptions)
       } else if (this.params['selectType'] === 'interface') {
-
+        let ary = this.getSelectData()
+        console.log(ary, '下拉数据源')
+        result = ary
       }
       return result
     },
@@ -92,10 +84,36 @@ export default{
       }
       return result
     },
+    getSelectData () {
+      let result = [];
+      const customInterfaceUrl = '/ctrl/dataSource/getDatas';
+      if (this.moduleObject.env == "production") {
+        this.params.dataSource &&
+          IDM.http
+            .post(
+              customInterfaceUrl,
+              {
+                id: this.params.selectSource && this.params.selectSource.value,
+              },
+              {
+                headers: {
+                  "Content-Type": "application/json;charset=UTF-8",
+                },
+              }
+            )
+            .then((res) => {
+              if (res.type === "success") {
+                result = res.data || [];
+              } else {
+                IDM.message.error(res.message);
+              }
+            });
+      }
+      return result
+    },
     onSelect (item) {
-      console.log(item)
-      let tem = this.field;
-      this.formData[tem] = item.name;
+      this.$set(this.formData, this.field, item.name)
+      this.sheetShow = false
     }
   }
 }

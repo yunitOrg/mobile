@@ -825,6 +825,15 @@
             "dataSourceUrl": "/ctrl/dataSource/getDatasourceByGroup"
           },
           {
+            "type": "treeSelect",
+            "layoutType": "inline",
+            "text": "下拉数据源",
+            "desc": "下拉框数据源",
+            "display": "@[type=='actionSheet']",
+            "bindKey": "selectSource",
+            "dataSourceUrl": "/ctrl/dataSource/getDatasourceByGroup"
+          },
+          {
             "type": "input",
             "layoutType": "inline",
             "text": "分组标识",
