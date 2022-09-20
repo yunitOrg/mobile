@@ -250,12 +250,14 @@ export default {
     // 回填数据
     handleBackData () {
       if (this.moduleObject.env == "production") {
+        const routerParams = this.getRouterParams()
         this.propData.dataSource &&
           IDM.http
             .post(
               getDatasInterfaceUrl,
               {
                 id: this.propData.dataSource && this.propData.dataSource.value,
+                ...routerParams
               },
               {
                 headers: {

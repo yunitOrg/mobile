@@ -188,14 +188,20 @@ export default {
       this.converStyle()
       this.converThemeListObject();
     },
+    // 获取router的数据
+    getRouterParams () {
+      return this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId): {};
+    },
     initData () {
       if (this.moduleObject.env == "production") {
+        const routerParams = this.getRouterParams();
         this.propData.dataSource &&
           IDM.http
             .post(
               getDatasInterfaceUrl,
               {
                 id: this.propData.dataSource && this.propData.dataSource.value,
+                ...routerParams
               },
               {
                 headers: {
