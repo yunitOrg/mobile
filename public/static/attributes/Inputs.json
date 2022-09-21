@@ -25,21 +25,21 @@
             "layoutType": "inline",
             "text": "标题显示",
             "bindKey": "boxTitleShow",
-            "default": true
+            "default": false
           },
           {
             "type": "switch",
             "layoutType": "inline",
             "text": "标题icon",
             "bindKey": "boxIconShow",
-            "default": true
+            "default": false
           },
           {
             "type": "switch",
             "layoutType": "inline",
             "text": "底部按钮",
             "bindKey": "btnFootShow",
-            "default": true
+            "default": false
           },
           {
             "type": "input",
