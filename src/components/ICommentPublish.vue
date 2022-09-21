@@ -34,6 +34,7 @@ export default {
   },
   created() {
     this.moduleObject = this.$root.moduleObject
+    this.footBtnStyle();
   },
   mounted() {
   },
@@ -106,6 +107,53 @@ export default {
         urlData: JSON.stringify(urlObject),
       };
       return params;
+    },
+    footBtnStyle () {
+
+      let styleObject = {};
+      for (const key in this.propData) {
+        if (this.propData.hasOwnProperty.call(this.propData, key)) {
+          const element = this.propData[key]
+          if (!element && element !== false && element != 0) {
+            continue
+          }
+          switch (key) {
+            case 'btnFootBoxWidth':
+              styleObject['width'] = element;
+              break
+            case 'btnFootBoxHeight':
+              styleObject['height'] = element;
+              break
+            case 'btnFootBox':
+              IDM.style.setBoxStyle(styleObject, element);
+              break
+            case 'btnFootBoxColor':
+              styleObject['background-color'] = element && element.hex8;
+              break
+            case 'btnFootBoxShadown':
+              styleObject['box-shadow'] = element;
+              break
+            case 'btnFootBoxBorder':
+              IDM.style.setBorderStyle(styleObject, element);
+              break
+            case 'btnTop':
+              styleObject['top'] = element;
+              break
+            case 'btnRight':
+              styleObject['right'] = element;
+              break
+            case 'btnBottom':
+              styleObject['bottom'] = element;
+              break
+            case 'btnLeft':
+              styleObject['left'] = element;
+              break
+          }
+        }
+      }
+      console.log("styleObject:");
+
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .i-comment-publish-content", styleObject);
     }
   }
 }
@@ -119,6 +167,7 @@ export default {
   background: #ffffff;
   box-shadow: 0px -2px 3px 0px rgba(204, 204, 204, 0.5);
   display: flex;
+  position:fixed;
 
   ::v-deep .van-cell {
     height: 60px;
