@@ -260,7 +260,8 @@ export default {
                 .post(
                     getDatasInterfaceUrl,
                     {
-                        id: this.propData.dataSource && this.propData.dataSource.value
+                        id: this.propData.dataSource && this.propData.dataSource.value,
+                        ...IDM.router.getParam(this.moduleObject.routerId)
                     },
                     {
                         headers: {
