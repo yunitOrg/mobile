@@ -12,9 +12,9 @@
 
 
     <div class="i-comment-publish-content">
-      <van-field v-model="value" placeholder="写评论" left-icon="edit">
+      <van-field v-model="commentContent" placeholder="写评论" left-icon="edit">
         <template #button>
-          <van-button>发表</van-button>
+          <van-button @click="publishCommentContent">发表</van-button>
         </template>
       </van-field>
     </div>
@@ -27,6 +27,7 @@ export default {
   name: "ICommentPublish",
   data() {
     return {
+      commentContent:"",
       moduleObject: {},
       propData: this.$root.propData.compositeAttr || {}
     }
@@ -41,6 +42,70 @@ export default {
   methods: {
     propDataWatchHandle(propData) {
       this.propData = propData.compositeAttr || {};
+    },
+    publishCommentContent(){
+      let that = this;
+      let dataSource = this.propData.publishComment;
+
+      if (this.propData.publishComment && this.propData.publishComment[0]) {
+        const publishComment = this.propData.publishComment[0];
+        const func = window[publishComment.name];
+        const that = this;
+        const submitParam =  func.call(this, {
+          commentContent:this.commentContent,
+          ...that.commonParam(),
+          customParam: publishComment.param,
+          _this: that,
+        });
+
+        let source = {id: dataSource.value}
+        let obj = Object.assign({}, submitParam, source);
+        let url = this.propData.publishCommentUrl;
+        IDM.http
+            .post(
+                url,
+                obj,
+                {
+                  headers: {
+                    "Content-Type": "application/json;charset=UTF-8",
+                  },
+                }
+            )
+            .done((res) => {
+              console.log(res, "接口数据");
+              if (res.code === "200") {
+
+                that.sendBroadcastMessage({
+                  type: 'linkageResult',
+                  rangeModule:
+                      this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
+                  message: { }
+                });
+
+              } else {
+                console.log(url + "请求失败");
+              }
+            })
+            .error((response) => {
+              console.log(url + "请求失败");
+            })
+            .always((res) => {
+              this.loading = false;
+            });
+
+      }
+
+    },
+    commonParam() {
+      let urlObject = IDM.url.queryObject();
+      var params = {
+        pageId:
+            window.IDM.broadcast && window.IDM.broadcast.pageModule
+                ? window.IDM.broadcast.pageModule.id
+                : "",
+        urlData: JSON.stringify(urlObject),
+      };
+      return params;
     }
   }
 }
