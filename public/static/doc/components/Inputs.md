@@ -23,8 +23,9 @@ mobile@1.0.0
 - 增加了标题 form标题能够控制标题是否显示
 
 - 增加了底部按钮显示， 底部按钮可以随意定位，点击底部按钮自己处理点击事件，
-传递的参数有：form整个表单数据 router跳转过来的页面数据  value当前点击的key
- handleSubmit (row) {
+传递的参数只有一个对象包括：form整个表单数据 router跳转过来的页面数据  value当前点击的key
+
+ 源代码是这样：handleSubmit (row) {
   let that = this;
   let { customClickFunc, key } = row;
   if (customClickFunc && customClickFunc.length > 0 ) {
@@ -37,6 +38,18 @@ mobile@1.0.0
     })
   }
 }
+
+-----------
+
+底部按钮可以根据接口返回自行显示 哪一个按钮
+
+在高级 => 底部按钮显示逻辑 添加自定义函数，参数有两个：form整个表单数据  按钮列表
+
+例子：export function handleshow(ctx, obj) {
+  let ary = obj;
+  return ary.slice(2, 3)
+}
+
 ```
 
 ```js
