@@ -817,6 +817,14 @@
         "desc": "点击？查看高级设置用法指南",
         "children": [
           {
+            "type": "actionSelect",
+            "layoutType": "block",
+            "text": "底部按钮显示逻辑",
+            "bindKey": "customBtnShow",
+            "desc": "底部按钮显示逻辑",
+            "multiple": false
+          },
+          {
             "type": "treeSelect",
             "layoutType": "inline",
             "text": "form数据源",

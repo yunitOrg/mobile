@@ -30,7 +30,7 @@
       ></InputFactory>
     </div>
     <div class="form-btn-box" v-if="propData.btnFootShow">
-      <div class="form-btn" v-for="(item, index) in propData.btnTable" :key="index" :style="computedStyle(item)" @click="handleSubmit(item)">{{item.tab}}</div>
+      <div class="form-btn" v-for="(item, index) in showBtnData" :key="index" :style="computedStyle(item)" @click="handleSubmit(item)">{{item.tab}}</div>
     </div>
   </div>
 </template>
@@ -51,7 +51,7 @@ export default {
         boxWidth: '100%',
         boxHeight: 'auto',
         boxTitleShow: true,
-        btnFootShow: false,
+        btnFootShow: true,
         boxIconShow: true,
         titleWidth: 'auto',
         titleHeight: '40px',
@@ -230,11 +230,22 @@ export default {
     this.init()
     this.getPrevPageRouterParams();
   },
+  computed: {
+    showBtnData () {
+      let result = [];
+      if (this.propData.customBtnShow && this.propData.customBtnShow.length > 0) {
+        const name = this.propData.customBtnShow[0].name
+        result = window[name] && window[name].call(this, this.formData, this.propData.btnTable);
+      } else {
+        result = this.propData.btnTable
+      }
+      return result
+    }
+  },
   methods: {
     propDataWatchHandle (propData) {
       this.propData = propData.compositeAttr||{};
       this.init();
-      
     },
     computedStyle (item) {
       let obj = {}
