@@ -495,21 +495,17 @@ export default {
           return false;
         }
         const url = `ctrl/dataSource/getDatas`;
-        const urlObject = IDM.url.queryObject();
-        const routerParams = this.moduleObject.routerId
-          ? IDM.router.getParam(this.moduleObject.routerId)
-          : {};
+        // const urlObject = IDM.url.queryObject();
+        // const routerParams = this.moduleObject.routerId
+        //   ? IDM.router.getParam(this.moduleObject.routerId)
+        //   : {};
         this.isLoading = true;
         IDM.http
           .post(
             url,
             {
-              pageId:
-                window.IDM.broadcast && window.IDM.broadcast.pageModule
-                  ? window.IDM.broadcast.pageModule.id
-                  : '',
-              ...urlObject,
-              ...routerParams,
+              // ...urlObject,
+              // ...routerParams,
               id: this.propData.columnsDataSource.value
             },
             {
@@ -544,10 +540,10 @@ export default {
         return false;
       }
       const url = `ctrl/dataSource/getDatas`;
-      const urlObject = IDM.url.queryObject();
-      const routerParams = this.moduleObject.routerId
-        ? IDM.router.getParam(this.moduleObject.routerId)
-        : {};
+      // const urlObject = IDM.url.queryObject();
+      // const routerParams = this.moduleObject.routerId
+      //   ? IDM.router.getParam(this.moduleObject.routerId)
+      //   : {};
       this.isLoading = true;
       const selectParams =
         this.propData.isShowTitleBar && this.propData.columnsType != 'none'
@@ -560,12 +556,8 @@ export default {
         .post(
           url,
           {
-            pageId:
-              window.IDM.broadcast && window.IDM.broadcast.pageModule
-                ? window.IDM.broadcast.pageModule.id
-                : '',
-            ...urlObject,
-            ...routerParams,
+            // ...urlObject,
+            // ...routerParams,
             id: this.propData.chartDataSource.value,
             ...selectParams
           },
