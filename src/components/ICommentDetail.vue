@@ -772,7 +772,6 @@ export default {
               },
             ],
           };
-          // 简单模式下只展示三条
           if (this.infoList.length >= res.total) {
             this.finished = true;
           }
@@ -804,9 +803,12 @@ export default {
         .done((res) => {
           console.log(res, "接口数据");
           if (res.code === "200") {
-            this.infoList = this.propData.dataFiled
-              ? this.getExpressData("dataName", this.propData.dataFiled, res)
-              : res;
+            if (this.infoList.length >= res.data.total) {
+              this.finished = true;
+            }
+            this.infoList = [...this.infoList, ...res.data.list];
+            this.total = res.data.total;
+            this.loading = false;
           } else {
             console.log(url + "请求失败");
           }
