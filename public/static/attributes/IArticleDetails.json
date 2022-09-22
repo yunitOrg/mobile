@@ -63,7 +63,15 @@
         {
           "type": "actionSelect",
           "layoutType": "block",
-          "text": "自定义函数",
+          "text": "参数自定义函数",
+          "bindKey": "customParamsFunction",
+          "desc": "用于格式化数据源的传参，参数为{customParam:自定义的参数,urlObject:url参数,routerParams:路由参数}",
+          "multiple": false
+        },
+        {
+          "type": "actionSelect",
+          "layoutType": "block",
+          "text": "返回值自定义函数",
           "bindKey": "customFunction",
           "desc": "用于格式化数据源返回的数据，参数为{urlObject:url参数,pageId:页面id,customParam:自定义的参数,resultData:原始数据,moduleObject:组件信息}",
           "multiple": false

@@ -188,6 +188,26 @@ export default {
       }
       return resultData;
     },
+    customParamsFormat() {
+      let params = {}
+      if (
+        this.propData.customParamsFunction &&
+        this.propData.customParamsFunction[0] &&
+        this.propData.customParamsFunction[0].name
+      ) {
+        params =
+          window[this.propData.customParamsFunction[0].name] &&
+          window[this.propData.customParamsFunction[0].name].call(this, {
+            customParam: this.propData.customParamsFunction[0].param,
+            moduleObject: this.moduleObject,
+            urlObject: IDM.url.queryObject(),
+            routerParams: this.moduleObject.routerId
+              ? IDM.router.getParam(this.moduleObject.routerId)
+              : {}
+          });
+      }
+      return params;
+    },
     /**
      * 请求数据
      */
@@ -206,21 +226,12 @@ export default {
         return false;
       }
       const url = `ctrl/dataSource/getDatas`;
-      const urlObject = IDM.url.queryObject();
-      const routerParams = this.moduleObject.routerId
-        ? IDM.router.getParam(this.moduleObject.routerId)
-        : {};
       this.isLoading = true;
       IDM.http
         .post(
           url,
           {
-            pageId:
-              window.IDM.broadcast && window.IDM.broadcast.pageModule
-                ? window.IDM.broadcast.pageModule.id
-                : '',
-            ...urlObject,
-            ...routerParams,
+            ...this.customParamsFormat(),
             id: dataSource.value
           },
           {
