@@ -14,7 +14,7 @@
           <use :xlink:href="`#${propData.boxtitleIcon[0]}`"></use>
         </svg>
         <svg-icon v-else icon-class="redFlag" className="form-icon"></svg-icon>
-        {{propData.boxTitle}}
+        {{showTitle}}
       </div> 
       <InputFactory
         v-for="item in propData.tableComponent"
@@ -231,6 +231,16 @@ export default {
     this.getPrevPageRouterParams();
   },
   computed: {
+    showTitle () {
+      let tem = this.propData.titleFile,
+        str = '';
+      if (this.formData[tem]) {
+        str = this.formData[tem]
+      } else {
+        str = this.propData.boxTitle
+      }
+      return str
+    },
     showBtnData () {
       let result = [];
       if (this.propData.customBtnShow && this.propData.customBtnShow.length > 0) {

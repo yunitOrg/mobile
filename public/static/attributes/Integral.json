@@ -89,50 +89,10 @@
       },
       {
         "type": "group",
-        "text": "外层容器样式",
+        "text": "底部容器样式",
         "desc": "点击？查看样式设置用法指南",
         "helpUrl": "",
         "children": [
-          {
-            "type": "inlineGroup",
-            "text": "宽高",
-            "children": [
-              {
-                "type": "input",
-                "layoutType": "block",
-                "text": "容器宽",
-                "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
-                "bindKey": "width",
-                "width": "60px",
-                "default": "auto"
-              },
-              {
-                "type": "input",
-                "layoutType": "block",
-                "text": "容器高",
-                "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
-                "bindKey": "height",
-                "width": "60px",
-                "default": "60px"
-              }
-            ]
-          },
-          {
-            "type": "box",
-            "layoutType": "block",
-            "text": "内外边距",
-            "bindKey": "box",
-            "default": {
-              "marginTopVal": "",
-              "marginRightVal": "",
-              "marginBottomVal": "",
-              "marginLeftVal": "",
-              "paddingTopVal": "",
-              "paddingRightVal": "10px",
-              "paddingBottomVal": "",
-              "paddingLeftVal": "10px"
-            }
-          },
           {
             "type": "colorPicker",
             "layoutType": "inline",
@@ -156,15 +116,56 @@
             "layoutType": "block",
             "text": "容器边框",
             "bindKey": "boxBorder"
+          },
+          {
+            "type": "box",
+            "layoutType": "block",
+            "text": "内外边距",
+            "bindKey": "box",
+            "default": {
+              "marginTopVal": "-20px",
+              "marginRightVal": "10px",
+              "marginBottomVal": "",
+              "marginLeftVal": "10px",
+              "paddingTopVal": "",
+              "paddingRightVal": "10px",
+              "paddingBottomVal": "",
+              "paddingLeftVal": "10px"
+            }
+          },
+          {
+            "type": "group",
+            "text": "积分奖励样式",
+            "desc": "点击？查看样式设置用法指南",
+            "helpUrl": "",
+            "children": [
+              {
+                "type": "switch",
+                "layoutType": "inline",
+                "text": "标题显示",
+                "desc":"积分奖励是否显示",
+                "bindKey": "integralShow",
+                "default": true
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "积分奖励",
+                "bindKey": "integralTitle",
+                "default": "积分奖励"
+              },
+              {
+                "type": "font",
+                "layoutType": "block",
+                "text": "积分字体",
+                "bindKey": "integralFont"
+              }
+            ]
+          },
+          {
+
           }
         ]
-      },
-      {
-        "type": "group",
-        "text": "内层容器样式",
-        "desc": "点击？查看样式设置用法指南",
-        "helpUrl": "",
-        "children": []
       },
       {
         "type": "table",

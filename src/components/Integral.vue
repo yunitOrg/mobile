@@ -20,6 +20,39 @@
           </div>
         </div>
       </div>
+      <div class="integral-bottom">
+        <div class="integral-p" v-if="propData.integralShow">
+          <svg-icon icon-class="shu" class-name="idm_svg_author_icon"></svg-icon>
+          <span>{{propData.integralTitle}}</span>
+        </div>
+        <div class="integral-li">
+          <div class="integral-top">
+            <span>登录</span>
+            <b>已完成</b>
+          </div>
+          <div class="integral-li-p">每日首次登录1分</div>
+        </div>
+        <div class="integral-li">
+          <div class="integral-top">
+            <span>登录</span>
+            <b>已完成</b>
+          </div>
+          <div class="integral-li-p">每浏览1篇文章积1分，每日上限5分</div>
+          <div class="integral-li-p">每篇文章浏览不超过30秒不计分</div>
+          <div class="integral-li-p">同一篇文章当天不重复积分</div>
+          <div class="integral-tip">已获得2分/每日上限5分</div>
+        </div>
+        <div class="integral-li">
+          <div class="integral-top">
+            <span>登录</span>
+            <b>已完成</b>
+          </div>
+          <div class="integral-li-p">每浏览1篇文章积1分，每日上限5分</div>
+          <div class="integral-li-p">每篇文章浏览不超过30秒不计分</div>
+          <div class="integral-li-p">同一篇文章当天不重复积分</div>
+          <div class="integral-tip">已获得2分/每日上限5分</div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -35,7 +68,24 @@ export default {
         imgWidth: 'auto',
         imgHeight: '200px',
         showImg: true,
-        colorBg: "#DA1412"
+        colorBg: "#DA1412",
+        integralTitle: '积分奖励',
+        boxShadow: "0px 0px 10px 0px #e3dede",
+        integralShow: true,
+        bgColor: {
+          hex: '#ffffff',
+          hex8: '#ffffffff'
+        },
+        box: {
+          marginTopVal: "-0",
+          marginRightVal: "10px",
+          marginBottomVal: "",
+          marginLeftVal: "10px",
+          paddingTopVal: "20px",
+          paddingRightVal: "10px",
+          paddingBottomVal: "",
+          paddingLeftVal: "10px"
+        }
       }
     }
   },
@@ -56,6 +106,8 @@ export default {
     },
     converStyleObj () {
       let styleObject = {},
+          subtitleObject = {},
+          desctitleObject = {},
           numStyleObject = {},
           checkStyleObject = {},
           colorCheck = {};
@@ -66,40 +118,62 @@ export default {
               continue
           }
           switch (key) {
-            case 'box':
-              IDM.style.setBoxStyle(styleObject, element)
+            case 'titleFont':
+              IDM.style.setFontStyle(styleObject, element)
               break
-            case 'width':
-              styleObject['width'] = element;
+            case 'subTitleFont':
+              IDM.style.setFontStyle(subtitleObject, element)
               break
-            case 'height':
-              styleObject['height'] = element;
-              break
-            case 'bgColor':
-              styleObject['background-color'] = element && element.hex8
+            case 'descTitleFont':
+              IDM.style.setFontStyle(desctitleObject, element)
               break
             case 'boxShadow':
-              styleObject['box-shadow'] = element
+              numStyleObject['box-shadow'] = element
+              break
+            case 'box':
+              IDM.style.setBoxStyle(numStyleObject, element)
+              break
+            case 'bgColor':
+              numStyleObject['background-color'] = element && element.hex8
               break
             case 'boxBorder':
-              IDM.style.setBorderStyle(styleObject, element)
+              IDM.style.setBorderStyle(numStyleObject, element)
               break
-            case 'numFont':
-              IDM.style.setFontStyle(numStyleObject, element)
+            case 'integralFont':
+              IDM.style.setFontStyle(checkStyleObject, element)
               break
-            case 'checkBorder':
-              checkStyleObject['border-color'] = element && element.hex8 + ' !important'
-              break
-            case 'checkBg':
-              colorCheck['color'] = element && element.hex8 + ' !important'
-              break
+            // case 'width':
+            //   styleObject['width'] = element;
+            //   break
+            // case 'height':
+            //   styleObject['height'] = element;
+            //   break
+            // case 'bgColor':
+            //   styleObject['background-color'] = element && element.hex8
+            //   break
+            // case 'boxShadow':
+            //   styleObject['box-shadow'] = element
+            //   break
+            // case 'boxBorder':
+            //   IDM.style.setBorderStyle(styleObject, element)
+            //   break
+            // case 'numFont':
+            //   IDM.style.setFontStyle(numStyleObject, element)
+            //   break
+            // case 'checkBorder':
+            //   checkStyleObject['border-color'] = element && element.hex8 + ' !important'
+            //   break
+            // case 'checkBg':
+            //   colorCheck['color'] = element && element.hex8 + ' !important'
+            //   break
           }
         }
       }
-      window.IDM.setStyleToPageHead(this.moduleObject.id + " .idm-footbtn", styleObject);
-      window.IDM.setStyleToPageHead(this.moduleObject.id + " .van-checkbox__label", numStyleObject);
-      window.IDM.setStyleToPageHead(this.moduleObject.id + " .van-checkbox__icon--checked .van-icon", checkStyleObject);
-      window.IDM.setStyleToPageHead(this.moduleObject.id + " .van-checkbox__icon--checked .van-icon-success:before", colorCheck);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-top-title", styleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-block span", subtitleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-block b", desctitleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-bottom", numStyleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-p span", checkStyleObject);
     },
     handleClick (row) {
       let that = this;
@@ -139,9 +213,10 @@ export default {
           tempobj
         );
         IDM.setStyleToPageHead(
-          `.${themeNamePrefix}${item.key} #${(this.moduleObject.id || "module_demo")} .van-checkbox__icon--checked .van-icon-success:before`,
+          `.${themeNamePrefix}${item.key} #${(this.moduleObject.id || "module_demo")} .idm_svg_author_icon`,
           {
-            "color": item.mainColor ? item.mainColor.hex8 : ""
+            "color": item.mainColor ? item.mainColor.hex8 : "",
+            "fill": item.mainColor ? item.mainColor.hex8 : ""
           }
         );
       }
@@ -222,6 +297,34 @@ export default {
         right: -123px;
         top: 15px;
       }
+    }
+  }
+  .integral-bottom .integral-li:last-child{
+    border: 0;
+  }
+  .integral-li{
+    border-bottom: 1px dashed #eee;
+    padding: 10px 0;
+    .integral-top{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      b{
+        font-weight: normal;
+        background-color: #ccc;
+        color: #fff;
+        border-radius: 3px;
+        padding: 3px 5px;
+      }
+    }
+    .integral-li-p{
+      font-size: 12px;
+      color: #ccc;
+      padding-top: 5px;
+    }
+    .integral-tip{
+      color: #f00;
+      text-align: center;
     }
   }
 }

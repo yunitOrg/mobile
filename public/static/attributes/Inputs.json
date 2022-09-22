@@ -35,6 +35,13 @@
             "default": false
           },
           {
+            "type": "input",
+            "layoutType": "inline",
+            "text": "标题字段",
+            "bindKey": "titleFile",
+            "default": "title"
+          },
+          {
             "type": "switch",
             "layoutType": "inline",
             "text": "底部按钮",
@@ -538,7 +545,7 @@
                 "layoutType": "inline",
                 "text": "下拉数据",
                 "bindKey": "selectOptions",
-                "display": "@[selectType=='static']",
+                "display": "@[type=='actionSheet' && selectType=='static']",
                 "default": "[{ name: '全部', value: 0 }, { name: '新款商品', value: 1 }, { name: '活动商品', value: 2 }]"
               }
             ],
@@ -837,7 +844,6 @@
             "layoutType": "inline",
             "text": "下拉数据源",
             "desc": "下拉框数据源",
-            "display": "@[type=='actionSheet']",
             "bindKey": "selectSource",
             "dataSourceUrl": "/ctrl/dataSource/getDatasourceByGroup"
           },
