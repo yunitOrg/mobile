@@ -383,17 +383,17 @@ export default {
         }
         const dataSource = this.propData.dataSource;
         const url = `ctrl/dataSource/getDatas`;
-        const urlObject = IDM.url.queryObject();
-        const routerParams = this.moduleObject.routerId
-          ? IDM.router.getParam(this.moduleObject.routerId)
-          : {};
+        // const urlObject = IDM.url.queryObject();
+        // const routerParams = this.moduleObject.routerId
+        //   ? IDM.router.getParam(this.moduleObject.routerId)
+        //   : {};
         this.isLoading = true;
         IDM.http
           .post(
             url,
             {
-              ...urlObject,
-              ...routerParams,
+              // ...urlObject,
+              // ...routerParams,
               id: dataSource.value
             },
             {

@@ -1262,20 +1262,16 @@ export default {
         }
         const dataSource = this.propData.popularDataSource;
         const url = `ctrl/dataSource/getDatas`;
-        const urlObject = IDM.url.queryObject();
-        const routerParams = this.moduleObject.routerId
-          ? IDM.router.getParam(this.moduleObject.routerId)
-          : {};
+        // const urlObject = IDM.url.queryObject();
+        // const routerParams = this.moduleObject.routerId
+        //   ? IDM.router.getParam(this.moduleObject.routerId)
+        //   : {};
         IDM.http
           .post(
             url,
             {
-              pageId:
-                window.IDM.broadcast && window.IDM.broadcast.pageModule
-                  ? window.IDM.broadcast.pageModule.id
-                  : '',
-              ...urlObject,
-              ...routerParams,
+              // ...urlObject,
+              // ...routerParams,
               id: dataSource.value
             },
             {
@@ -1322,20 +1318,16 @@ export default {
       } else if (this.propData.recordDataSource) {
         const dataSource = this.propData.recordDataSource;
         const url = `ctrl/dataSource/getDatas`;
-        const urlObject = IDM.url.queryObject();
-        const routerParams = this.moduleObject.routerId
-          ? IDM.router.getParam(this.moduleObject.routerId)
-          : {};
+        // const urlObject = IDM.url.queryObject();
+        // const routerParams = this.moduleObject.routerId
+        //   ? IDM.router.getParam(this.moduleObject.routerId)
+        //   : {};
         IDM.http
           .post(
             url,
             {
-              pageId:
-                window.IDM.broadcast && window.IDM.broadcast.pageModule
-                  ? window.IDM.broadcast.pageModule.id
-                  : '',
-              ...urlObject,
-              ...routerParams,
+              // ...urlObject,
+              // ...routerParams,
               id: dataSource.value,
               type: this.propData.recordLocalDisplayMode
             },
