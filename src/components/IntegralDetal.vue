@@ -10,21 +10,21 @@
   :idm-ctrl-id="moduleObject.id" 
   >
   <div class="integralDetal-box">
-    <div class="detail-top">
-      <div class="detail-p">已获得积分</div>
+    <div class="detail-top" v-if="propData.scoreTopBox">
+      <div class="detail-p" v-if="propData.scoreShow">{{propData.scoreAllTitle}}</div>
       <div class="detail-score">
-        <span>4651</span>
+        <span>{{pageData[propData.allField] || pageData.scoreAll}}</span>
         <b>积分</b>
       </div>
     </div>
     <div class="detail-bottom">
-      <div class="detail-title">获得积分记录</div>
-      <div class="detail-li">
+      <div class="detail-title" v-if="propData.scoreTitleShow">{{propData.scoreTitleFont}}</div>
+      <div class="detail-li" v-for="(item, index) in list" :key="index">
         <div class="detail-left">
-          <span>阅读文章</span>
-          <b>2022-06-30 23:59:59</b>
+          <div class="detail-desc">{{item[propData.titleField] || item.title}}</div>
+          <b>{{item[propData.timeField] || item.time}}</b>
         </div>
-        <div class="detail-right">+1</div>
+        <div class="detail-right">+{{item[propData.onlineField] || item.score}}</div>
       </div>
     </div>
   </div>
@@ -32,14 +32,56 @@
 </template>
 
 <script>
+import { integralDetailData } from '@/mock/mockData.js';
 export default{
   data () {
     return {
+      pageData: {},
+      list: [],
       moduleObject:{},
       propData:this.$root.propData.compositeAttr||{
         boxtopbg: {
           hex: "#FFFFFF",
           hex8: "#FFFFFFFF"
+        },
+        scoreTitleShow: true,
+        scoreTopBox: true,
+        scoreShow: true,
+        scoreAllTitle: "已获得积分",
+        scoreTitleFont: '获得积分记录',
+        topDescStyle: '10px',
+        topbox:{
+          marginTopVal: "",
+          marginRightVal: "",
+          marginBottomVal: "",
+          marginLeftVal: "",
+          paddingTopVal: "20px",
+          paddingRightVal: "",
+          paddingBottomVal: "40px",
+          paddingLeftVal: ""
+        },
+        liShadown: "0px 0px 10px 0px #e3dede",
+        scoreTiBtom: '10px',
+        liBox: {
+          marginTopVal: "10px",
+          marginRightVal: "",
+          marginBottomVal: "",
+          marginLeftVal: "",
+          paddingTopVal: "10px",
+          paddingRightVal: "10px",
+          paddingBottomVal: "10px",
+          paddingLeftVal: "10px"
+        },
+        liTimeMar: '10px',
+        box: {
+          marginTopVal: "",
+          marginRightVal: "",
+          marginBottomVal: "",
+          marginLeftVal: "",
+          paddingTopVal: "15px",
+          paddingRightVal: "10px",
+          paddingBottomVal: "",
+          paddingLeftVal: "10px"
         },
         boxtopShadow: "0px 0px 10px 0px #e3dede",
 
@@ -57,10 +99,54 @@ export default{
     },
     init () {
       console.log(this.propData, '数据')
+      if (this.moduleObject.env == "production") {
+        this.initData()
+      } else {
+        this.pageData = integralDetailData
+        this.list = integralDetailData.list
+      }
       this.converStyleObj()
     },
+    initData () {
+      let that = this;
+      const customInterfaceUrl = '/ctrl/dataSource/getDatas';
+      if (this.moduleObject.env == "production") {
+        this.propData.dataSource &&
+          IDM.http
+            .post(
+              customInterfaceUrl,
+              {
+                id: this.propData.dataSource && this.propData.dataSource.value,
+              },
+              {
+                headers: {
+                  "Content-Type": "application/json;charset=UTF-8",
+                },
+              }
+            )
+            .then((res) => {
+              if (res.type === "success") {
+                that.pageData = res.data || {};
+                let tem = that.propData.liField;
+                that.list = res.data[tem]
+              } else {
+                IDM.message.error(res.message);
+              }
+            });
+      }
+    },
     converStyleObj () {
-      let styleObject = {};
+      let styleObject = {},
+        topDescStyle = {},
+        topStyleScore = {},
+        topStyleTips = {},
+        bottomStyle = {},
+        liBoxStyle = {},
+        scoreFont = {},
+        liTitleFont = {},
+        liTimeFont = {},
+        liScoreFont = {},
+        topstyleObject={};
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
           const element = this.propData[key]
@@ -68,11 +154,8 @@ export default{
               continue
           }
           switch (key) {
-            case 'boxtopWidth':
-              styleObject['width'] = element
-              break
-            case 'boxtopHeight':
-              styleObject['height'] = element
+            case 'topbox':
+              IDM.style.setBoxStyle(styleObject, element)
               break
             case 'boxtopbg':
               styleObject['background-color'] = element && element.hex8
@@ -80,12 +163,59 @@ export default{
             case 'boxtopShadow':
               styleObject['box-shadow'] = element
               break
-            case '':
+            case 'topTitleStyle':
+              IDM.style.setFontStyle(topstyleObject, element)
+              break
+            case 'topDescStyle':
+              topDescStyle['padding-top'] = element
+              break
+            case 'topScoreStyle':
+              IDM.style.setFontStyle(topStyleScore, element)
+              break
+            case 'topScoreTips':
+              IDM.style.setFontStyle(topStyleTips, element)
+              break
+            case 'box':
+              IDM.style.setBoxStyle(bottomStyle, element)
+              break
+            case 'scoreTitle':
+              IDM.style.setFontStyle(scoreFont, element)
+              break
+            case 'scoreTiBtom':
+              scoreFont['padding-bottom'] = element
+              break
+            case 'liShadown':
+              liBoxStyle['box-shadow'] = element
+              break
+            case 'liBox':
+              IDM.style.setBoxStyle(liBoxStyle, element)
+              break
+            case 'liTitleFont':
+              IDM.style.setFontStyle(liTitleFont, element)
+              break
+            case 'liTimeFont':
+              IDM.style.setFontStyle(liTimeFont, element)
+              break
+            case 'liScoreFont':
+              IDM.style.setFontStyle(liScoreFont, element)
+              break
+            case 'liTimeMar':
+              liTimeFont['padding-top'] = element
               break
           }
         }
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .detail-top", styleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .detail-p", topstyleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .detail-score", topDescStyle);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .detail-score span", topStyleScore);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .detail-score b", topStyleTips);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .detail-bottom", bottomStyle);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .detail-title", scoreFont);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .detail-li", liBoxStyle);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .detail-li .detail-desc", liTitleFont);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .detail-li b", liTimeFont);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .detail-li .detail-right", liScoreFont);
     }
   }
 }
@@ -95,6 +225,18 @@ export default{
 .detail-top{
   .detail-p, .detail-score{
     text-align: center;
+  }
+  .detail-score b{
+    font-weight: normal;
+    padding-left: 5px;
+  }
+}
+.detail-li{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .b{
+    display: inline-block;
   }
 }
 </style>
