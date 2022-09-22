@@ -11,46 +11,31 @@
   >
     <div class="idm-integral">
       <div class="integral-img" :style="`width:${propData.imgWidth};height:${propData.imgHeight};background-color: ${propData.colorBg}`" v-if="propData.showImg">
-        <img :src="propData.topImgUrl || topimgUrl" alt="">
+        <img :src="propData.topImgUrl" v-if="propData.topImgUrl" alt="">
+        <img v-else src="../assets/integral.png" alt="">
         <div class="integral-position integral-white">
           <div class="integral-top-title">累计积分</div>
           <div class="integral-block">
-            <span>4551</span>
-            <b>今日已获得3积分</b>
+            <span>{{pageData[propData.allField] || pageData.allData}}</span>
+            <b>今日已获得{{pageData[propData.dateInteField] || pageData.dateintegral}}积分</b>
           </div>
         </div>
       </div>
       <div class="integral-bottom">
         <div class="integral-p" v-if="propData.integralShow">
-          <svg-icon icon-class="shu" class-name="idm_svg_author_icon"></svg-icon>
+          <svg class="idm_svg_author_icon" aria-hidden="true" v-if="propData.boxtitleIcon && propData.boxtitleIcon.length">
+            <use :xlink:href="`#${propData.boxtitleIcon[0]}`"></use>
+          </svg>
+          <svg-icon v-else icon-class="shu" class-name="idm_svg_author_icon"></svg-icon>
           <span>{{propData.integralTitle}}</span>
         </div>
-        <div class="integral-li">
+        <div class="integral-li" v-for="(item, index) in list" :key="index">
           <div class="integral-top">
-            <span>登录</span>
-            <b>已完成</b>
+            <span>{{item[propData.titleFiled] || item.name}}</span>
+            <b :style="computedStyle(item[propData.typeFiled] || item.type)">{{item[propData.typeFiled] || item.type}}</b>
           </div>
-          <div class="integral-li-p">每日首次登录1分</div>
-        </div>
-        <div class="integral-li">
-          <div class="integral-top">
-            <span>登录</span>
-            <b>已完成</b>
-          </div>
-          <div class="integral-li-p">每浏览1篇文章积1分，每日上限5分</div>
-          <div class="integral-li-p">每篇文章浏览不超过30秒不计分</div>
-          <div class="integral-li-p">同一篇文章当天不重复积分</div>
-          <div class="integral-tip">已获得2分/每日上限5分</div>
-        </div>
-        <div class="integral-li">
-          <div class="integral-top">
-            <span>登录</span>
-            <b>已完成</b>
-          </div>
-          <div class="integral-li-p">每浏览1篇文章积1分，每日上限5分</div>
-          <div class="integral-li-p">每篇文章浏览不超过30秒不计分</div>
-          <div class="integral-li-p">同一篇文章当天不重复积分</div>
-          <div class="integral-tip">已获得2分/每日上限5分</div>
+          <div class="integral-li-p" v-for="(subitem, subindex) in item[propData.descFiled] || item.desc" :key="subindex">{{subitem}}</div>
+          <div class="integral-tip" v-if="item.online">已获得{{item[propData.gotFiled] || item.got}}分/每日上限{{item[propData.onlineFiled] || item.online}}分</div>
         </div>
       </div>
     </div>
@@ -58,12 +43,14 @@
 </template>
 
 <script>
+import { integralData } from '@/mock/mockData.js';
 export default {
   name: 'Integral',
   data () {
     return {
       moduleObject:{},
-      topimgUrl: IDM.url.getModuleAssetsWebPath(require("../assets/integral.png"), this.moduleObject),
+      pageData: {},
+      list: [],
       propData:this.$root.propData.compositeAttr||{
         imgWidth: 'auto',
         imgHeight: '200px',
@@ -72,9 +59,23 @@ export default {
         integralTitle: '积分奖励',
         boxShadow: "0px 0px 10px 0px #e3dede",
         integralShow: true,
+        boxposition: '35%',
+        allboxPostion: '35px',
+        getBoxPostionTop: '15px',
+        getBoxPostionRight: '-123px',
         bgColor: {
           hex: '#ffffff',
           hex8: '#ffffffff'
+        },
+        liBox: {
+          marginTopVal: "",
+          marginRightVal: "",
+          marginBottomVal: "",
+          marginLeftVal: "",
+          paddingTopVal: "10px",
+          paddingRightVal: "",
+          paddingBottomVal: "10px",
+          paddingLeftVal: ""
         },
         box: {
           marginTopVal: "-0",
@@ -95,12 +96,27 @@ export default {
   },
 
   methods: {
+    computedStyle (val) {
+      let result = {}
+      if (this.propData.btnTable && this.propData.btnTable.length > 0) {
+        let obj = this.propData.btnTable.find(item => item.name === val);
+        let bgobj = obj.btnBg || {};
+        result = { 'background-color': bgobj.hex8 }
+      }
+      return result
+    },
     propDataWatchHandle (propData) {
       this.propData = propData.compositeAttr||{};
       this.init();
     },
     init () {
       console.log(this.propData, '数据');
+      if (this.moduleObject.env == "production") {
+        this.initData()
+      } else {
+        this.pageData = integralData
+        this.list = integralData.list
+      }
       this.converStyleObj();
       this.converThemeListObject();
     },
@@ -110,6 +126,13 @@ export default {
           desctitleObject = {},
           numStyleObject = {},
           checkStyleObject = {},
+          liboxStyleObject = {},
+          descStyleObject = {},
+          tipStyleObject = {},
+          liTtitleObject = {},
+          btnObject = {},
+          blockObject = {},
+          positionObject = {},
           colorCheck = {};
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
@@ -118,6 +141,18 @@ export default {
               continue
           }
           switch (key) {
+            case 'boxposition':
+              positionObject['top'] = element
+              break
+            case 'allboxPostion':
+              blockObject['top'] = element
+              break
+            case 'getBoxPostionTop':
+              desctitleObject['top'] = element
+              break
+            case 'getBoxPostionRight':
+              desctitleObject['right'] = element
+              break
             case 'titleFont':
               IDM.style.setFontStyle(styleObject, element)
               break
@@ -142,38 +177,88 @@ export default {
             case 'integralFont':
               IDM.style.setFontStyle(checkStyleObject, element)
               break
-            // case 'width':
-            //   styleObject['width'] = element;
-            //   break
-            // case 'height':
-            //   styleObject['height'] = element;
-            //   break
-            // case 'bgColor':
-            //   styleObject['background-color'] = element && element.hex8
-            //   break
-            // case 'boxShadow':
-            //   styleObject['box-shadow'] = element
-            //   break
-            // case 'boxBorder':
-            //   IDM.style.setBorderStyle(styleObject, element)
-            //   break
-            // case 'numFont':
-            //   IDM.style.setFontStyle(numStyleObject, element)
-            //   break
-            // case 'checkBorder':
-            //   checkStyleObject['border-color'] = element && element.hex8 + ' !important'
-            //   break
-            // case 'checkBg':
-            //   colorCheck['color'] = element && element.hex8 + ' !important'
-            //   break
+            case 'titleIconColor':
+              colorCheck['color'] = element && element.hex + ' !important'
+              colorCheck['fill'] = element && element.hex + ' !important'
+              break
+            case 'titleIconSize':
+              colorCheck['width'] = element + 'px'
+              colorCheck['height'] = element + 'px'
+              break
+            case 'liBox':
+              IDM.style.setBoxStyle(liboxStyleObject, element)
+              break
+            case 'liboxBorder':
+              IDM.style.setBorderStyle(liboxStyleObject, element)
+              break
+            case 'descFont':
+              IDM.style.setFontStyle(descStyleObject, element)
+              break
+            case 'descBox':
+              IDM.style.setBoxStyle(descStyleObject, element)
+              break
+            case 'tipsFont':
+              IDM.style.setFontStyle(tipStyleObject, element, true)
+              break
+            case 'tipsBox':
+              tipStyleObject['padding'] = `${element} 0`
+              break
+            case 'titleLiFont':
+              IDM.style.setFontStyle(liTtitleObject, element)
+              break
+            case 'btnMargin':
+              IDM.style.setBoxStyle(btnObject, element)
+              break
+            case 'btnFont':
+              IDM.style.setFontStyle(btnObject, element)
+              break
+            case 'btnBorder':
+              IDM.style.setBorderStyle(btnObject, element)
+              break
+            
           }
         }
       }
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-position", positionObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-top-title", styleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-top span", liTtitleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-block", blockObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-block span", subtitleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-block b", desctitleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-bottom", numStyleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-p span", checkStyleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .idm_svg_author_icon", colorCheck);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-li", liboxStyleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-li .integral-li-p", descStyleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-li .integral-tip", tipStyleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-top b", btnObject);
+    },
+    initData () {
+      let that = this;
+      const customInterfaceUrl = '/ctrl/dataSource/getDatas';
+      if (this.moduleObject.env == "production") {
+        this.propData.dataSource &&
+          IDM.http
+            .post(
+              customInterfaceUrl,
+              {
+                id: this.propData.dataSource && this.propData.dataSource.value,
+              },
+              {
+                headers: {
+                  "Content-Type": "application/json;charset=UTF-8",
+                },
+              }
+            )
+            .then((res) => {
+              if (res.type === "success") {
+                that.pageData = res.data || {};
+                that.list = res.data[that.propData.liFiled]
+              } else {
+                IDM.message.error(res.message);
+              }
+            });
+      }
     },
     handleClick (row) {
       let that = this;
@@ -206,11 +291,13 @@ export default {
         }
         let tempobj = {};
         tempobj = {
-          "border-color": item.mainColor ? item.mainColor.hex8 : "",
+          "color": item.mainColor ? item.mainColor.hex8 : "",
         }
         IDM.setStyleToPageHead(
-          `.${themeNamePrefix}${item.key} #${(this.moduleObject.id || "module_demo")} .van-checkbox__icon--checked .van-icon`,
-          tempobj
+          `.${themeNamePrefix}${item.key} #${(this.moduleObject.id || "module_demo")} .integral-li .integral-tip`,
+          {
+            "color": item.mainColor ? item.mainColor.hex8 : "",
+          }
         );
         IDM.setStyleToPageHead(
           `.${themeNamePrefix}${item.key} #${(this.moduleObject.id || "module_demo")} .idm_svg_author_icon`,
@@ -220,46 +307,6 @@ export default {
           }
         );
       }
-    },
-    handleChange (val) {
-      this.sendBroadcastMessage({
-        type: 'ifootbtn-all',
-        rangeModule: this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
-        message: { checkAll: val }
-      })
-    },
-    /**
-     * 组件通信：接收消息的方法
-     * @param {
-     *  type:"发送消息的时候定义的类型，这里可以自己用来要具体做什么，统一规定的type：linkageResult（组件联动传结果值）、linkageDemand（组件联动传需求值）、linkageReload（联动组件重新加载）
-     * 、linkageOpenDialog（打开弹窗）、linkageCloseDialog（关闭弹窗）、linkageShowModule（显示组件）、linkageHideModule（隐藏组件）、linkageResetDefaultValue（重置默认值）"
-     *  message:{发送的时候传输的消息对象数据}
-     *  messageKey:"消息数据的key值，代表数据类型是什么，常用于表单交互上，比如通过这个key判断是什么数据"
-     *  isAcross:如果为true则代表发送来源是其他页面的组件，默认为false
-     * } object
-     */
-    receiveBroadcastMessage (object) {
-      switch (object.type) {
-        case 'i-checkbox-card-change':
-          console.log('接收消息', object.message)
-          this.allData = object.message || {}
-          this.checked = (object.message || {}).total === (object.message || {}).selectNumber
-          break;
-      }
-    },
-    /**
-     * 组件通信：发送消息的方法
-     * @param {
-     *  type:"自己定义的，统一规定的type：linkageResult（组件联动传结果值）、linkageDemand（组件联动传需求值）、linkageReload（联动组件重新加载）
-     * 、linkageOpenDialog（打开弹窗）、linkageCloseDialog（关闭弹窗）、linkageShowModule（显示组件）、linkageHideModule（隐藏组件）、linkageResetDefaultValue（重置默认值）",
-     *  message:{实际的消息对象},
-     *  rangeModule:"为空发送给全部，根据配置的属性中设定的值（值的内容是组件的packageid数组），不取子表的，比如直接 this.$root.propData.compositeAttr["attrKey"]（注意attrKey是属性中定义的bindKey）,这里的格式为：['1','2']"",
-     *  className:"指定的组件类型，比如只给待办组件发送，然后再去过滤上面的值"
-     *  globalSend:如果为true则全站发送消息，注意全站rangeModule是无效的，只有className才有效，默认为false
-     * } object 
-     */
-    sendBroadcastMessage(object) {
-      window.IDM.broadcast && window.IDM.broadcast.send(object);
     }
   }
 }
@@ -279,23 +326,13 @@ export default {
       text-align: center;
     }
     .integral-position{
-      top: 35%;
       left: 50%;
       transform: translate(-50%, 0);
     }
-    .integral-top-title{
-      font-size: 16px;
-    }
     .integral-block{
       position: absolute;
-      top: 35px;
-      span{
-        font-size: 30px;
-      }
       b{
         position: absolute;
-        right: -123px;
-        top: 15px;
       }
     }
   }
@@ -303,27 +340,15 @@ export default {
     border: 0;
   }
   .integral-li{
-    border-bottom: 1px dashed #eee;
-    padding: 10px 0;
     .integral-top{
       display: flex;
       align-items: center;
       justify-content: space-between;
       b{
         font-weight: normal;
-        background-color: #ccc;
-        color: #fff;
-        border-radius: 3px;
-        padding: 3px 5px;
       }
     }
-    .integral-li-p{
-      font-size: 12px;
-      color: #ccc;
-      padding-top: 5px;
-    }
     .integral-tip{
-      color: #f00;
       text-align: center;
     }
   }

@@ -74,6 +74,46 @@
             "bindKey": "titleFont"
           },
           {
+            "type": "group",
+            "text": "积分定位",
+            "desc": "积分定位",
+            "helpUrl": "",
+            "children": [
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "积分定位top",
+                "desc": "积分距离top定位",
+                "bindKey": "boxposition",
+                "default": "35%"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "总分数定位top",
+                "desc": "总分数距离top定位",
+                "bindKey": "allboxPostion",
+                "default": "35px"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "已获得分数top定位",
+                "desc": "已获得分数top定位",
+                "bindKey": "getBoxPostionTop",
+                "default": "15px"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "已获得分数right定位",
+                "desc": "已获得分数right定位",
+                "bindKey": "getBoxPostionRight",
+                "default": "-123px"
+              }
+            ]
+          },
+          {
             "type": "font",
             "layoutType": "block",
             "text": "积分",
@@ -148,6 +188,25 @@
                 "default": true
               },
               {
+                "type": "iconSelect",
+                "layoutType": "inline",
+                "text": "自定义图标",
+                "bindKey": "boxtitleIcon"
+              },
+              {
+                "type": "colorPicker",
+                "layoutType": "inline",
+                "text": "图标颜色",
+                "bindKey": "titleIconColor"
+              },
+              {
+                "type": "inputNumber",
+                "layoutType": "inline",
+                "text": "图标大小",
+                "bindKey": "titleIconSize",
+                "default": 20
+              },
+              {
                 "type": "input",
                 "layoutType": "inline",
                 "text": "积分奖励",
@@ -163,7 +222,132 @@
             ]
           },
           {
-
+            "type": "box",
+            "layoutType": "block",
+            "text": "列表边距",
+            "bindKey": "liBox",
+            "default": {
+              "marginTopVal": "",
+              "marginRightVal": "",
+              "marginBottomVal": "",
+              "marginLeftVal": "",
+              "paddingTopVal": "10px",
+              "paddingRightVal": "",
+              "paddingBottomVal": "10px",
+              "paddingLeftVal": ""
+            }
+          },
+          {
+            "type": "border",
+            "layoutType": "block",
+            "text": "列表边框",
+            "bindKey": "liboxBorder"
+          },
+          {
+            "type": "font",
+            "layoutType": "block",
+            "text": "标题字体",
+            "bindKey": "titleLiFont"
+          },
+          {
+            "type": "box",
+            "layoutType": "block",
+            "text": "按钮边距",
+            "bindKey": "btnMargin",
+            "default": {
+              "marginTopVal": "",
+              "marginRightVal": "",
+              "marginBottomVal": "",
+              "marginLeftVal": "",
+              "paddingTopVal": "3px",
+              "paddingRightVal": "2px",
+              "paddingBottomVal": "3px",
+              "paddingLeftVal": "2px"
+            }
+          },
+          {
+            "type": "border",
+            "layoutType": "block",
+            "text": "按钮边框",
+            "bindKey": "btnBorder"
+          },
+          {
+            "type": "font",
+            "layoutType": "block",
+            "text": "按钮字体",
+            "bindKey": "btnFont"
+          },
+          {
+            "type": "table",
+            "text": "按钮字体设置",
+            "bindKey": "btnTable",
+            "tabText": "按钮[index]",
+            "children": [
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "按钮名称",
+                "bindKey": "name"
+              },
+              {
+                "type": "colorPicker",
+                "layoutType": "inline",
+                "text": "背景色",
+                "bindKey": "btnBg",
+                "placeholder": "请选择颜色"
+              }
+            ],
+            "default": [
+              {
+                "name": "已完成",
+                "btnBg": {
+                  "hex": "#D2D2D2",
+                  "hex8": "#D2D2D2FF"
+                }
+              },
+              {
+                "name": "去看看",
+                "btnBg": {
+                  "hex": "##CD0502",
+                  "hex8": "##CD0502FF"
+                }
+              }
+            ]
+          },
+          {
+            "type": "font",
+            "layoutType": "block",
+            "text": "描述字体",
+            "bindKey": "descFont"
+          },
+          {
+            "type": "box",
+            "layoutType": "block",
+            "text": "描述边距",
+            "bindKey": "descBox",
+            "default": {
+              "marginTopVal": "",
+              "marginRightVal": "",
+              "marginBottomVal": "",
+              "marginLeftVal": "",
+              "paddingTopVal": "5px",
+              "paddingRightVal": "",
+              "paddingBottomVal": "",
+              "paddingLeftVal": ""
+            }
+          },
+          {
+            "type": "font",
+            "layoutType": "block",
+            "text": "提示字体",
+            "bindKey": "tipsFont"
+          },
+          {
+            "type": "input",
+            "layoutType": "inline",
+            "text": "提示距离",
+            "bindKey": "tipsBox",
+            "default": "5px"
           }
         ]
       },
@@ -240,12 +424,74 @@
         "desc": "点击？查看高级设置用法指南",
         "children": [
           {
-            "type": "pageModuleSelect",
-            "layoutType": "block",
-            "text": "tab菜单联动组件",
-            "desc": "选择点击tab需要联动的组件",
-            "bindKey": "triggerComponents",
-            "multiple": true
+            "type": "treeSelect",
+            "layoutType": "inline",
+            "text": "数据源",
+            "bindKey": "dataSource",
+            "dataSourceUrl":"/ctrl/dataSource/getDatasourceByGroup"
+          },
+          {
+            "type": "group",
+            "text": "字段设置",
+            "desc": "页面数据绑定",
+            "children": [
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "总积分",
+                "bindKey": "allField",
+                "default": "allData"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "今日积分",
+                "bindKey": "dateInteField",
+                "default": "dateintegral"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "列表字段",
+                "bindKey": "liFiled",
+                "default": "list"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "标题字段",
+                "bindKey": "titleFiled",
+                "default": "name"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "描述字段",
+                "bindKey": "descFiled",
+                "default": "desc"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "类型字段",
+                "bindKey": "typeFiled",
+                "default": "type"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "获得积分",
+                "bindKey": "gotFiled",
+                "default": "got"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "上限积分",
+                "bindKey": "onlineFiled",
+                "default": "online"
+              }
+            ]
           }
         ]
       }

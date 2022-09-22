@@ -294,3 +294,30 @@ export const signinData = {
         }
     ]
 }
+
+// 我的积分
+export const integralData = {
+    allData: 4551,
+    dateintegral: 3,
+    list: [
+        {
+            name: '登录',
+            desc: ['每日首次登录1分'],
+            type: '已完成'
+        },
+        {
+            name: '阅读文章',
+            desc: ['每浏览1篇文章积1分，每日上限5分', '每篇文章浏览不超过30秒不计分', '同一篇文章当天不重复积分'],
+            type: '去看看',
+            got: 2,
+            online: '5'
+        },
+        {
+            name: '观看视频',
+            desc: ['每浏览1条视频积分1分，每日上限5分', '每条视频观看不超过30秒不计分', '同一篇视频当天不重复积分'],
+            type: '去看看',
+            got: 2,
+            online: '5'
+        },
+    ]
+}

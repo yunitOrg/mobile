@@ -35,13 +35,6 @@
             "default": false
           },
           {
-            "type": "input",
-            "layoutType": "inline",
-            "text": "标题字段",
-            "bindKey": "titleFile",
-            "default": "title"
-          },
-          {
             "type": "switch",
             "layoutType": "inline",
             "text": "底部按钮",
@@ -54,6 +47,13 @@
             "text": "标题",
             "bindKey": "boxTitle",
             "default": "标题"
+          },
+          {
+            "type": "input",
+            "layoutType": "inline",
+            "text": "标题字段",
+            "bindKey": "titleFile",
+            "default": "title"
           },
           {
             "type": "table",
