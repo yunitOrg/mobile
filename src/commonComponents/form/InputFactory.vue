@@ -9,6 +9,7 @@
       :options="options"
       :formData="formData"
       :params="params"
+      :moduleObject="moduleObject"
       @callFunc="handleClickCall"
     ></component>
   </div>
@@ -66,6 +67,12 @@ export default{
         return {};
       }
     },
+    moduleObject: {
+      type: Object,
+      default: () => {
+        return {};
+      }
+    },
     params: {
       type: Object,
       default: () => {
@@ -118,6 +125,12 @@ export default{
   }
   .celright{
     flex: 1;
+    min-height: 44px;
+    line-height: 44px;
+    padding-right: 16px;
   }
+}
+.customclas{
+  max-height: 40% !important;
 }
 </style>

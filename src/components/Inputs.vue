@@ -26,6 +26,7 @@
         :options="item.options"
         :formData="formData"
         :params="item"
+        :moduleObject="moduleObject"
         @callFunc="handleClickCall"
       ></InputFactory>
     </div>

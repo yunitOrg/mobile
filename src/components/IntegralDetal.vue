@@ -9,8 +9,26 @@
   :id="moduleObject.id" 
   :idm-ctrl-id="moduleObject.id" 
   >
-  fsd
+  <div class="integralDetal-box">
+    <div class="detail-top">
+      <div class="detail-p">已获得积分</div>
+      <div class="detail-score">
+        <span>4651</span>
+        <b>积分</b>
+      </div>
+    </div>
+    <div class="detail-bottom">
+      <div class="detail-title">获得积分记录</div>
+      <div class="detail-li">
+        <div class="detail-left">
+          <span>阅读文章</span>
+          <b>2022-06-30 23:59:59</b>
+        </div>
+        <div class="detail-right">+1</div>
+      </div>
+    </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -18,7 +36,14 @@ export default{
   data () {
     return {
       moduleObject:{},
-      propData:this.$root.propData.compositeAttr||{}
+      propData:this.$root.propData.compositeAttr||{
+        boxtopbg: {
+          hex: "#FFFFFF",
+          hex8: "#FFFFFFFF"
+        },
+        boxtopShadow: "0px 0px 10px 0px #e3dede",
+
+      }
     }
   },
   created () {
@@ -32,8 +57,44 @@ export default{
     },
     init () {
       console.log(this.propData, '数据')
+      this.converStyleObj()
+    },
+    converStyleObj () {
+      let styleObject = {};
+      for (const key in this.propData) {
+        if (this.propData.hasOwnProperty.call(this.propData, key)) {
+          const element = this.propData[key]
+          if (!element && element !== false && element != 0) {
+              continue
+          }
+          switch (key) {
+            case 'boxtopWidth':
+              styleObject['width'] = element
+              break
+            case 'boxtopHeight':
+              styleObject['height'] = element
+              break
+            case 'boxtopbg':
+              styleObject['background-color'] = element && element.hex8
+              break
+            case 'boxtopShadow':
+              styleObject['box-shadow'] = element
+              break
+            case '':
+              break
+          }
+        }
+      }
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .detail-top", styleObject);
     }
   }
 }
 </script>
 
+<style lang="scss" scoped>
+.detail-top{
+  .detail-p, .detail-score{
+    text-align: center;
+  }
+}
+</style>
