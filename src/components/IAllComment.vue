@@ -169,7 +169,7 @@ export default {
           this.propData.replyJump.id,
           {
             keep: true,
-            params: { id: item.id },
+            params: item,
             enterAnim: "",
             quitAnim: "",
           }
