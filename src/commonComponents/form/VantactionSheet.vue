@@ -88,7 +88,7 @@ export default{
       let result = [];
       const customInterfaceUrl = '/ctrl/dataSource/getDatas';
       if (this.moduleObject.env == "production") {
-        this.params.dataSource &&
+        this.params.selectSource &&
           IDM.http
             .post(
               customInterfaceUrl,
