@@ -1,0 +1,8 @@
+{
+  "classId": "idm.component.mobile.integralDetal",
+  "comName": "积分明细",
+  "className": "IntegralDetal",
+  "comType": "common",
+  "comLangue": "vue",
+  "compositeAttr": []
+}
