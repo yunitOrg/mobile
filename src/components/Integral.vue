@@ -11,8 +11,8 @@
   >
     <div class="idm-integral">
       <div class="integral-img" :style="`width:${propData.imgWidth};height:${propData.imgHeight};background-color: ${propData.colorBg}`" v-if="propData.showImg">
-        <img :src="propData.topImgUrl" v-if="propData.topImgUrl" alt="">
-        <img v-else src="../assets/integral.png" alt="">
+        <img :src="IDM.url.getWebPath(propData.topImgUrl)" v-if="propData.topImgUrl" alt="">
+        <img v-else :src="img" alt="">
         <div class="integral-position integral-white">
           <div class="integral-top-title">累计积分</div>
           <div class="integral-block">
@@ -51,6 +51,7 @@ export default {
       moduleObject:{},
       pageData: {},
       list: [],
+      img: '',
       propData:this.$root.propData.compositeAttr||{
         imgWidth: 'auto',
         imgHeight: '200px',
@@ -93,6 +94,9 @@ export default {
   created () {
     this.moduleObject = this.$root.moduleObject
     this.init()
+  },
+  mounted () {
+    this.img = IDM.url.getModuleAssetsWebPath(require("../assets/integral.png"), this.moduleObject)
   },
 
   methods: {
@@ -335,6 +339,9 @@ export default {
         position: absolute;
       }
     }
+  }
+  .integral-bottom{
+    position: relative;
   }
   .integral-bottom .integral-li:last-child{
     border: 0;
