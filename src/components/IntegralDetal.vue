@@ -26,18 +26,35 @@
         </div>
         <div class="detail-right">+{{item[propData.onlineField] || item.score}}</div>
       </div>
+      <ICommonEmpty
+          v-if="!isLoading && list.length === 0"
+          :moduleObject="moduleObject"
+          :propData="propData"
+        ></ICommonEmpty>
+      <div class="d-flex just-c" v-if="isLoading">
+        <van-loading size="24px" vertical>加载中...</van-loading>
+      </div>
     </div>
+  </div>
+  <div class="i-articleDetails-mask" v-if="moduleObject.env === 'develop' && !propData.dataSource" >
+    <span>！未绑定数据源</span>
   </div>
 </div>
 </template>
 
 <script>
 import { integralDetailData } from '@/mock/mockData.js';
+import ICommonEmpty from '../commonComponents/ICommonEmpty'
 export default{
+  name: 'IntegralDetal',
+  components: {
+    ICommonEmpty
+  },
   data () {
     return {
       pageData: {},
       list: [],
+      isLoading: false,
       moduleObject:{},
       propData:this.$root.propData.compositeAttr||{
         boxtopbg: {
@@ -111,6 +128,7 @@ export default{
       let that = this;
       const customInterfaceUrl = '/ctrl/dataSource/getDatas';
       if (this.moduleObject.env == "production") {
+        this.isLoading = true
         this.propData.dataSource &&
           IDM.http
             .post(
@@ -125,14 +143,18 @@ export default{
               }
             )
             .then((res) => {
-              if (res.type === "success") {
-                that.pageData = res.data || {};
+              if (res.status == 200 && res.data.code == 200) {
+                let obj = (res.data || {}).data
+                that.pageData = obj;
                 let tem = that.propData.liField;
-                that.list = res.data[tem]
+                that.list = obj[tem]
               } else {
                 IDM.message.error(res.message);
               }
-            });
+            })
+            .finally(() => {
+              this.isLoading = false
+            })
       }
     },
     converStyleObj () {
@@ -222,6 +244,25 @@ export default{
 </script>
 
 <style lang="scss" scoped>
+.i-articleDetails-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span {
+    padding: 6px 20px;
+    color: #e6a23c;
+    background: #fdf6ec;
+    border: 1px solid #f5dab1;
+    border-radius: 4px;
+  }
+}
 .detail-top{
   .detail-p, .detail-score{
     text-align: center;

@@ -321,7 +321,7 @@ export const integralData = {
         },
     ]
 }
-
+// 我的积分详情
 export const integralDetailData = {
     scoreAll: 4651,
     list:[
