@@ -57,6 +57,9 @@ export default {
           ...that.commonParam(),
           customParam: publishComment.param,
           _this: that,
+          routerParams: this.moduleObject.routerId
+              ? IDM.router.getParam(this.moduleObject.routerId)
+              : {}
         });
 
         let source = {id: dataSource.value}
