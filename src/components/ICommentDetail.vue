@@ -187,12 +187,14 @@ export default {
         return;
       }
       let url = `ctrl/dataSource/getDatas`;
+      const routerParams = this.detailFileterParams();
       IDM.http
         .post(
           url,
           {
             id: dataSource.value,
-            commentId: this.commonParam() && this.commonParam().commentId
+            commentId: this.commonParam() && this.commonParam().commentId,
+            ...routerParams
           },
           {
             headers: {
@@ -700,6 +702,28 @@ export default {
       };
       return params;
     },
+    // 获取router的数据
+    getRouterParams () {
+      return this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId): {};
+    },
+    // 过滤接口参数
+    fileterParams () {
+      let obj = {};
+      if (this.propData.customClickFunc && this.propData.customClickFunc.length > 0) {
+        let name = this.propData.customClickFunc[0].name
+        obj = window[name] && window[name].call(this, this.getRouterParams());
+      }
+      return obj
+    },
+    // 过滤接口参数
+    detailFileterParams () {
+      let obj = {};
+      if (this.propData.detailCustomClickFunc && this.propData.detailCustomClickFunc.length > 0) {
+        let name = this.propData.detailCustomClickFunc[0].name
+        obj = window[name] && window[name].call(this, this.getRouterParams());
+      }
+      return obj
+    },
     /**
      * 加载动态数据
      */
@@ -787,12 +811,14 @@ export default {
         this.loading = false;
         return;
       }
+      const routerParams = this.fileterParams();
       let url = `ctrl/dataSource/getDatas`;
       IDM.http
         .post(
           url,
           {
             id: dataSource.value,
+            ...routerParams
           },
           {
             headers: {

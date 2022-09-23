@@ -722,6 +722,14 @@
           "dataSourceUrl": "ctrl/dataSource/getDatasourceByGroup"
         },
         {
+          "type": "actionSelect",
+          "layoutType": "block",
+          "text": "接口参数自定义函数",
+          "bindKey": "customClickFunc",
+          "desc": "接口参数自定义函数",
+          "multiple": false
+        },
+        {
           "type": "group",
           "text": "字段设置",
           "desc": "页面数据绑定",

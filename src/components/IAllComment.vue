@@ -691,6 +691,19 @@ export default {
       };
       return params;
     },
+    // 获取router的数据
+    getRouterParams () {
+      return this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId): {};
+    },
+    // 过滤接口参数
+    fileterParams () {
+      let obj = {};
+      if (this.propData.customClickFunc && this.propData.customClickFunc.length > 0) {
+        let name = this.propData.customClickFunc[0].name
+        obj = window[name] && window[name].call(this, this.getRouterParams());
+      }
+      return obj
+    },
     /**
      * 加载动态数据
      */
@@ -780,6 +793,7 @@ export default {
         return;
       }
       let url = `ctrl/dataSource/getDatas`;
+      const routerParams = this.fileterParams();
       IDM.http
         .post(
           url,
@@ -787,6 +801,7 @@ export default {
             id: dataSource.value,
             pageSize: this.pageSize,
             start: this.start,
+            ...routerParams
           },
           {
             headers: {
