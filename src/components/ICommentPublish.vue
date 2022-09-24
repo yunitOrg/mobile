@@ -47,7 +47,6 @@ export default {
     publishCommentContent(){
       let that = this;
       let dataSource = this.propData.publishComment;
-
       if (this.propData.publishComment && this.propData.publishComment[0]) {
         const publishComment = this.propData.publishComment[0];
         const func = window[publishComment.name];
@@ -56,10 +55,7 @@ export default {
           commentContent:this.commentContent,
           ...that.commonParam(),
           customParam: publishComment.param,
-          _this: that,
-          routerParams: this.moduleObject.routerId
-              ? IDM.router.getParam(this.moduleObject.routerId)
-              : {}
+          routerParams: this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId) : {}
         });
 
         let source = {id: dataSource.value}
@@ -79,10 +75,10 @@ export default {
               console.log(res, "接口数据");
               if (res.code === "200") {
 
+                console.log("发送刷新消息：00111");
                 that.sendBroadcastMessage({
-                  type: 'linkageResult',
-                  rangeModule:
-                      this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
+                  type: 'linkageReload',
+                  rangeModule: this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
                   message: { }
                 });
 
