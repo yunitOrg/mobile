@@ -284,6 +284,7 @@ export default {
                 })
         },
         receiveBroadcastMessage(object) {
+            console.log('多选卡片收到消息 ----->', object)
             switch (object.type) {
                 case 'ifootbtn-all':
                     if (object.message) this.setAllCheckStatus(object.message.checkAll)
