@@ -837,6 +837,7 @@ export default {
             this.loading = false;
           } else {
             console.log(url + "请求失败");
+            this.finished = true;
           }
         })
         .error((response) => {
