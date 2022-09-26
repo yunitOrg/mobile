@@ -693,7 +693,7 @@ export default {
     },
     // 获取router的数据
     getRouterParams () {
-      return this.moduleObject.pageid ? IDM.router.getParam(this.moduleObject.pageid): {};
+      return this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId): {};
     },
     // 过滤接口参数
     fileterParams () {
