@@ -74,10 +74,11 @@
             "helpUrl": "",
             "children": [
               {
-                "type": "font",
-                "layoutType": "block",
+                "type": "input",
+                "layoutType": "inline",
                 "text": "文字",
-                "bindKey": "soreTitle"
+                "bindKey": "soreTitle",
+                "default": "积分规则？"
               },
               {
                 "type": "font",
