@@ -166,7 +166,7 @@ export default {
       if (this.propData.replyJump && this.propData.replyJump.id)
         IDM.router.push(
           this.moduleObject.pageid,
-          this.propData.replyJump.id,
+          this.propData.replyJump[0].id,
           {
             keep: true,
             params: item,
