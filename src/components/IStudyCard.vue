@@ -7,7 +7,7 @@
       <van-loading v-if="isLoading" size="24px" vertical>加载中...</van-loading>
       <template v-else>
         <div class="study-card">
-          <div class="study-card-header">
+          <div class="study-card-header" v-if="propData.isShowHeadText">
             <div class="left">
               <a-space class="icon">
                 <svg-icon icon-class="shu"/>
@@ -56,6 +56,7 @@ export default {
       propData: this.$root.propData.compositeAttr || {
         headText: "学习精选",
         "isShowMore":true,
+        "isShowHeadText":true,
         "isShowVideoNum":true,
         themeList:[
           {
@@ -95,6 +96,22 @@ export default {
         },
         {
           index: 4,
+          image: "https://boot-img.xuexi.cn/contribute_img/20220809100554/66386949742976920.jpg",
+          amountOfPlay: 1200,
+          releaseDate: "2022-8-17",
+          videoIntroduction: "河南鹤壁淇滨区:“双减”下的暑假劳动教育结硕果",
+          videoUrl:"#4"
+        },
+        {
+          index: 5,
+          image: "https://boot-img.xuexi.cn/contribute_img/20220809100554/66386949742976920.jpg",
+          amountOfPlay: 1200,
+          releaseDate: "2022-8-17",
+          videoIntroduction: "河南鹤壁淇滨区:“双减”下的暑假劳动教育结硕果",
+          videoUrl:"#4"
+        },
+        {
+          index: 6,
           image: "https://boot-img.xuexi.cn/contribute_img/20220809100554/66386949742976920.jpg",
           amountOfPlay: 1200,
           releaseDate: "2022-8-17",
@@ -190,6 +207,22 @@ export default {
                 image: "https://boot-img.xuexi.cn/contribute_img/20220809100554/66386949742976920.jpg",
                 amountOfPlay: 1500,
                 releaseDate: "2022-9-7",
+                videoIntroduction: "河南鹤壁淇滨区:“双减”下的暑假劳动教育结硕果",
+                videoUrl:"#4"
+              },
+              {
+                index: 5,
+                image: "https://boot-img.xuexi.cn/contribute_img/20220809100554/66386949742976920.jpg",
+                amountOfPlay: 1200,
+                releaseDate: "2022-8-17",
+                videoIntroduction: "河南鹤壁淇滨区:“双减”下的暑假劳动教育结硕果",
+                videoUrl:"#4"
+              },
+              {
+                index: 6,
+                image: "https://boot-img.xuexi.cn/contribute_img/20220809100554/66386949742976920.jpg",
+                amountOfPlay: 1200,
+                releaseDate: "2022-8-17",
                 videoIntroduction: "河南鹤壁淇滨区:“双减”下的暑假劳动教育结硕果",
                 videoUrl:"#4"
               }
@@ -634,7 +667,7 @@ $imgScale: var(--i-studycard-imgScale);
     padding: 0 calc(12px * #{ $scale });
 
     &-header {
-      margin: calc(18px * #{ $scale }) 0 calc(16px * #{ $scale }) 0;
+      margin: calc(18px * #{ $scale }) 0 calc(8px * #{ $scale }) 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -696,6 +729,7 @@ $imgScale: var(--i-studycard-imgScale);
       align-content: space-around;
       justify-content: space-between;
       flex-direction: row;
+      margin: calc(8px * #{ $scale }) 0 0 0;
       height: 100%;
       padding: 0;
 

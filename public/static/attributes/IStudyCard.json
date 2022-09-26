@@ -38,6 +38,25 @@
           "type": "radio",
           "styleType": "radio",
           "layoutType": "inline",
+          "text": "显示标题",
+          "bindKey": "isShowHeadText",
+          "desc": "设置是否显示标题",
+          "default": true,
+          "dictionary": [
+            {
+              "label": "显示",
+              "value": true
+            },
+            {
+              "label": "隐藏",
+              "value": false
+            }
+          ]
+        },
+        {
+          "type": "radio",
+          "styleType": "radio",
+          "layoutType": "inline",
           "text": "显示更多",
           "bindKey": "isShowMore",
           "desc": "设置是否显示右侧更多",
