@@ -56,9 +56,31 @@ height: 高度
 #### 全选发送消息
 消息key： ifootbtn-all
 ```js
+// 源码
 this.sendBroadcastMessage({
   type: 'ifootbtn-all',
   rangeModule: this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
   message: { checkAll: val }
 })
+```
+
+#### 按钮点击自定义事件
+
+```js 
+/**
+ * @Desc 点击按钮源码  会传一个对象，有三个参数：  第一个是上一个组件传过来的参数  第二个是点击按钮的key  第三个是是否全选
+*/
+handleClick (row) {
+      let that = this;
+      let { customClickFunc, key } = row;
+      if (customClickFunc && customClickFunc.length > 0 ) {
+        customClickFunc.forEach(item => {
+          window[item.name] && window[item.name].call(that, {
+            chooseData: this.allData,
+            value: key,
+            checked: this.checked,
+          });
+        })
+      }
+    }
 ```
