@@ -229,7 +229,7 @@ export default {
      * 回复跳转
      */
     replyClick(item) {
-      if (this.propData.replyJump && this.propData.replyJump.id)
+      if (this.propData.replyJump && this.propData.replyJump[0].id)
         IDM.router.push(
           this.moduleObject.pageid,
           this.propData.replyJump[0].id,
