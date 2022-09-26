@@ -30,6 +30,10 @@ export default {
         total: 0
       },
       propData:this.$root.propData.compositeAttr||{
+        positionTop: 'auto',
+        positionRight: 'auto',
+        positionBottom: '0',
+        positionLeft: 'auto',
         box: {
           marginTopVal: "",
           marginRightVal: "",
@@ -40,7 +44,7 @@ export default {
           paddingBottomVal: "",
           paddingLeftVal: "20px"
         },
-        width: 'auto',
+        width: '100%',
         height: '60px',
         boxShadow: "0px 0px 10px 0px #e3dede",
         checkBorder: {
@@ -175,6 +179,18 @@ export default {
             case 'checkBg':
               colorCheck['color'] = element && element.hex8 + ' !important'
               break
+            case 'positionTop':
+              styleObject['top'] = element
+              break
+            case 'positionRight':
+              styleObject['right'] = element
+              break
+            case 'positionBottom':
+              styleObject['bottom'] = element
+              break
+            case 'positionLeft':
+              styleObject['left'] = element
+              break
           }
         }
       }
@@ -189,7 +205,9 @@ export default {
       if (customClickFunc && customClickFunc.length > 0 ) {
         customClickFunc.forEach(item => {
           window[item.name] && window[item.name].call(that, {
-            value: key
+            chooseData: this.allData,
+            value: key,
+            checked: this.checked,
           });
         })
       }
@@ -248,7 +266,7 @@ export default {
     receiveBroadcastMessage (object) {
       switch (object.type) {
         case 'i-checkbox-card-change':
-          console.log('接收消息', object.message)
+          console.log('底部按钮-接收消息', object.message)
           this.allData = object.message || {}
           this.checked = (object.message || {}).total === (object.message || {}).selectNumber
           break;
@@ -284,6 +302,7 @@ export default {
 .idm-footbtn{
   display: flex;
   justify-content: space-between;
+  position: fixed;
   .footbtn-flex{
     display: flex;
     align-items: center;

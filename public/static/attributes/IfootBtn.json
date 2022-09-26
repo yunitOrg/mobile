@@ -297,6 +297,41 @@
         "helpUrl": "",
         "children": [
           {
+            "type": "group",
+            "text": "容器位置",
+            "desc": "容器定位位置，可以写百分比、px 比如：10px  10%",
+            "children": [
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "top",
+                "bindKey": "positionTop",
+                "default": "auto"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "right",
+                "bindKey": "positionRight",
+                "default": "auto"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "bottom",
+                "bindKey": "positionBottom",
+                "default": "0"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "left",
+                "bindKey": "positionLeft",
+                "default": "auto"
+              }
+            ]
+          },
+          {
             "type": "inlineGroup",
             "text": "宽高",
             "children": [
@@ -307,7 +342,7 @@
                 "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
                 "bindKey": "width",
                 "width": "60px",
-                "default": "auto"
+                "default": "100%"
               },
               {
                 "type": "input",
