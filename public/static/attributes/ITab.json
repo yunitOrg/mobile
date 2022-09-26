@@ -352,7 +352,7 @@
             "text": "接口请求",
             "desc":"接口是否请求",
             "bindKey": "requireFlag",
-            "default": true
+            "default": false
           },
           {
             "type": "treeSelect",

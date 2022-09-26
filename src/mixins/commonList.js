@@ -40,8 +40,12 @@ export default {
             switch (this.propData.itemJumpStyle) {
                 case '_link':
                     url = this.getDataField(this.propData.jumpUrlField, item)
-                    if (!url) return
-                    window.open(IDM.url.getWebPath(url))
+                    if (url) {
+                        window.open(IDM.url.getWebPath(url))
+                    }
+                    if (item.pageId) {
+                        IDM.router.push(this.moduleObject.pageid, item.pageId, this.propData.isItemKeep, item, '', '')
+                    }
                     break
                 case '_child':
                     if (this.propData.itemPageList && this.propData.itemPageList.length > 0) {
@@ -59,14 +63,7 @@ export default {
                     break
                 case '_interface_child':
                     if (pageId) {
-                        IDM.router.push(
-                            this.moduleObject.pageid,
-                            pageId,
-                            this.propData.isItemKeep,
-                            item,
-                            '',
-                            ''
-                        )
+                        IDM.router.push(this.moduleObject.pageid, pageId, this.propData.isItemKeep, item, '', '')
                     } else {
                         IDM.message.warning('接口没有返回子页面id')
                     }
