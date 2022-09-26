@@ -10,7 +10,7 @@
   :idm-ctrl-id="moduleObject.id" 
   >
     <div class="idm-footbtn">
-      <van-checkbox v-model="checked" class="footbtn-check" shape="square" @change="handleChange">{{allData.selectNumber}}/{{allData.total}}</van-checkbox>
+      <van-checkbox v-model="checked" class="footbtn-check" shape="square" @click="handleChange">{{allData.selectNumber}}/{{allData.total}}</van-checkbox>
       <div class="footbtn-flex">
         <div class="footbtn-btn" v-for="(item, index) in propData.table" :key="index" :style="computedStyle(item)" @click="handleClick(item)">{{item.tab}}</div>
       </div>
@@ -246,11 +246,11 @@ export default {
         );
       }
     },
-    handleChange (val) {
+    handleChange () {
       this.sendBroadcastMessage({
         type: 'ifootbtn-all',
         rangeModule: this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
-        message: { checkAll: val }
+        message: { checkAll: this.checked }
       })
     },
     /**

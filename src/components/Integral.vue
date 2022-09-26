@@ -13,6 +13,7 @@
       <div class="integral-img" :style="`width:${propData.imgWidth};height:${propData.imgHeight};background-color: ${propData.colorBg}`" v-if="propData.showImg">
         <img :src="IDM.url.getWebPath(propData.topImgUrl)" v-if="propData.topImgUrl" alt="">
         <img v-else :src="img" alt="">
+        <div class="integral-rule">{{propData.soreTitle}}</div>
         <div class="integral-position integral-white">
           <div class="integral-top-title">累计积分</div>
           <div class="integral-block">
@@ -71,6 +72,7 @@ export default {
       propData:this.$root.propData.compositeAttr||{
         imgWidth: 'auto',
         imgHeight: '200px',
+        soreTitle: '积分规则？',
         showImg: true,
         colorBg: "#DA1412",
         integralTitle: '积分奖励',
@@ -80,6 +82,8 @@ export default {
         allboxPostion: '35px',
         getBoxPostionTop: '15px',
         getBoxPostionRight: '-123px',
+        soreTop: '20px',
+        soreLeft: '20px',
         bgColor: {
           hex: '#ffffff',
           hex8: '#ffffffff'
@@ -95,7 +99,7 @@ export default {
           paddingLeftVal: ""
         },
         box: {
-          marginTopVal: "-0",
+          marginTopVal: "-20px",
           marginRightVal: "10px",
           marginBottomVal: "",
           marginLeftVal: "10px",
@@ -152,6 +156,7 @@ export default {
           liTtitleObject = {},
           btnObject = {},
           blockObject = {},
+          soreObject = {},
           positionObject = {},
           colorCheck = {};
       for (const key in this.propData) {
@@ -235,11 +240,20 @@ export default {
             case 'btnBorder':
               IDM.style.setBorderStyle(btnObject, element)
               break
-            
+            case 'soreFont':
+              IDM.style.setFontStyle(soreObject, element)
+              break
+            case 'soreTop':
+              soreObject['top'] = element
+              break
+            case 'soreLeft':
+              soreObject['left'] = element
+              break
           }
         }
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-position", positionObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-rule", soreObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-top-title", styleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-top span", liTtitleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-block", blockObject);
@@ -358,6 +372,9 @@ export default {
   }
 }
 .idm-integral{
+  .integral-rule{
+    position: absolute;
+  }
   .integral-img{
     position: relative;
     img{
