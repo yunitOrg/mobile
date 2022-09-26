@@ -106,7 +106,6 @@ export default {
         },
       ],
       dues: "",
-      computationRule: "",
       propData: this.$root.propData.compositeAttr || {
         isShowLine: true,
         themeList: [
@@ -223,13 +222,11 @@ export default {
                 },
               ],
               dues: "20.00",
-              computationRule: "#"
             }
 
           };
           this.activityList = res.data.data
           this.dues = res.data.dues
-          this.computationRule = res.data.computationRule
           this.isLoading = false;
         }, 0)
       }
@@ -594,10 +591,10 @@ export default {
     //点击计算规则跳转的地址
     ruleDetail() {
 
-      if (this.propData.computationRule !== {} && this.propData.computationRule.id !== "") {
+      if (this.propData.listJumpUrl !== {} && this.propData.listJumpUrl[0].id !== "") {
         IDM.router.push(
             this.moduleObject.routerId,
-            this.propData.computationRule.id,
+            this.propData.listJumpUrl[0].id,
             {
               keep: true,
               enterAnim: '',
@@ -607,7 +604,8 @@ export default {
       } else {
         IDM.message.warning("请选择要跳转的子页面");
       }
-    }
+    },
+    // Function to open an S3 file
   }
 }
 </script>

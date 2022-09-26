@@ -529,10 +529,10 @@ export default {
 
     //点击更多的回调函数
     showMoreData() {
-      if (this.propData.showMoreUrl && this.propData.showMoreUrl.id)
+      if (this.propData.showMoreUrl && this.propData.showMoreUrl[0].id)
         IDM.router.push(
             this.moduleObject.routerId,
-            this.propData.showMoreUrl.id,
+            this.propData.showMoreUrl[0].id,
             {
               keep: true,
             }
@@ -541,10 +541,10 @@ export default {
 
     //点击视频卡片后跳转函数
     toVideo(item){
-      if (this.propData.listJumpUrl !=={} && this.propData.listJumpUrl.id !== "") {
+      if (this.propData.listJumpUrl !=={} && this.propData.listJumpUrl[0].id !== "") {
         IDM.router.push(
             this.moduleObject.routerId,
-            this.propData.listJumpUrl.id,
+            this.propData.listJumpUrl[0].id,
             {
               keep: true,
               params: item,
