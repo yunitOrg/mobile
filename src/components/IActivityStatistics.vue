@@ -272,6 +272,21 @@ export default {
       });
     },
     /**
+     * 通用的url参数对象
+     * 所有地址的url参数转换
+     */
+    commonParam() {
+      let urlObject = IDM.url.queryObject();
+      var params = {
+        pageId:
+            window.IDM.broadcast && window.IDM.broadcast.pageModule
+                ? window.IDM.broadcast.pageModule.id
+                : "",
+        urlData: JSON.stringify(urlObject),
+      };
+      return params;
+    },
+    /**
      * 通用的获取表达式匹配后的结果
      */
     getExpressData(dataName, dataFiled, resultData) {
@@ -591,9 +606,9 @@ export default {
     //点击计算规则跳转的地址
     ruleDetail() {
 
-      if (this.propData.listJumpUrl !== {} && this.propData.listJumpUrl[0].id !== "") {
+      if (this.propData.listJumpUrl && this.propData.listJumpUrl.length > 0) {
         IDM.router.push(
-            this.moduleObject.routerId,
+            this.moduleObject.pageid,
             this.propData.listJumpUrl[0].id,
             {
               keep: true,

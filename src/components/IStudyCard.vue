@@ -107,6 +107,7 @@ export default {
   computed: {},
   created() {
     this.moduleObject = this.$root.moduleObject
+    console.log("moduleObject",this.moduleObject)
     this.convertAttrToStyleObject();
     this.convertThemeListAttrToStyleObject();
 
@@ -242,6 +243,21 @@ export default {
       }).always((res) => {
         this.isLoading = false;
       });
+    },
+    /**
+     * 通用的url参数对象
+     * 所有地址的url参数转换
+     */
+    commonParam() {
+      let urlObject = IDM.url.queryObject();
+      var params = {
+        pageId:
+            window.IDM.broadcast && window.IDM.broadcast.pageModule
+                ? window.IDM.broadcast.pageModule.id
+                : "",
+        urlData: JSON.stringify(urlObject),
+      };
+      return params;
     },
     /**
      * 通用的获取表达式匹配后的结果
@@ -529,21 +545,29 @@ export default {
 
     //点击更多的回调函数
     showMoreData() {
-      if (this.propData.showMoreUrl && this.propData.showMoreUrl[0].id)
+      if (this.propData.showMoreUrl && this.propData.showMoreUrl.length > 0) {
         IDM.router.push(
-            this.moduleObject.routerId,
+            this.moduleObject.pageid,
             this.propData.showMoreUrl[0].id,
             {
               keep: true,
+              enterAnim: "",
+              quitAnim: ""
             }
         );
+      }
+      else {
+        IDM.message.warning("请选择要跳转的子页面");
+      }
     },
 
     //点击视频卡片后跳转函数
     toVideo(item){
-      if (this.propData.listJumpUrl !=={} && this.propData.listJumpUrl[0].id !== "") {
+      console.log(this.propData.listJumpUrl)
+
+      if (this.propData.listJumpUrl && this.propData.listJumpUrl.length > 0) {
         IDM.router.push(
-            this.moduleObject.routerId,
+            this.moduleObject.pageid,
             this.propData.listJumpUrl[0].id,
             {
               keep: true,
