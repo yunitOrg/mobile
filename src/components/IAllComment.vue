@@ -165,7 +165,7 @@ export default {
     replyClick(item) {
       if (this.propData.replyJump && this.propData.replyJump.id)
         IDM.router.push(
-          this.moduleObject.routerId,
+          this.moduleObject.pageid,
           this.propData.replyJump.id,
           {
             keep: true,
@@ -693,7 +693,7 @@ export default {
     },
     // 获取router的数据
     getRouterParams () {
-      return this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId): {};
+      return this.moduleObject.pageid ? IDM.router.getParam(this.moduleObject.pageid): {};
     },
     // 过滤接口参数
     fileterParams () {

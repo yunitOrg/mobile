@@ -107,10 +107,8 @@ export default {
   computed: {},
   created() {
     this.moduleObject = this.$root.moduleObject
-    console.log("moduleObject",this.moduleObject)
     this.convertAttrToStyleObject();
     this.convertThemeListAttrToStyleObject();
-
   },
   methods: {
     /**
