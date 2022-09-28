@@ -178,60 +178,61 @@ export default {
      * 加载动态数据
      */
     initData() {
-      if (!this.moduleObject.env || this.moduleObject.env == "develop") {
-        // mock数据
-        setTimeout(() => {
-          this.activityList = [];
-          const res = {
-            data: {
-              data: [
-                {
-                  icon: "dydh",
-                  name: "党员大会",
-                  convene: "召开15次",
-                  personNum: "参会人数33人",
-                  attendance: "出席率25%"
-                },
-                {
-                  icon: "zwh",
-                  name: "支委会",
-                  convene: "召开15次",
-                  personNum: "参会人数33人",
-                  attendance: "出席率25%"
-                },
-                {
-                  icon: "dxzh",
-                  name: "党小组会",
-                  convene: "召开15次",
-                  personNum: "参会人数33人",
-                  attendance: "出席率25%"
-                },
-                {
-                  icon: "dk",
-                  name: "党课",
-                  convene: "召开15次",
-                  personNum: "参会人数33人",
-                  attendance: "出席率25%"
-                },
-                {
-                  icon: "ztdr",
-                  name: "主题党日",
-                  convene: "召开15次",
-                  personNum: "参会人数33人",
-                  attendance: "出席率25%"
-                },
-              ],
-              dues: "20.00",
-            }
-
-          };
-          this.activityList = res.data.data
-          this.dues = res.data.dues
-          this.isLoading = false;
-        }, 0)
-      }
       let dataSource = this.propData.dataSource;
       if (!dataSource) {
+        if (!this.moduleObject.env || this.moduleObject.env == "develop") {
+          // mock数据
+          setTimeout(() => {
+            this.activityList = [];
+            const res = {
+              data: {
+                data: [
+                  {
+                    icon: "dydh",
+                    name: "党员大会",
+                    convene: "召开15次",
+                    personNum: "参会人数33人",
+                    attendance: "出席率25%"
+                  },
+                  {
+                    icon: "zwh",
+                    name: "支委会",
+                    convene: "召开15次",
+                    personNum: "参会人数33人",
+                    attendance: "出席率25%"
+                  },
+                  {
+                    icon: "dxzh",
+                    name: "党小组会",
+                    convene: "召开15次",
+                    personNum: "参会人数33人",
+                    attendance: "出席率25%"
+                  },
+                  {
+                    icon: "dk",
+                    name: "党课",
+                    convene: "召开15次",
+                    personNum: "参会人数33人",
+                    attendance: "出席率25%"
+                  },
+                  {
+                    icon: "ztdr",
+                    name: "主题党日",
+                    convene: "召开15次",
+                    personNum: "参会人数33人",
+                    attendance: "出席率25%"
+                  },
+                ],
+                dues: "20.00",
+              }
+
+            };
+            this.activityList = res.data.data
+            this.dues = res.data.dues
+            this.isLoading = false;
+          }, 0)
+        }
+
         this.isLoading = false;
         return;
       }
@@ -263,9 +264,13 @@ export default {
             this.activityList.push(tempItem)
           }
         } else {
+          this.activityList = []
+          this.dues=""
           console.log(url + "请求失败");
         }
       }).error((response) => {
+        this.activityList = []
+        this.dues=""
         console.log(url + "请求失败");
       }).always((res) => {
         this.isLoading = false;
