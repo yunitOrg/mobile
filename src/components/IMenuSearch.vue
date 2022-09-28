@@ -1,10 +1,20 @@
 <template>
     <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id">
-        <div class="IFooter_app">
-            <div class="IFooter_app_top flex_center">
-                <div v-for="(item,index) in propData.centerTextList" :key="index" class="list">{{ item.text }}</div>
+        <div class="IMenuSearch_app">
+            <div class="IMenuSearch_app_menu">
+                <van-grid :column-num="propData.columnNumber" :gutter="propData.gutter">
+                    <van-grid-item @click="clickGrid" v-for="(item,index) in menu_list" :key="index" :text="propData.useShortName ? item[propData.dataFiledShortTitle ? propData.dataFiledShortTitle : 'shortTitle'] : item[ propData.dataFiledTitle ? propData.dataFiledTitle : 'title' ]" />
+                </van-grid>
             </div>
-            <div class="drag_container" idm-ctrl-inner :idm-ctrl-id="moduleObject.id" :idm-container-index="1">
+            <div v-if="propData.showSearch" class="IMenuSearch_app_search">
+                <van-search v-model="value" @search="search" :shape="propData.shape" :placeholder="propData.placeholder" >
+                    <template #left-icon>
+                        <svg class="idm_button_svg_icon" v-if="propData.searchLeftIcon && propData.searchLeftIcon.length > 0" aria-hidden="true" > 
+                            <use :xlink:href="`#${propData.searchLeftIcon[0]}`"></use>
+                        </svg >
+                        <SvgIcon v-else icon-class="search"></SvgIcon>
+                    </template>
+                </van-search>
             </div>
         </div>
     </div>
@@ -12,25 +22,31 @@
   
 <script>
 import adaptationScreenMixin from '../mixins/adaptationScreen'
+import SvgIcon from '../icons/SvgIcon.vue';
+import { menuData } from '../mock/mockDataCms.js'
+import { Cascader, Grid,GridItem,Search } from "vant";
+
 export default {
-    name: 'IFooter',
+    name: 'IMenuSearch',
     mixins: [adaptationScreenMixin],
+    components: {
+        [Grid.name]: Grid,
+        [GridItem.name]: GridItem,
+        SvgIcon
+    },
     data() {
         return {
             moduleObject: {},
             propData: this.$root.propData.compositeAttr || {
-                centerTextList: [
-                    {
-                        text: '站点地图'
-                    },
-                    {
-                        text: '新闻中心'
-                    },
-                    {
-                        text: '公告通知'
-                    }
-                ]
-            }
+                columnNumber: 4,
+                gutter: 10,
+                showSearch: true,
+                placeholder: '请输入关键词进行搜索',
+                background: {
+                    hex: '#666666'
+                }
+            },
+            menu_list: [],
         }
     },
     props: {
@@ -38,12 +54,59 @@ export default {
     created() {
         this.moduleObject = this.$root.moduleObject
         this.convertAttrToStyleObject();
+        this.getMenuData()
+    },
+    watch: {
+        'propData.selectColumn': {
+            handler(value) {
+                this.getMenuData()
+            },
+            deep: true,
+            immediate: true
+        },
+        'propData.limit': {
+            handler(value) {
+                this.getMenuData()
+            },
+            immediate: true
+        }
     },
     mounted() {
         
     },
     destroyed() { },
     methods: {
+        getMenuData() {
+            if ( (!this.propData.customInterfaceUrl) || !this.propData.selectColumn ) {
+                let menu_list = [];
+                if ( this.propData.limit ) {
+                    for( let i = 0,maxi = menuData.length;i < maxi;i++ ) {
+                        if ( i < parseInt(this.propData.limit) ) {
+                            menu_list.push(menuData[i])
+                        }
+                    }
+                    this.menu_list = menu_list;
+                } else {
+                    this.menu_list = JSON.parse(JSON.stringify(menuData));
+                }
+                return
+            }
+            IDM.http.get(this.propData.customInterfaceUrl,{
+                columnId: this.propData.selectColumn ? this.propData.selectColumn.id : '0',
+                limit: this.propData.limit || ''
+            }).then((res) => {
+                if (res && res.data && res.data.code == '200' && res.data.data ) {
+                    let result = this.propData.dataFiled ? this.getExpressData('resultData',this.propData.dataFiled,res.data.data) : res.data.data.rows;
+                    this.menu_list = result || [];
+                }
+            })
+        },
+        search(e) {
+            console.log(e)
+        },
+        clickGrid(e) {
+            console.log(e);
+        },
         /**
          * 提供父级组件调用的刷新prop数据组件
          */
@@ -52,8 +115,9 @@ export default {
             this.convertAttrToStyleObject();
         },
         /** * 把属性转换成样式对象 */
-        convertAttrToStyleObjectOperate() {
+        convertAttrToStyleObjectMenu() {
             var styleObject = {};
+            var styleObjectFont = {};
             for (const key in this.propData) {
                 if (this.propData.hasOwnProperty.call(this.propData, key)) {
                     const element = this.propData[key];
@@ -61,11 +125,11 @@ export default {
                         continue;
                     }
                     switch (key) {
-                        case 'fontOperateList':
-                            IDM.style.setFontStyle(styleObject, element)
-                            this.adaptiveFontSize(styleObject, element)
+                        case 'fontMenu':
+                            IDM.style.setFontStyle(styleObjectFont, element)
+                            this.adaptiveFontSize(styleObjectFont, element)
                             break;
-                        case "boxOperateList":
+                        case "boxMenu":
                             if (element.marginTopVal) {
                                 styleObject["margin-top"] = `${element.marginTopVal}`;
                             }
@@ -91,13 +155,112 @@ export default {
                                 styleObject["padding-left"] = `${element.paddingLeftVal}`;
                             }
                             break;
+                        case "borderMenu":
+                            if (element.border.top.width > 0) {
+                                styleObject["border-top-width"] = element.border.top.width + element.border.top.widthUnit;
+                                styleObject["border-top-style"] = element.border.top.style;
+                                if (element.border.top.colors.hex8) {
+                                    styleObject["border-top-color"] = element.border.top.colors.hex8;
+                                }
+                            }
+                            if (element.border.right.width > 0) {
+                                styleObject["border-right-width"] = element.border.right.width + element.border.right.widthUnit;
+                                styleObject["border-right-style"] = element.border.right.style;
+                                if (element.border.right.colors.hex8) {
+                                    styleObject["border-right-color"] = element.border.right.colors.hex8;
+                                }
+                            }
+                            if (element.border.bottom.width > 0) {
+                                styleObject["border-bottom-width"] = element.border.bottom.width + element.border.bottom.widthUnit;
+                                styleObject["border-bottom-style"] = element.border.bottom.style;
+                                if (element.border.bottom.colors.hex8) {
+                                    styleObject["border-bottom-color"] = element.border.bottom.colors.hex8;
+                                }
+                            }
+                            if (element.border.left.width > 0) {
+                                styleObject["border-left-width"] = element.border.left.width + element.border.left.widthUnit;
+                                styleObject["border-left-style"] = element.border.left.style;
+                                if (element.border.left.colors.hex8) {
+                                    styleObject["border-left-color"] = element.border.left.colors.hex8;
+                                }
+                            }
+                            styleObject["border-top-left-radius"] = element.radius.leftTop.radius + element.radius.leftTop.radiusUnit;
+                            styleObject["border-top-right-radius"] = element.radius.rightTop.radius + element.radius.rightTop.radiusUnit;
+                            styleObject["border-bottom-left-radius"] = element.radius.leftBottom.radius + element.radius.leftBottom.radiusUnit;
+                            styleObject["border-bottom-right-radius"] = element.radius.rightBottom.radius + element.radius.rightBottom.radiusUnit;
+                            break;
                     }
                 }
             }
-            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IFooter_app_top .list', styleObject);
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IMenuSearch_app_menu', styleObject);
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IMenuSearch_app_menu .van-grid-item__text', styleObjectFont);
+        },
+        convertAttrToStyleObjectSearch() {
+            var styleObject = {};
+            var styleObjectFont = {};
+            var styleObjectBg = {};
+            var styleObjectIcon = {};
+            for (const key in this.propData) {
+                if (this.propData.hasOwnProperty.call(this.propData, key)) {
+                    const element = this.propData[key];
+                    if (!element && element !== false && element != 0) {
+                        continue;
+                    }
+                    switch (key) {
+                        case 'bgColorSearch':
+                            if (element && element.hex8) {
+                                styleObjectBg["background-color"] = element.hex8;
+                            }
+                            break;
+                        case 'fontSearch':
+                            IDM.style.setFontStyle(styleObjectFont, element)
+                            this.adaptiveFontSize(styleObjectFont, element)
+                            break;
+                        case "boxSearch":
+                            if (element.marginTopVal) {
+                                styleObject["margin-top"] = `${element.marginTopVal}`;
+                            }
+                            if (element.marginRightVal) {
+                                styleObject["margin-right"] = `${element.marginRightVal}`;
+                            }
+                            if (element.marginBottomVal) {
+                                styleObject["margin-bottom"] = `${element.marginBottomVal}`;
+                            }
+                            if (element.marginLeftVal) {
+                                styleObject["margin-left"] = `${element.marginLeftVal}`;
+                            }
+                            if (element.paddingTopVal) {
+                                styleObject["padding-top"] = `${element.paddingTopVal}`;
+                            }
+                            if (element.paddingRightVal) {
+                                styleObject["padding-right"] = `${element.paddingRightVal}`;
+                            }
+                            if (element.paddingBottomVal) {
+                                styleObject["padding-bottom"] = `${element.paddingBottomVal}`;
+                            }
+                            if (element.paddingLeftVal) {
+                                styleObject["padding-left"] = `${element.paddingLeftVal}`;
+                            }
+                            break;
+                        case 'fontSizeIcon':
+                            styleObjectIcon['font-size'] = element;
+                            break
+                        case 'fontColorIcon':
+                            if (element && element.hex8) {
+                                styleObjectIcon["color"] = element.hex8;
+                            }
+                            break
+                    }
+                }
+            }
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IMenuSearch_app_search', styleObject);
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IMenuSearch_app_search .van-grid-item__text', styleObjectFont);
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IMenuSearch_app_search .van-search__content', styleObjectBg);
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IMenuSearch_app_search .svg-icon', styleObjectIcon);
         },
         convertAttrToStyleObject() {
-            this.convertAttrToStyleObjectOperate()
+            this.convertAttrToStyleObjectMenu()
+            this.convertAttrToStyleObjectSearch()
             var styleObject = {};
             if (this.propData.bgSize && this.propData.bgSize == "custom") {
                 styleObject["background-size"] = (this.propData.bgSizeWidth ? this.propData.bgSizeWidth.inputVal + this.propData.bgSizeWidth.selectVal : "auto") + " " + (this.propData.bgSizeHeight ? this.propData.bgSizeHeight.inputVal + this.propData.bgSizeHeight.selectVal : "auto")
@@ -210,6 +373,9 @@ export default {
                             IDM.style.setFontStyle(styleObject, element)
                             this.adaptiveFontSize(styleObject, element)
                             break;
+                        case 'boxShadow':
+                            styleObject['box-shadow'] = element;
+                        break;
                     }
                 }
             }
@@ -232,42 +398,9 @@ export default {
          */
         reload() {
             //请求数据源
-            this.initData();
+            this.getMenuData();
         },
-        /**
-         * 加载动态数据
-         */
-        initData() {
-            let that = this;
-            //所有地址的url参数转换
-            var params = that.commonParam();
-            switch (this.propData.dataSourceType) {
-                case "customInterface":
-                    this.propData.customInterfaceUrl && window.IDM.http.get(this.propData.customInterfaceUrl, params)
-                        .then((res) => {
-                            //res.data
-                            that.$set(that.propData, "fontContent", that.getExpressData("resultData", that.propData.dataFiled, res.data));
-                            // that.propData.fontContent = ;
-                        })
-                        .catch(function (error) {
-
-                        });
-                    break;
-                case "pageCommonInterface":
-                    //使用通用接口直接跳过，在setContextValue执行
-                    break;
-                case "customFunction":
-                    if (this.propData.customFunction && this.propData.customFunction.length > 0) {
-                        var resValue = "";
-                        try {
-                            resValue = window[this.propData.customFunction[0].name] && window[this.propData.customFunction[0].name].call(this, { ...params, ...this.propData.customFunction[0].param, moduleObject: this.moduleObject });
-                        } catch (error) {
-                        }
-                        that.propData.fontContent = resValue;
-                    }
-                    break;
-            }
-        },
+        
         /**
          * 通用的获取表达式匹配后的结果
          */
@@ -335,27 +468,41 @@ export default {
          * }
          */
         setContextValue(object) {
-
+            if (object.type != "pageCommonInterface") {
+                return;
+            }
+            //这里使用的是子表，所以要循环匹配所有子表的属性然后再去设置修改默认值
+            if (object.key == this.propData.dataName) {
+                // this.propData.fontContent = this.getExpressData(this.propData.dataName,this.propData.dataFiled,object.data);
+                this.$set(this.propData,"fontContent",this.getExpressData(this.propData.dataName,this.propData.dataFiled,object.data));
+            }
         }
     }
 }
 </script>
 <style lang="scss">
-.IFooter_app{
-    .IFooter_app_top{
-        .list{
-            height: 14px;
-            line-height: 14px;
-            padding: 0 5px;
-            font-size: 14px;
-            color: #666;
-            letter-spacing: 0;
-            text-align: center;
-            font-weight: 500;
-            border-right: 1px solid #666;
-            &:last-child{
-                border-right: none;
-            }
+.IMenuSearch_app{
+    background: white;
+    .IMenuSearch_app_menu{
+        padding: 15px 0;
+        border-bottom: 1px solid  rgba(234,234,234,1);
+        .van-grid-item__content{
+            padding: 0;
+            background-color: none;
+        }
+    }
+    .IMenuSearch_app_search{
+        .svg-icon{
+            color: #999;
+        }
+        input::-webkit-input-placeholder{
+            // color: red;
+        }
+        .van-search__content{
+            // background: blue;
+        }
+        .van-field__control{
+            // color: red;
         }
     }
 }
