@@ -6,51 +6,56 @@
             :propData="propData"
             :pageData="pageData"
             :isFirst="isFirst"
-            :isLoading="isLoading"
+            :isLoading="false"
             @handleClickMore="handleClickMore"
         >
             <template #list>
-                <div
-                    v-for="(item, index) in pageData.value"
-                    :key="index"
-                    class="box-line"
-                    @click="handleItemClick(item)"
-                >
-                    <div class="d-flex just-b">
-                        <div class="flex-1 common-list-title">
-                            <div class="text-o-e-2">{{ getDataField(propData.titleField, item) }}</div>
+                <van-list :immediate-check="false" v-model="isLoading" :finished="finished" finished-text="没有更多了" @load="onLoadMore">
+                    <div
+                        v-for="(item, index) in pageData.value"
+                        :key="index"
+                        class="box-line"
+                        @click="handleItemClick(item)"
+                    >
+                        <div class="d-flex just-b">
+                            <div class="flex-1 common-list-title">
+                                <div class="text-o-e-2">{{ getDataField(propData.titleField, item) }}</div>
+                            </div>
+                            <img
+                                v-if="getDataField(propData.imageField, item).length === 1"
+                                class="one-img"
+                                :src="
+                                    IDM.url.getWebPath(
+                                        getDataField(propData.imageField, item) &&
+                                            getDataField(propData.imageField, item)[0]
+                                    )
+                                "
+                                alt="图片加载失败"
+                            />
                         </div>
-                        <img
-                            v-if="getDataField(propData.imageField, item).length === 1"
-                            class="one-img"
-                            :src="
-                                IDM.url.getWebPath(
-                                    getDataField(propData.imageField, item) &&
-                                        getDataField(propData.imageField, item)[0]
-                                )
-                            "
-                            alt="图片加载失败"
-                        />
+                        <van-row gutter="10" v-if="getDataField(propData.imageField, item).length > 1">
+                            <van-col
+                                :span="getDataField(propData.imageField, item).length == 2 ? 12 : 8"
+                                v-for="(items, indexs) in getDataField(propData.imageField, item) || []"
+                                class="flex-1"
+                                :key="indexs"
+                            >
+                                <img :src="IDM.url.getWebPath(items)" alt="图片加载失败" class="image-list" />
+                            </van-col>
+                        </van-row>
+                        <div class="d-flex just-b content-list-bottom">
+                            <span v-if="getDataField(propData.originField, item)"
+                                >来源：{{ getDataField(propData.originField, item) }}</span
+                            >
+                            <span v-if="getDataField(propData.timeField, item)"
+                                >发布时间：{{ getDataField(propData.timeField, item) }}</span
+                            >
+                        </div>
                     </div>
-                    <van-row gutter="10" v-if="getDataField(propData.imageField, item).length > 1">
-                        <van-col
-                            :span="getDataField(propData.imageField, item).length == 2 ? 12 : 8"
-                            v-for="(items, indexs) in getDataField(propData.imageField, item) || []"
-                            class="flex-1"
-                            :key="indexs"
-                        >
-                            <img :src="IDM.url.getWebPath(items)" alt="图片加载失败" class="image-list" />
-                        </van-col>
-                    </van-row>
-                    <div class="d-flex just-b content-list-bottom">
-                        <span v-if="getDataField(propData.originField, item)"
-                            >来源：{{ getDataField(propData.originField, item) }}</span
-                        >
-                        <span v-if="getDataField(propData.timeField, item)"
-                            >发布时间：{{ getDataField(propData.timeField, item) }}</span
-                        >
-                    </div>
-                </div>
+                    <template #finished>
+                        {{propData.isPaging ? '没有更多了': ''}}
+                    </template>
+                </van-list>
             </template>
         </ICommonListContainer>
     </div>
@@ -131,7 +136,7 @@ export default {
                             IDM.style.setBorderStyle(lineImageObj, element)
                             break
                         case 'imageWidth':
-                            oneImageObj['width'] =  this.getAdaptiveSize(element, 1.8) + 'px'
+                            oneImageObj['width'] = this.getAdaptiveSize(element, 1.8) + 'px'
                             break
                         case 'imageHeight':
                             lineImageObj['height'] = this.getAdaptiveSize(element, 1.8) + 'px'
@@ -194,9 +199,9 @@ export default {
         initData() {
             if (this.moduleObject.env === 'develop') {
                 this.pageData = getContentListData.call(this)
+                this.finished = true
                 return
             }
-            this.isFirst = false
             this.isLoading = true
             this.getDataSourceData()
         },

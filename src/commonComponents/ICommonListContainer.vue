@@ -1,5 +1,9 @@
 <template>
-    <div :id="`${moduleObject.id}-common-list`" class="over-h position-r">
+    <div
+        :id="`${moduleObject.id}-common-list`"
+        class="position-r before-table"
+        :class="propData.isPaging ? '' : 'over-h'"
+    >
         <!-- header -->
         <i-common-header
             v-if="propData.isShowTitle"
@@ -9,12 +13,12 @@
             :pageData="pageData"
         ></i-common-header>
         <!-- sub content container -->
-        <div class="common-list-container">
+        <div class="common-list-container over-h">
             <!-- list slot -->
             <slot name="list"></slot>
             <!-- empty placeholder -->
             <ICommonEmpty
-                v-if="!isFirst && !isLoading && pageData.value.length === 0"
+                v-if="!isFirst && !isLoading && pageData.value.length === 0 && !propData.isPaging"
                 :moduleObject="moduleObject"
                 :propData="propData"
             ></ICommonEmpty>

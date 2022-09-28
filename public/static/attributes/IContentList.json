@@ -43,6 +43,25 @@
                     "type": "radio",
                     "styleType": "radio",
                     "layoutType": "inline",
+                    "text": "列表分页",
+                    "bindKey": "isPaging",
+                    "desc": "设置列表是否开启分页，即触底加载更多，同时需要设置外层容器的高度，不然无法正确地判断滚动容器，不显示标题时外层容器borderRadius失效，需要设置内层容器borderRadius即可",
+                    "default": false,
+                    "dictionary": [
+                        {
+                            "label": "开启",
+                            "value": true
+                        },
+                        {
+                            "label": "关闭",
+                            "value": false
+                        }
+                    ]
+                },
+                {
+                    "type": "radio",
+                    "styleType": "radio",
+                    "layoutType": "inline",
                     "text": "左侧图标",
                     "bindKey": "isShowLeftIcon",
                     "desc": "是否显示组件标题内的左侧图标",
@@ -106,7 +125,7 @@
                 {
                     "type": "inputNumber",
                     "layoutType": "inline",
-                    "text": "最多显示",
+                    "text": "显示数量",
                     "bindKey": "limit",
                     "desc": "设置组件列表最多显示几条",
                     "default": 3
@@ -394,7 +413,17 @@
                     "type": "box",
                     "layoutType": "block",
                     "text": "内外边距",
-                    "bindKey": "titleBox"
+                    "bindKey": "titleBox",
+                    "default": {
+                        "marginTopVal": "10px",
+                        "marginRightVal": "10px",
+                        "marginBottomVal": "",
+                        "marginLeftVal": "10px",
+                        "paddingTopVal": "",
+                        "paddingRightVal": "",
+                        "paddingBottomVal": "",
+                        "paddingLeftVal": ""
+                    }
                 }
             ]
         },
@@ -457,10 +486,10 @@
                         "marginRightVal": "10px",
                         "marginBottomVal": "10px",
                         "marginLeftVal": "10px",
-                        "paddingTopVal": "10px",
-                        "paddingRightVal": "10px",
+                        "paddingTopVal": "",
+                        "paddingRightVal": "",
                         "paddingBottomVal": "",
-                        "paddingLeftVal": "10px"
+                        "paddingLeftVal": ""
                     }
                 },
                 {
@@ -524,6 +553,28 @@
             "helpUrl": "",
             "children": [
                 {
+                    "type": "inlineGroup",
+                    "text": "宽高",
+                    "children": [
+                        {
+                            "type": "input",
+                            "layoutType": "block",
+                            "text": "宽",
+                            "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
+                            "bindKey": "subWidth",
+                            "default": "auto"
+                        },
+                        {
+                            "type": "input",
+                            "layoutType": "block",
+                            "text": "高",
+                            "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
+                            "bindKey": "subHeight",
+                            "default": "auto"
+                        }
+                    ]
+                },
+                {
                     "type": "input",
                     "layoutType": "inline",
                     "text": "阴影",
@@ -537,13 +588,26 @@
                     "text": "背景颜色",
                     "bindKey": "subBgColor",
                     "placeholder": "请选择颜色",
-                    "default": {}
+                    "default": {
+                        "hex": "#FFFFFF",
+                        "hex8": "#FFFFFFFF"
+                    }
                 },
                 {
                     "type": "box",
                     "layoutType": "block",
                     "text": "内外边距",
-                    "bindKey": "subBox"
+                    "bindKey": "subBox",
+                    "default": {
+                        "marginTopVal": "",
+                        "marginRightVal": "",
+                        "marginBottomVal": "",
+                        "marginLeftVal": "",
+                        "paddingTopVal": "",
+                        "paddingRightVal": "10px",
+                        "paddingBottomVal": "",
+                        "paddingLeftVal": "10px"
+                    }
                 },
                 {
                     "type": "border",
