@@ -104,6 +104,12 @@ export default {
             bannerData: { value: [] }
         }
     },
+    mounted() {
+        alert(window.navigator.userAgent)
+        if((/Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent))){
+            alert(true)
+        }
+    },
     computed: {
         swiperOption() {
             return {
@@ -151,7 +157,6 @@ export default {
         this.convertAttrToStyleObject()
         this.convertThemeListAttrToStyleObject()
     },
-    mounted() {},
     methods: {
         getImageUrl(url) {
             if (url && url.indexOf('/DreamWeb') == -1) {
