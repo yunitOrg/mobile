@@ -1,7 +1,17 @@
 <template>
     <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id">
-        <div class="IHeaderBar_app">
+        <div class="IHeaderBar_app flex_between">
+            <div class="IHeaderBar_app_left">
+                <img v-if="propData.logoImgSrc" :src="IDM.url.getWebPath(propData.logoImgSrc)" alt="">
+                <img v-else :src="IDM.url.getModuleAssetsWebPath(require('../assets/cms-logo.png'),this.moduleObject)" alt="">
+            </div>
+            <div @click="handleRightClick" class="IHeaderBar_app_right">
+                <SvgIcon icon-class="menu"></SvgIcon>
+            </div>
             
+        </div>
+        <!-- drag container -->
+        <div v-if="propData.isOpenBottomContainer" class="drag_container idm-navbar-bottom-animate" :style="bottomContainerStyle" :class="{ 'idm-navbar-bottom-fix': propData.bottomIsFixTop }" :idm-ctrl-id="moduleObject.id" idm-container-index="1" >
         </div>
     </div>
 </template>
@@ -24,14 +34,17 @@ export default {
             propData: this.$root.propData.compositeAttr || {
                 
             },
+            bottomContainerStyle: {},
+            bottomIsShow: true
         }
     },
     props: {
     },
     created() {
-        this.moduleObject = this.$root.moduleObject
+        this.moduleObject = this.$root.moduleObject;
+        this.bottomIsShow = this.propData.defaultStatusBottomContainer;
         this.convertAttrToStyleObject();
-        this.getMenuData()
+        this.setBottomContainerIsShow();
     },
     watch: {
         
@@ -41,36 +54,44 @@ export default {
     },
     destroyed() { },
     methods: {
-        getMenuData() {
-            if ( (!this.propData.customInterfaceUrl) || !this.propData.selectColumn ) {
-                let menu_list = [];
-                if ( this.propData.limit ) {
-                    for( let i = 0,maxi = menuData.length;i < maxi;i++ ) {
-                        if ( i < parseInt(this.propData.limit) ) {
-                            menu_list.push(menuData[i])
-                        }
-                    }
-                    this.menu_list = menu_list;
-                } else {
-                    this.menu_list = JSON.parse(JSON.stringify(menuData));
-                }
-                return
+        handleRightClick() {
+            if (this.propData.isOpenBottomContainer) {
+                this.bottomIsShow = !this.bottomIsShow;
+            } else {
+                this.bottomIsShow = false;
             }
-            IDM.http.get(this.propData.customInterfaceUrl,{
-                columnId: this.propData.selectColumn ? this.propData.selectColumn.id : '0',
-                limit: this.propData.limit || ''
-            }).then((res) => {
-                if (res && res.data && res.data.code == '200' && res.data.data ) {
-                    let result = this.propData.dataFiled ? this.getExpressData('resultData',this.propData.dataFiled,res.data.data) : res.data.data.rows;
-                    this.menu_list = result || [];
+            this.setBottomContainerIsShow()
+        },
+        setBottomContainerIsShow() {
+            if (this.propData.bottomIsFixTop) {
+                this.bottomContainerStyle = {
+                    top: this.propData.height
                 }
-            })
-        },
-        search(e) {
-            console.log(e)
-        },
-        clickGrid(e) {
-            console.log(e);
+            }
+            if (!this.propData.bottomIsFixTop && this.propData.isFixTop) {
+                this.bottomContainerStyle = {
+                    marginTop: this.propData.height
+                }
+            }
+            if (this.bottomIsShow) {
+                setTimeout(() => {
+                    this.bottomContainerStyle = {
+                        ...this.bottomContainerStyle,
+                        'min-height': '66px !important',
+                        height: 'auto !important'
+                    }
+                }, 300)
+            } else {
+                this.bottomContainerStyle = {
+                    ...this.bottomContainerStyle,
+                    'min-height': '0px !important',
+                    height: '0px !important'
+                }
+            }
+            this.bottomContainerStyle = {
+                ...this.bottomContainerStyle,
+                'z-index': this.propData.bottomZIndex,
+            }
         },
         /**
          * 提供父级组件调用的刷新prop数据组件
@@ -80,91 +101,9 @@ export default {
             this.convertAttrToStyleObject();
         },
         /** * 把属性转换成样式对象 */
-        convertAttrToStyleObjectMenu() {
-            var styleObject = {};
-            var styleObjectFont = {};
-            for (const key in this.propData) {
-                if (this.propData.hasOwnProperty.call(this.propData, key)) {
-                    const element = this.propData[key];
-                    if (!element && element !== false && element != 0) {
-                        continue;
-                    }
-                    switch (key) {
-                        case 'fontMenu':
-                            IDM.style.setFontStyle(styleObjectFont, element)
-                            this.adaptiveFontSize(styleObjectFont, element)
-                            break;
-                        case "boxMenu":
-                            if (element.marginTopVal) {
-                                styleObject["margin-top"] = `${element.marginTopVal}`;
-                            }
-                            if (element.marginRightVal) {
-                                styleObject["margin-right"] = `${element.marginRightVal}`;
-                            }
-                            if (element.marginBottomVal) {
-                                styleObject["margin-bottom"] = `${element.marginBottomVal}`;
-                            }
-                            if (element.marginLeftVal) {
-                                styleObject["margin-left"] = `${element.marginLeftVal}`;
-                            }
-                            if (element.paddingTopVal) {
-                                styleObject["padding-top"] = `${element.paddingTopVal}`;
-                            }
-                            if (element.paddingRightVal) {
-                                styleObject["padding-right"] = `${element.paddingRightVal}`;
-                            }
-                            if (element.paddingBottomVal) {
-                                styleObject["padding-bottom"] = `${element.paddingBottomVal}`;
-                            }
-                            if (element.paddingLeftVal) {
-                                styleObject["padding-left"] = `${element.paddingLeftVal}`;
-                            }
-                            break;
-                        case "borderMenu":
-                            if (element.border.top.width > 0) {
-                                styleObject["border-top-width"] = element.border.top.width + element.border.top.widthUnit;
-                                styleObject["border-top-style"] = element.border.top.style;
-                                if (element.border.top.colors.hex8) {
-                                    styleObject["border-top-color"] = element.border.top.colors.hex8;
-                                }
-                            }
-                            if (element.border.right.width > 0) {
-                                styleObject["border-right-width"] = element.border.right.width + element.border.right.widthUnit;
-                                styleObject["border-right-style"] = element.border.right.style;
-                                if (element.border.right.colors.hex8) {
-                                    styleObject["border-right-color"] = element.border.right.colors.hex8;
-                                }
-                            }
-                            if (element.border.bottom.width > 0) {
-                                styleObject["border-bottom-width"] = element.border.bottom.width + element.border.bottom.widthUnit;
-                                styleObject["border-bottom-style"] = element.border.bottom.style;
-                                if (element.border.bottom.colors.hex8) {
-                                    styleObject["border-bottom-color"] = element.border.bottom.colors.hex8;
-                                }
-                            }
-                            if (element.border.left.width > 0) {
-                                styleObject["border-left-width"] = element.border.left.width + element.border.left.widthUnit;
-                                styleObject["border-left-style"] = element.border.left.style;
-                                if (element.border.left.colors.hex8) {
-                                    styleObject["border-left-color"] = element.border.left.colors.hex8;
-                                }
-                            }
-                            styleObject["border-top-left-radius"] = element.radius.leftTop.radius + element.radius.leftTop.radiusUnit;
-                            styleObject["border-top-right-radius"] = element.radius.rightTop.radius + element.radius.rightTop.radiusUnit;
-                            styleObject["border-bottom-left-radius"] = element.radius.leftBottom.radius + element.radius.leftBottom.radiusUnit;
-                            styleObject["border-bottom-right-radius"] = element.radius.rightBottom.radius + element.radius.rightBottom.radiusUnit;
-                            break;
-                    }
-                }
-            }
-            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IMenuSearch_app_menu', styleObject);
-            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IMenuSearch_app_menu .van-grid-item__text', styleObjectFont);
-        },
-        convertAttrToStyleObjectSearch() {
-            var styleObject = {};
-            var styleObjectFont = {};
-            var styleObjectBg = {};
+        convertAttrToStyleObjectContent() {
             var styleObjectIcon = {};
+            var styleObjectLogo = {};
             for (const key in this.propData) {
                 if (this.propData.hasOwnProperty.call(this.propData, key)) {
                     const element = this.propData[key];
@@ -172,60 +111,28 @@ export default {
                         continue;
                     }
                     switch (key) {
-                        case 'bgColorSearch':
-                            if (element && element.hex8) {
-                                styleObjectBg["background-color"] = element.hex8;
-                            }
+                        case 'menuIconFontSize':
+                            styleObjectIcon['font-size'] = this.getAdaptiveSize(element.inputVal) + element.selectVal;
                             break;
-                        case 'fontSearch':
-                            IDM.style.setFontStyle(styleObjectFont, element)
-                            this.adaptiveFontSize(styleObjectFont, element)
-                            break;
-                        case "boxSearch":
-                            if (element.marginTopVal) {
-                                styleObject["margin-top"] = `${element.marginTopVal}`;
-                            }
-                            if (element.marginRightVal) {
-                                styleObject["margin-right"] = `${element.marginRightVal}`;
-                            }
-                            if (element.marginBottomVal) {
-                                styleObject["margin-bottom"] = `${element.marginBottomVal}`;
-                            }
-                            if (element.marginLeftVal) {
-                                styleObject["margin-left"] = `${element.marginLeftVal}`;
-                            }
-                            if (element.paddingTopVal) {
-                                styleObject["padding-top"] = `${element.paddingTopVal}`;
-                            }
-                            if (element.paddingRightVal) {
-                                styleObject["padding-right"] = `${element.paddingRightVal}`;
-                            }
-                            if (element.paddingBottomVal) {
-                                styleObject["padding-bottom"] = `${element.paddingBottomVal}`;
-                            }
-                            if (element.paddingLeftVal) {
-                                styleObject["padding-left"] = `${element.paddingLeftVal}`;
-                            }
-                            break;
-                        case 'fontSizeIcon':
-                            styleObjectIcon['font-size'] = element;
-                            break
-                        case 'fontColorIcon':
+                        case 'menuIconFontColor':
                             if (element && element.hex8) {
                                 styleObjectIcon["color"] = element.hex8;
                             }
-                            break
+                            break;
+                        case 'widthLogo':
+                            styleObjectLogo['width'] = this.getAdaptiveSize(element.inputVal,'',1) + element.selectVal;
+                            break;
+                        case 'heightLogo':
+                            styleObjectLogo['height'] = this.getAdaptiveSize(element.inputVal,'',1) + element.selectVal;
+                            break;
                     }
                 }
             }
-            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IMenuSearch_app_search', styleObject);
-            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IMenuSearch_app_search .van-grid-item__text', styleObjectFont);
-            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IMenuSearch_app_search .van-search__content', styleObjectBg);
-            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IMenuSearch_app_search .svg-icon', styleObjectIcon);
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IHeaderBar_app_left .img', styleObjectLogo);
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IHeaderBar_app_right svg', styleObjectIcon);
         },
         convertAttrToStyleObject() {
-            this.convertAttrToStyleObjectMenu()
-            this.convertAttrToStyleObjectSearch()
+            this.convertAttrToStyleObjectContent()
             var styleObject = {};
             if (this.propData.bgSize && this.propData.bgSize == "custom") {
                 styleObject["background-size"] = (this.propData.bgSizeWidth ? this.propData.bgSizeWidth.inputVal + this.propData.bgSizeWidth.selectVal : "auto") + " " + (this.propData.bgSizeHeight ? this.propData.bgSizeHeight.inputVal + this.propData.bgSizeHeight.selectVal : "auto")
@@ -446,29 +353,24 @@ export default {
 }
 </script>
 <style lang="scss">
-.IMenuSearch_app{
-    background: white;
-    .IMenuSearch_app_menu{
-        padding: 15px 0;
-        border-bottom: 1px solid  rgba(234,234,234,1);
-        .van-grid-item__content{
-            padding: 0;
-            background-color: none;
+.IHeaderBar_app{
+    .IHeaderBar_app_left{
+        img{
+            width: 232px;
+            height: 40px;
         }
     }
-    .IMenuSearch_app_search{
-        .svg-icon{
-            color: #999;
-        }
-        input::-webkit-input-placeholder{
-            // color: red;
-        }
-        .van-search__content{
-            // background: blue;
-        }
-        .van-field__control{
-            // color: red;
-        }
-    }
+    
 }
+.idm-navbar-bottom-animate {
+    overflow: hidden;
+    height: 80px !important;
+    transition: height 0.2s;
+}
+.idm-navbar-bottom-fix {
+    position: fixed;
+    left: 0;
+    width: 100%;
+}
+
 </style>
