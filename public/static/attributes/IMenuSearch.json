@@ -28,7 +28,7 @@
                     "text": "使用简称",
                     "desc":"使用栏目的简称",
                     "bindKey": "useShortName",
-                    "default": true,
+                    "default": false,
                     "dictionary": [
                         {
                             "label": "是",
