@@ -104,12 +104,6 @@ export default {
             bannerData: { value: [] }
         }
     },
-    mounted() {
-        alert(window.navigator.userAgent)
-        if((/Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent))){
-            alert(true)
-        }
-    },
     computed: {
         swiperOption() {
             return {
