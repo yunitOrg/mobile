@@ -586,15 +586,6 @@
               "default": "dues"
             },
             {
-              "type": "pageSelect",
-              "layoutType": "inline",
-              "text": "计算规则",
-              "desc": "点击计算规则应该跳转的页面",
-              "bindKey": "computationRule",
-              "display": "@[isShowHeader]",
-              "default": "computationRule"
-            },
-            {
               "type": "textarea",
               "layoutType": "inline",
               "text": "显示字段",
@@ -654,6 +645,13 @@
               "default": "attendance"
             }
           ]
+        },
+        {
+          "type": "pageSelect",
+          "layoutType": "inline",
+          "text": "计算规则",
+          "bindKey": "listJumpUrl",
+          "desc": "设置计算规则跳转的页面"
         },
         {
           "type": "select",

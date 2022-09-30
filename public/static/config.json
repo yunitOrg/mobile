@@ -275,6 +275,27 @@
       "className": "IntegralDetal",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.ifooter",
+      "comName": "页面底部",
+      "className": "IFooter",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.imenusearch",
+      "comName": "菜单搜索",
+      "className": "IMenuSearch",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.iheaderbar",
+      "comName": "页面头部",
+      "className": "IHeaderBar",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }

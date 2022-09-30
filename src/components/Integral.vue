@@ -11,8 +11,9 @@
   >
     <div class="idm-integral">
       <div class="integral-img" :style="`width:${propData.imgWidth};height:${propData.imgHeight};background-color: ${propData.colorBg}`" v-if="propData.showImg">
-        <img :src="propData.topImgUrl" v-if="propData.topImgUrl" alt="">
-        <img v-else src="../assets/integral.png" alt="">
+        <img :src="IDM.url.getWebPath(propData.topImgUrl)" v-if="propData.topImgUrl" alt="">
+        <img v-else :src="img" alt="">
+        <div class="integral-rule">{{propData.soreTitle}}</div>
         <div class="integral-position integral-white">
           <div class="integral-top-title">累计积分</div>
           <div class="integral-block">
@@ -37,23 +38,41 @@
           <div class="integral-li-p" v-for="(subitem, subindex) in item[propData.descFiled] || item.desc" :key="subindex">{{subitem}}</div>
           <div class="integral-tip" v-if="item.online">已获得{{item[propData.gotFiled] || item.got}}分/每日上限{{item[propData.onlineFiled] || item.online}}分</div>
         </div>
+        <ICommonEmpty
+            v-if="!isLoading && list.length === 0"
+            :moduleObject="moduleObject"
+            :propData="propData"
+        ></ICommonEmpty>
+        <div class="d-flex just-c" v-if="isLoading">
+            <van-loading size="24px" vertical>加载中...</van-loading>
+        </div>
       </div>
+    </div>
+    <div class="i-articleDetails-mask" v-if="moduleObject.env === 'develop' && !propData.dataSource" >
+      <span>！未绑定数据源</span>
     </div>
   </div>
 </template>
 
 <script>
 import { integralData } from '@/mock/mockData.js';
+import ICommonEmpty from '../commonComponents/ICommonEmpty'
 export default {
   name: 'Integral',
+  components: {
+    ICommonEmpty
+  },
   data () {
     return {
       moduleObject:{},
       pageData: {},
       list: [],
+      img: '',
+      isLoading: false,
       propData:this.$root.propData.compositeAttr||{
         imgWidth: 'auto',
         imgHeight: '200px',
+        soreTitle: '积分规则？',
         showImg: true,
         colorBg: "#DA1412",
         integralTitle: '积分奖励',
@@ -63,6 +82,8 @@ export default {
         allboxPostion: '35px',
         getBoxPostionTop: '15px',
         getBoxPostionRight: '-123px',
+        soreTop: '20px',
+        soreLeft: '20px',
         bgColor: {
           hex: '#ffffff',
           hex8: '#ffffffff'
@@ -78,7 +99,7 @@ export default {
           paddingLeftVal: ""
         },
         box: {
-          marginTopVal: "-0",
+          marginTopVal: "-20px",
           marginRightVal: "10px",
           marginBottomVal: "",
           marginLeftVal: "10px",
@@ -93,6 +114,9 @@ export default {
   created () {
     this.moduleObject = this.$root.moduleObject
     this.init()
+  },
+  mounted () {
+    this.img = IDM.url.getModuleAssetsWebPath(require("../assets/integral.png"), this.moduleObject)
   },
 
   methods: {
@@ -132,6 +156,7 @@ export default {
           liTtitleObject = {},
           btnObject = {},
           blockObject = {},
+          soreObject = {},
           positionObject = {},
           colorCheck = {};
       for (const key in this.propData) {
@@ -215,11 +240,20 @@ export default {
             case 'btnBorder':
               IDM.style.setBorderStyle(btnObject, element)
               break
-            
+            case 'soreFont':
+              IDM.style.setFontStyle(soreObject, element)
+              break
+            case 'soreTop':
+              soreObject['top'] = element
+              break
+            case 'soreLeft':
+              soreObject['left'] = element
+              break
           }
         }
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-position", positionObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-rule", soreObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-top-title", styleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-top span", liTtitleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .integral-block", blockObject);
@@ -237,6 +271,7 @@ export default {
       let that = this;
       const customInterfaceUrl = '/ctrl/dataSource/getDatas';
       if (this.moduleObject.env == "production") {
+        this.isLoading = true
         this.propData.dataSource &&
           IDM.http
             .post(
@@ -251,13 +286,17 @@ export default {
               }
             )
             .then((res) => {
-              if (res.type === "success") {
-                that.pageData = res.data || {};
-                that.list = res.data[that.propData.liFiled]
+              if (res.status == 200 && res.data.code == 200) {
+                let obj = (res.data || {}).data
+                that.pageData = obj;
+                that.list = obj[that.propData.liFiled]
               } else {
                 IDM.message.error(res.message);
               }
-            });
+            })
+            .finally(() => {
+              this.isLoading = false
+            })
       }
     },
     handleClick (row) {
@@ -313,7 +352,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.i-articleDetails-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span {
+    padding: 6px 20px;
+    color: #e6a23c;
+    background: #fdf6ec;
+    border: 1px solid #f5dab1;
+    border-radius: 4px;
+  }
+}
 .idm-integral{
+  .integral-rule{
+    position: absolute;
+  }
   .integral-img{
     position: relative;
     img{
@@ -335,6 +396,9 @@ export default {
         position: absolute;
       }
     }
+  }
+  .integral-bottom{
+    position: relative;
   }
   .integral-bottom .integral-li:last-child{
     border: 0;

@@ -106,7 +106,6 @@ export default {
         },
       ],
       dues: "",
-      computationRule: "",
       propData: this.$root.propData.compositeAttr || {
         isShowLine: true,
         themeList: [
@@ -179,62 +178,61 @@ export default {
      * 加载动态数据
      */
     initData() {
-      if (!this.moduleObject.env || this.moduleObject.env == "develop") {
-        // mock数据
-        setTimeout(() => {
-          this.activityList = [];
-          const res = {
-            data: {
-              data: [
-                {
-                  icon: "dydh",
-                  name: "党员大会",
-                  convene: "召开15次",
-                  personNum: "参会人数33人",
-                  attendance: "出席率25%"
-                },
-                {
-                  icon: "zwh",
-                  name: "支委会",
-                  convene: "召开15次",
-                  personNum: "参会人数33人",
-                  attendance: "出席率25%"
-                },
-                {
-                  icon: "dxzh",
-                  name: "党小组会",
-                  convene: "召开15次",
-                  personNum: "参会人数33人",
-                  attendance: "出席率25%"
-                },
-                {
-                  icon: "dk",
-                  name: "党课",
-                  convene: "召开15次",
-                  personNum: "参会人数33人",
-                  attendance: "出席率25%"
-                },
-                {
-                  icon: "ztdr",
-                  name: "主题党日",
-                  convene: "召开15次",
-                  personNum: "参会人数33人",
-                  attendance: "出席率25%"
-                },
-              ],
-              dues: "20.00",
-              computationRule: "#"
-            }
-
-          };
-          this.activityList = res.data.data
-          this.dues = res.data.dues
-          this.computationRule = res.data.computationRule
-          this.isLoading = false;
-        }, 0)
-      }
       let dataSource = this.propData.dataSource;
       if (!dataSource) {
+        if (!this.moduleObject.env || this.moduleObject.env == "develop") {
+          // mock数据
+          setTimeout(() => {
+            this.activityList = [];
+            const res = {
+              data: {
+                data: [
+                  {
+                    icon: "dydh",
+                    name: "党员大会",
+                    convene: "召开15次",
+                    personNum: "参会人数33人",
+                    attendance: "出席率25%"
+                  },
+                  {
+                    icon: "zwh",
+                    name: "支委会",
+                    convene: "召开15次",
+                    personNum: "参会人数33人",
+                    attendance: "出席率25%"
+                  },
+                  {
+                    icon: "dxzh",
+                    name: "党小组会",
+                    convene: "召开15次",
+                    personNum: "参会人数33人",
+                    attendance: "出席率25%"
+                  },
+                  {
+                    icon: "dk",
+                    name: "党课",
+                    convene: "召开15次",
+                    personNum: "参会人数33人",
+                    attendance: "出席率25%"
+                  },
+                  {
+                    icon: "ztdr",
+                    name: "主题党日",
+                    convene: "召开15次",
+                    personNum: "参会人数33人",
+                    attendance: "出席率25%"
+                  },
+                ],
+                dues: "20.00",
+              }
+
+            };
+            this.activityList = res.data.data
+            this.dues = res.data.dues
+            this.isLoading = false;
+          }, 0)
+        }
+
         this.isLoading = false;
         return;
       }
@@ -266,13 +264,32 @@ export default {
             this.activityList.push(tempItem)
           }
         } else {
+          this.activityList = []
+          this.dues=""
           console.log(url + "请求失败");
         }
       }).error((response) => {
+        this.activityList = []
+        this.dues=""
         console.log(url + "请求失败");
       }).always((res) => {
         this.isLoading = false;
       });
+    },
+    /**
+     * 通用的url参数对象
+     * 所有地址的url参数转换
+     */
+    commonParam() {
+      let urlObject = IDM.url.queryObject();
+      var params = {
+        pageId:
+            window.IDM.broadcast && window.IDM.broadcast.pageModule
+                ? window.IDM.broadcast.pageModule.id
+                : "",
+        urlData: JSON.stringify(urlObject),
+      };
+      return params;
     },
     /**
      * 通用的获取表达式匹配后的结果
@@ -594,10 +611,10 @@ export default {
     //点击计算规则跳转的地址
     ruleDetail() {
 
-      if (this.propData.computationRule !== {} && this.propData.computationRule.id !== "") {
+      if (this.propData.listJumpUrl && this.propData.listJumpUrl.length > 0) {
         IDM.router.push(
-            this.moduleObject.routerId,
-            this.propData.computationRule.id,
+            this.moduleObject.pageid,
+            this.propData.listJumpUrl[0].id,
             {
               keep: true,
               enterAnim: '',
@@ -607,7 +624,8 @@ export default {
       } else {
         IDM.message.warning("请选择要跳转的子页面");
       }
-    }
+    },
+    // Function to open an S3 file
   }
 }
 </script>

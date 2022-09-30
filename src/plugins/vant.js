@@ -20,7 +20,8 @@ import {
     DropdownMenu,
     DropdownItem,
     Popup,
-    ActionSheet
+    ActionSheet,
+    List
 } from 'vant'
 
 Vue.use(Tab)
@@ -43,3 +44,4 @@ Vue.use(Tab)
     .use(DropdownItem)
     .use(Popup)
     .use(ActionSheet)
+    .use(List)

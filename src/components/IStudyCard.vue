@@ -7,7 +7,7 @@
       <van-loading v-if="isLoading" size="24px" vertical>加载中...</van-loading>
       <template v-else>
         <div class="study-card">
-          <div class="study-card-header">
+          <div class="study-card-header" v-if="propData.isShowHeadText">
             <div class="left">
               <a-space class="icon">
                 <svg-icon icon-class="shu"/>
@@ -29,8 +29,8 @@
                 <img :src="item.image">
                 <div class="videoData">
                   <div class="left-data">
-                    <svg-icon icon-class="youtube" color="white"  v-show="propData.isShowVideoNum"/>
-                    <p class="video-data-text"  v-show="propData.isShowVideoNum">{{ item.amountOfPlay }}</p>
+                    <svg-icon icon-class="youtube" color="white" v-show="propData.isShowVideoNum"/>
+                    <p class="video-data-text" v-show="propData.isShowVideoNum">{{ item.amountOfPlay }}</p>
                   </div>
                   <p class="video-data-text"> {{ item.releaseDate }}</p></div>
               </div>
@@ -55,9 +55,10 @@ export default {
       moduleObject: {},
       propData: this.$root.propData.compositeAttr || {
         headText: "学习精选",
-        "isShowMore":true,
-        "isShowVideoNum":true,
-        themeList:[
+        "isShowMore": true,
+        "isShowHeadText": true,
+        "isShowVideoNum": true,
+        themeList: [
           {
             "key": "blue",
             "mainColor": {
@@ -75,7 +76,7 @@ export default {
           amountOfPlay: 1200,
           releaseDate: "2022-8-17",
           videoIntroduction: "安徽合肥：多彩过暑假，实践有收获",
-          videoUrl:"#1"
+          videoUrl: "#1"
         },
         {
           index: 2,
@@ -83,7 +84,7 @@ export default {
           amountOfPlay: 1200,
           releaseDate: "2022-8-17",
           videoIntroduction: "浙江宁波：植物观察 地质探索 假期研学快乐多",
-          videoUrl:"#2"
+          videoUrl: "#2"
         },
         {
           index: 3,
@@ -91,7 +92,7 @@ export default {
           amountOfPlay: 1200,
           releaseDate: "2022-8-17",
           videoIntroduction: "河南内乡：戏曲博物馆里过暑假，品味非遗文化",
-          videoUrl:"#3"
+          videoUrl: "#3"
         },
         {
           index: 4,
@@ -99,7 +100,23 @@ export default {
           amountOfPlay: 1200,
           releaseDate: "2022-8-17",
           videoIntroduction: "河南鹤壁淇滨区:“双减”下的暑假劳动教育结硕果",
-          videoUrl:"#4"
+          videoUrl: "#4"
+        },
+        {
+          index: 5,
+          image: "https://boot-img.xuexi.cn/contribute_img/20220809100554/66386949742976920.jpg",
+          amountOfPlay: 1200,
+          releaseDate: "2022-8-17",
+          videoIntroduction: "河南鹤壁淇滨区:“双减”下的暑假劳动教育结硕果",
+          videoUrl: "#4"
+        },
+        {
+          index: 6,
+          image: "https://boot-img.xuexi.cn/contribute_img/20220809100554/66386949742976920.jpg",
+          amountOfPlay: 1200,
+          releaseDate: "2022-8-17",
+          videoIntroduction: "河南鹤壁淇滨区:“双减”下的暑假劳动教育结硕果",
+          videoUrl: "#4"
         }
       ]
     }
@@ -109,7 +126,6 @@ export default {
     this.moduleObject = this.$root.moduleObject
     this.convertAttrToStyleObject();
     this.convertThemeListAttrToStyleObject();
-
   },
   methods: {
     /**
@@ -124,9 +140,9 @@ export default {
     /**
      * 图片适配
      */
-    getImgScale(pageWidth){
-      let width = this.moduleObject.env === "production" ? window.innerWidth :pageWidth || 414
-      return width/414
+    getImgScale(pageWidth) {
+      let width = this.moduleObject.env === "production" ? window.innerWidth : pageWidth || 414
+      return width / 414
     },
 
     /**
@@ -156,53 +172,69 @@ export default {
      * 加载动态数据
      */
     initData() {
-      if (!this.moduleObject.env || this.moduleObject.env === "develop") {
-        // mock数据
-        setTimeout(()=>{
-          this.infoList = [];
-          const res = {
-            data:[
-              {
-                index: 1,
-                image: "https://boot-img.xuexi.cn/lego/image/2562_newsSlider/dc0441f5511b41fc9f7606e415dea00c.png",
-                amountOfPlay: 1500,
-                releaseDate: "2022-9-7",
-                videoIntroduction: "安徽合肥：多彩过暑假，实践有收获",
-                videoUrl:"#1"
-              },
-              {
-                index: 2,
-                image: "https://boot-img.xuexi.cn/lego/image/2562_newsSlider/b4fbbb9fd80745f99c77a1f1682a3740.jpg",
-                amountOfPlay: 1500,
-                releaseDate: "2022-9-7",
-                videoIntroduction: "浙江宁波：植物观察 地质探索 假期研学快乐多",
-                videoUrl:"#2"
-              },
-              {
-                index: 3,
-                image: "https://boot-img.xuexi.cn/lego/image/2562_newsSlider/05776bf6034d40b882366297006da726.jpg",
-                amountOfPlay: 1500,
-                releaseDate: "2022-9-7",
-                videoIntroduction: "河南内乡：戏曲博物馆里过暑假，品味非遗文化",
-                videoUrl:"#3"
-              },
-              {
-                index: 4,
-                image: "https://boot-img.xuexi.cn/contribute_img/20220809100554/66386949742976920.jpg",
-                amountOfPlay: 1500,
-                releaseDate: "2022-9-7",
-                videoIntroduction: "河南鹤壁淇滨区:“双减”下的暑假劳动教育结硕果",
-                videoUrl:"#4"
-              }
-            ]
-          };
-          this.videoData = res.data
-          this.isLoading = false;
-        },0)
-      }
-
       let dataSource = this.propData.dataSource;
       if (!dataSource) {
+        if (!this.moduleObject.env || this.moduleObject.env === "develop") {
+          // mock数据
+          setTimeout(() => {
+            this.infoList = [];
+            const res = {
+              data: [
+                {
+                  index: 1,
+                  image: "https://boot-img.xuexi.cn/lego/image/2562_newsSlider/dc0441f5511b41fc9f7606e415dea00c.png",
+                  amountOfPlay: 1500,
+                  releaseDate: "2022-9-7",
+                  videoIntroduction: "安徽合肥：多彩过暑假，实践有收获",
+                  videoUrl: "#1"
+                },
+                {
+                  index: 2,
+                  image: "https://boot-img.xuexi.cn/lego/image/2562_newsSlider/b4fbbb9fd80745f99c77a1f1682a3740.jpg",
+                  amountOfPlay: 1500,
+                  releaseDate: "2022-9-7",
+                  videoIntroduction: "浙江宁波：植物观察 地质探索 假期研学快乐多",
+                  videoUrl: "#2"
+                },
+                {
+                  index: 3,
+                  image: "https://boot-img.xuexi.cn/lego/image/2562_newsSlider/05776bf6034d40b882366297006da726.jpg",
+                  amountOfPlay: 1500,
+                  releaseDate: "2022-9-7",
+                  videoIntroduction: "河南内乡：戏曲博物馆里过暑假，品味非遗文化",
+                  videoUrl: "#3"
+                },
+                {
+                  index: 4,
+                  image: "https://boot-img.xuexi.cn/contribute_img/20220809100554/66386949742976920.jpg",
+                  amountOfPlay: 1500,
+                  releaseDate: "2022-9-7",
+                  videoIntroduction: "河南鹤壁淇滨区:“双减”下的暑假劳动教育结硕果",
+                  videoUrl: "#4"
+                },
+                {
+                  index: 5,
+                  image: "https://boot-img.xuexi.cn/contribute_img/20220809100554/66386949742976920.jpg",
+                  amountOfPlay: 1200,
+                  releaseDate: "2022-8-17",
+                  videoIntroduction: "河南鹤壁淇滨区:“双减”下的暑假劳动教育结硕果",
+                  videoUrl: "#4"
+                },
+                {
+                  index: 6,
+                  image: "https://boot-img.xuexi.cn/contribute_img/20220809100554/66386949742976920.jpg",
+                  amountOfPlay: 1200,
+                  releaseDate: "2022-8-17",
+                  videoIntroduction: "河南鹤壁淇滨区:“双减”下的暑假劳动教育结硕果",
+                  videoUrl: "#4"
+                }
+              ]
+            };
+            this.videoData = res.data
+            this.isLoading = false;
+          }, 0)
+        }
+
         this.isLoading = false;
         return;
       }
@@ -215,18 +247,17 @@ export default {
             },
           }
       ).done((res) => {
-        console.log(res, "接口数据");
         if (res.code === "200") {
           let tempList = []
           this.videoData = []
           tempList = this.propData.dataFiled
               ? this.getExpressData("dataName", this.propData.dataFiled, res)
               : res;
-          for(let i = 0;i<tempList.length;i++){
-            let tempItem={}
+          for (let i = 0; i < tempList.length; i++) {
+            let tempItem = {}
             tempItem.index = i
             for (let name in tempList[i]) {
-              tempItem[name]=tempList[i][name]
+              tempItem[name] = tempList[i][name]
             }
             tempItem.image = tempList[i][this.propData.videoImage]
             tempItem.amountOfPlay = tempList[i][this.propData.videoAmountOfPlay]
@@ -235,13 +266,30 @@ export default {
             this.videoData.push(tempItem)
           }
         } else {
+          this.videoData = []
           console.log(url + "请求失败");
         }
       }).error((response) => {
+        this.videoData = []
         console.log(url + "请求失败");
       }).always((res) => {
         this.isLoading = false;
       });
+    },
+    /**
+     * 通用的url参数对象
+     * 所有地址的url参数转换
+     */
+    commonParam() {
+      let urlObject = IDM.url.queryObject();
+      var params = {
+        pageId:
+            window.IDM.broadcast && window.IDM.broadcast.pageModule
+                ? window.IDM.broadcast.pageModule.id
+                : "",
+        urlData: JSON.stringify(urlObject),
+      };
+      return params;
     },
     /**
      * 通用的获取表达式匹配后的结果
@@ -529,22 +577,29 @@ export default {
 
     //点击更多的回调函数
     showMoreData() {
-      if (this.propData.showMoreUrl && this.propData.showMoreUrl.id)
+      if (this.propData.showMoreUrl && this.propData.showMoreUrl.length > 0) {
         IDM.router.push(
-            this.moduleObject.routerId,
-            this.propData.showMoreUrl.id,
+            this.moduleObject.pageid,
+            this.propData.showMoreUrl[0].id,
             {
               keep: true,
+              enterAnim: "",
+              quitAnim: ""
             }
         );
+      } else {
+        IDM.message.warning("请选择要跳转的子页面");
+      }
     },
 
     //点击视频卡片后跳转函数
-    toVideo(item){
-      if (this.propData.listJumpUrl !=={} && this.propData.listJumpUrl.id !== "") {
+    toVideo(item) {
+      console.log(this.propData.listJumpUrl)
+
+      if (this.propData.listJumpUrl && this.propData.listJumpUrl.length > 0) {
         IDM.router.push(
-            this.moduleObject.routerId,
-            this.propData.listJumpUrl.id,
+            this.moduleObject.pageid,
+            this.propData.listJumpUrl[0].id,
             {
               keep: true,
               params: item,
@@ -552,8 +607,7 @@ export default {
               quitAnim: ''
             }
         );
-      }
-      else {
+      } else {
         IDM.message.warning("请选择要跳转的子页面");
       }
     },
@@ -568,12 +622,12 @@ export default {
      * } object
      */
     receiveBroadcastMessage(messageObject) {
-      switch(messageObject.type) {
+      switch (messageObject.type) {
         case 'websocket':
-          if(this.propData.messageRefreshKey && messageObject.message){
+          if (this.propData.messageRefreshKey && messageObject.message) {
             const messageData = typeof messageObject.message === 'string' && JSON.parse(messageObject.message) || messageObject.message
             const arr = Array.isArray(this.propData.messageRefreshKey) ? this.propData.messageRefreshKey : [this.propData.messageRefreshKey]
-            if(messageData.badgeType && arr.includes(messageData.badgeType)){
+            if (messageData.badgeType && arr.includes(messageData.badgeType)) {
               this.isLoading = true;
               this.initData();
             }
@@ -612,13 +666,13 @@ $imgScale: var(--i-studycard-imgScale);
     padding: 0 calc(12px * #{ $scale });
 
     &-header {
-      margin: calc(18px * #{ $scale }) 0 calc(16px * #{ $scale }) 0;
+      margin: calc(18px * #{ $scale }) 0 calc(8px * #{ $scale }) 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
       align-content: center;
 
-      .left{
+      .left {
         display: flex;
         justify-content: center;
         flex-wrap: nowrap;
@@ -628,13 +682,14 @@ $imgScale: var(--i-studycard-imgScale);
         margin-left: calc(-4px * #{ $scale });
 
         .left-text {
-          font-family: arial, helvetica, 'microsoft yahei',serif;
+          font-family: arial, helvetica, 'microsoft yahei', serif;
           color: #333333FF;
           font-size: calc(18px * #{ $scale });
           line-height: calc(18px * #{ $scale });
           font-weight: 800;
         }
-      };
+      }
+    ;
 
 
       .right {
@@ -646,7 +701,7 @@ $imgScale: var(--i-studycard-imgScale);
         color: rgb(205, 6, 3);
 
         .right-text {
-          font-family: arial, helvetica, 'microsoft yahei',serif;
+          font-family: arial, helvetica, 'microsoft yahei', serif;
           padding-right: calc(5px * #{ $scale });
           font-size: calc(14px * #{ $scale });
           line-height: calc(14px * #{ $scale });
@@ -674,6 +729,7 @@ $imgScale: var(--i-studycard-imgScale);
       align-content: space-around;
       justify-content: space-between;
       flex-direction: row;
+      margin: calc(8px * #{ $scale }) 0 0 0;
       height: 100%;
       padding: 0;
 
@@ -682,7 +738,7 @@ $imgScale: var(--i-studycard-imgScale);
         width: 48%;;
         height: auto;
         margin: 0 0 calc(14px * #{ $scale }) 0;
-        border: calc(1px * #{ $scale }) solid rgba(237,237,237, 1);
+        border: calc(1px * #{ $scale }) solid rgba(237, 237, 237, 1);
         border-radius: calc(4px * #{ $scale });
         overflow: hidden;
 
@@ -707,7 +763,7 @@ $imgScale: var(--i-studycard-imgScale);
           height: 18%;
           display: flex;
           justify-content: space-between;
-          padding: calc(2px * #{ $scale }) calc(4px  * #{ $scale });
+          padding: calc(2px * #{ $scale }) calc(4px * #{ $scale });
           align-items: center;
           font-size: calc(12px * #{ $scale });
           line-height: calc(12px * #{ $scale });
@@ -756,7 +812,7 @@ $imgScale: var(--i-studycard-imgScale);
   }
 }
 
-.IStudy-Card-mask{
+.IStudy-Card-mask {
   position: absolute;
   top: 0;
   left: 0;
@@ -767,6 +823,7 @@ $imgScale: var(--i-studycard-imgScale);
   display: flex;
   justify-content: center;
   align-items: center;
+
   span {
     padding: 6px 20px;
     color: #e6a23c;

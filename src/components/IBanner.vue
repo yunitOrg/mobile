@@ -151,7 +151,6 @@ export default {
         this.convertAttrToStyleObject()
         this.convertThemeListAttrToStyleObject()
     },
-    mounted() {},
     methods: {
         getImageUrl(url) {
             if (url && url.indexOf('/DreamWeb') == -1) {

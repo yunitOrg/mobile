@@ -62,7 +62,7 @@ export default {
         },
         setAllCheckStatus(isCheck) {
             this.componentData = this.componentData.map((el) => {
-                el.children = el.children.map((els) => ({ ...els, isCheck }))
+                el.children = el.children && el.children.map((els) => ({ ...els, isCheck })) || []
                 return { ...el, isCheck }
             })
         },
@@ -70,9 +70,9 @@ export default {
             const currentChildren = _.cloneDeep(this.componentData[itemIndex].children)
             const value = this.componentData[itemIndex].isCheck
             if (value) {
-                currentChildren.forEach((el) => (el.isCheck = true))
+                currentChildren && currentChildren.forEach((el) => (el.isCheck = true))
             } else {
-                currentChildren.forEach((el) => (el.isCheck = false))
+                currentChildren && currentChildren.forEach((el) => (el.isCheck = false))
             }
             this.$set(this.componentData[itemIndex], 'children', currentChildren)
             this.sendMessageToFootBtn()
@@ -95,7 +95,8 @@ export default {
                 rangeModule: this.propData.triggerComponents.map((el) => el.moduleId),
                 message: {
                     total: this.componentData.length,
-                    selectNumber: this.componentData.filter((el) => el.isCheck).length
+                    selectNumber: this.componentData.filter((el) => el.isCheck).length,
+                    list: this.componentData
                 }
             })
         },
@@ -283,6 +284,7 @@ export default {
                 })
         },
         receiveBroadcastMessage(object) {
+            console.log('多选卡片收到消息 ----->', object)
             switch (object.type) {
                 case 'ifootbtn-all':
                     if (object.message) this.setAllCheckStatus(object.message.checkAll)

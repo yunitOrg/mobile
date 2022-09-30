@@ -26,6 +26,7 @@
         :options="item.options"
         :formData="formData"
         :params="item"
+        :moduleObject="moduleObject"
         @callFunc="handleClickCall"
       ></InputFactory>
     </div>
@@ -415,12 +416,16 @@ export default {
     },
     // 回填从router获取到的数据
     getPrevPageRouterParams () {
-      this.formData = this.getRouterParams()
+      const obj = this.getRouterParams();
+      if (!obj.$el) {
+        this.formData = obj
+      }
     },
     // 回填数据
     handleBackData () {
       if (this.moduleObject.env == "production") {
-        const routerParams = this.getRouterParams()
+        const obj = this.getRouterParams();
+        const routerParams = !obj.$el ? obj : {}
         this.propData.dataSource &&
           IDM.http
             .post(

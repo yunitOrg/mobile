@@ -4,5 +4,278 @@
   "className": "IntegralDetal",
   "comType": "common",
   "comLangue": "vue",
-  "compositeAttr": []
+  "compositeAttr": [
+    {
+      "type": "input",
+      "layoutType": "inline",
+      "text": "唯一标识",
+      "bindKey": "ctrlId",
+      "disabled": true,
+      "default": "@[packageid]",
+      "desc": "",
+      "helpUrl": ""
+    },
+    {
+      "type": "group",
+      "text": "基本属性",
+      "desc": "提供设置组件能达到展示效果的基本属性设置信息",
+      "children": [
+        {
+          "type": "switch",
+          "layoutType": "inline",
+          "text": "头部显示",
+          "desc": "头部是否显示",
+          "bindKey": "scoreTopBox",
+          "default": true
+        },
+        {
+          "type": "switch",
+          "layoutType": "inline",
+          "text": "获得积分",
+          "desc": "已获得积分是否显示",
+          "bindKey": "scoreShow",
+          "default": true
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "积分文字",
+          "bindKey": "scoreAllTitle",
+          "display": "@[scoreShow]",
+          "default": "已获得积分"
+        },
+        {
+          "type": "switch",
+          "layoutType": "inline",
+          "text": "积分标题",
+          "desc": "积分标题是否显示",
+          "bindKey": "scoreTitleShow",
+          "default": true
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "积分标题文字",
+          "bindKey": "scoreTitleFont",
+          "display": "@[scoreTitleShow]",
+          "default": "获得积分记录"
+        } 
+      ]
+    },
+    {
+      "type": "group",
+      "text": "头部样式设置",
+      "desc": "点击？查看样式设置用法指南",
+      "helpUrl": "",
+      "children": [
+        {
+          "type": "box",
+          "layoutType": "block",
+          "text": "内外边距",
+          "bindKey": "topbox",
+          "default": {
+            "marginTopVal": "",
+            "marginRightVal": "",
+            "marginBottomVal": "",
+            "marginLeftVal": "",
+            "paddingTopVal": "20px",
+            "paddingRightVal": "",
+            "paddingBottomVal": "40px",
+            "paddingLeftVal": ""
+          }
+        },
+        {
+          "type": "colorPicker",
+          "layoutType": "inline",
+          "text": "背景色",
+          "bindKey": "boxtopbg",
+          "placeholder": "请选择颜色",
+          "default": {
+            "hex": "#FFFFFF",
+            "hex8": "#FFFFFFFF"
+          }
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "容器阴影",
+          "bindKey": "boxtopShadow",
+          "default": "0px 0px 10px 0px #e3dede"
+        },
+        {
+          "type": "font",
+          "layoutType": "block",
+          "text": "标题样式",
+          "bindKey": "topTitleStyle"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "积分距离顶部距离",
+          "desc": "积分距离顶部距离",
+          "bindKey": "topDescStyle",
+          "default": "10px"
+        },
+        {
+          "type": "font",
+          "layoutType": "block",
+          "text": "分数样式",
+          "bindKey": "topScoreStyle"
+        },
+        {
+          "type": "font",
+          "layoutType": "block",
+          "text": "积分样式",
+          "bindKey": "topScoreTips"
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "text": "底部样式设置",
+      "desc": "点击？查看样式设置用法指南",
+      "helpUrl": "",
+      "children": [
+        {
+          "type": "box",
+          "layoutType": "block",
+          "text": "内外边距",
+          "bindKey": "box",
+          "default": {
+            "marginTopVal": "",
+            "marginRightVal": "",
+            "marginBottomVal": "",
+            "marginLeftVal": "",
+            "paddingTopVal": "15px",
+            "paddingRightVal": "10px",
+            "paddingBottomVal": "",
+            "paddingLeftVal": "10px"
+          }
+        },
+        {
+          "type": "font",
+          "layoutType": "block",
+          "text": "积分记录样式",
+          "desc": "积分记录样式",
+          "bindKey": "scoreTitle"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "积分记录距离底部距离",
+          "desc": "积分记录距离底部距离",
+          "bindKey": "scoreTiBtom",
+          "default": "10px"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "列表阴影",
+          "bindKey": "liShadown",
+          "default": "0px 0px 10px 0px #e3dede"
+        },
+        {
+          "type": "box",
+          "layoutType": "block",
+          "text": "列表边距",
+          "bindKey": "liBox",
+          "default": {
+            "marginTopVal": "",
+            "marginRightVal": "",
+            "marginBottomVal": "",
+            "marginLeftVal": "",
+            "paddingTopVal": "10px",
+            "paddingRightVal": "10px",
+            "paddingBottomVal": "10px",
+            "paddingLeftVal": "10px"
+          }
+        },
+        {
+          "type": "font",
+          "layoutType": "block",
+          "text": "列表标题",
+          "desc": "列表标题字体",
+          "bindKey": "liTitleFont"
+        },
+        {
+          "type": "font",
+          "layoutType": "block",
+          "text": "列表日期",
+          "desc": "列表日期字体",
+          "bindKey": "liTimeFont"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "日期距离顶部距离",
+          "desc": "日期距离顶部距离",
+          "bindKey": "liTimeMar",
+          "default": "10px"
+        },
+        {
+          "type": "font",
+          "layoutType": "block",
+          "text": "列表积分",
+          "desc": "积分积分字体",
+          "bindKey": "liScoreFont"
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "text": "高级",
+      "desc": "点击？查看高级设置用法指南",
+      "children": [
+        {
+          "type": "treeSelect",
+          "layoutType": "inline",
+          "text": "数据源",
+          "bindKey": "dataSource",
+          "dataSourceUrl": "/ctrl/dataSource/getDatasourceByGroup"
+        },
+        {
+          "type": "group",
+          "text": "字段设置",
+          "desc": "页面数据绑定",
+          "children": [
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "总积分",
+              "bindKey": "allField",
+              "default": "scoreAll"
+            },
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "列表字段",
+              "bindKey": "liField",
+              "default": "list"
+            },
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "标题字段",
+              "bindKey": "titleField",
+              "default": "title"
+            },
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "日期字段",
+              "bindKey": "timeField",
+              "default": "time"
+            },
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "积分字段",
+              "bindKey": "onlineField",
+              "default": "score"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

@@ -46,8 +46,8 @@ export default {
     },
     publishCommentContent(){
       let that = this;
+      this.commentContent = ""
       let dataSource = this.propData.publishComment;
-
       if (this.propData.publishComment && this.propData.publishComment[0]) {
         const publishComment = this.propData.publishComment[0];
         const func = window[publishComment.name];
@@ -56,7 +56,7 @@ export default {
           commentContent:this.commentContent,
           ...that.commonParam(),
           customParam: publishComment.param,
-          _this: that,
+          routerParams: this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId) : {}
         });
 
         let source = {id: dataSource.value}
@@ -76,12 +76,16 @@ export default {
               console.log(res, "接口数据");
               if (res.code === "200") {
 
-                that.sendBroadcastMessage({
-                  type: 'linkageResult',
-                  rangeModule:
-                      this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
-                  message: { }
-                });
+                console.log("发送刷新消息：00111-------------------------------------");
+
+                let moduleIdArray = this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId);
+                console.log(moduleIdArray);
+
+                IDM.broadcast.send({
+                  type:"linkageReload",
+                  message:{},
+                  rangeModule:moduleIdArray
+                })
 
               } else {
                 console.log(url + "请求失败");

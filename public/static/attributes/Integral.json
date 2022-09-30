@@ -68,6 +68,43 @@
             "placeholder": "请选择颜色"
           },
           {
+            "type": "group",
+            "text": "积分规则",
+            "desc": "积分规则",
+            "helpUrl": "",
+            "children": [
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "文字",
+                "bindKey": "soreTitle",
+                "default": "积分规则？"
+              },
+              {
+                "type": "font",
+                "layoutType": "block",
+                "text": "字体",
+                "bindKey": "soreFont"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "距离顶部",
+                "desc": "距离顶部距离",
+                "bindKey": "soreTop",
+                "default": "20px"
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "距离左边",
+                "desc": "距离左边距离",
+                "bindKey": "soreLeft",
+                "default": "20px"
+              }
+            ]
+          },
+          {
             "type": "font",
             "layoutType": "block",
             "text": "累计积分",
@@ -308,8 +345,8 @@
               {
                 "name": "去看看",
                 "btnBg": {
-                  "hex": "##CD0502",
-                  "hex8": "##CD0502FF"
+                  "hex": "#CD0502",
+                  "hex8": "#CD0502FF"
                 }
               }
             ]

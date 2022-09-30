@@ -187,12 +187,14 @@ export default {
         return;
       }
       let url = `ctrl/dataSource/getDatas`;
+      const routerParams = this.detailFileterParams();
       IDM.http
         .post(
           url,
           {
             id: dataSource.value,
-            commentId: this.commonParam() && this.commonParam().commentId
+            commentId: this.commonParam() && this.commonParam().commentId,
+            ...routerParams
           },
           {
             headers: {
@@ -227,10 +229,10 @@ export default {
      * 回复跳转
      */
     replyClick(item) {
-      if (this.propData.replyJump && this.propData.replyJump.id)
+      if (this.propData.replyJump && this.propData.replyJump[0].id)
         IDM.router.push(
-          this.moduleObject.routerId,
-          this.propData.replyJump.id,
+          this.moduleObject.pageid,
+          this.propData.replyJump[0].id,
           {
             keep: true,
             params: { id: item.id },
@@ -700,6 +702,28 @@ export default {
       };
       return params;
     },
+    // 获取router的数据
+    getRouterParams () {
+      return this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId): {};
+    },
+    // 过滤接口参数
+    fileterParams () {
+      let obj = {};
+      if (this.propData.customClickFunc && this.propData.customClickFunc.length > 0) {
+        let name = this.propData.customClickFunc[0].name
+        obj = window[name] && window[name].call(this, this.getRouterParams());
+      }
+      return obj
+    },
+    // 过滤接口参数
+    detailFileterParams () {
+      let obj = {};
+      if (this.propData.detailCustomClickFunc && this.propData.detailCustomClickFunc.length > 0) {
+        let name = this.propData.detailCustomClickFunc[0].name
+        obj = window[name] && window[name].call(this, this.getRouterParams());
+      }
+      return obj
+    },
     /**
      * 加载动态数据
      */
@@ -787,12 +811,14 @@ export default {
         this.loading = false;
         return;
       }
+      const routerParams = this.fileterParams();
       let url = `ctrl/dataSource/getDatas`;
       IDM.http
         .post(
           url,
           {
             id: dataSource.value,
+            ...routerParams
           },
           {
             headers: {
@@ -811,6 +837,7 @@ export default {
             this.loading = false;
           } else {
             console.log(url + "请求失败");
+            this.finished = true;
           }
         })
         .error((response) => {

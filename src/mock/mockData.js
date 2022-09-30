@@ -321,3 +321,29 @@ export const integralData = {
         },
     ]
 }
+// 我的积分详情
+export const integralDetailData = {
+    scoreAll: 4651,
+    list:[
+        {
+            title: '阅读文章',
+            time: '2022-06-30 23:59:59',
+            score: '1'
+        },
+        {
+            title: '阅读文章',
+            time: '2022-06-30 23:59:59',
+            score: '1'
+        },
+        {
+            title: '阅读文章',
+            time: '2022-06-30 23:59:59',
+            score: '1'
+        },
+        {
+            title: '阅读文章',
+            time: '2022-06-30 23:59:59',
+            score: '1'
+        }
+    ]
+}
