@@ -44,6 +44,7 @@ export default {
         this.moduleObject = this.$root.moduleObject;
         this.bottomIsShow = this.propData.defaultStatusBottomContainer;
         this.convertAttrToStyleObject();
+        this.convertThemeListAttrToStyleObject()
         this.setBottomContainerIsShow();
     },
     watch: {
@@ -93,6 +94,42 @@ export default {
                 'z-index': this.propData.bottomZIndex,
             }
         },
+        /** * 主题颜色 */
+        convertThemeListAttrToStyleObject() {
+            const themeList = this.propData.themeList;
+            if ( (!themeList) || !themeList.length ) {
+                return
+            }
+            const themeNamePrefix = IDM.setting && IDM.setting.applications && IDM.setting.applications.themeNamePrefix ? IDM.setting.applications.themeNamePrefix : "idm-theme-";
+            for (var i = 0; i < themeList.length; i++) {
+                var item = themeList[i];
+                
+                if(item.key!=IDM.theme.getCurrentThemeInfo()){
+                    //此处比对是不渲染输出不用的样式，如果页面会刷新就可以把此处放开
+                    continue;
+                }
+                let fontStyleObject = {
+                    "color": item.mainColor ? item.mainColor.hex8 : "",
+                }
+                let fontStyleObjectButton = {
+                    "color": '#fff',
+                }
+                let borderStyleObject = {
+                    'border-color': item.mainColor ? item.mainColor.hex8 : "",
+                }
+                let backgroundBorderObject = {
+                    'color': '#fff',
+                    'background-color': item.mainColor ? item.mainColor.hex8 : "",
+                    'border-color': item.mainColor ? item.mainColor.hex8 : ""
+                }
+                let backgroundBorderObjectHover = {
+                    'color': '#fff',
+                    'background-color': item.minorColor ? item.minorColor.hex8 : "",
+                    'border-color': item.minorColor ? item.minorColor.hex8 : "",
+                }
+                IDM.setStyleToPageHead( "." + themeNamePrefix + item.key + " #" + (this.moduleObject.packageid || "module_demo") + " .IHeaderBar_app_right svg)", fontStyleObject );
+            }
+        },
         /**
          * 提供父级组件调用的刷新prop数据组件
          */
@@ -129,7 +166,7 @@ export default {
                 }
             }
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IHeaderBar_app_left .img', styleObjectLogo);
-            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IHeaderBar_app_right svg', styleObjectIcon);
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IHeaderBar_app_right .svg-icon', styleObjectIcon);
         },
         convertAttrToStyleObject() {
             this.convertAttrToStyleObjectContent()
