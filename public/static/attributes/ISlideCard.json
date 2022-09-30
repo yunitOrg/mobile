@@ -165,7 +165,7 @@
               "type": "uploadImage",
               "layoutType": "inline",
               "text": "图片",
-              "bindKey": "imgUrl",
+              "bindKey": "image",
               "multiple": false,
               "default": "",
               "display": "@[displayType=='img']"
@@ -174,7 +174,7 @@
               "type": "iconSelect",
               "layoutType": "inline",
               "text": "图标",
-              "bindKey": "iconFont",
+              "bindKey": "icon",
               "multiple": false,
               "default": "",
               "display": "@[displayType=='icon']"
@@ -184,7 +184,7 @@
               "layoutType": "inline",
               "text": "文字描述",
               "desc": "设置此项的文字描述",
-              "bindKey": "name"
+              "bindKey": "title"
             }
           ]
         }
@@ -314,7 +314,7 @@
               "desc": "举例：item数组下有imgUrl字段，为图片，则这里应填imgUrl",
               "bindKey": "imageField",
               "display": "@[displayType=='img']",
-              "default": "imgUrl"
+              "default": "image"
             },
             {
               "type": "input",
@@ -323,7 +323,7 @@
               "desc": "举例：item数组下有iconUrl字段，为图标，则这里应填iconUrl",
               "bindKey": "iconField",
               "display": "@[displayType=='icon']",
-              "default": "iconUrl"
+              "default": "icon"
             },
             {
               "type": "input",
@@ -360,7 +360,7 @@
               "text": "基本文字",
               "desc": "举例：item数组下有name字段，为基本文字，则这里应填name",
               "bindKey": "mainTextField",
-              "default": "name",
+              "default": "title",
               "display": "@[showText]"
             },
             {
@@ -375,7 +375,7 @@
                   "layoutType": "inline",
                   "text": "取值字段",
                   "desc": "设置此项对应的取值",
-                  "bindKey": "name"
+                  "bindKey": "title"
                 },
                 {
                   "type": "inputNumber",

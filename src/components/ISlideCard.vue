@@ -87,25 +87,25 @@
                 :src="
                   IDM.url.getWebPath(
                     propData.dataType == 'dataSource'
-                      ? getExpressData('data', propData.imageField || 'imgUrl', item)
-                      : item.imgUrl
+                      ? getExpressData('data', propData.imageField || 'image', item)
+                      : item.image
                   )
                 "
               />
               <i
                 v-else-if="propData.dataType == 'dataSource'"
-                :class="getClassStr(getExpressData('data', propData.iconField || 'iconFont', item))"
+                :class="getClassStr(getExpressData('data', propData.iconField || 'icon', item))"
               />
               <svg v-else class="idm_filed_svg_icon" aria-hidden="true">
-                <use :xlink:href="`#${item.iconFont && item.iconFont[0]}`" />
+                <use :xlink:href="`#${item.icon && item.icon[0]}`" />
               </svg>
             </div>
             <div class="item-text" v-if="item && propData.showText">
               <div v-if="propData.mainTextField" class="item-text-main">
                 {{
                   propData.dataType == 'dataSource'
-                    ? getExpressData('data', propData.mainTextField || 'name', item)
-                    : item.name
+                    ? getExpressData('data', propData.mainTextField || 'title', item)
+                    : item.title
                 }}
               </div>
               <div
@@ -131,7 +131,7 @@
                     width: field.widthRatio ? `${field.widthRatio}%` : 'auto'
                   }"
                 >
-                  {{ getExpressData('data', field.name || 'name', item) }}
+                  {{ getExpressData('data', field.title || 'title', item) }}
                 </div>
               </div>
             </div>
@@ -196,8 +196,8 @@ export default {
   // showText: true,
   // titleIconPosition: 'left',
   // title: '主题教育',
-  // imageField: 'img',
-  // mainTextField: 'name',
+  // imageField: 'image',
+  // mainTextField: 'title',
   // imageWidth: 50,
   // imageHeight: 50,
   // itemJumpTarget: 'router',
