@@ -89,15 +89,45 @@
           "bindKey": "dataType",
           "dictionary": [
             {
+              "label": "静态配置",
+              "value": "static"
+            },
+            {
               "label": "数据源",
               "value": "dataSource"
             },
             {
-              "label": "静态配置",
-              "value": "static"
+              "label": "自定义接口",
+              "value": "customInterface"
             }
           ],
           "default": "static"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "接口地址",
+          "bindKey": "url",
+          "desc": "用于获取数据的接口地址。请按照统一标准的返回格式返回文本数据，格式如下：{\"code\":\"200\",\"data\":\"\",...}",
+          "display": "@[dataType=='customInterface']",
+          "default": "/ctrl/website/api/columnlist"
+        },
+        {
+          "type": "treeSelect",
+          "layoutType": "inline",
+          "text": "选择栏目",
+          "bindKey": "selectColumn",
+          "dataSourceUrl": "/ctrl/website/api/channelTree",
+          "default": "",
+          "openGroup": true,
+          "display": "@[dataType=='customInterface']"
+        },
+        {
+          "type": "inputNumber",
+          "layoutType": "inline",
+          "text": "显示数量",
+          "bindKey": "limit",
+          "display": "@[dataType=='customInterface']"
         },
         {
           "type": "treeSelect",
@@ -113,7 +143,7 @@
           "layoutType": "block",
           "text": "自定义函数",
           "bindKey": "customFunction",
-          "display": "@[dataType=='dataSource']",
+          "display": "@[dataType=='dataSource' || dataType=='customInterface']",
           "desc": "用于格式化数据源返回的数据，参数为{urlObject:url参数,pageId:页面id,customParam:自定义的参数,resultData:原始数据,moduleObject:组件信息}",
           "multiple": false
         },
@@ -269,6 +299,14 @@
           "display": "@[dataType=='dataSource']",
           "desc": "用来设置每个item在标准格式下的取值字段",
           "children": [
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "循环字段",
+              "desc": "举例：返回的数据中rows是要取的数组，则此处使用rows",
+              "bindKey": "resDataField",
+              "default": ""
+            },
             {
               "type": "input",
               "layoutType": "inline",

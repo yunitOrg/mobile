@@ -163,38 +163,20 @@ import { Empty, Loading, Image as VanImage } from 'vant';
 import 'vant/lib/empty/style';
 import 'vant/lib/loading/style';
 import 'vant/lib/image/style';
-const devResult = _this => [
-  {
-    imgUrl: IDM.url.getModuleAssetsWebPath(require('../assets/logo.png'), _this.moduleObject),
-    name: '学习强国',
-    text1: '15篇文章',
-    text2: '3.5w人已学习'
-  },
-  {
-    imgUrl: IDM.url.getModuleAssetsWebPath(require('../assets/logo.png'), _this.moduleObject),
-    name: '学习强国',
-    text1: '15篇文章',
-    text2: '3.5w人已学习'
-  },
-  {
-    imgUrl: IDM.url.getModuleAssetsWebPath(require('../assets/logo.png'), _this.moduleObject),
-    name: '学习强国',
-    text1: '15篇文章',
-    text2: '3.5w人已学习'
-  },
-  {
-    imgUrl: IDM.url.getModuleAssetsWebPath(require('../assets/logo.png'), _this.moduleObject),
-    name: '学习强国',
-    text1: '15篇文章',
-    text2: '3.5w人已学习'
-  },
-  {
-    imgUrl: IDM.url.getModuleAssetsWebPath(require('../assets/logo.png'), _this.moduleObject),
-    name: '学习强国',
-    text1: '15篇文章',
-    text2: '3.5w人已学习'
+const devResult = (_this, limit = 4) => {
+  const tempList = [];
+  if (limit && limit > 0) {
+    for (let i = 0; i < limit; i++) {
+      tempList.push({
+        image: IDM.url.getModuleAssetsWebPath(require('../assets/logo.png'), _this.moduleObject),
+        title: '学习强国',
+        text1: '15篇文章',
+        text2: '3.5w人已学习'
+      });
+    }
   }
-];
+  return tempList;
+};
 export default {
   name: 'ISlideCard',
   components: {
@@ -252,6 +234,14 @@ export default {
     this.convertThemeListAttrToStyleObject();
     this.loadIconFile();
     this.initData();
+  },
+  watch: {
+    'propData.selectColumn': {
+      handler(value) {
+        this.initData();
+      },
+      deep: true
+    }
   },
   methods: {
     // 加载css
@@ -372,6 +362,17 @@ export default {
           });
       }
     },
+    commonParam() {
+      const urlObject = IDM.url.queryObject();
+      const params = {
+        pageId:
+          window.IDM.broadcast && window.IDM.broadcast.pageModule
+            ? window.IDM.broadcast.pageModule.id
+            : '',
+        urlData: JSON.stringify(urlObject)
+      };
+      return params;
+    },
     /**
      * 请求数据
      */
@@ -419,6 +420,40 @@ export default {
         } else {
           this.setRows(this.propData.dataStaticSet);
         }
+      } else if (this.propData.dataType == 'customInterface') {
+        if (!this.propData.selectColumn || !this.propData.selectColumn.id || !this.propData.url) {
+          this.setRows(devResult(this, this.propData.limit));
+          return;
+        }
+        // const urlObject = IDM.url.queryObject();
+        // const routerParams = this.moduleObject.routerId
+        //   ? IDM.router.getParam(this.moduleObject.routerId)
+        //   : {};
+        this.isLoading = true;
+        const urlParam = this.commonParam();
+        IDM.http
+          .get(this.propData.url, {
+            columnId: this.propData.selectColumn.id,
+            componentId: this.moduleObject.comId,
+            pageId: urlParam.pageId,
+            limit: this.propData.limit || ''
+          })
+          .done(res => {
+            if (res.type === 'success') {
+              let resultData = this.customFormat(this.propData.customFunction, res.data);
+              resultData = this.propData.resDataField
+                ? this.getExpressData('data', this.propData.resDataField, resultData)
+                : resultData;
+              this.setRows(resultData);
+            } else {
+              IDM.message.error(res.message || '操作失败!');
+            }
+            this.isLoading = false;
+          })
+          .error(err => {
+            console.log(err);
+            this.isLoading = false;
+          });
       }
     },
     setRows(orignData) {
@@ -473,23 +508,25 @@ export default {
       }
       if (this.propData.itemJumpTarget && this.propData.itemJumpTarget === 'custom') {
         this.customFunctionHandle(this.propData.customItemJumpFunction, { item });
-      } else if (this.propData.itemJumpTarget && (this.propData.itemJumpTarget === 'router' || this.propData.itemJumpTarget === 'feild')) {
-        let itemJumpPageId = null
+      } else if (
+        this.propData.itemJumpTarget &&
+        (this.propData.itemJumpTarget === 'router' || this.propData.itemJumpTarget === 'feild')
+      ) {
+        let itemJumpPageId = null;
         if (this.propData.itemJumpTarget === 'router') {
-          itemJumpPageId = this.propData.itemJumpPageId && this.propData.itemJumpPageId[0]?.id
+          itemJumpPageId = this.propData.itemJumpPageId && this.propData.itemJumpPageId[0]?.id;
         } else if (this.propData.itemJumpTarget === 'feild') {
-          itemJumpPageId = this.propData.itemJumpPageFeild && this.getExpressData('data', this.propData.itemJumpPageFeild, item)
+          itemJumpPageId =
+            this.propData.itemJumpPageFeild &&
+            this.getExpressData('data', this.propData.itemJumpPageFeild, item);
         }
-        itemJumpPageId && IDM.router.push(
-          this.moduleObject.pageid,
-          itemJumpPageId,
-          {
+        itemJumpPageId &&
+          IDM.router.push(this.moduleObject.pageid, itemJumpPageId, {
             keep: true,
             params: item,
             enterAnim: '',
             quitAnim: ''
-          }
-        );
+          });
       } else if (this.propData.itemJumpUrl) {
         const url = IDM.url.getWebPath(IDM.express.replace(this.propData.itemJumpUrl, item));
         window.open(url, this.propData.itemJumpTarget || '_self');
@@ -1067,7 +1104,7 @@ export default {
               break;
             case 'itemIconColor':
               if (element && element.hex8) {
-                styleObject['color'] = IDM.hex8ToRgbaString(element.hex8);
+                itemImgStyleObject['color'] = IDM.hex8ToRgbaString(element.hex8);
               }
               break;
             case 'moreIconSize':
