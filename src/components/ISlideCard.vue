@@ -152,7 +152,7 @@
         </template>
       </van-empty>
     </div>
-    <div class="i-slideCard-mask" v-if="moduleObject.env !== 'production' && !propData.dataSource">
+    <div class="i-slideCard-mask" v-if="moduleObject.env !== 'production' && !propData.dataSource && propData.dataType == 'dataSource'">
       <span>！未绑定数据源</span>
     </div>
   </div>

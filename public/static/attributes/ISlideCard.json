@@ -219,7 +219,7 @@
           "layoutType": "inline",
           "text": "显示文字",
           "bindKey": "showText",
-          "default": "true"
+          "default": true
         },
         {
           "type": "input",
@@ -296,7 +296,7 @@
         {
           "type": "group",
           "text": "item字段设置",
-          "display": "@[dataType=='dataSource']",
+          "display": "@[dataType=='dataSource' || dataType=='customInterface']",
           "desc": "用来设置每个item在标准格式下的取值字段",
           "children": [
             {
