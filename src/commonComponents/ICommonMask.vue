@@ -16,7 +16,11 @@ export default {
         }
     },
     render(h) {
-        if (!this.propData.dataSource && this.moduleObject.env === 'develop') {
+        if (
+            !this.propData.dataSource &&
+            this.moduleObject.env === 'develop' &&
+            this.propData.dataType !== 'customInterface'
+        ) {
             return h(
                 'div',
                 {

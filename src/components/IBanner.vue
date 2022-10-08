@@ -406,7 +406,8 @@ export default {
             var params = {
                 pageId:
                     window.IDM.broadcast && window.IDM.broadcast.pageModule ? window.IDM.broadcast.pageModule.id : '',
-                urlData: JSON.stringify(urlObject)
+                urlData: JSON.stringify(urlObject),
+                ...urlObject
             }
             return params
         },
@@ -417,38 +418,11 @@ export default {
             //请求数据源
             this.initData()
         },
-        /**
-         * 加载动态数据
-         */
-        initData() {
-            if (this.propData.dataType === 'custom') {
-                this.propData.bannerTable &&
-                    this.propData.bannerTable.forEach((el) => {
-                        if (el.image === 'defaultImage') {
-                            el.image = IDM.url.getModuleAssetsWebPath(
-                                require('../assets/banner1.jpg'),
-                                this.moduleObject
-                            )
-                        }
-                    })
-                // 自定义数据直接使用
-                this.$set(this.bannerData, 'value', _.cloneDeep(this.propData.bannerTable))
-                this.initSwiper()
-                return
-            } else {
-                // 开发环境使用假数据，深拷贝方式数据fix不更新
-                if (this.moduleObject.env === 'develop') {
-                    const data = getBannerData.call(this)
-                    this.bannerData = _.cloneDeep(data)
-                    this.initSwiper()
-                    return
-                }
-            }
+        getDataSourceData() {
             window.IDM.http
                 .post(
                     getDatasInterfaceUrl,
                     {
-                        type: 'picture',
                         id: this.propData.dataSource && this.propData.dataSource.value,
                         limit: this.propData.limit,
                         start: 0
@@ -469,6 +443,69 @@ export default {
                     }
                 })
                 .catch((error) => {})
+        },
+        getCustomSourceData() {
+            this.propData.customInterfaceUrl &&
+                window.IDM.http
+                    .get(this.propData.customInterfaceUrl, {
+                        columnId:
+                            this.propData.selectColumn && this.propData.selectColumn.id
+                                ? this.propData.selectColumn.id
+                                : this.commonParam().columnId,
+                        start: 1,
+                        limit: this.propData.limit
+                    })
+                    .then((res) => {
+                        if (res.status == 200 && res.data.code == 200) {
+                            this.bannerData.value = res.data.data.rows
+                            this.initSwiper()
+                        } else {
+                            IDM.message.error(res.data.message)
+                        }
+                    })
+        },
+        /**
+         * 加载动态数据
+         */
+        initData() {
+            const hasNotDataSourceId = !this.propData.selectColumn || !this.propData.selectColumn.id
+            switch (this.propData.dataType) {
+                case 'custom':
+                    this.propData.bannerTable &&
+                        this.propData.bannerTable.forEach((el) => {
+                            if (el.image === 'defaultImage') {
+                                el.image = IDM.url.getModuleAssetsWebPath(
+                                    require('../assets/banner1.jpg'),
+                                    this.moduleObject
+                                )
+                            }
+                        })
+                    // 自定义数据直接使用
+                    this.$set(this.bannerData, 'value', _.cloneDeep(this.propData.bannerTable))
+                    this.initSwiper()
+                    break
+                case 'dataSource':
+                    if (this.moduleObject.env === 'develop') {
+                        const data = getBannerData.call(this)
+                        this.bannerData = _.cloneDeep(data)
+                        this.initSwiper()
+                        return
+                    }
+                    this.getDataSourceData()
+                    break
+                case 'customInterface':
+                    if (hasNotDataSourceId && !this.commonParam().columnId) {
+                        let totalList = []
+                        for (let i = 0; i < 4; i++) {
+                            totalList.push(...getBannerData.call(this).value)
+                        }
+                        totalList.length = this.propData.limit
+                        this.bannerData.value = totalList
+                        return
+                    }
+                    this.getCustomSourceData()
+                    break
+            }
         },
         /**
          * 通用的获取表达式匹配后的结果

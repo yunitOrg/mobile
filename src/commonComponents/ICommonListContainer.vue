@@ -28,7 +28,7 @@
             </div>
         </div>
         <!-- data source masker -->
-        <ICommonMask :moduleObject="moduleObject" :propData="propData"></ICommonMask>
+        <ICommonMask :text="dataSourceMaskerText" :moduleObject="moduleObject" :propData="propData"></ICommonMask>
     </div>
 </template>
 <script>

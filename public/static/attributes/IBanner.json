@@ -70,8 +70,10 @@
                     "text": "显示数量",
                     "desc": "设置显示轮播图片数量，自定义配置轮播时失效",
                     "bindKey": "limit",
+                    "min": 1,
+                    "max": 10,
                     "default": 3,
-                    "display": "@[dataType === 'dataSource']"
+                    "display": "@[dataType === 'dataSource' || dataType === 'customInterface']"
                 },
                 {
                     "type": "select",
@@ -329,8 +331,7 @@
                     ]
                 },
                 {
-                    "type": "radio",
-                    "styleType": "radio",
+                    "type": "select",
                     "layoutType": "inline",
                     "text": "数据模式",
                     "bindKey": "dataType",
@@ -343,9 +344,32 @@
                         {
                             "label": "自定义",
                             "value": "custom"
+                        },
+                        {
+                            "label": "自定义接口",
+                            "value": "customInterface"
                         }
                     ],
                     "default": "dataSource"
+                },
+                {
+                    "type": "treeSelect",
+                    "layoutType": "inline",
+                    "text": "选择栏目",
+                    "display": "@[dataType === 'customInterface']",
+                    "bindKey": "selectColumn",
+                    "dataSourceUrl": "/ctrl/website/api/channelTree",
+                    "default": "",
+                    "openGroup": true
+                },
+                {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "接口地址",
+                    "display": "@[dataType === 'customInterface']",
+                    "bindKey": "customInterfaceUrl",
+                    "desc": "用于获取数据源的接口地址，请按照统一标准的返回格式返回文本数据，格式如下：{\"code\":\"200\",\"data\":\"\",...}",
+                    "default": "/ctrl/website/api/columnlist"
                 },
                 {
                     "type": "table",

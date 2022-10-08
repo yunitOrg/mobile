@@ -132,7 +132,8 @@ export default {
             var params = {
                 pageId:
                     window.IDM.broadcast && window.IDM.broadcast.pageModule ? window.IDM.broadcast.pageModule.id : '',
-                urlData: JSON.stringify(urlObject)
+                urlData: JSON.stringify(urlObject),
+                ...urlObject
             }
             return params
         },
@@ -141,10 +142,50 @@ export default {
             this.currentPage++
             this.initData()
         },
+        // 栏目
+        getCustomSourceData() {
+            this.isLoading = true
+            this.propData.customInterfaceUrl &&
+                window.IDM.http
+                    .get(this.propData.customInterfaceUrl, {
+                        columnId:
+                            this.propData.selectColumn && this.propData.selectColumn.id
+                                ? this.propData.selectColumn.id
+                                : this.commonParam().columnId,
+                        start: this.currentPage,
+                        limit: this.propData.limit
+                    })
+                    .then((res) => {
+                        if (res.status == 200 && res.data.code == 200) {
+                            this.pageData[this.propData.moreUrlField] = res.data.data[this.propData.moreUrlField]
+
+                            if (this.propData.isPaging) {
+                                this.pageData.value = [...this.pageData.value, ...res.data.data.rows]
+                                if (res.data.data.value.length === 0) {
+                                    this.finished = true
+                                }
+                            } else {
+                                this.pageData.value = res.data.data.rows
+                                this.finished = true
+                            }
+                        } else {
+                            this.finished = true
+                            IDM.message.error(res.data.message)
+                        }
+                    })
+                    .catch((e) => {
+                        this.finished = true
+                    })
+                    .finally(() => {
+                        this.isFirst = false
+                        this.isLoading = false
+                    })
+        },
         /**
          * 获取数据源数据
          */
         getDataSourceData() {
+            this.isLoading = true
             window.IDM.http
                 .post(
                     getDatasInterfaceUrl,

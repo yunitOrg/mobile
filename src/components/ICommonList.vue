@@ -372,7 +372,6 @@ export default {
                 return
             }
             this.isFirst = false
-            this.isLoading = true
             this.getDataSourceData()
         },
         setContextValue(object) {

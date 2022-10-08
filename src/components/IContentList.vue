@@ -10,7 +10,13 @@
             @handleClickMore="handleClickMore"
         >
             <template #list>
-                <van-list :immediate-check="false" v-model="isLoading" :finished="finished" finished-text="没有更多了" @load="onLoadMore">
+                <van-list
+                    :immediate-check="false"
+                    v-model="isLoading"
+                    :finished="finished"
+                    finished-text="没有更多了"
+                    @load="onLoadMore"
+                >
                     <div
                         v-for="(item, index) in pageData.value"
                         :key="index"
@@ -53,7 +59,7 @@
                         </div>
                     </div>
                     <template #finished>
-                        {{propData.isPaging ? '没有更多了': ''}}
+                        {{ propData.isPaging ? '没有更多了' : '' }}
                     </template>
                 </van-list>
             </template>
@@ -168,24 +174,6 @@ export default {
             if (!themeList) {
                 return
             }
-            // const themeNamePrefix =
-            //     IDM.setting && IDM.setting.applications && IDM.setting.applications.themeNamePrefix
-            //         ? IDM.setting.applications.themeNamePrefix
-            //         : 'idm-theme-'
-            // for (var i = 0; i < themeList.length; i++) {
-            //     var item = themeList[i]
-            //     let moduleColorObj = {
-            //         'font-size': item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : ''
-            //     }
-            //     IDM.setStyleToPageHead(
-            //         '.' +
-            //             themeNamePrefix +
-            //             item.key +
-            //             (` #${this.moduleObject.id}-common-list` || 'module_demo') +
-            //             ' .module-name',
-            //         moduleColorObj
-            //     )
-            // }
             // 通用样式
             this.$nextTick(() => {
                 this.$refs['listContainerRef-' + this.moduleObject.id].convertThemeListAttrToStyleObject()
@@ -197,13 +185,29 @@ export default {
         },
 
         initData() {
-            if (this.moduleObject.env === 'develop') {
-                this.pageData = getContentListData.call(this)
-                this.finished = true
-                return
+            const hasNotDataSourceId = !this.propData.selectColumn || !this.propData.selectColumn.id
+            switch (this.propData.dataType) {
+                case 'dataSource':
+                    if (this.moduleObject.env === 'develop') {
+                        this.pageData = getContentListData.call(this)
+                        this.finished = true
+                        return
+                    }
+                    this.getDataSourceData()
+                    break
+                case 'customInterface':
+                    if (hasNotDataSourceId && !this.commonParam().columnId) {
+                        let totalList = []
+                        for (let i = 0; i < 10; i++) {
+                            totalList.push(...getContentListData.call(this).value)
+                        }
+                        totalList.length = this.propData.limit
+                        this.pageData.value = totalList
+                        return
+                    }
+                    this.getCustomSourceData()
+                    break
             }
-            this.isLoading = true
-            this.getDataSourceData()
         },
         setContextValue(object) {
             console.log('统一接口设置的值', object)
