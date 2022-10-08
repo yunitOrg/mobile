@@ -362,48 +362,48 @@
               "bindKey": "mainTextField",
               "default": "title",
               "display": "@[showText]"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "text": "item扩展字段设置",
+          "bindKey": "extraFields",
+          "tabText": "扩展[index]",
+          "display": "@[showText]",
+          "children": [
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "取值字段",
+              "desc": "设置此项对应的取值",
+              "bindKey": "title"
             },
             {
-              "type": "table",
-              "text": "扩展文字",
-              "bindKey": "extraFields",
-              "tabText": "扩展[index]",
-              "display": "@[showText]",
-              "children": [
+              "type": "inputNumber",
+              "layoutType": "inline",
+              "text": "宽度占比",
+              "desc": "设置此项宽度占整行的百分比",
+              "bindKey": "widthRatio"
+            },
+            {
+              "type": "select",
+              "layoutType": "inline",
+              "text": "对齐方式",
+              "desc": "设置此扩展字段的对齐方式",
+              "bindKey": "textAlign",
+              "dictionary": [
                 {
-                  "type": "input",
-                  "layoutType": "inline",
-                  "text": "取值字段",
-                  "desc": "设置此项对应的取值",
-                  "bindKey": "title"
+                  "label": "左",
+                  "value": "left"
                 },
                 {
-                  "type": "inputNumber",
-                  "layoutType": "inline",
-                  "text": "宽度占比",
-                  "desc": "设置此项宽度占整行的百分比",
-                  "bindKey": "widthRatio"
+                  "label": "中",
+                  "value": "center"
                 },
                 {
-                  "type": "select",
-                  "layoutType": "inline",
-                  "text": "对齐方式",
-                  "desc": "设置此扩展字段的对齐方式",
-                  "bindKey": "textAlign",
-                  "dictionary": [
-                    {
-                      "label": "左",
-                      "value": "left"
-                    },
-                    {
-                      "label": "中",
-                      "value": "center"
-                    },
-                    {
-                      "label": "右",
-                      "value": "right"
-                    }
-                  ]
+                  "label": "右",
+                  "value": "right"
                 }
               ]
             }
