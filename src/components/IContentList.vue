@@ -205,7 +205,13 @@ export default {
                         this.pageData.value = totalList
                         return
                     }
-                    this.getCustomSourceData()
+                    this.getCustomSourceData((res)=> {
+                        res.value && res.value.forEach(el => {
+                            if(el.images && el.images.length > 3) {
+                                el.images.length = 3
+                            }
+                        })
+                    })
                     break
             }
         },

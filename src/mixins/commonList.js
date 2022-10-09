@@ -143,7 +143,7 @@ export default {
             this.initData()
         },
         // 栏目
-        getCustomSourceData() {
+        getCustomSourceData(cb) {
             this.isLoading = true
             this.propData.customInterfaceUrl &&
                 window.IDM.http
@@ -167,6 +167,10 @@ export default {
                             } else {
                                 this.pageData.value = res.data.data.rows
                                 this.finished = true
+                            }
+                            // 处理接口数据
+                            if(cb) {
+                                cb(this.pageData)
                             }
                         } else {
                             this.finished = true
