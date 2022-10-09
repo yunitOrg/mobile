@@ -32,7 +32,14 @@ export default {
         return {
             moduleObject: {},
             propData: this.$root.propData.compositeAttr || {
-                
+                widthLogo: {
+                    inputVal: 232,
+                    selectVal: 'px'
+                },
+                heightLogo: {
+                    inputVal: 40,
+                    selectVal: 'px'
+                }
             },
             bottomContainerStyle: {},
             bottomIsShow: true
@@ -165,7 +172,7 @@ export default {
                     }
                 }
             }
-            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IHeaderBar_app_left .img', styleObjectLogo);
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IHeaderBar_app_left img', styleObjectLogo);
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IHeaderBar_app_right .svg-icon', styleObjectIcon);
         },
         convertAttrToStyleObject() {

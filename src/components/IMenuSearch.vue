@@ -482,7 +482,7 @@ export default {
 </script>
 <style lang="scss">
 .IMenuSearch_app{
-    background: white;
+    // background: white;
     .IMenuSearch_app_menu{
         padding: 15px 0;
         border-bottom: 1px solid  rgba(234,234,234,1);
