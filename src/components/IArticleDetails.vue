@@ -646,6 +646,9 @@ $scale: var(--i-articleDetails-scale);
       font-size: calc(16px * #{$scale});
       white-space: pre-wrap;
       margin-top: 20px;
+      img {
+        max-width: 100%;
+      }
     }
   }
   .i-articleDetails-mask {
