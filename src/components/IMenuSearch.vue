@@ -3,7 +3,7 @@
         <div class="IMenuSearch_app">
             <div class="IMenuSearch_app_menu">
                 <van-grid :column-num="propData.columnNumber" :gutter="propData.gutter">
-                    <van-grid-item @click="clickGrid" v-for="(item,index) in menu_list" :key="index" :text="propData.useShortName ? item[propData.dataFiledShortTitle ? propData.dataFiledShortTitle : 'shortTitle'] : item[ propData.dataFiledTitle ? propData.dataFiledTitle : 'title' ]" />
+                    <van-grid-item @click="clickGrid(item)" v-for="(item,index) in menu_list" :key="index" :text="propData.useShortName ? item[propData.dataFiledShortTitle ? propData.dataFiledShortTitle : 'shortTitle'] : item[ propData.dataFiledTitle ? propData.dataFiledTitle : 'title' ]" />
                 </van-grid>
             </div>
             <div v-if="propData.showSearch" class="IMenuSearch_app_search">
@@ -104,8 +104,13 @@ export default {
         search(e) {
             console.log(e)
         },
-        clickGrid(e) {
-            console.log(e);
+        clickGrid(item) {
+            console.log(item);
+            let url = item[this.propData.dataFiledShortJumpUrl ? this.propData.dataFiledShortJumpUrl : 'jumpUrl'];
+            if ( (!url) || this.moduleObject.env == 'develop' ) {
+                return
+            }
+            window.open(IDM.url.getWebPath(url),this.propData.jumpType);
         },
         /**
          * 提供父级组件调用的刷新prop数据组件

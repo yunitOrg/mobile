@@ -127,6 +127,24 @@
                     "desc": "搜索框左侧图标",
                     "placeholder": "请选择",
                     "display":"@[showSearch]"
+                },
+                {
+                    "type": "select",
+                    "layoutType": "inline",
+                    "text": "跳转方式",
+                    "bindKey": "jumpType",
+                    "desc": "点击栏目跳转方式",
+                    "dictionary": [
+                        {
+                            "label": "当前页跳转",
+                            "value": "_self"
+                        },
+                        {
+                            "label": "新窗口打开",
+                            "value": "_blank"
+                        }
+                    ],
+                    "default": "_self"
                 }
             ]
         },
@@ -472,6 +490,15 @@
                     "desc": "结果集中栏目简称所对应的字段key",
                     "default": "shortTitle",
                     "placeholder": "示例：dataFiledShortTitle"
+                },
+                {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "跳转地址",
+                    "bindKey": "dataFiledShortJumpUrl",
+                    "desc": "点击栏目跳转地址对应的字段",
+                    "default": "jumpUrl",
+                    "placeholder": "示例：jumpUrl"
                 }
             ]
         },
