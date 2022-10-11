@@ -3,7 +3,7 @@
         <div class="IHeaderBar_app flex_between">
             <div class="IHeaderBar_app_left">
                 <img v-if="propData.logoImgSrc" :src="IDM.url.getWebPath(propData.logoImgSrc)" alt="">
-                <img v-else :src="IDM.url.getModuleAssetsWebPath(require('../assets/cms-logo.png'),this.moduleObject)" alt="">
+                <img v-else :src="IDM.url.getModuleAssetsWebPath(require('../assets/cms-logo.png'),moduleObject)" alt="">
             </div>
             <div @click="handleRightClick" class="IHeaderBar_app_right">
                 <SvgIcon icon-class="menu"></SvgIcon>
