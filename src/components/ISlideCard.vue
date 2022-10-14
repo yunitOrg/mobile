@@ -113,7 +113,8 @@
                 v-if="
                   propData.dataType == 'dataSource' &&
                   propData.extraFields &&
-                  propData.extraFields.length > 0
+                  propData.extraFields[0] &&
+                  propData.extraFields[0].title
                 "
               >
                 <div
