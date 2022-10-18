@@ -5,7 +5,8 @@ export default {
             finished: false,
             currentPage: 1,
             isLoading: false, // page is loading
-            isFirst: true // page is first load
+            isFirst: true, // page is first load
+            chooseTabParams: {}
         }
     },
     methods: {
@@ -169,7 +170,7 @@ export default {
                                 this.finished = true
                             }
                             // 处理接口数据
-                            if(cb) {
+                            if (cb) {
                                 cb(this.pageData)
                             }
                         } else {
@@ -196,7 +197,8 @@ export default {
                     {
                         id: this.propData.dataSource && this.propData.dataSource.value,
                         limit: this.propData.limit,
-                        start: this.currentPage
+                        start: this.currentPage,
+                        ...this.chooseTabParams
                     },
                     {
                         headers: {
@@ -274,6 +276,15 @@ export default {
                 case 'pageResize':
                     this.pageWidth = messageObject.message.width
                     this.convertAttrToStyleObject()
+                    break
+                case 'chooseTab':
+                    this.chooseTabParams = messageObject.message || {}
+                    this.pageData = {
+                        value: [],
+                        count: 0,
+                        moreUrl: ''
+                    }
+                    this.initData()
                     break
             }
             console.log('组件收到消息', messageObject)
