@@ -848,6 +848,14 @@
                     "text": "标题样式",
                     "children": [
                         {
+                            "type": "input",
+                            "layoutType": "inline",
+                            "text": "标题宽度",
+                            "desc": "设置标题宽度，超出省略号",
+                            "bindKey": "titleWidth",
+                            "default": "70%"
+                        },
+                        {
                             "type": "box",
                             "layoutType": "block",
                             "text": "内外边距",
