@@ -63,6 +63,7 @@
               <span class="comment-name">{{ item[propData.avatarInterface] }}</span>
               <span class="comment-time">{{ item[propData.timeInterface] }}</span>
               <span
+                v-if="propData.showStarBtn"
                 class="comment-star"
                 :class="{ active: item[propData.starInterface] }"
                 @click="starClick(item)"
@@ -75,7 +76,7 @@
               <span class="comment-total" @click="replyClick(item)"
                 >共{{ item[propData.totalInterface] }}条回复<van-icon name="play"
               /></span>
-              <span class="comment-del" @click="delClick(item)">删除</span>
+              <span v-if="propData.showDelBtn && item[propData.delBtnFiled]" class="comment-del" @click="delClick(item)">删除</span>
             </div>
           </div>
         </div>
@@ -117,7 +118,10 @@ export default {
         starNumInterface:'starNum',
         btInterface:'bt',
         fromInterface:'from',
-        totalInterface:'total'
+        totalInterface:'total',
+        showStarBtn:true,
+        showDelBtn:true,
+        delBtnFiled:"showDel"
       },
       loading: false,
       finished: false,
@@ -157,7 +161,17 @@ export default {
      * 删除
      */
     delClick(item){
-      console.log(item,"删除")
+      if (this.propData.delCustomFunc && this.propData.delCustomFunc[0]) {
+        const delCustomFunc = this.propData.delCustomFunc[0];
+        const func = window[delCustomFunc.name];
+        const that = this;
+        func && func.call(this, {
+            record:item,
+            ...that.commonParam(),
+            customParam: delCustomFunc.param,
+            _this: that,
+          });
+      }
     },
     /**
      * 回复跳转
@@ -724,6 +738,7 @@ export default {
                 bt: "我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
                 from: "来自广东深圳",
                 total: 100,
+                showDel:true
               },
               {
                 img: "",
@@ -735,6 +750,7 @@ export default {
                 bt: "我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
                 from: "来自广东深圳",
                 total: 100,
+                showDel:false
               },
               {
                 img: "",
@@ -746,6 +762,7 @@ export default {
                 bt: "我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
                 from: "来自广东深圳",
                 total: 100,
+                showDel:true
               },
               {
                 img: "",
@@ -757,6 +774,7 @@ export default {
                 bt: "我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
                 from: "来自广东深圳",
                 total: 100,
+                showDel:true
               },
               {
                 img: "",

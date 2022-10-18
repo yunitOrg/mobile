@@ -35,6 +35,7 @@
           <div class="content-right-top">
             <span class="comment-name">{{ detailInfo.avatar }}</span>
             <span
+              v-if="propData.showStarBtn"
               class="comment-star"
               :class="{ active: detailInfo.star }"
               @click="starClick(detailInfo)"
@@ -129,7 +130,8 @@ export default {
         btInterface:'bt',
         fromInterface:'from',
         totalInterface:'total',
-        replyInterface:'reply'
+        replyInterface:'reply',
+        showStarBtn:true,
       },
       loading: false,
       finished: false,

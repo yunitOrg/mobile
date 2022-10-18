@@ -66,6 +66,31 @@
     },
     {
       "type": "group",
+      "text": "功能设置",
+      "desc": "点击？查看高级设置用法指南",
+      "children": [
+        {
+          "type": "radio",
+          "layoutType": "inline",
+          "text": "点赞按钮",
+          "desc": "控制点赞按钮显示隐藏",
+          "bindKey": "showStarBtn",
+          "dictionary": [
+            {
+              "label": "是",
+              "value": true
+            },
+            {
+              "label": "否",
+              "value": false
+            }
+          ],
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "group",
       "text": "主体容器样式",
       "desc": "点击？查看样式设置用法指南",
       "helpUrl": "",

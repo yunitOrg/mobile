@@ -74,6 +74,66 @@
     },
     {
       "type": "group",
+      "text": "功能设置",
+      "desc": "点击？查看高级设置用法指南",
+      "children": [
+        {
+          "type": "radio",
+          "layoutType": "inline",
+          "text": "点赞按钮",
+          "desc": "控制点赞按钮显示隐藏",
+          "bindKey": "showStarBtn",
+          "dictionary": [
+            {
+              "label": "是",
+              "value": true
+            },
+            {
+              "label": "否",
+              "value": false
+            }
+          ],
+          "default": true
+        },
+        {
+          "type": "radio",
+          "layoutType": "inline",
+          "text": "删除按钮",
+          "desc": "控制删除按钮显示隐藏",
+          "bindKey": "showDelBtn",
+          "dictionary": [
+            {
+              "label": "是",
+              "value": true
+            },
+            {
+              "label": "否",
+              "value": false
+            }
+          ],
+          "default": true
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "删除依据",
+          "desc": "删除按钮根据当前填写的依据字段来去匹配结果值，为true则显示，false则不显示",
+          "bindKey": "delBtnFiled",
+          "display": "@[showDelBtn]",
+          "default": "showDel"
+        },
+        {
+          "type": "actionSelect",
+          "layoutType": "block",
+          "text": "删除自定义函数",
+          "bindKey": "delCustomFunc",
+          "display": "@[showDelBtn]",
+          "desc": "删除的自定义函数，参数为当前记录对象record"
+        }
+      ]
+    },
+    {
+      "type": "group",
       "text": "外层容器样式",
       "desc": "点击？查看样式设置用法指南",
       "helpUrl": "",
