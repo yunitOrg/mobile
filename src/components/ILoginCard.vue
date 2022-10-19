@@ -18,23 +18,42 @@
       idm-ctrl-id：组件的id，这个必须不能为空
       idm-container-index  组件的内部容器索引，不重复唯一且不变，必选
     -->
-    <div class="mobile-container">
-      <div class="pre-icon"><svg-icon icon-class="mobile" /></div>
-      <div class="input-box">
-        <input v-model="mobile" type="text" placeholder="请输入手机号码">
-        <div class="msg-error">{{mobileTip}}</div>
-      </div>
+    <div class="login-banner">
+      <img
+        :src="
+          IDM.url.getModuleAssetsWebPath(
+            require('../assets/login-logo.png'),
+            moduleObject
+          )
+        "
+        alt=""
+      />
     </div>
-    <div class="password-container">
-      <div class="pre-icon"><svg-icon icon-class="password" /></div>
-      <div class="input-box">
-        <input v-model="password" :type="pwdHidden?'password':'text'" placeholder="请输入密码">
-        <div class="msg-error">{{passwordTip}}</div>
+    <div class="login-content">
+      <div class="mobile-container">
+        <div class="pre-icon"><svg-icon icon-class="mobile" /></div>
+        <div class="input-box">
+          <input v-model="mobile" type="text" placeholder="请输入手机号码" />
+          <div class="msg-error">{{ mobileTip }}</div>
+        </div>
       </div>
-      <div class="suffix-icon" @click="pwdHidden = !pwdHidden"><svg-icon :icon-class="pwdHidden?'hidden':'visiable'" /></div>
-    </div>
-    <div class="btn-container">
-      <button @click="login">登录</button>
+      <div class="password-container">
+        <div class="pre-icon"><svg-icon icon-class="password" /></div>
+        <div class="input-box">
+          <input
+            v-model="password"
+            :type="pwdHidden ? 'password' : 'text'"
+            placeholder="请输入密码"
+          />
+          <div class="msg-error">{{ passwordTip }}</div>
+        </div>
+        <div class="suffix-icon" @click="pwdHidden = !pwdHidden">
+          <svg-icon :icon-class="pwdHidden ? 'hidden' : 'visiable'" />
+        </div>
+      </div>
+      <div class="btn-container">
+        <button @click="login">登录</button>
+      </div>
     </div>
   </div>
 </template>
@@ -48,10 +67,10 @@ export default {
       moduleObject: {},
       propData: this.$root.propData.compositeAttr || {},
       pwdHidden: true,
-      mobile:'',
-      password:'',
-      mobileTip:'',
-      passwordTip:''
+      mobile: "",
+      password: "",
+      mobileTip: "",
+      passwordTip: "",
     };
   },
   props: {},
@@ -66,26 +85,27 @@ export default {
     /**
      * 登录
      */
-    login(){
-      if(!this.mobile){
-        this.mobileTip = '请输入手机号码'
-        return
-      }else{
-        this.mobileTip = ''
+    login() {
+      if (!this.mobile) {
+        this.mobileTip = "请输入手机号码";
+        return;
+      } else {
+        this.mobileTip = "";
       }
-      if(!this.password){
-        this.passwordTip = '请输入密码'
-        return
-      }else{
-        this.passwordTip=''
+      if (!this.password) {
+        this.passwordTip = "请输入密码";
+        return;
+      } else {
+        this.passwordTip = "";
       }
       if (this.propData.loginCustomFunc && this.propData.loginCustomFunc[0]) {
         const loginCustomFunc = this.propData.loginCustomFunc[0];
         const func = window[loginCustomFunc.name];
         const that = this;
-        func && func.call(this, {
-            mobile:this.mobile,
-            password:this.password,
+        func &&
+          func.call(this, {
+            mobile: this.mobile,
+            password: this.password,
             ...that.commonParam(),
             customParam: loginCustomFunc.param,
             _this: that,
@@ -95,11 +115,14 @@ export default {
     /**
      * 适配页面
      */
-    getScale(pageWidth){
-      const base = this.propData.baseValue || 414
-      const ratio = this.propData.adaptationRatio || 1.2
-      const width = this.moduleObject.env ===  "production" ? window.innerWidth : pageWidth || 414
-      return (width / base - 1) * (ratio - 1) + 1
+    getScale(pageWidth) {
+      const base = this.propData.baseValue || 414;
+      const ratio = this.propData.adaptationRatio || 1.2;
+      const width =
+        this.moduleObject.env === "production"
+          ? window.innerWidth
+          : pageWidth || 414;
+      return (width / base - 1) * (ratio - 1) + 1;
     },
     /**
      * 提供父级组件调用的刷新prop数据组件
@@ -112,11 +135,11 @@ export default {
     /**
      * 把属性转换成样式对象
      */
-    convertAttrToStyleObject(pageSize={}) {
+    convertAttrToStyleObject(pageSize = {}) {
       var styleObject = {};
 
-      const scale  = this.getScale(pageSize.width);
-      styleObject['--i-login-card-scale'] = scale;
+      const scale = this.getScale(pageSize.width);
+      styleObject["--i-login-card-scale"] = scale;
 
       if (this.propData.bgSize && this.propData.bgSize == "custom") {
         styleObject["background-size"] =
@@ -153,7 +176,9 @@ export default {
               break;
             case "bgColor":
               if (element && element.hex8) {
-                styleObject["background-color"] = IDM.hex8ToRgbaString(element.hex8);
+                styleObject["background-color"] = IDM.hex8ToRgbaString(
+                  element.hex8
+                );
               }
               break;
             case "box":
@@ -209,8 +234,9 @@ export default {
                   element.border.top.width + element.border.top.widthUnit;
                 styleObject["border-top-style"] = element.border.top.style;
                 if (element.border.top.colors.hex8) {
-                  styleObject["border-top-color"] =
-                    IDM.hex8ToRgbaString(element.border.top.colors.hex8);
+                  styleObject["border-top-color"] = IDM.hex8ToRgbaString(
+                    element.border.top.colors.hex8
+                  );
                 }
               }
               if (element.border.right.width > 0) {
@@ -218,8 +244,9 @@ export default {
                   element.border.right.width + element.border.right.widthUnit;
                 styleObject["border-right-style"] = element.border.right.style;
                 if (element.border.right.colors.hex8) {
-                  styleObject["border-right-color"] =
-                    IDM.hex8ToRgbaString(element.border.right.colors.hex8);
+                  styleObject["border-right-color"] = IDM.hex8ToRgbaString(
+                    element.border.right.colors.hex8
+                  );
                 }
               }
               if (element.border.bottom.width > 0) {
@@ -228,8 +255,9 @@ export default {
                 styleObject["border-bottom-style"] =
                   element.border.bottom.style;
                 if (element.border.bottom.colors.hex8) {
-                  styleObject["border-bottom-color"] =
-                    IDM.hex8ToRgbaString(element.border.bottom.colors.hex8);
+                  styleObject["border-bottom-color"] = IDM.hex8ToRgbaString(
+                    element.border.bottom.colors.hex8
+                  );
                 }
               }
               if (element.border.left.width > 0) {
@@ -237,8 +265,9 @@ export default {
                   element.border.left.width + element.border.left.widthUnit;
                 styleObject["border-left-style"] = element.border.left.style;
                 if (element.border.left.colors.hex8) {
-                  styleObject["border-left-color"] =
-                    IDM.hex8ToRgbaString(element.border.left.colors.hex8);
+                  styleObject["border-left-color"] = IDM.hex8ToRgbaString(
+                    element.border.left.colors.hex8
+                  );
                 }
               }
 
@@ -261,7 +290,9 @@ export default {
             case "font":
               styleObject["font-family"] = element.fontFamily;
               if (element.fontColors.hex8) {
-                styleObject["color"] = IDM.hex8ToRgbaString(element.fontColors.hex8);
+                styleObject["color"] = IDM.hex8ToRgbaString(
+                  element.fontColors.hex8
+                );
               }
               styleObject["font-weight"] =
                 element.fontWeight && element.fontWeight.split(" ")[0];
@@ -306,7 +337,9 @@ export default {
             (this.moduleObject.packageid || "module_demo") +
             " .pre-icon",
           {
-            "color" : item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
+            color: item.mainColor
+              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+              : "",
           }
         );
 
@@ -318,7 +351,9 @@ export default {
             (this.moduleObject.packageid || "module_demo") +
             " .btn-container button",
           {
-            "background-color" : item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
+            "background-color": item.mainColor
+              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+              : "",
           }
         );
 
@@ -330,7 +365,9 @@ export default {
             (this.moduleObject.packageid || "module_demo") +
             " .msg-error",
           {
-            "color" : item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
+            color: item.mainColor
+              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+              : "",
           }
         );
       }
@@ -408,18 +445,23 @@ export default {
      */
     receiveBroadcastMessage(messageObject) {
       console.log("组件收到消息", messageObject);
-      switch(messageObject.type) {
-        case 'websocket':
-          if(this.propData.messageRefreshKey && messageObject.message){
-            const messageData = typeof messageObject.message === 'string' && JSON.parse(messageObject.message) || messageObject.message
-            const arr = Array.isArray(this.propData.messageRefreshKey) ? this.propData.messageRefreshKey : [this.propData.messageRefreshKey]
-            if(messageData.badgeType && arr.includes(messageData.badgeType)){
+      switch (messageObject.type) {
+        case "websocket":
+          if (this.propData.messageRefreshKey && messageObject.message) {
+            const messageData =
+              (typeof messageObject.message === "string" &&
+                JSON.parse(messageObject.message)) ||
+              messageObject.message;
+            const arr = Array.isArray(this.propData.messageRefreshKey)
+              ? this.propData.messageRefreshKey
+              : [this.propData.messageRefreshKey];
+            if (messageData.badgeType && arr.includes(messageData.badgeType)) {
             }
           }
           break;
-        case 'linkageReload':
+        case "linkageReload":
           break;
-        case 'pageResize':
+        case "pageResize":
           this.convertAttrToStyleObject(messageObject.message);
           break;
       }
@@ -437,7 +479,7 @@ export default {
      */
     sendBroadcastMessage(object) {
       window.IDM.broadcast && window.IDM.broadcast.send(object);
-    }
+    },
   },
 };
 </script>
@@ -448,18 +490,38 @@ $scale: var(--i-login-card-scale);
 .i-login-card-outer {
   width: auto;
   background-color: #fff;
-  margin: calc($scale * 12px);
-  padding: 0 calc($scale * 16px);
-  box-shadow: 0px calc($scale * 2px) calc($scale * 8px) 0px rgba(194,194,194,0.5);
-  border-radius: calc($scale * 10px);
   font-size: calc($scale * 16px);
 
-  .mobile-container,.password-container {
+  .login-banner {
+    width: 100%;
+    height: calc($scale * 270px);
+    background: url(~@/assets/login-bg.png) no-repeat;
+    background-size: 100% 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: calc($scale * 140px);
+    }
+  }
+
+  .login-content {
+    background-color: #fff;
+    transform: translateY(calc($scale * -36px));
+    margin: calc($scale * 12px);
+    padding: 0 calc($scale * 16px);
+    box-shadow: 0px calc($scale * 2px) calc($scale * 8px) 0px
+      rgba(194, 194, 194, 0.5);
+    border-radius: calc($scale * 10px);
+  }
+
+  .mobile-container,
+  .password-container {
     display: flex;
     height: calc($scale * 70px);
     line-height: calc($scale * 70px);
-    border-bottom: 1px solid #E1E1E1;
-    
+    border-bottom: 1px solid #e1e1e1;
+
     input {
       width: 100%;
       border: none;
@@ -468,23 +530,23 @@ $scale: var(--i-login-card-scale);
       &::-webkit-input-placeholder {
         color: #999;
       }
-      &:-webkit-autofill{
+      &:-webkit-autofill {
         -webkit-text-fill-color: #999;
       }
-      &:-internal-autofill-previewed{
+      &:-internal-autofill-previewed {
         transition: background-color 5000s ease-in-out 0s !important;
       }
       &:-internal-autofill-selected {
-          transition: background-color 5000s ease-in-out 0s !important;
-      } 
+        transition: background-color 5000s ease-in-out 0s !important;
+      }
     }
-     
+
     .pre-icon {
       color: rgb(196, 0, 0);
       margin-left: calc($scale * 10px);
       font-size: calc($scale * 20px);
     }
-    
+
     .suffix-icon {
       font-size: calc($scale * 20px);
       color: #999;
@@ -507,10 +569,10 @@ $scale: var(--i-login-card-scale);
     }
   }
 
-  .btn-container  button{
+  .btn-container button {
     width: 100%;
     height: calc($scale * 44px);
-    background-color: #E02020;
+    background-color: #e02020;
     border-radius: calc($scale * 22px);
     border: none;
     color: #fff;
