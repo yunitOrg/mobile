@@ -351,11 +351,13 @@ export default{
         }
       })
       this.changeEventFunHandle("changeFunction");
-      this.sendBroadcastMessage({
-        type: 'chooseTab',
-        rangeModule: this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
-        message: this.allTabList.find(item => item.key === key)
-      })
+      if (this.propData.triggerComponents && this.propData.triggerComponents.length > 0) {
+        this.sendBroadcastMessage({
+          type: 'chooseTab',
+          rangeModule: this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
+          message: this.allTabList.find(item => item.key === key)
+        })
+      }
     },
     /**
      * 组件通信：发送消息的方法
