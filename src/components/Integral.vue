@@ -13,7 +13,7 @@
       <div class="integral-img" :style="`width:${propData.imgWidth};height:${propData.imgHeight};background-color: ${propData.colorBg}`" v-if="propData.showImg">
         <img :src="IDM.url.getWebPath(propData.topImgUrl)" v-if="propData.topImgUrl" alt="">
         <img v-else :src="img" alt="">
-        <div class="integral-rule">{{propData.soreTitle}}</div>
+        <div class="integral-rule" @click="handleJump">{{propData.soreTitle}}</div>
         <div class="integral-position integral-white">
           <div class="integral-top-title">累计积分</div>
           <div class="integral-block">
@@ -33,7 +33,7 @@
         <div class="integral-li" v-for="(item, index) in list" :key="index">
           <div class="integral-top">
             <span>{{item[propData.titleFiled] || item.name}}</span>
-            <b :style="computedStyle(item[propData.typeFiled] || item.type)">{{item[propData.typeFiled] || item.type}}</b>
+            <b  v-if="propData.typeShow" :style="computedStyle(item[propData.typeFiled] || item.type)">{{item[propData.typeFiled] || item.type}}</b>
           </div>
           <div class="integral-li-p" v-for="(subitem, subindex) in item[propData.descFiled] || item.desc" :key="subindex">{{subitem}}</div>
           <div class="integral-tip" v-if="item.online">已获得{{item[propData.gotFiled] || item.got}}分/每日上限{{item[propData.onlineFiled] || item.online}}分</div>
@@ -74,6 +74,7 @@ export default {
         imgHeight: '200px',
         soreTitle: '积分规则？',
         showImg: true,
+        typeShow: true,
         colorBg: "#DA1412",
         integralTitle: '积分奖励',
         boxShadow: "0px 0px 10px 0px #e3dede",
@@ -310,7 +311,36 @@ export default {
         })
       }
     },
-    // 设置主题
+    handleJump () {
+      let url = null
+      switch (this.propData.jumpStyle) {
+        case '_child':
+          if (this.propData.morePageList && this.propData.morePageList.length > 0) {
+                IDM.router.push(
+                    this.moduleObject.pageid,
+                    this.propData.morePageList[0].id,
+                    this.propData.isPageKeep,
+                    {},
+                    '',
+                    ''
+                )
+            } else {
+                IDM.message.warning('请选择要跳转的子页面')
+            }
+          break
+       case '_custom_link':
+          url = this.propData.customLink;
+          window.open(IDM.url.getWebPath(url))
+          break
+        case 'jumpCustomFunc':
+          if (this.propData.jumpCustomFunc && this.propData.jumpCustomFunc.length > 0) {
+            const funcName = this.propData.jumpCustomFunc[0].name
+            window[funcName] && window[funcName].call(this)
+          }
+          break
+      }
+    },
+     // 设置主题
     converThemeListObject () {
       let themeList = this.propData.themeList;
       if (!themeList) {

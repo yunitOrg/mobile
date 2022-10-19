@@ -17,6 +17,21 @@
       },
       {
         "type": "group",
+        "text": "基本属性",
+        "desc": "提供设置组件能达到展示效果的基本属性设置信息",
+        "children": [
+          {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "已完成和去看看",
+            "desc": "状态按钮显示",
+            "bindKey": "typeShow",
+            "default": true
+          }
+        ]
+      },
+      {
+        "type": "group",
         "text": "头部容器样式",
         "desc": "点击？查看样式设置用法指南",
         "helpUrl": "",
@@ -101,6 +116,72 @@
                 "desc": "距离左边距离",
                 "bindKey": "soreLeft",
                 "default": "20px"
+              },
+              {
+                "type": "select",
+                "layoutType": "inline",
+                "text": "跳转方式",
+                "bindKey": "jumpStyle",
+                "desc": "设置点击方式, 链接打开时使用window.open配置的数据源链接",
+                "dictionary": [
+                  {
+                    "label": "子页面打开",
+                    "value": "_child"
+                  },
+                  {
+                    "label": "自定义链接",
+                    "value": "_custom_link"
+                  },
+                  {
+                    "label": "自定义函数",
+                    "value": "_custom_func"
+                  }
+                ],
+                "default": "_child"
+              },
+              {
+                "type": "pageSelect",
+                "layoutType": "inline",
+                "text": "详情页面",
+                "display": "@[jumpStyle === '_child']",
+                "bindKey": "morePageList",
+                "desc": "选择要打开的子页面"
+              },
+              {
+                "type": "radio",
+                "styleType": "radio",
+                "layoutType": "inline",
+                "text": "是否缓存",
+                "display": "@[jumpStyle === '_child']",
+                "bindKey": "isPageKeep",
+                "desc": "跳转子页面时，是否缓存本页面",
+                "default": true,
+                "dictionary": [
+                  {
+                    "label": "是",
+                    "value": true
+                  },
+                  {
+                    "label": "否",
+                    "value": false
+                  }
+                ]
+              },
+              {
+                "type": "input",
+                "layoutType": "inline",
+                "text": "跳转链接",
+                "defaultValRegExp": false,
+                "display": "@[jumpStyle === '_custom_link']",
+                "bindKey": "customLink"
+              },
+              {
+                "type": "actionSelect",
+                "layoutType": "block",
+                "text": "自定义跳转函数",
+                "display": "@[jumpStyle === '_custom_func']",
+                "bindKey": "jumpCustomFunc",
+                "multiple": false
               }
             ]
           },
