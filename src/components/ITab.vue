@@ -369,6 +369,7 @@ export default{
      * } object 
      */
     sendBroadcastMessage(object) {
+      console.log('点击tab发送消息', object);
       window.IDM.broadcast && window.IDM.broadcast.send(object);
     },
     /**
