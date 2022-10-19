@@ -273,6 +273,9 @@ export default {
                         case 'titleBorder':
                             IDM.style.setBorderStyle(titleBoxStyleObj, element)
                             break
+                        case 'titleWidth':
+                            titleFontObj['width'] = element
+                            break
                         case 'titleBox':
                             IDM.style.setBoxStyle(titleBoxStyleObj, element)
                             break
@@ -450,5 +453,10 @@ export default {
 .activity-list-sign-status2 {
     border-radius: 100px;
     padding: 3px 10px;
+}
+.activity-list-title{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 </style>

@@ -8984,10 +8984,10 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
 
-vant@^2.12.2:
-  version "2.12.49"
-  resolved "https://registry.yarnpkg.com/vant/-/vant-2.12.49.tgz#81b008ad7270059c5531bfdbba09f15ef9e22c0f"
-  integrity sha512-J0QTT/AgO3iVwPGJbGDyUZgxPnmxCwWARCVnXbKo4cZyb44tqrYuI8ZuhMMqQ7WnV2RvlfHHa3ObuQJQAKh90A==
+vant@^2.12.22:
+  version "2.12.51"
+  resolved "https://registry.npmmirror.com/vant/-/vant-2.12.51.tgz#b5a9193cecb6808716993346b46fbfb46c4b7895"
+  integrity sha512-0dZHcBWwKdQvgvAMr5hqObuwkHRn51c7ReLVDV/Ijp1twZ/9/JGMPKVCp1ebpzFAONudyDvu42adrkFUhheaUA==
   dependencies:
     "@babel/runtime" "7.x"
     "@vant/icons" "^1.7.1"
