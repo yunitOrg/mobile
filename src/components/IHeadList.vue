@@ -21,24 +21,26 @@
               <div class="iheadlist-line">
                 <span class="iheadlist-author">{{item[propData.titleInterface] || item.author}}</span>
                 <template v-if="propData.authorshowIcon">
-                  <svg
-                    v-if="propData.authorIconmaxClass && propData.authorIconmaxClass.length && hadnleActive(item, propData.sexInterface)"
-                    class="idm_svg_author_icon icon_author1"
-                    aria-hidden="true"
-                  >
-                    <use :xlink:href="`#${propData.authorIconmaxClass[0]}`"></use>
-                  </svg>
-                  <!-- <svg-icon v-else icon-class="man" class-name="idm_svg_author_icon icon_author1"></svg-icon> -->
+                  <template v-if="hadnleActive(item, propData.sexInterface)">
+                    <svg
+                      v-if="propData.authorIconmaxClass && propData.authorIconmaxClass.length"
+                      class="idm_svg_author_icon icon_author1"
+                      aria-hidden="true"
+                    >
+                      <use :xlink:href="`#${propData.authorIconmaxClass[0]}`"></use>
+                    </svg>
+                    <svg-icon v-else icon-class="man" class-name="idm_svg_author_icon icon_author1"></svg-icon>
+                  </template>
                   <template v-else>
                     <svg
                       v-if="propData.authorIcongirlClass && propData.authorIcongirlClass.length"
-                      class="idm_svg_author_icon icon_author1"
+                      class="idm_svg_author_icon icon_author2"
                       aria-hidden="true"
                     >
                       <use :xlink:href="`#${propData.authorIcongirlClass[0]}`"></use>
                     </svg>
+                    <svg-icon v-else icon-class="girl" class-name="idm_svg_author_icon icon_author1"></svg-icon>
                   </template>
-                 <!-- <svg-icon v-else icon-class="girl" class-name="idm_svg_author_icon icon_author1"></svg-icon> -->
                 </template>
                 <template v-if="item[propData.tagField] && propData.isTag">
                   <span v-for="(subitem, subindex) in item[propData.tagField].split(',')" :key="subindex" class="color">

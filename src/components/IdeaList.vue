@@ -40,20 +40,7 @@ export default {
   data () {
     return {
       pageDataList: [],
-      list: [
-        {
-          headImg: 'http://116.236.111.158:8086/DreamWeb/resource/img/body-bg-shanghai.png',
-          title: '白继伟',
-          time: '2021-08-25',
-          desc: '书记，我的思想汇报汇报'
-        },
-        {
-          headImg: 'http://116.236.111.158:8086/DreamWeb/resource/img/body-bg-shanghai.png',
-          title: '白继伟',
-          time: '2021-08-25',
-          desc: '书记，我的思想汇报汇报'
-        }
-      ],
+      list: [],
       moduleObject:{},
       propData:this.$root.propData.compositeAttr||{
         waitTitle: "待回复",
@@ -205,6 +192,21 @@ export default {
                 IDM.message.error(res.message);
               }
             });
+      } else {
+        this.list = [
+          {
+            headImg: 'http://116.236.111.158:8086/DreamWeb/resource/img/body-bg-shanghai.png',
+            title: '白继伟',
+            time: '2021-08-25',
+            desc: '书记，我的思想汇报汇报'
+          },
+          {
+            headImg: 'http://116.236.111.158:8086/DreamWeb/resource/img/body-bg-shanghai.png',
+            title: '白继伟',
+            time: '2021-08-25',
+            desc: '书记，我的思想汇报汇报'
+          }
+        ]
       }
     },
     init () {
