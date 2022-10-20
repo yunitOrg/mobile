@@ -1358,7 +1358,7 @@ $scale: var(--i-slideCard-scale);
           justify-content: space-around;
           padding: 5px;
           &:active:not(.i-slideCard-content-empty) {
-            background-color: #f2f3f5;
+            /* background-color: #f2f3f5; */
           }
           .item-img {
             width: 50px;
