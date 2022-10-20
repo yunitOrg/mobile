@@ -25,7 +25,7 @@
             class="content-left-avatar"
             :src="
               IDM.url.getModuleAssetsWebPath(
-                require('../assets/default_avatar.png'),
+                detailInfo[propData.imgInterface],
                 moduleObject
               )
             "
@@ -33,21 +33,21 @@
         </div>
         <div class="i-comment-detail-content-right">
           <div class="content-right-top">
-            <span class="comment-name">{{ detailInfo.avatar }}</span>
+            <span class="comment-name">{{ detailInfo[propData.avatarInterface] }}</span>
             <span
               v-if="propData.showStarBtn"
               class="comment-star"
-              :class="{ active: detailInfo.star }"
+              :class="{ active: detailInfo[propData.starInterface] }"
               @click="starClick(detailInfo)"
               ><svg-icon icon-class="commentStar" />{{
-                detailInfo.starNum
+                detailInfo[propData.starNumInterface]
               }}</span
             >
           </div>
-          <p class="content-right-center">{{ detailInfo.bt }}</p>
+          <p class="content-right-center">{{ detailInfo[propData.btInterface] }}</p>
           <div class="content-right-bottom">
-            <span class="comment-time">{{ detailInfo.time }}</span>
-            <span class="comment-total">评论 {{ detailInfo.total }}</span>
+            <span class="comment-time">{{ detailInfo[propData.timeInterface] }}</span>
+            <span class="comment-total">评论 {{ detailInfo[propData.totalInterface] }}</span>
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@
                 class="content-left-avatar"
                 :src="
                   IDM.url.getModuleAssetsWebPath(
-                    require('../assets/default_avatar.png'),
+                    item[propData.imgInterface],
                     moduleObject
                   )
                 "
@@ -78,13 +78,13 @@
             </div>
             <div class="i-comment-detail-content-right">
               <div class="content-right-top">
-                <span class="comment-name">{{ item.avatar }}</span>
+                <span class="comment-name">{{ item[propData.avatarInterface] }}</span>
               </div>
               <p class="content-right-center">
-                回复<span>{{ item.reply }}:</span>{{ item.bt }}
+                回复<span>{{ item[propData.replyInterface] }}:</span>{{ item[propData.btInterface] }}
               </p>
               <div class="content-right-bottom">
-                <span class="comment-time">{{ item.time }}</span>
+                <span class="comment-time">{{ item[propData.timeInterface] }}</span>
                 <span class="comment-reply" @click="replyClick(item)"
                   >回复</span
                 >
@@ -96,9 +96,9 @@
     </div>
 
     <div class="i-comment-detail-bar">
-      <van-field v-model="value" placeholder="写评论" left-icon="edit">
+      <van-field v-model="curComment" placeholder="写评论" left-icon="edit">
         <template #button>
-          <van-button>发表</van-button>
+          <van-button @click="publish">发表</van-button>
         </template>
       </van-field>
     </div>
@@ -140,6 +140,7 @@ export default {
       total: 0,
       pageSize: 5,
       start: 0,
+      curComment:""
     };
   },
   props: {},
@@ -164,6 +165,21 @@ export default {
   mounted() {},
   destroyed() {},
   methods: {
+    /**
+     * 发表
+     */
+    publish(){
+      const comment = this.curComment.tirm();
+      if(comment){
+        if (this.propData.publishClickFunc && this.propData.publishClickFunc.length > 0) {
+          let name = this.propData.publishClickFunc[0].name
+          obj = window[name] && window[name].call(this, {
+            RouterParams:this.getRouterParams(),
+            comment
+          });
+        }
+      }
+    },
     getDetail() {
       if (!this.moduleObject.env || this.moduleObject.env == "develop") {
         // mock数据
@@ -830,7 +846,7 @@ export default {
         )
         .done((res) => {
           console.log(res, "接口数据");
-          if(res.code!=="200" && !res.data){
+          if(res.code!=="200" || res.data.length===0){
             this.finished = true;
           }
           if (this.infoList.length >= res.data.total) {

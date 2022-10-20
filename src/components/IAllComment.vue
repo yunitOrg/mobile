@@ -829,7 +829,7 @@ export default {
         )
         .done((res) => {
           console.log(res, "接口数据");
-          if(res.code!=="200" && !res.data){
+          if(res.code!=="200" || res.data.length===0){
             this.finished = true;
           }
           // 简单模式下只展示三条
