@@ -39,7 +39,7 @@
                     >
                       <use :xlink:href="`#${propData.authorIcongirlClass[0]}`"></use>
                     </svg>
-                    <svg-icon v-else icon-class="girl" class-name="idm_svg_author_icon icon_author1"></svg-icon>
+                    <svg-icon v-else icon-class="girl" class-name="idm_svg_author_icon icon_author2"></svg-icon>
                   </template>
                 </template>
                 <template v-if="item[propData.tagField] && propData.isTag">
