@@ -830,17 +830,15 @@ export default {
         )
         .done((res) => {
           console.log(res, "接口数据");
-          if (res.code === "200") {
-            if (this.infoList.length >= res.data.total) {
-              this.finished = true;
-            }
-            this.infoList = [...this.infoList, ...res.data.list];
-            this.total = res.data.total;
-            this.loading = false;
-          } else {
-            console.log(url + "请求失败");
+          if(res.code!=="200" && !res.data){
             this.finished = true;
           }
+          if (this.infoList.length >= res.data.total) {
+            this.finished = true;
+          }
+          this.infoList = [...this.infoList, ...res.data.list];
+          this.total = res.data.total;
+          this.loading = false;
         })
         .error((response) => {
           console.log(url + "请求失败");

@@ -829,23 +829,21 @@ export default {
         )
         .done((res) => {
           console.log(res, "接口数据");
-          if (res.code === "200") {
-            // 简单模式下只展示三条
-            if (!this.curStatus) {
-              this.finished = true;
-              this.infoList = res.data.list.slice(0, 3);
-            } else {
-              if (this.infoList.length >= res.data.total) {
-                this.finished = true;
-              }
-              this.infoList = [...this.infoList, ...res.data.list];
-            }
-            this.total = res.data.total;
-            this.loading = false;
-          } else {
-            console.log(url + "请求失败");
+          if(res.code!=="200" && !res.data){
             this.finished = true;
           }
+          // 简单模式下只展示三条
+          if (!this.curStatus) {
+            this.finished = true;
+            this.infoList = res.data.list.slice(0, 3);
+          } else {
+            if (this.infoList.length >= res.data.total) {
+              this.finished = true;
+            }
+            this.infoList = [...this.infoList, ...res.data.list];
+          }
+          this.total = res.data.total;
+          this.loading = false;
         })
         .error((response) => {
           console.log(url + "请求失败");
