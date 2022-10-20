@@ -81,10 +81,10 @@ export default{
       this.initAttrToModule();
     },
     convertAttrToStyleObject () {
-      let styleObject = {};
-      if (this.propData.offsetTop && this.propData.offsetTop.inputVal + "" && this.propData.offsetTop.selectVal) {
-        styleObject["margin-top"] = this.propData.offsetTop.inputVal + this.propData.offsetTop.selectVal;
-      }
+      // let styleObject = {};
+      // if (this.propData.offsetTop && this.propData.offsetTop.inputVal + "" && this.propData.offsetTop.selectVal) {
+      //   styleObject["margin-top"] = this.propData.offsetTop.inputVal + this.propData.offsetTop.selectVal;
+      // }
       let styleHeight = {};
       if (this.propData.width) {
         styleHeight['width'] = this.propData.width;
@@ -118,7 +118,7 @@ export default{
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .tab-ul .van-tab", fontStyleObj);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .tab-ul .van-tab--active", chooseFontStyle);
-      window.IDM.setStyleToPageHead(this.moduleObject.id + " .tab-conent", styleObject);
+      // window.IDM.setStyleToPageHead(this.moduleObject.id + " .tab-conent", styleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .tab-ul .van-tabs__wrap", styleHeight);
     },
     convertBorderStyleObject () {
