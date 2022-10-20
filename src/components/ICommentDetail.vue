@@ -173,7 +173,7 @@ export default {
       if(comment){
         if (this.propData.publishClickFunc && this.propData.publishClickFunc.length > 0) {
           let name = this.propData.publishClickFunc[0].name
-          obj = window[name] && window[name].call(this, {
+          window[name] && window[name].call(this, {
             RouterParams:this.getRouterParams(),
             comment
           });
@@ -223,9 +223,8 @@ export default {
         .done((res) => {
           console.log(res, "接口数据");
           if (res.code === "200") {
-            this.detailInfo = this.propData.dataFiled
-              ? this.getExpressData("dataName", this.propData.dataFiled, res)
-              : res;
+            this.detailInfo = res.data
+            console.log(this.detailInfo,"this.detailInfothis.detailInfothis.detailInfothis.detailInfo")
           } else {
             console.log(url + "请求失败");
           }
