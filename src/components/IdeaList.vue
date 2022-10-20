@@ -11,7 +11,7 @@
   >
     <div class="idm-idealist">
       <div class="idealist-ul">
-        <li v-for="(item, index) in pageDataList.length > 0 ? pageDataList : list" :key="index" @click="handleJump(item)">
+        <li v-for="(item, index) in list" :key="index" @click="handleJump(item)">
           <div class="idealist-img" v-if="propData.headImg">
             <img :src="item[propData.ImgInterface] || item.headImg" alt="">
           </div>
@@ -27,6 +27,14 @@
           </div>
         </li>
       </div>
+      <ICommonEmpty
+        v-if="!isLoading && list.length === 0"
+        :moduleObject="moduleObject"
+        :propData="propData"
+      ></ICommonEmpty>
+      <div class="d-flex just-c" v-if="isLoading">
+        <van-loading size="24px" vertical>加载中...</van-loading>
+      </div>
     </div>
     <div class="idm-message-list-parent-box-mask" v-if="moduleObject.env === 'develop' && !propData.dataSource">
       <span>！未绑定数据源</span>
@@ -35,12 +43,16 @@
 </template>
 
 <script>
+import ICommonEmpty from '../commonComponents/ICommonEmpty'
 export default {
   name: 'IdeaList',
+  components: {
+    ICommonEmpty
+  },
   data () {
     return {
-      pageDataList: [],
       list: [],
+      isLoading: false,
       moduleObject:{},
       propData:this.$root.propData.compositeAttr||{
         waitTitle: "待回复",
@@ -172,6 +184,7 @@ export default {
       let that = this;
       const customInterfaceUrl = '/ctrl/dataSource/getDatas';
       if (this.moduleObject.env == "production") {
+        this.isLoading = true;
         this.propData.dataSource &&
           IDM.http
             .post(
@@ -186,8 +199,9 @@ export default {
               }
             )
             .done((res) => {
+              this.isLoading = false;
               if (res.type === "success") {
-                that.pageDataList = res.data || [];
+                that.list = res.data || [];
               } else {
                 IDM.message.error(res.message);
               }

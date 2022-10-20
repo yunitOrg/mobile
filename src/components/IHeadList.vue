@@ -12,7 +12,7 @@
     <div class="idm-iheadlist">
       <van-search v-if="false" class="idm-search" v-model="searchVal" placeholder="请输入党员姓名关键词快速查找内容" />
       <div class="iheadlist-ul">
-        <li v-for="(item, index) in pageDataList.length > 0 ? pageDataList : list" :key="index">
+        <li v-for="(item, index) in list" :key="index">
           <div class="iheadlist-img" v-if="propData.headImg">
             <img :src="item[propData.ImgInterface] || item.img" alt="">
           </div>
@@ -68,6 +68,14 @@
           </div>
         </li>
       </div>
+      <ICommonEmpty
+        v-if="!isLoading && list.length === 0"
+        :moduleObject="moduleObject"
+        :propData="propData"
+      ></ICommonEmpty>
+      <div class="d-flex just-c" v-if="isLoading">
+        <van-loading size="24px" vertical>加载中...</van-loading>
+      </div>
     </div>
     <div class="idm-message-list-parent-box-mask" v-if="moduleObject.env === 'develop' && !propData.dataSource">
       <span>！未绑定数据源</span>
@@ -76,13 +84,17 @@
 </template>
 
 <script>
+import ICommonEmpty from '../commonComponents/ICommonEmpty'
 export default {
   name: 'IHeadList',
+  components: {
+    ICommonEmpty
+  },
   data () {
     return {
-      pageDataList: [],
       list: [],
       searchVal: '',
+      isLoading: false,
       moduleObject:{},
       propData:this.$root.propData.compositeAttr||{
         showIcon: true,
@@ -170,7 +182,32 @@ export default {
       return new Function(`return ${strFun}`)();
     },
     initData () {
-      if (this.moduleObject.env !== "production") {
+      let that = this;
+      const customInterfaceUrl = '/ctrl/dataSource/getDatas';
+      if (this.moduleObject.env == "production") {
+        this.isLoading = true;
+        this.propData.dataSource &&
+          IDM.http
+            .post(
+              customInterfaceUrl,
+              {
+                id: this.propData.dataSource && this.propData.dataSource.value,
+              },
+              {
+                headers: {
+                  "Content-Type": "application/json;charset=UTF-8",
+                },
+              }
+            )
+            .done((res) => {
+              this.isLoading = false;
+              if (res.type === "success") {
+                that.list = res.data || [];
+              } else {
+                IDM.message.error(res.message);
+              }
+            });
+      } else {
         this.list =  [
           {
               type: 1,
@@ -192,30 +229,6 @@ export default {
               tag: '书记',
             }
         ]
-      }
-      let that = this;
-      const customInterfaceUrl = '/ctrl/dataSource/getDatas';
-      if (this.moduleObject.env == "production") {
-        this.propData.dataSource &&
-          IDM.http
-            .post(
-              customInterfaceUrl,
-              {
-                id: this.propData.dataSource && this.propData.dataSource.value,
-              },
-              {
-                headers: {
-                  "Content-Type": "application/json;charset=UTF-8",
-                },
-              }
-            )
-            .done((res) => {
-              if (res.type === "success") {
-                that.pageDataList = res.data || [];
-              } else {
-                IDM.message.error(res.message);
-              }
-            });
       }
     },
     init () {
