@@ -6,7 +6,7 @@
         :idm-ctrl-id="moduleObject.id"
     >
         <img
-            :src="IDM.url.getWebPath(getDataField(propData.avatarField, pageData))"
+            :src="IDM.url.getWebPath(getDataField(propData.avatarField, pageData)) || defaultAvatar"
             class="idm-my-message-avatar"
             alt=""
         />
@@ -48,6 +48,11 @@ export default {
         this.moduleObject = this.$root.moduleObject
         this.convertAttrToStyleObject()
         this.convertThemeListAttrToStyleObject()
+    },
+    computed: {
+        defaultAvatar() {
+            return IDM.url.getModuleAssetsWebPath(require('../assets/default-avatar.jpg'), this.moduleObject)
+        },
     },
     methods: {
         propDataWatchHandle(propData) {
