@@ -14,7 +14,7 @@
       <div class="iheadlist-ul">
         <li v-for="(item, index) in list" :key="index">
           <div class="iheadlist-img" v-if="propData.headImg">
-            <img :src="item[propData.ImgInterface] || item.img" alt="">
+            <img :src="item[propData.ImgInterface] || defaultImg" alt="">
           </div>
           <div class="iheadlist-right">
             <div class="iheadlist-center">
@@ -94,6 +94,7 @@ export default {
     return {
       list: [],
       searchVal: '',
+      defaultImg: '',
       isLoading: false,
       moduleObject:{},
       propData:this.$root.propData.compositeAttr||{
@@ -167,6 +168,9 @@ export default {
   created () {
     this.moduleObject = this.$root.moduleObject
     this.init()
+  },
+  mounted () {
+    this.defaultImg = IDM.url.getModuleAssetsWebPath(require("../assets/default-avatar.png"), this.moduleObject)
   },
   methods: {
     propDataWatchHandle (propData) {
