@@ -48,7 +48,7 @@ export default {
     },
     publishCommentContent(){
       let that = this;
-      this.commentContent = ""
+
       let dataSource = this.propData.publishComment;
       if (this.propData.publishComment && this.propData.publishComment[0]) {
         const publishComment = this.propData.publishComment[0];
@@ -60,6 +60,7 @@ export default {
           customParam: publishComment.param,
           routerParams: this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId) : {}
         });
+        this.commentContent = ""
 
         let source = {id: dataSource.value}
         let obj = Object.assign({}, submitParam, source);
