@@ -220,6 +220,7 @@ export default {
      */
     statusToggle() {
       this.curStatus = !this.curStatus;
+      if(this.curStatus) this.infoList = []
       this.finished = false;
     },
     /**
@@ -735,7 +736,7 @@ export default {
                 time: "6分钟前",
                 star: true,
                 starNum: 100,
-                bt: "我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
+                bt: "1我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
                 from: "来自广东深圳",
                 total: 100,
                 showDel:true
@@ -747,7 +748,7 @@ export default {
                 time: "6分钟前",
                 star: false,
                 starNum: 100,
-                bt: "我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
+                bt: "2我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
                 from: "来自广东深圳",
                 total: 100,
                 showDel:false
@@ -759,7 +760,7 @@ export default {
                 time: "6分钟前",
                 star: false,
                 starNum: 100,
-                bt: "我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
+                bt: "3我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
                 from: "来自广东深圳",
                 total: 100,
                 showDel:true
@@ -771,7 +772,7 @@ export default {
                 time: "6分钟前",
                 star: true,
                 starNum: 100,
-                bt: "我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
+                bt: "4我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
                 from: "来自广东深圳",
                 total: 100,
                 showDel:true
@@ -783,7 +784,7 @@ export default {
                 time: "6分钟前",
                 star: false,
                 starNum: 100,
-                bt: "我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
+                bt: "5我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
                 from: "来自广东深圳",
                 total: 100,
               },

@@ -25,7 +25,7 @@
             class="content-left-avatar"
             :src="
               IDM.url.getModuleAssetsWebPath(
-                detailInfo[propData.imgInterface],
+                detailInfo[propData.imgInterface] ? detailInfo[propData.imgInterface] : require('../assets/default_avatar.png'),
                 moduleObject
               )
             "
@@ -70,7 +70,7 @@
                 class="content-left-avatar"
                 :src="
                   IDM.url.getModuleAssetsWebPath(
-                    item[propData.imgInterface],
+                    item[propData.imgInterface] ? item[propData.imgInterface] : require('../assets/default_avatar.png'),
                     moduleObject
                   )
                 "
