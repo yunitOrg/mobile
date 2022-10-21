@@ -220,7 +220,6 @@ export default {
      */
     statusToggle() {
       this.curStatus = !this.curStatus;
-      if(this.curStatus) this.infoList = []
       this.finished = false;
     },
     /**
@@ -819,7 +818,7 @@ export default {
           {
             id: dataSource.value,
             pageSize: this.pageSize,
-            start: this.start,
+            start: this.infoList.length,
             ...routerParams
           },
           {

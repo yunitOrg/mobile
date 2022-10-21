@@ -835,6 +835,8 @@ export default {
           url,
           {
             id: dataSource.value,
+            pageSize: this.pageSize,
+            start: this.infoList.length,
             ...routerParams
           },
           {
