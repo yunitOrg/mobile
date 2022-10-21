@@ -14,7 +14,9 @@
     <div class="i-comment-publish-content">
       <van-field v-model="commentContent" placeholder="写评论" left-icon="edit">
         <template #button>
-          <van-button @click="publishCommentContent">发表</van-button>
+          <van-button @click="publishCommentContent">
+            <span class="dream-comment-button-span">发送</span>
+          </van-button>
         </template>
       </van-field>
     </div>
@@ -53,7 +55,7 @@ export default {
         const func = window[publishComment.name];
         const that = this;
         const submitParam =  func.call(this, {
-          commentContent:this.commentContent,
+          commentContent:that.commentContent,
           ...that.commonParam(),
           customParam: publishComment.param,
           routerParams: this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId) : {}
@@ -202,8 +204,18 @@ export default {
       font-size: 16px;
       padding: 0 6px;
       color: rgb(193, 0, 0);
+      border-radius: 16px;
     }
   }
+
+  .dream-comment-button-span{
+    padding: 6px 12px;
+    background-color: #ef0317;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 16px;
+  }
+
 }
 
 </style>
