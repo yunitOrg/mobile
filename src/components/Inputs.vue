@@ -33,6 +33,9 @@
     <div class="form-btn-box" v-if="propData.btnFootShow">
       <div class="form-btn" v-for="(item, index) in showBtnData" :key="index" :style="computedStyle(item)" @click="handleSubmit(item)">{{item.tab}}</div>
     </div>
+    <div class="d-flex just-c" v-if="isLoading">
+      <van-loading size="24px" vertical>加载中...</van-loading>
+    </div>
   </div>
 </template>
 
@@ -46,6 +49,7 @@ export default {
   },
   data () {
     return {
+      isLoading: false,
       formData: {}, // 表单数据
       moduleObject: {},
       propData: this.$root.propData.compositeAttr||{
@@ -425,7 +429,8 @@ export default {
     handleBackData () {
       if (this.moduleObject.env == "production") {
         const obj = this.getRouterParams();
-        const routerParams = !obj.$el ? obj : {}
+        const routerParams = !obj.$el ? obj : {};
+        this.isLoading = true;
         this.propData.dataSource &&
           IDM.http
             .post(

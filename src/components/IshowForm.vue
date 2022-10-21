@@ -15,7 +15,7 @@
             <use :xlink:href="`#${propData.titleIcon[0]}`"></use>
           </svg>
           <svg-icon v-else icon-class="redFlag" className="form-icon"></svg-icon>
-          {{propData.titleContent || '第一次党员大会'}}
+          {{ params[propData.titleField] || propData.titleContent}}
         </div>
         <div class="form-ul" v-if="propData.showUl">
           <li v-for="(item, index) in propData.tableList" :key="index">
@@ -53,6 +53,9 @@
           <div class="form-label-desc">{{params[propData.activeSumField]}}</div>
         </div>
       </div>
+      <div class="d-flex just-c" v-if="isLoading">
+        <van-loading size="24px" vertical>加载中...</van-loading>
+      </div>
     </div>
     <div class="idm-message-list-parent-box-mask" v-if="moduleObject.env === 'develop' && !propData.dataSource">
       <span>！未绑定数据源</span>
@@ -65,6 +68,7 @@ import { getDatasInterfaceUrl } from '@/api/config'
 export default {
   data () {
     return {
+      isLoading: false,
       uploaddesc: [
         {
           name: 'bbaa.txt'
@@ -77,6 +81,7 @@ export default {
       moduleObject: {},
       propData: this.$root.propData.compositeAttr||{
         showTitle: true,
+        titleContent: '第一次党员大会',
         labelTitle: '基本信息',
         showUl: true,
         showInfo: true,
@@ -203,6 +208,7 @@ export default {
     },
     initData () {
       if (this.moduleObject.env == "production") {
+        this.isLoading = true;
         const routerParams = this.fileterParams();
         this.propData.dataSource &&
           IDM.http
@@ -219,6 +225,7 @@ export default {
               }
             )
             .then((res) => {
+              this.isLoading = false;
               if (res.status == 200 && res.data.code == 200) {
                   this.params = res.data.data
               } else {

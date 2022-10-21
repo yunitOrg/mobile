@@ -47,6 +47,14 @@
           "display": "@[showTitle]"
         },
         {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "绑定字段",
+          "bindKey": "titleField",
+          "placeholder": "标题绑定字段",
+          "default": "title"
+        },
+        {
           "type": "radio",
           "layoutType": "inline",
           "text": "列表展示",
@@ -103,7 +111,7 @@
             {
               "type": "input",
               "layoutType": "inline",
-              "text": "数字字段",
+              "text": "绑定字段",
               "bindKey": "field",
               "placeholder": "绑定字段"
             }
