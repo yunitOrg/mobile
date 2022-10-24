@@ -169,7 +169,7 @@ export default {
      * 发表
      */
     publish(){
-      const comment = this.curComment.tirm();
+      const comment = this.curComment.trim();
       if(comment){
         if (this.propData.publishClickFunc && this.propData.publishClickFunc.length > 0) {
           let name = this.propData.publishClickFunc[0].name

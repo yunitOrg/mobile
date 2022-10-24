@@ -931,6 +931,9 @@ export default {
         case "pageResize":
           this.convertAttrToStyleObject(messageObject.message);
           break;
+        case "refreshComment":
+          this.reload();
+        break;
       }
     },
     /**
