@@ -65,6 +65,7 @@ export default {
         });
         this.commentContent = ""
         this.isInReplayStatus = false;
+        this.commentPlaceholder = "写评论"
 
         let source = {id: dataSource.value}
         let obj = Object.assign({}, submitParam, source);
