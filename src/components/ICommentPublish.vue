@@ -29,11 +29,11 @@ export default {
   name: "ICommentPublish",
   data() {
     return {
-      commentContent:"",
+      commentContent: "",
       moduleObject: {},
       propData: this.$root.propData.compositeAttr || {},
-      commentPlaceholder:"写评论",
-      isInReplayStatus:false
+      commentPlaceholder: "写评论",
+      isInReplayStatus: false
     }
   },
   created() {
@@ -48,7 +48,7 @@ export default {
     propDataWatchHandle(propData) {
       this.propData = propData.compositeAttr || {};
     },
-    publishCommentContent(){
+    publishCommentContent() {
       let that = this;
 
       let dataSource = this.propData.publishComment;
@@ -56,9 +56,9 @@ export default {
         const publishComment = this.propData.publishComment[0];
         const func = window[publishComment.name];
         const that = this;
-        const submitParam =  func.call(this, {
-          commentContent:that.commentContent,
-          isInReplayStatus:this.isInReplayStatus,
+        const submitParam = func.call(this, {
+          commentContent: that.commentContent,
+          isInReplayStatus: this.isInReplayStatus,
           ...that.commonParam(),
           customParam: publishComment.param,
           routerParams: this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId) : {}
@@ -90,9 +90,9 @@ export default {
                 console.log(moduleIdArray);
 
                 IDM.broadcast.send({
-                  type:"linkageReload",
-                  message:{},
-                  rangeModule:moduleIdArray
+                  type: "linkageReload",
+                  message: {},
+                  rangeModule: moduleIdArray
                 })
 
               } else {
@@ -120,7 +120,7 @@ export default {
       };
       return params;
     },
-    footBtnStyle () {
+    footBtnStyle() {
 
       let styleObject = {};
       for (const key in this.propData) {
@@ -183,9 +183,9 @@ export default {
       let that = this;
       switch (messageObject.type) {
         case "replayComment":
-          that.commentPlaceholder = "回复@" + that.propData.replayUserName+":";
+          that.commentPlaceholder = "回复@" + messageObject.msg[that.propData.replayUserName] + ":";
           that.isInReplayStatus = true;
-          that.$nextTick(()=>{
+          that.$nextTick(() => {
             this.$refs.commentInput.focus();
           });
           break;
@@ -203,7 +203,7 @@ export default {
   background: #ffffff;
   box-shadow: 0px -2px 3px 0px rgba(204, 204, 204, 0.5);
   display: flex;
-  position:fixed;
+  position: fixed;
 
   ::v-deep .van-cell {
     height: 60px;
@@ -238,7 +238,7 @@ export default {
     }
   }
 
-  .dream-comment-button-span{
+  .dream-comment-button-span {
     padding: 6px 12px;
     background-color: #ef0317;
     color: #fff;
