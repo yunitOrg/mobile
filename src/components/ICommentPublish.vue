@@ -12,7 +12,7 @@
 
 
     <div class="i-comment-publish-content">
-      <van-field v-model="commentContent" ref="commentInput" placeholder="写评论" left-icon="edit">
+      <van-field v-model="commentContent" ref="commentInput" :placeholder="commentPlaceholder" left-icon="edit">
         <template #button>
           <van-button @click="publishCommentContent">
             <span class="dream-comment-button-span">发送</span>
@@ -31,7 +31,8 @@ export default {
     return {
       commentContent:"",
       moduleObject: {},
-      propData: this.$root.propData.compositeAttr || {}
+      propData: this.$root.propData.compositeAttr || {},
+      commentPlaceholder:"写评论"
     }
   },
   created() {
