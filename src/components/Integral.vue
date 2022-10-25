@@ -330,7 +330,7 @@ export default {
           break
        case '_custom_link':
           url = this.propData.customLink;
-          window.open(IDM.url.getWebPath(url))
+          window.location.href = IDM.url.getWebPath(url)
           break
         case 'jumpCustomFunc':
           if (this.propData.jumpCustomFunc && this.propData.jumpCustomFunc.length > 0) {

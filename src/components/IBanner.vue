@@ -551,7 +551,7 @@ export default {
                 case '_link':
                     if (item.jumpUrl) {
                         const url = IDM.url.getWebPath(item.jumpUrl)
-                        window.open(url)
+                        window.location.href = url
                     }
                     break
                 case '_child':

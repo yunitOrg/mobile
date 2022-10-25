@@ -12,7 +12,7 @@
 
 
     <div class="i-comment-publish-content">
-      <van-field v-model="commentContent" placeholder="写评论" left-icon="edit">
+      <van-field v-model="commentContent" ref="commentInput" :placeholder="commentPlaceholder" left-icon="edit">
         <template #button>
           <van-button @click="publishCommentContent">
             <span class="dream-comment-button-span">发送</span>
@@ -29,9 +29,11 @@ export default {
   name: "ICommentPublish",
   data() {
     return {
-      commentContent:"",
+      commentContent: "",
       moduleObject: {},
-      propData: this.$root.propData.compositeAttr || {}
+      propData: this.$root.propData.compositeAttr || {},
+      commentPlaceholder: "写评论",
+      isInReplayStatus: false
     }
   },
   created() {
@@ -46,7 +48,7 @@ export default {
     propDataWatchHandle(propData) {
       this.propData = propData.compositeAttr || {};
     },
-    publishCommentContent(){
+    publishCommentContent() {
       let that = this;
 
       let dataSource = this.propData.publishComment;
@@ -54,13 +56,20 @@ export default {
         const publishComment = this.propData.publishComment[0];
         const func = window[publishComment.name];
         const that = this;
-        const submitParam =  func.call(this, {
-          commentContent:that.commentContent,
+        if(!that.commentContent){
+          IDM.layer.msg('内容不能为空！');
+          return;
+        }
+        const submitParam = func.call(this, {
+          commentContent: that.commentContent,
+          isInReplayStatus: that.isInReplayStatus,
           ...that.commonParam(),
           customParam: publishComment.param,
           routerParams: this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId) : {}
         });
         this.commentContent = ""
+        this.isInReplayStatus = false;
+        this.commentPlaceholder = "写评论"
 
         let source = {id: dataSource.value}
         let obj = Object.assign({}, submitParam, source);
@@ -85,9 +94,9 @@ export default {
                 console.log(moduleIdArray);
 
                 IDM.broadcast.send({
-                  type:"linkageReload",
-                  message:{},
-                  rangeModule:moduleIdArray
+                  type: "linkageReload",
+                  message: {},
+                  rangeModule: moduleIdArray
                 })
 
               } else {
@@ -115,7 +124,7 @@ export default {
       };
       return params;
     },
-    footBtnStyle () {
+    footBtnStyle() {
 
       let styleObject = {};
       for (const key in this.propData) {
@@ -161,7 +170,32 @@ export default {
       console.log("styleObject:");
 
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .i-comment-publish-content", styleObject);
-    }
+    },
+    /**
+     * 组件通信：接收消息的方法
+     * @param {
+     *  type:"发送消息的时候定义的类型，这里可以自己用来要具体做什么，统一规定的type：linkageResult（组件联动传结果值）、linkageDemand（组件联动传需求值）、linkageReload（联动组件重新加载）
+     * 、linkageOpenDialog（打开弹窗）、linkageCloseDialog（关闭弹窗）、linkageShowModule（显示组件）、linkageHideModule（隐藏组件）、linkageResetDefaultValue（重置默认值）"
+     *  message:{发送的时候传输的消息对象数据}
+     *  messageKey:"消息数据的key值，代表数据类型是什么，常用于表单交互上，比如通过这个key判断是什么数据"
+     *  isAcross:如果为true则代表发送来源是其他页面的组件，默认为false
+     * } object
+     */
+    receiveBroadcastMessage(messageObject) {
+      console.log("组件收到消息", messageObject);
+      console.log(messageObject);
+      let that = this;
+      switch (messageObject.type) {
+        case "replayComment":
+
+          that.commentPlaceholder = "回复@" + messageObject.message[that.propData.replayUserName] + ":";
+          that.isInReplayStatus = true;
+          that.$nextTick(() => {
+            this.$refs.commentInput.focus();
+          });
+          break;
+      }
+    },
   }
 }
 </script>
@@ -174,7 +208,7 @@ export default {
   background: #ffffff;
   box-shadow: 0px -2px 3px 0px rgba(204, 204, 204, 0.5);
   display: flex;
-  position:fixed;
+  position: fixed;
 
   ::v-deep .van-cell {
     height: 60px;
@@ -209,7 +243,7 @@ export default {
     }
   }
 
-  .dream-comment-button-span{
+  .dream-comment-button-span {
     padding: 6px 12px;
     background-color: #ef0317;
     color: #fff;
