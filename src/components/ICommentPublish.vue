@@ -56,6 +56,10 @@ export default {
         const publishComment = this.propData.publishComment[0];
         const func = window[publishComment.name];
         const that = this;
+        if(!that.commentContent){
+          IDM.layer.msg('内容不能为空！');
+          return;
+        }
         const submitParam = func.call(this, {
           commentContent: that.commentContent,
           isInReplayStatus: that.isInReplayStatus,
