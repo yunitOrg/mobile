@@ -95,13 +95,6 @@
       </div>
     </div>
 
-    <div class="i-comment-detail-bar">
-      <van-field v-model="curComment" placeholder="写评论" left-icon="edit">
-        <template #button>
-          <van-button @click="publish">发表</van-button>
-        </template>
-      </van-field>
-    </div>
     <div class="i-comment-detail-mask" v-if="moduleObject.env !== 'production' && !propData.dataSource">
       <span>！未绑定数据源</span>
     </div>
@@ -139,8 +132,7 @@ export default {
       infoList: [],
       total: 0,
       pageSize: 5,
-      start: 0,
-      curComment:""
+      start: 0
     };
   },
   props: {},
@@ -165,21 +157,6 @@ export default {
   mounted() {},
   destroyed() {},
   methods: {
-    /**
-     * 发表
-     */
-    publish(){
-      const comment = this.curComment.trim();
-      if(comment){
-        if (this.propData.publishClickFunc && this.propData.publishClickFunc.length > 0) {
-          let name = this.propData.publishClickFunc[0].name
-          window[name] && window[name].call(this, {
-            RouterParams:this.getRouterParams(),
-            comment
-          });
-        }
-      }
-    },
     getDetail() {
       if (!this.moduleObject.env || this.moduleObject.env == "develop") {
         // mock数据
@@ -369,22 +346,9 @@ export default {
             case "height":
               styleObject[key] = element;
               break;
-            case "innerWidth":
-              innerStyleObject["width"] = element;
-              break;
-            case "innerHeight":
-              innerStyleObject["height"] = element;
-              break;
             case "bgColor":
               if (element && element.hex8) {
                 styleObject["background-color"] = IDM.hex8ToRgbaString(
-                  element.hex8
-                );
-              }
-              break;
-            case "innerBgColor":
-              if (element && element.hex8) {
-                innerStyleObject["background-color"] = IDM.hex8ToRgbaString(
                   element.hex8
                 );
               }
@@ -415,45 +379,8 @@ export default {
                 styleObject["padding-left"] = `${element.paddingLeftVal}`;
               }
               break;
-            case "innerBox":
-              if (element.marginTopVal) {
-                innerStyleObject["margin-top"] = `${element.marginTopVal}`;
-              }
-              if (element.marginRightVal) {
-                innerStyleObject["margin-right"] = `${element.marginRightVal}`;
-              }
-              if (element.marginBottomVal) {
-                innerStyleObject[
-                  "margin-bottom"
-                ] = `${element.marginBottomVal}`;
-              }
-              if (element.marginLeftVal) {
-                innerStyleObject["margin-left"] = `${element.marginLeftVal}`;
-              }
-              if (element.paddingTopVal) {
-                innerStyleObject["padding-top"] = `${element.paddingTopVal}`;
-              }
-              if (element.paddingRightVal) {
-                innerStyleObject[
-                  "padding-right"
-                ] = `${element.paddingRightVal}`;
-              }
-              if (element.paddingBottomVal) {
-                innerStyleObject[
-                  "padding-bottom"
-                ] = `${element.paddingBottomVal}`;
-              }
-              if (element.paddingLeftVal) {
-                innerStyleObject["padding-left"] = `${element.paddingLeftVal}`;
-              }
-              break;
             case "bgImgUrl":
               styleObject[
-                "background-image"
-              ] = `url(${window.IDM.url.getWebPath(element)})`;
-              break;
-            case "innerBgImgUrl":
-              innerStyleObject[
                 "background-image"
               ] = `url(${window.IDM.url.getWebPath(element)})`;
               break;
@@ -469,17 +396,9 @@ export default {
               //平铺模式
               styleObject["background-repeat"] = element;
               break;
-            case "innerBgRepeat":
-              //平铺模式
-              innerStyleObject["background-repeat"] = element;
-              break;
             case "bgAttachment":
               //背景模式
               styleObject["background-attachment"] = element;
-              break;
-            case "innerBgAttachment":
-              //背景模式
-              innerStyleObject["background-attachment"] = element;
               break;
             case "border":
               if (element.border.top.width > 0) {
@@ -537,63 +456,6 @@ export default {
                 element.radius.rightBottom.radius +
                 element.radius.rightBottom.radiusUnit;
               break;
-            case "innerBorder":
-              if (element.border.top.width > 0) {
-                innerStyleObject["border-top-width"] =
-                  element.border.top.width + element.border.top.widthUnit;
-                innerStyleObject["border-top-style"] = element.border.top.style;
-                if (element.border.top.colors.hex8) {
-                  innerStyleObject["border-top-color"] = IDM.hex8ToRgbaString(
-                    element.border.top.colors.hex8
-                  );
-                }
-              }
-              if (element.border.right.width > 0) {
-                innerStyleObject["border-right-width"] =
-                  element.border.right.width + element.border.right.widthUnit;
-                innerStyleObject["border-right-style"] =
-                  element.border.right.style;
-                if (element.border.right.colors.hex8) {
-                  innerStyleObject["border-right-color"] = IDM.hex8ToRgbaString(
-                    element.border.right.colors.hex8
-                  );
-                }
-              }
-              if (element.border.bottom.width > 0) {
-                innerStyleObject["border-bottom-width"] =
-                  element.border.bottom.width + element.border.bottom.widthUnit;
-                innerStyleObject["border-bottom-style"] =
-                  element.border.bottom.style;
-                if (element.border.bottom.colors.hex8) {
-                  innerStyleObject["border-bottom-color"] =
-                    IDM.hex8ToRgbaString(element.border.bottom.colors.hex8);
-                }
-              }
-              if (element.border.left.width > 0) {
-                innerStyleObject["border-left-width"] =
-                  element.border.left.width + element.border.left.widthUnit;
-                innerStyleObject["border-left-style"] =
-                  element.border.left.style;
-                if (element.border.left.colors.hex8) {
-                  innerStyleObject["border-left-color"] = IDM.hex8ToRgbaString(
-                    element.border.left.colors.hex8
-                  );
-                }
-              }
-
-              innerStyleObject["border-top-left-radius"] =
-                element.radius.leftTop.radius +
-                element.radius.leftTop.radiusUnit;
-              innerStyleObject["border-top-right-radius"] =
-                element.radius.rightTop.radius +
-                element.radius.rightTop.radiusUnit;
-              innerStyleObject["border-bottom-left-radius"] =
-                element.radius.leftBottom.radius +
-                element.radius.leftBottom.radiusUnit;
-              innerStyleObject["border-bottom-right-radius"] =
-                element.radius.rightBottom.radius +
-                element.radius.rightBottom.radiusUnit;
-              break;
             case "font":
               styleObject["font-family"] = element.fontFamily;
               if (element.fontColors.hex8) {
@@ -617,18 +479,11 @@ export default {
             case "boxShadow":
               styleObject["box-shadow"] = element;
               break;
-            case "innerBoxShadow":
-              innerStyleObject["box-shadow"] = element;
-              break;
           }
         }
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id, rootStyleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + ` .i-comment-detail-wrapper`, styleObject);
-      window.IDM.setStyleToPageHead(
-        this.moduleObject.id + ` .i-comment-detail-bar`,
-        innerStyleObject
-      );
     },
     /**
      * 主题颜色
@@ -682,20 +537,6 @@ export default {
             " #" +
             (this.moduleObject.packageid || "module_demo") +
             " .i-comment-detail-wrapper .i-comment-detail-content-right .content-right-bottom",
-          {
-            color: item.mainColor
-              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
-              : "",
-          }
-        );
-
-        IDM.setStyleToPageHead(
-          "." +
-            themeNamePrefix +
-            item.key +
-            " #" +
-            (this.moduleObject.packageid || "module_demo") +
-            " .i-comment-detail-bar .van-cell .van-button",
           {
             color: item.mainColor
               ? IDM.hex8ToRgbaString(item.mainColor.hex8)
@@ -970,12 +811,12 @@ $scale: var(--i-comment-detail-scale);
   position: relative;
   color: #000;
   font-size: calc(14px * #{$scale});
-  height: 100vh;
+  height: auto;
   display: flex;
   flex-direction: column;
 
   .i-comment-detail-wrapper {
-    height: calc(100% - 80px);
+    height: 100%;
     overflow: auto;
     padding: 10px;
     .i-comment-detail-main {
@@ -1078,45 +919,6 @@ $scale: var(--i-comment-detail-scale);
           flex: 1;
           padding-left: 24px;
         }
-      }
-    }
-  }
-
-  .i-comment-detail-bar {
-    height: 80px;
-    background: #ffffff;
-    box-shadow: 0px -2px 3px 0px rgba(204, 204, 204, 0.5);
-    display: flex;
-
-    ::v-deep .van-cell {
-      height: 60px;
-      background-color: transparent;
-
-      .van-field__left-icon {
-        background: #f2f2f2;
-        margin-right: 0;
-        display: flex;
-        align-items: center;
-        padding: 0 10px;
-        color: rgb(51, 51, 51);
-        border-radius: 4px 0 0 4px;
-      }
-
-      .van-field__body {
-        height: 100%;
-
-        .van-field__control {
-          height: 100%;
-          background: #f2f2f2;
-          border-radius: 0 4px 4px 0;
-        }
-      }
-
-      .van-button {
-        border: none;
-        font-size: 16px;
-        padding: 0 6px;
-        color: rgb(193, 0, 0);
       }
     }
   }
