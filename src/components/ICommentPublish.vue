@@ -183,7 +183,8 @@ export default {
       let that = this;
       switch (messageObject.type) {
         case "replayComment":
-          that.commentPlaceholder = "回复@" + messageObject.msg[that.propData.replayUserName] + ":";
+
+          that.commentPlaceholder = "回复@" + messageObject.message[that.propData.replayUserName] + ":";
           that.isInReplayStatus = true;
           that.$nextTick(() => {
             this.$refs.commentInput.focus();

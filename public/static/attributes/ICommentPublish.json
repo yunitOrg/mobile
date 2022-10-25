@@ -155,7 +155,7 @@
         {
           "type": "input",
           "layoutType": "block",
-          "text": "用户名字段",
+          "text": "回复@用户名字段",
           "bindKey": "replayUserName"
         }
       ]
