@@ -55,6 +55,7 @@ export default {
       propData: this.$root.propData.compositeAttr||{
         boxWidth: '100%',
         boxHeight: 'auto',
+        titleFile: 'bt',
         boxTitleShow: true,
         btnFootShow: true,
         boxIconShow: true,
@@ -230,7 +231,7 @@ export default {
       propData: this.propData
     }
   },
-  created () {
+  mounted () {
     this.moduleObject = this.$root.moduleObject;
     this.init()
     this.getPrevPageRouterParams();
@@ -239,11 +240,17 @@ export default {
     showTitle () {
       let tem = this.propData.titleFile,
         str = '';
-      if (this.formData[tem]) {
-        str = this.formData[tem]
-      } else {
-        str = this.propData.boxTitle
+      try {
+        console.log(tem, this.formData, this.formData[tem], '测试');
+        if (this.formData[tem]) {
+          str = this.formData[tem]
+        } else {
+          str = this.propData.boxTitle
+        }
+      } catch (error) {
+        console.log(error)
       }
+      
       return str
     },
     showBtnData () {
@@ -401,11 +408,13 @@ export default {
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .form-title", styleTitleObj);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .form-icon", styleIconObj);
       // 组件传递数据给其他组件方法、1：消息 sendBroadcastMessage   2：传递到上下文 getContextValue
-      this.sendBroadcastMessage({
-        type: 'sendFormData',
-        rangeModule: this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
-        message: this.formData
-      })
+      if (this.propData.triggerComponents && this.propData.triggerComponents.length > 0) {
+        this.sendBroadcastMessage({
+          type: 'sendFormData',
+          rangeModule: this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
+          message: this.formData
+        })
+      }
       
       this.handleBackData();
       if (!this.propData.labelBorderShow) {
@@ -446,12 +455,19 @@ export default {
               }
             )
             .then((res) => {
+              this.isLoading = false;
               if (res.status == 200 && res.data.code == 200) {
                   this.formData = res.data.data;
               } else {
                   IDM.message.error(res.data.message)
               }
             })
+            .error((response) => {
+              this.isLoading = false;
+            })
+            .always((res) => {
+              this.isLoading = false;
+            });
       }
     },
     /**
