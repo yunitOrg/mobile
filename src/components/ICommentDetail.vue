@@ -21,15 +21,8 @@
     <div class="i-comment-detail-wrapper">
       <div class="i-comment-detail-main" v-if="detailInfo">
         <div class="i-comment-detail-content-left">
-          <img
-            class="content-left-avatar"
-            :src="
-              IDM.url.getModuleAssetsWebPath(
-                detailInfo[propData.imgInterface] ? detailInfo[propData.imgInterface] : require('../assets/default_avatar.png'),
-                moduleObject
-              )
-            "
-          />
+          <img v-if="detailInfo[propData.imgInterface]" :src="IDM.url.getWebPath(detailInfo[propData.imgInterface])" class="content-left-avatar">
+          <img v-else src="../assets/default_avatar.png" class="content-left-avatar" />
         </div>
         <div class="i-comment-detail-content-right">
           <div class="content-right-top">
@@ -66,15 +59,8 @@
             :class="{ 'border-none': infoList.length - 1 === i }"
           >
             <div class="i-comment-detail-content-left">
-              <img
-                class="content-left-avatar"
-                :src="
-                  IDM.url.getModuleAssetsWebPath(
-                    item[propData.imgInterface] ? item[propData.imgInterface] : require('../assets/default_avatar.png'),
-                    moduleObject
-                  )
-                "
-              />
+              <img v-if="item[propData.imgInterface]" :src="IDM.url.getWebPath(item[propData.imgInterface])" class="content-left-avatar">
+              <img v-else src="../assets/default_avatar.png" class="content-left-avatar" />
             </div>
             <div class="i-comment-detail-content-right">
               <div class="content-right-top">
@@ -201,7 +187,6 @@ export default {
           console.log(res, "接口数据");
           if (res.code === "200") {
             this.detailInfo = res.data
-            console.log(this.detailInfo,"this.detailInfothis.detailInfothis.detailInfothis.detailInfo")
           } else {
             console.log(url + "请求失败");
           }
@@ -670,7 +655,7 @@ export default {
           url,
           {
             id: dataSource.value,
-            pageSize: this.pageSize,
+            pageSize: this.total ? this.total:this.pageSize,
             start: this.infoList.length,
             ...routerParams
           },
