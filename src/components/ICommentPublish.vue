@@ -179,6 +179,7 @@ export default {
       let that = this;
       switch (messageObject.type) {
         case "replayComment":
+          that.commentPlaceholder = "回复@" + that.propData.replayUserName+":";
           that.$nextTick(()=>{
             this.$refs.commentInput.focus();
           });

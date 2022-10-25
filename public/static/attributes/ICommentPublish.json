@@ -151,6 +151,12 @@
           "desc": "选择点击评论菜单需要联动组件",
           "bindKey": "triggerComponents",
           "multiple": true
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "回复@用户名字段",
+          "bindKey": "replayUserName"
         }
       ]
     }
