@@ -32,7 +32,8 @@ export default {
       commentContent:"",
       moduleObject: {},
       propData: this.$root.propData.compositeAttr || {},
-      commentPlaceholder:"写评论"
+      commentPlaceholder:"写评论",
+      isInReplayStatus:false
     }
   },
   created() {
@@ -57,11 +58,13 @@ export default {
         const that = this;
         const submitParam =  func.call(this, {
           commentContent:that.commentContent,
+          isInReplayStatus:this.isInReplayStatus,
           ...that.commonParam(),
           customParam: publishComment.param,
           routerParams: this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId) : {}
         });
         this.commentContent = ""
+        this.isInReplayStatus = false;
 
         let source = {id: dataSource.value}
         let obj = Object.assign({}, submitParam, source);
@@ -180,6 +183,7 @@ export default {
       switch (messageObject.type) {
         case "replayComment":
           that.commentPlaceholder = "回复@" + that.propData.replayUserName+":";
+          that.isInReplayStatus = true;
           that.$nextTick(()=>{
             this.$refs.commentInput.focus();
           });
