@@ -154,8 +154,8 @@
         },
         {
           "type": "input",
-          "layoutType": "inline",
-          "text": "回复@用户名字段",
+          "layoutType": "block",
+          "text": "用户名字段",
           "bindKey": "replayUserName"
         }
       ]

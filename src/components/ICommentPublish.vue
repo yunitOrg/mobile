@@ -58,7 +58,7 @@ export default {
         const that = this;
         const submitParam = func.call(this, {
           commentContent: that.commentContent,
-          isInReplayStatus: this.isInReplayStatus,
+          isInReplayStatus: that.isInReplayStatus,
           ...that.commonParam(),
           customParam: publishComment.param,
           routerParams: this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId) : {}
