@@ -172,7 +172,7 @@ export default {
           url = this.propData.customLink;
           window.location.href = IDM.url.getWebPath(url)
           break
-        case 'jumpCustomFunc':
+        case '_custom_func':
           if (this.propData.jumpCustomFunc && this.propData.jumpCustomFunc.length > 0) {
             const funcName = this.propData.jumpCustomFunc[0].name
             window[funcName] && window[funcName].call(this, row)
