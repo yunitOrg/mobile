@@ -223,17 +223,11 @@ export default {
      * 回复跳转
      */
     replyClick(item) {
-      if (this.propData.replyJump && this.propData.replyJump[0].id)
-        IDM.router.push(
-          this.moduleObject.pageid,
-          this.propData.replyJump[0].id,
-          {
-            keep: true,
-            params: { id: item.id },
-            enterAnim: "",
-            quitAnim: "",
-          }
-        );
+      IDM.broadcast.send({
+        type:"replayComment",
+        message:item,
+        rangeModule:[]
+      })
     },
     /**
      * 点赞
