@@ -44,7 +44,7 @@ export default {
                 case '_link':
                     url = this.getDataField(this.propData.jumpUrlField, item)
                     if (url) {
-                        window.open(IDM.url.getWebPath(url))
+                        window.location.href = IDM.url.getWebPath(url)
                     }
                     if (item.pageId) {
                         IDM.router.push(this.moduleObject.pageid, item.pageId, this.propData.isItemKeep, item, '', '')
@@ -74,7 +74,7 @@ export default {
                 case '_custom_link':
                     url = this.textFilter(this.propData.customItemLink, item)
                     if (!url) return
-                    window.open(IDM.url.getWebPath(url))
+                    window.location.href = IDM.url.getWebPath(url)
                     break
                 case '_custom_func':
                     if (this.propData.jumpItemCustomFunc && this.propData.jumpItemCustomFunc.length > 0) {
@@ -96,7 +96,7 @@ export default {
                     url = this.getDataField(this.propData.moreUrlField, this.pageData)
                     if (!url) return
                     url = IDM.url.getWebPath(url)
-                    window.open(url)
+                    window.location.href = IDM.url.getWebPath(url)
                     break
                 case '_child':
                     if (this.propData.morePageList && this.propData.morePageList.length > 0) {
@@ -115,7 +115,7 @@ export default {
                 case '_custom_link':
                     url = this.textFilter(this.propData.customMoreLink, this.pageData)
                     if (!url) return
-                    window.open(IDM.url.getWebPath(url))
+                    window.location.href = IDM.url.getWebPath(url)
                     break
                 case '_custom_func':
                     if (this.propData.jumpMoreCustomFunc && this.propData.jumpMoreCustomFunc.length > 0) {

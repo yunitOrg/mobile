@@ -79,7 +79,7 @@ export default {
                 case '_link':
                     url = this.getDataField(this.propData.jumpUrlField, this.pageData)
                     if (!url) return
-                    window.open(IDM.url.getWebPath(url))
+                    window.location.href = IDM.url.getWebPath(url)
                     break
                 case '_child':
                     if (this.propData.morePageList && this.propData.morePageList.length > 0) {
@@ -97,7 +97,7 @@ export default {
                 case '_custom_link':
                     url = this.textFilter(this.propData.customLink, this.pageData)
                     if (!url) return
-                    window.open(IDM.url.getWebPath(url))
+                    window.location.href = IDM.url.getWebPath(url)
                     break
                 case '_custom_func':
                     if (this.propData.jumpCustomFunc && this.propData.jumpCustomFunc.length > 0) {

@@ -152,7 +152,7 @@ export default {
         case '_link':
           url = row[this.propData.jumpField]
           if (!url) return
-          window.open(IDM.url.getWebPath(url))
+          window.location.href = IDM.url.getWebPath(url)
           break
         case '_child':
           if (this.propData.morePageList && this.propData.morePageList.length > 0) {
@@ -170,7 +170,7 @@ export default {
           break
         case '_custom_link':
           url = this.propData.customLink;
-          window.open(IDM.url.getWebPath(url))
+          window.location.href = IDM.url.getWebPath(url)
           break
         case 'jumpCustomFunc':
           if (this.propData.jumpCustomFunc && this.propData.jumpCustomFunc.length > 0) {
