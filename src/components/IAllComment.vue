@@ -820,7 +820,7 @@ export default {
             id: dataSource.value,
             pageSize: this.pageSize,
             start: this.infoList.length,
-            type: thi.curMode === 'new'?0:1,
+            type: this.curMode === 'new'?0:1,
             ...routerParams
           },
           {
