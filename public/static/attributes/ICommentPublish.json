@@ -157,6 +157,12 @@
           "layoutType": "block",
           "text": "回复@用户名字段",
           "bindKey": "replayUserName"
+        },
+        {
+          "type": "input",
+          "layoutType": "block",
+          "text": "回复@标识字段",
+          "bindKey": "replayId"
         }
       ]
     }

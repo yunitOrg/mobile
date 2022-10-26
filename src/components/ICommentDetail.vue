@@ -565,6 +565,7 @@ export default {
      * 加载动态数据
      */
     initData() {
+      this.loading = true;
       if (!this.moduleObject.env || this.moduleObject.env == "develop") {
         // mock数据
         setTimeout(() => {
@@ -655,7 +656,7 @@ export default {
           url,
           {
             id: dataSource.value,
-            pageSize: this.total ? this.total:this.pageSize,
+            pageSize: this.pageSize,
             start: this.infoList.length,
             ...routerParams
           },
@@ -666,16 +667,14 @@ export default {
           }
         )
         .done((res) => {
-          console.log(res, "接口数据");
           if(res.code!=="200" || res.data.length===0){
-            this.finished = true;
-          }
-          if (this.infoList.length >= res.data.total) {
             this.finished = true;
           }
           this.infoList = [...this.infoList, ...res.data.list];
           this.total = res.data.total;
-          this.loading = false;
+          if (this.infoList.length >= res.data.total) {
+            this.finished = true;
+          }
         })
         .error((response) => {
           console.log(url + "请求失败");

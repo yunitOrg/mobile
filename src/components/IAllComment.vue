@@ -722,6 +722,7 @@ export default {
      * 加载动态数据
      */
     initData() {
+      this.loading = true;
       if (!this.moduleObject.env || this.moduleObject.env == "develop") {
         // mock数据
         setTimeout(() => {
@@ -817,8 +818,9 @@ export default {
           url,
           {
             id: dataSource.value,
-            pageSize: this.curStatus ? this.total : this.pageSize,
+            pageSize: this.pageSize,
             start: this.infoList.length,
+            type: thi.curMode === 'new'?0:1,
             ...routerParams
           },
           {
@@ -837,13 +839,12 @@ export default {
             this.finished = true;
             this.infoList = res.data.list.slice(0, 3);
           } else {
+            this.infoList = [...this.infoList, ...res.data.list];
             if (this.infoList.length >= res.data.total) {
               this.finished = true;
             }
-            this.infoList = [...this.infoList, ...res.data.list];
           }
           this.total = res.data.total;
-          this.loading = false;
         })
         .error((response) => {
           console.log(url + "请求失败");

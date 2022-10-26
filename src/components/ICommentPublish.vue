@@ -33,6 +33,7 @@ export default {
       moduleObject: {},
       propData: this.$root.propData.compositeAttr || {},
       commentPlaceholder: "写评论",
+      replayId:"",
       isInReplayStatus: false
     }
   },
@@ -65,7 +66,8 @@ export default {
           isInReplayStatus: that.isInReplayStatus,
           ...that.commonParam(),
           customParam: publishComment.param,
-          routerParams: this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId) : {}
+          routerParams: this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId) : {},
+          replayId:this.replayId
         });
         this.commentContent = ""
         this.isInReplayStatus = false;
@@ -189,6 +191,7 @@ export default {
         case "replayComment":
 
           that.commentPlaceholder = "回复@" + messageObject.message[that.propData.replayUserName] + ":";
+          that.replayId = messageObject.message[that.propData.replayId];
           that.isInReplayStatus = true;
           that.$nextTick(() => {
             this.$refs.commentInput.focus();
