@@ -198,6 +198,7 @@ export default {
                         id: this.propData.dataSource && this.propData.dataSource.value,
                         limit: this.propData.limit,
                         start: this.currentPage,
+                        ...IDM.router.getParam(this.moduleObject.routerId),
                         ...this.chooseTabParams
                     },
                     {
