@@ -312,7 +312,11 @@ export default {
           });
       } else if (this.propData.itemJumpUrl) {
         const url = IDM.url.getWebPath(IDM.express.replace(this.propData.itemJumpUrl, item));
-        window.open(url, this.propData.itemJumpTarget || '_self');
+        if (this.propData.itemJumpTarget == '_blank') {
+          window.open(url, '_blank');
+        } else {
+          window.location.href = url
+        }
       }
     },
     optionClick(option, item) {

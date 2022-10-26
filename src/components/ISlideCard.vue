@@ -500,7 +500,11 @@ export default {
         );
       } else {
         const url = IDM.url.getWebPath(this.propData.moreUrl);
-        window.open(url, this.propData.moreTarget || '_self');
+        if (this.propData.moreTarget == '_blank') {
+          window.open(url, '_blank');
+        } else {
+          window.location.href = url
+        }
       }
     },
     itemClick(item) {
@@ -530,7 +534,11 @@ export default {
           });
       } else if (this.propData.itemJumpUrl) {
         const url = IDM.url.getWebPath(IDM.express.replace(this.propData.itemJumpUrl, item));
-        window.open(url, this.propData.itemJumpTarget || '_self');
+        if (this.propData.itemJumpTarget == '_blank') {
+          window.open(url, '_blank');
+        } else {
+          window.location.href = url
+        }
       }
     },
     /**
