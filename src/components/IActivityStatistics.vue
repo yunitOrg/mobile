@@ -177,7 +177,7 @@ export default {
     /**
      * 加载动态数据
      */
-    initData() {
+    initData(chooseData = []) {
       let dataSource = this.propData.dataSource;
       if (!dataSource) {
         if (!this.moduleObject.env || this.moduleObject.env == "develop") {
@@ -237,9 +237,15 @@ export default {
         return;
       }
       let url = `ctrl/dataSource/getDatas`;
-      IDM.http.post(url, {
-            id: dataSource.value,
-          }, {
+
+      let params = {
+        id: dataSource.value
+      }
+      if (chooseData.length !== 0) {
+        params[this.propData.paramName] = chooseData
+      }
+
+      IDM.http.post(url, params, {
             headers: {
               "Content-Type": "application/json;charset=UTF-8",
             },
@@ -265,12 +271,12 @@ export default {
           }
         } else {
           this.activityList = []
-          this.dues=""
+          this.dues = ""
           console.log(url + "请求失败");
         }
       }).error((response) => {
         this.activityList = []
-        this.dues=""
+        this.dues = ""
         console.log(url + "请求失败");
       }).always((res) => {
         this.isLoading = false;
@@ -604,6 +610,11 @@ export default {
           break;
         case 'pageResize':
           this.convertAttrToStyleObject(messageObject.message);
+          break;
+        case 'iselect_chooseData':
+          if(messageObject.message.length !== 0){
+            this.initData(messageObject.message)
+          }
           break;
       }
     },

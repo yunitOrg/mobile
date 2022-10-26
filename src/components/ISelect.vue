@@ -185,12 +185,14 @@ export default {
             }
           )
         }
-      })
-      this.sendBroadcastMessage({
-        type: 'iselect_chooseData',
-        rangeModule: this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
-        message: ary
-      })
+      });
+      if (this.propData.triggerComponents && this.propData.triggerComponents.length > 0) {
+        this.sendBroadcastMessage({
+          type: 'iselect_chooseData',
+          rangeModule: this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
+          message: ary
+        })
+      }
     },
     /**
      * 组件通信：发送消息的方法
@@ -204,6 +206,7 @@ export default {
      * } object 
      */
     sendBroadcastMessage(object) {
+      console.log('ISelect组件发送消息', object);
       window.IDM.broadcast && window.IDM.broadcast.send(object);
     }
   }
