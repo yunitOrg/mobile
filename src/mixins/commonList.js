@@ -191,11 +191,18 @@ export default {
          */
         getDataSourceData() {
             this.isLoading = true
+            let params = {}
+            if(this.propData.paramsFunc && this.propData.paramsFunc.length > 0) {
+                const funcName = this.propData.paramsFunc[0].name
+                params = window[funcName].call(this, {
+                    routerParams: IDM.router.getParam(this.moduleObject.routerId)
+                }) || {}
+            }
             window.IDM.http
                 .post(
                     getDatasInterfaceUrl,
                     {
-                        ...(IDM.router.getParam(this.moduleObject.routerId) || {}),
+                        ...params,
                         ...this.chooseTabParams,
                         id: this.propData.dataSource && this.propData.dataSource.value,
                         limit: this.propData.limit,
