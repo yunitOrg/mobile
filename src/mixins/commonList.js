@@ -195,7 +195,7 @@ export default {
                 .post(
                     getDatasInterfaceUrl,
                     {
-                        ...IDM.router.getParam(this.moduleObject.routerId),
+                        ...(IDM.router.getParam(this.moduleObject.routerId) || {}),
                         ...this.chooseTabParams,
                         id: this.propData.dataSource && this.propData.dataSource.value,
                         limit: this.propData.limit,
