@@ -122,6 +122,14 @@
               "value": false
             }
           ]
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "index值",
+          "bindKey": "zIndex",
+          "desc": "设置主容器的z-index值",
+          "default": "10"
         }
       ]
     },
@@ -572,12 +580,12 @@
           "dataSourceUrl": "ctrl/dataSource/getDatasourceByGroup"
         },
         {
-          "type": "input",
-          "layoutType": "inline",
-          "text": "参数名",
-          "desc": "增加参数后向后端发送JSON数据中额外参数的键名",
-          "bindKey": "paramName",
-          "default": "paramName"
+          "type": "actionSelect",
+          "layoutType": "block",
+          "text": "接口参数自定义函数",
+          "bindKey": "customClickFunc",
+          "desc": "接口参数自定义函数",
+          "multiple": false
         },
         {
           "type": "group",

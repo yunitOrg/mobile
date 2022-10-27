@@ -1086,6 +1086,14 @@
                             "default": "moreUrl"
                         }
                     ]
+                },
+                {
+                    "type": "actionSelect",
+                    "layoutType": "block",
+                    "text": "自定义参数",
+                    "bindKey": "paramsFunc",
+                    "desc": "设置数据源自定义参数函数，函数返回示例 return { isShowDialog: true, username: \"用户名称\", avatar: \"头像url\"}, 接口参数：{routerParams: 上页面携带的参数}",
+                    "multiple": false
                 }
             ]
         }
