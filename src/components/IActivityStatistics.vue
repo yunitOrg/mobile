@@ -172,15 +172,18 @@ export default {
     reload() {
       //请求数据源
       this.initData();
-
     },
 
+    // 获取router的数据
+    getRouterParams () {
+      return this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId): {};
+    },
     // 过滤接口参数
-    fileterParams () {
+    fileterParams (chooseData = []) {
       let obj = {};
       if (this.propData.customClickFunc && this.propData.customClickFunc.length > 0) {
         let name = this.propData.customClickFunc[0].name
-        obj = window[name] && window[name].call(this, this.getRouterParams());
+        obj = window[name] && window[name].call(this, [this.getRouterParams(),chooseData]);
       }
       return obj
     },
@@ -251,11 +254,13 @@ export default {
       let params = {
         id: dataSource.value
       }
-      if (chooseData.length !== 0) {
-        params[this.propData.paramName] = chooseData
-      }
 
-      IDM.http.post(url, params, {
+      const routerParams = this.fileterParams(chooseData);
+
+      IDM.http.post(url, {
+            id: dataSource.value,
+            ...routerParams
+          }, {
             headers: {
               "Content-Type": "application/json;charset=UTF-8",
             },
@@ -610,6 +615,7 @@ export default {
      * @param messageObject
      */
     receiveBroadcastMessage(messageObject) {
+
       switch (messageObject.type) {
         case 'websocket':
           if (this.propData.messageRefreshKey && messageObject.message) {
