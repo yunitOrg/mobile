@@ -117,6 +117,7 @@ export default {
             }
           },
         ],
+        zIndex:10,
         headText: "党费缴纳",
         isShowBottomText: true,
         isShowMoney: false,
@@ -174,6 +175,15 @@ export default {
 
     },
 
+    // 过滤接口参数
+    fileterParams () {
+      let obj = {};
+      if (this.propData.customClickFunc && this.propData.customClickFunc.length > 0) {
+        let name = this.propData.customClickFunc[0].name
+        obj = window[name] && window[name].call(this, this.getRouterParams());
+      }
+      return obj
+    },
     /**
      * 加载动态数据
      */
@@ -347,7 +357,8 @@ export default {
       let styleActivityName = {};
       let styleActivityConvene = {};
       let styleBottom = {};
-      let styleScale = {}
+      let styleScale = {};
+      let styleContainer = {};
 
       const scale = this.getScale()
       styleScale['--i-activitystatistics-scale'] = scale;
@@ -386,6 +397,9 @@ export default {
                     this.moduleObject.id + ' .list-item',
                     styleListItem);
               }
+              break;
+            case "zIndex":
+              styleContainer["z-index"]=this.propData.zIndex
               break;
             case "bgImgUrl":
               styleObject[
@@ -514,6 +528,9 @@ export default {
       window.IDM.setStyleToPageHead(
           this.moduleObject.id + ' .activity-personNum,.activity-attendance',
           styleBottom);
+      window.IDM.setStyleToPageHead(
+          this.moduleObject.id + ' .container',
+          styleContainer);
       this.initData()
     },
     /**
