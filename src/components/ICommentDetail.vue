@@ -228,7 +228,6 @@ export default {
       this.finished = false;
       this.infoList = [];
       this.getDetail();
-      this.initData();
     },
     /**
      * 适配页面
