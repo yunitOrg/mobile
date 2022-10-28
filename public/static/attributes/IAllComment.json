@@ -852,7 +852,7 @@
               "layoutType": "inline",
               "text": "点赞数量",
               "bindKey": "starNumInterface",
-              "default": "star"
+              "default": "starNum"
             },
             {
               "type": "input",
