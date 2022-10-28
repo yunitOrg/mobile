@@ -23,7 +23,7 @@
         <span class="header-left-title">{{ propData.title }}</span>
         <span v-if="curStatus" class="header-left-number">({{ total }})</span>
       </div>
-      <div v-if="curStatus" class="i-all-comment-header-right">
+      <div v-if="curStatus && propData.newOrHot" class="i-all-comment-header-right">
         <div
           class="header-right-btn"
           :class="{ active: curMode === 'new' }"
@@ -121,7 +121,8 @@ export default {
         totalInterface:'total',
         showStarBtn:true,
         showDelBtn:true,
-        delBtnFiled:"showDel"
+        delBtnFiled:"showDel",
+        newOrHot:true
       },
       loading: false,
       finished: false,

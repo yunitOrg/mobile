@@ -47,6 +47,24 @@
           "placeholder": "示例：数据已加载全部"
         },
         {
+          "type": "radio",
+          "layoutType": "inline",
+          "text": "最新最热",
+          "desc": "控制最新最热按钮显示隐藏",
+          "bindKey": "newOrHot",
+          "dictionary": [
+            {
+              "label": "是",
+              "value": true
+            },
+            {
+              "label": "否",
+              "value": false
+            }
+          ],
+          "default": true
+        },
+        {
           "type": "pageSelect",
           "layoutType": "inline",
           "text": "回复跳转",
