@@ -42,7 +42,7 @@
     </div>
 
     <div class="i-all-comment-content">
-      <van-list
+      <ILazyList
         v-model="loading"
         :finished="finished"
         :finished-text="finishedText"
@@ -80,7 +80,7 @@
             </div>
           </div>
         </div>
-      </van-list>
+      </ILazyList>
       <div
         v-if="!curStatus && total > 3"
         class="i-all-comment-content-more"
@@ -97,9 +97,11 @@
 
 <script>
 import { List, Icon } from "vant";
+import ILazyList from "@/commonComponents/ILazyList";
 export default {
   name: "IAllComment",
   components: {
+    ILazyList,
     [List.name]: List,
     [Icon.name]: Icon,
   },

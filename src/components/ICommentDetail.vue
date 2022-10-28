@@ -46,7 +46,7 @@
       </div>
 
       <div class="i-comment-detail-content">
-        <van-list
+        <ILazyList
           v-model="loading"
           :finished="finished"
           :finished-text="finishedText"
@@ -77,7 +77,7 @@
               </div>
             </div>
           </div>
-        </van-list>
+        </ILazyList>
       </div>
     </div>
 
@@ -89,9 +89,11 @@
 
 <script>
 import { List } from "vant";
+import ILazyList from "@/commonComponents/ILazyList";
 export default {
   name: "ICommentDetail",
   components: {
+    ILazyList,
     [List.name]: List
   },
   data() {
