@@ -273,7 +273,7 @@ export default {
           tempList = this.propData.dataFiled
               ? this.getExpressData("dataName", this.propData.dataFiled, res)
               : res;
-          this.dues = tempList.dues
+          this.dues = tempList[this.propData.dues]
           let activityName = this.propData.activityList
           for (let i = 0; i < tempList[activityName].length; i++) {
             let tempItem = {}
