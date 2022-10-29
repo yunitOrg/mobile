@@ -6,11 +6,11 @@
     idm-ctrl-id：组件的id，这个必须不能为空
   -->
   <div
-    class="i-comment-detail-outer"
-    idm-ctrl="idm_module"
-    :id="moduleObject.id"
-    :idm-ctrl-id="moduleObject.id"
-    v-show="propData.defaultStatus != 'hidden'"
+      class="i-comment-detail-outer"
+      idm-ctrl="idm_module"
+      :id="moduleObject.id"
+      :idm-ctrl-id="moduleObject.id"
+      v-show="propData.defaultStatus != 'hidden'"
   >
     <!--
       组件内部容器
@@ -21,18 +21,19 @@
     <div class="i-comment-detail-wrapper">
       <div class="i-comment-detail-main" v-if="detailInfo">
         <div class="i-comment-detail-content-left">
-          <img v-if="detailInfo[propData.imgInterface]" :src="IDM.url.getWebPath(detailInfo[propData.imgInterface])" class="content-left-avatar">
-          <img v-else src="../assets/default_avatar.png" class="content-left-avatar" />
+          <img v-if="detailInfo[propData.imgInterface]" :src="IDM.url.getWebPath(detailInfo[propData.imgInterface])"
+               class="content-left-avatar">
+          <img v-else src="../assets/default_avatar.png" class="content-left-avatar"/>
         </div>
         <div class="i-comment-detail-content-right">
           <div class="content-right-top">
             <span class="comment-name">{{ detailInfo[propData.avatarInterface] }}</span>
             <span
-              v-if="propData.showStarBtn"
-              class="comment-star"
-              :class="{ active: detailInfo[propData.starInterface] }"
-              @click="starClick(detailInfo)"
-              ><svg-icon icon-class="commentStar" />{{
+                v-if="propData.showStarBtn"
+                class="comment-star"
+                :class="{ active: detailInfo[propData.starInterface] }"
+                @click="starClick(detailInfo)"
+            ><svg-icon icon-class="commentStar"/>{{
                 detailInfo[propData.starNumInterface]
               }}</span
             >
@@ -47,20 +48,21 @@
 
       <div class="i-comment-detail-content">
         <ILazyList
-          v-model="loading"
-          :finished="finished"
-          :finished-text="finishedText"
-          @load="initData"
+            v-model="loading"
+            :finished="finished"
+            :finished-text="finishedText"
+            @load="initData"
         >
           <div
-            class="i-comment-detail-content-item"
-            v-for="(item, i) in infoList"
-            :key="i"
-            :class="{ 'border-none': infoList.length - 1 === i }"
+              class="i-comment-detail-content-item"
+              v-for="(item, i) in infoList"
+              :key="i"
+              :class="{ 'border-none': infoList.length - 1 === i }"
           >
             <div class="i-comment-detail-content-left">
-              <img v-if="item[propData.imgInterface]" :src="IDM.url.getWebPath(item[propData.imgInterface])" class="content-left-avatar">
-              <img v-else src="../assets/default_avatar.png" class="content-left-avatar" />
+              <img v-if="item[propData.imgInterface]" :src="IDM.url.getWebPath(item[propData.imgInterface])"
+                   class="content-left-avatar">
+              <img v-else src="../assets/default_avatar.png" class="content-left-avatar"/>
             </div>
             <div class="i-comment-detail-content-right">
               <div class="content-right-top">
@@ -72,7 +74,7 @@
               <div class="content-right-bottom">
                 <span class="comment-time">{{ item[propData.timeInterface] }}</span>
                 <span class="comment-reply" @click="replyClick(item)"
-                  >回复</span
+                >回复</span
                 >
               </div>
             </div>
@@ -81,15 +83,16 @@
       </div>
     </div>
 
-    <div class="i-comment-detail-mask" v-if="moduleObject.env !== 'production' && !propData.dataSource">
-      <span>！未绑定数据源</span>
-    </div>
+    <!--    <div class="i-comment-detail-mask" v-if="moduleObject.env !== 'production' && !propData.dataSource">-->
+    <!--      <span>！未绑定数据源</span>-->
+    <!--    </div>-->
   </div>
 </template>
 
 <script>
-import { List } from "vant";
+import {List} from "vant";
 import ILazyList from "@/commonComponents/ILazyList";
+
 export default {
   name: "ICommentDetail",
   components: {
@@ -102,17 +105,17 @@ export default {
       propData: this.$root.propData.compositeAttr || {
         emptyDescription: "暂无回复",
         finishedTip: "数据已加载全部",
-        imgInterface:'img',
-        idInterface:'id',
-        avatarInterface:'avatar',
-        timeInterface:'time',
-        starInterface:'star',
-        starNumInterface:'starNum',
-        btInterface:'bt',
-        fromInterface:'from',
-        totalInterface:'total',
-        replyInterface:'reply',
-        showStarBtn:true,
+        imgInterface: 'img',
+        idInterface: 'id',
+        avatarInterface: 'avatar',
+        timeInterface: 'time',
+        starInterface: 'star',
+        starNumInterface: 'starNum',
+        btInterface: 'bt',
+        fromInterface: 'from',
+        totalInterface: 'total',
+        replyInterface: 'reply',
+        showStarBtn: true,
       },
       loading: false,
       finished: false,
@@ -120,7 +123,8 @@ export default {
       infoList: [],
       total: 0,
       pageSize: 5,
-      start: 0
+      start: 0,
+      requestParams: [],
     };
   },
   props: {},
@@ -142,8 +146,10 @@ export default {
 
     this.getDetail();
   },
-  mounted() {},
-  destroyed() {},
+  mounted() {
+  },
+  destroyed() {
+  },
   methods: {
     getDetail() {
       if (!this.moduleObject.env || this.moduleObject.env == "develop") {
@@ -172,33 +178,33 @@ export default {
       let url = `ctrl/dataSource/getDatas`;
       const routerParams = this.detailFileterParams();
       IDM.http
-        .post(
-          url,
-          {
-            id: dataSource.value,
-            commentId: this.commonParam() && this.commonParam().commentId,
-            ...routerParams
-          },
-          {
-            headers: {
-              "Content-Type": "application/json;charset=UTF-8",
-            },
-          }
-        )
-        .done((res) => {
-          console.log(res, "接口数据");
-          if (res.code === "200") {
-            this.detailInfo = res.data
-          } else {
+          .post(
+              url,
+              {
+                id: dataSource.value,
+                commentId: this.commonParam() && this.commonParam().commentId,
+                ...routerParams
+              },
+              {
+                headers: {
+                  "Content-Type": "application/json;charset=UTF-8",
+                },
+              }
+          )
+          .done((res) => {
+            console.log(res, "接口数据");
+            if (res.code === "200") {
+              this.detailInfo = res.data
+            } else {
+              console.log(url + "请求失败");
+            }
+          })
+          .error((response) => {
             console.log(url + "请求失败");
-          }
-        })
-        .error((response) => {
-          console.log(url + "请求失败");
-        })
-        .always((res) => {
-          this.loading = false;
-        });
+          })
+          .always((res) => {
+            this.loading = false;
+          });
     },
     /**
      * 删除
@@ -211,9 +217,9 @@ export default {
      */
     replyClick(item) {
       IDM.broadcast.send({
-        type:"replayComment",
-        message:item,
-        rangeModule:[]
+        type: "replayComment",
+        message: item,
+        rangeModule: []
       })
     },
     /**
@@ -238,9 +244,9 @@ export default {
       const base = this.propData.baseValue || 414;
       const ratio = this.propData.adaptationRatio || 1.2;
       const width =
-        this.moduleObject.env === "production"
-          ? window.innerWidth
-          : pageWidth || 414;
+          this.moduleObject.env === "production"
+              ? window.innerWidth
+              : pageWidth || 414;
       return (width / base - 1) * (ratio - 1) + 1;
     },
     /**
@@ -256,64 +262,64 @@ export default {
      */
     convertAttrToStyleObject(pageSize = {}) {
       var styleObject = {},
-        innerStyleObject = {},
-        rootStyleObject = {};
+          innerStyleObject = {},
+          rootStyleObject = {};
 
       const scale = this.getScale(pageSize.width);
       rootStyleObject["--i-comment-detail-scale"] = scale;
 
       if (this.propData.bgSize && this.propData.bgSize == "custom") {
         styleObject["background-size"] =
-          (this.propData.bgSizeWidth
-            ? this.propData.bgSizeWidth.inputVal +
-              this.propData.bgSizeWidth.selectVal
-            : "auto") +
-          " " +
-          (this.propData.bgSizeHeight
-            ? this.propData.bgSizeHeight.inputVal +
-              this.propData.bgSizeHeight.selectVal
-            : "auto");
+            (this.propData.bgSizeWidth
+                ? this.propData.bgSizeWidth.inputVal +
+                this.propData.bgSizeWidth.selectVal
+                : "auto") +
+            " " +
+            (this.propData.bgSizeHeight
+                ? this.propData.bgSizeHeight.inputVal +
+                this.propData.bgSizeHeight.selectVal
+                : "auto");
       } else if (this.propData.bgSize) {
         styleObject["background-size"] = this.propData.bgSize;
       }
       if (this.propData.positionX && this.propData.positionX.inputVal) {
         styleObject["background-position-x"] =
-          this.propData.positionX.inputVal + this.propData.positionX.selectVal;
+            this.propData.positionX.inputVal + this.propData.positionX.selectVal;
       }
       if (this.propData.positionY && this.propData.positionY.inputVal) {
         styleObject["background-position-y"] =
-          this.propData.positionY.inputVal + this.propData.positionY.selectVal;
+            this.propData.positionY.inputVal + this.propData.positionY.selectVal;
       }
 
       if (this.propData.innerBgSize && this.propData.innerBgSize == "custom") {
         innerStyleObject["background-size"] =
-          (this.propData.innerBgSizeWidth
-            ? this.propData.innerBgSizeWidth.inputVal +
-              this.propData.innerBgSizeWidth.selectVal
-            : "auto") +
-          " " +
-          (this.propData.innerBgSizeHeight
-            ? this.propData.innerBgSizeHeight.inputVal +
-              this.propData.innerBgSizeHeight.selectVal
-            : "auto");
+            (this.propData.innerBgSizeWidth
+                ? this.propData.innerBgSizeWidth.inputVal +
+                this.propData.innerBgSizeWidth.selectVal
+                : "auto") +
+            " " +
+            (this.propData.innerBgSizeHeight
+                ? this.propData.innerBgSizeHeight.inputVal +
+                this.propData.innerBgSizeHeight.selectVal
+                : "auto");
       } else if (this.propData.innerBgSize) {
         innerStyleObject["background-size"] = this.propData.innerBgSize;
       }
       if (
-        this.propData.innerPositionX &&
-        this.propData.innerPositionX.inputVal
+          this.propData.innerPositionX &&
+          this.propData.innerPositionX.inputVal
       ) {
         innerStyleObject["background-position-x"] =
-          this.propData.innerPositionX.inputVal +
-          this.propData.innerPositionX.selectVal;
+            this.propData.innerPositionX.inputVal +
+            this.propData.innerPositionX.selectVal;
       }
       if (
-        this.propData.innerPositionY &&
-        this.propData.innerPositionY.inputVal
+          this.propData.innerPositionY &&
+          this.propData.innerPositionY.inputVal
       ) {
         innerStyleObject["background-position-y"] =
-          this.propData.innerPositionY.inputVal +
-          this.propData.innerPositionY.selectVal;
+            this.propData.innerPositionY.inputVal +
+            this.propData.innerPositionY.selectVal;
       }
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
@@ -329,7 +335,7 @@ export default {
             case "bgColor":
               if (element && element.hex8) {
                 styleObject["background-color"] = IDM.hex8ToRgbaString(
-                  element.hex8
+                    element.hex8
                 );
               }
               break;
@@ -361,8 +367,8 @@ export default {
               break;
             case "bgImgUrl":
               styleObject[
-                "background-image"
-              ] = `url(${window.IDM.url.getWebPath(element)})`;
+                  "background-image"
+                  ] = `url(${window.IDM.url.getWebPath(element)})`;
               break;
             case "positionX":
               //背景横向偏移
@@ -383,76 +389,76 @@ export default {
             case "border":
               if (element.border.top.width > 0) {
                 styleObject["border-top-width"] =
-                  element.border.top.width + element.border.top.widthUnit;
+                    element.border.top.width + element.border.top.widthUnit;
                 styleObject["border-top-style"] = element.border.top.style;
                 if (element.border.top.colors.hex8) {
                   styleObject["border-top-color"] = IDM.hex8ToRgbaString(
-                    element.border.top.colors.hex8
+                      element.border.top.colors.hex8
                   );
                 }
               }
               if (element.border.right.width > 0) {
                 styleObject["border-right-width"] =
-                  element.border.right.width + element.border.right.widthUnit;
+                    element.border.right.width + element.border.right.widthUnit;
                 styleObject["border-right-style"] = element.border.right.style;
                 if (element.border.right.colors.hex8) {
                   styleObject["border-right-color"] = IDM.hex8ToRgbaString(
-                    element.border.right.colors.hex8
+                      element.border.right.colors.hex8
                   );
                 }
               }
               if (element.border.bottom.width > 0) {
                 styleObject["border-bottom-width"] =
-                  element.border.bottom.width + element.border.bottom.widthUnit;
+                    element.border.bottom.width + element.border.bottom.widthUnit;
                 styleObject["border-bottom-style"] =
-                  element.border.bottom.style;
+                    element.border.bottom.style;
                 if (element.border.bottom.colors.hex8) {
                   styleObject["border-bottom-color"] = IDM.hex8ToRgbaString(
-                    element.border.bottom.colors.hex8
+                      element.border.bottom.colors.hex8
                   );
                 }
               }
               if (element.border.left.width > 0) {
                 styleObject["border-left-width"] =
-                  element.border.left.width + element.border.left.widthUnit;
+                    element.border.left.width + element.border.left.widthUnit;
                 styleObject["border-left-style"] = element.border.left.style;
                 if (element.border.left.colors.hex8) {
                   styleObject["border-left-color"] = IDM.hex8ToRgbaString(
-                    element.border.left.colors.hex8
+                      element.border.left.colors.hex8
                   );
                 }
               }
 
               styleObject["border-top-left-radius"] =
-                element.radius.leftTop.radius +
-                element.radius.leftTop.radiusUnit;
+                  element.radius.leftTop.radius +
+                  element.radius.leftTop.radiusUnit;
               styleObject["border-top-right-radius"] =
-                element.radius.rightTop.radius +
-                element.radius.rightTop.radiusUnit;
+                  element.radius.rightTop.radius +
+                  element.radius.rightTop.radiusUnit;
               styleObject["border-bottom-left-radius"] =
-                element.radius.leftBottom.radius +
-                element.radius.leftBottom.radiusUnit;
+                  element.radius.leftBottom.radius +
+                  element.radius.leftBottom.radiusUnit;
               styleObject["border-bottom-right-radius"] =
-                element.radius.rightBottom.radius +
-                element.radius.rightBottom.radiusUnit;
+                  element.radius.rightBottom.radius +
+                  element.radius.rightBottom.radiusUnit;
               break;
             case "font":
               styleObject["font-family"] = element.fontFamily;
               if (element.fontColors.hex8) {
                 styleObject["color"] = IDM.hex8ToRgbaString(
-                  element.fontColors.hex8
+                    element.fontColors.hex8
                 );
               }
               styleObject["font-weight"] =
-                element.fontWeight && element.fontWeight.split(" ")[0];
+                  element.fontWeight && element.fontWeight.split(" ")[0];
               styleObject["font-style"] = element.fontStyle;
               styleObject["font-size"] =
-                element.fontSize + element.fontSizeUnit;
+                  element.fontSize + element.fontSizeUnit;
               styleObject["line-height"] =
-                element.fontLineHeight +
-                (element.fontLineHeightUnit == "-"
-                  ? ""
-                  : element.fontLineHeightUnit);
+                  element.fontLineHeight +
+                  (element.fontLineHeightUnit == "-"
+                      ? ""
+                      : element.fontLineHeightUnit);
               styleObject["text-align"] = element.fontTextAlign;
               styleObject["text-decoration"] = element.fontDecoration;
               break;
@@ -474,54 +480,54 @@ export default {
         return;
       }
       const themeNamePrefix =
-        IDM.setting &&
-        IDM.setting.applications &&
-        IDM.setting.applications.themeNamePrefix
-          ? IDM.setting.applications.themeNamePrefix
-          : "idm-theme-";
+          IDM.setting &&
+          IDM.setting.applications &&
+          IDM.setting.applications.themeNamePrefix
+              ? IDM.setting.applications.themeNamePrefix
+              : "idm-theme-";
       for (var i = 0; i < themeList.length; i++) {
         var item = themeList[i];
 
         IDM.setStyleToPageHead(
-          "." +
+            "." +
             themeNamePrefix +
             item.key +
             " #" +
             (this.moduleObject.packageid || "module_demo") +
             " .i-comment-detail-wrapper .content-right-top .comment-star.active",
-          {
-            color: item.mainColor
-              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
-              : "",
-          }
+            {
+              color: item.mainColor
+                  ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+                  : "",
+            }
         );
 
         IDM.setStyleToPageHead(
-          "." +
+            "." +
             themeNamePrefix +
             item.key +
             " #" +
             (this.moduleObject.packageid || "module_demo") +
             " .i-comment-detail-wrapper .i-comment-detail-content-right .content-right-center span",
-          {
-            color: item.mainColor
-              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
-              : "",
-          }
+            {
+              color: item.mainColor
+                  ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+                  : "",
+            }
         );
 
         IDM.setStyleToPageHead(
-          "." +
+            "." +
             themeNamePrefix +
             item.key +
             " #" +
             (this.moduleObject.packageid || "module_demo") +
             " .i-comment-detail-wrapper .i-comment-detail-content-right .content-right-bottom",
-          {
-            color: item.mainColor
-              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
-              : "",
-          }
+            {
+              color: item.mainColor
+                  ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+                  : "",
+            }
         );
       }
     },
@@ -533,19 +539,19 @@ export default {
       let urlObject = IDM.url.queryObject();
       var params = {
         pageId:
-          window.IDM.broadcast && window.IDM.broadcast.pageModule
-            ? window.IDM.broadcast.pageModule.id
-            : "",
+            window.IDM.broadcast && window.IDM.broadcast.pageModule
+                ? window.IDM.broadcast.pageModule.id
+                : "",
         urlData: JSON.stringify(urlObject),
       };
       return params;
     },
     // 获取router的数据
-    getRouterParams () {
-      return this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId): {};
+    getRouterParams() {
+      return this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId) : {};
     },
     // 过滤接口参数
-    fileterParams () {
+    fileterParams() {
       let obj = {};
       if (this.propData.customClickFunc && this.propData.customClickFunc.length > 0) {
         let name = this.propData.customClickFunc[0].name
@@ -554,7 +560,7 @@ export default {
       return obj
     },
     // 过滤接口参数
-    detailFileterParams () {
+    detailFileterParams() {
       let obj = {};
       if (this.propData.detailCustomClickFunc && this.propData.detailCustomClickFunc.length > 0) {
         let name = this.propData.detailCustomClickFunc[0].name
@@ -562,6 +568,7 @@ export default {
       }
       return obj
     },
+
     /**
      * 加载动态数据
      */
@@ -652,37 +659,65 @@ export default {
       }
       const routerParams = this.fileterParams();
       let url = `ctrl/dataSource/getDatas`;
-      IDM.http
-        .post(
-          url,
-          {
-            id: dataSource.value,
-            pageSize: this.pageSize,
-            start: this.infoList.length,
-            ...routerParams
-          },
-          {
-            headers: {
-              "Content-Type": "application/json;charset=UTF-8",
-            },
+
+      let tempParams = {
+        pageSize: this.pageSize,
+        start: this.infoList.length,
+        ...routerParams
+      }
+
+      let flag = false
+
+      if (this.requestParams.length !== 0){
+        for (const param of this.requestParams) {
+          flag = JSON.stringify(tempParams) === JSON.stringify(param)
+          if (flag) {
+            break;
           }
-        )
-        .done((res) => {
-          if(res.code!=="200" || res.data.length===0){
-            this.finished = true;
-          }
-          this.infoList = [...this.infoList, ...res.data.list];
-          this.total = res.data.total;
-          if (this.infoList.length >= res.data.total) {
-            this.finished = true;
-          }
+        }
+      }
+
+      if (! flag){
+        this.requestParams.push({
+          pageSize: this.pageSize,
+          start: this.infoList.length,
+          ...routerParams
         })
-        .error((response) => {
-          console.log(url + "请求失败");
-        })
-        .always((res) => {
-          this.loading = false;
-        });
+        IDM.http
+            .post(
+                url,
+                {
+                  id: dataSource.value,
+                  pageSize: this.pageSize,
+                  start: this.infoList.length,
+                  ...routerParams
+                },
+                {
+                  headers: {
+                    "Content-Type": "application/json;charset=UTF-8",
+                  },
+                }
+            )
+            .done((res) => {
+              if (res.code !== "200" || res.data.length === 0) {
+                this.finished = true;
+              }
+              this.infoList = [...this.infoList, ...res.data.list];
+
+              this.total = res.data.total;
+              if (this.infoList.length >= res.data.total) {
+                this.finished = true;
+              }
+            })
+            .error((response) => {
+              console.log(url + "请求失败");
+            })
+            .always((res) => {
+              this.loading = false;
+            });
+      }
+
+
     },
     /**
      * 通用的获取表达式匹配后的结果
@@ -693,32 +728,33 @@ export default {
       if (dataFiled) {
         var filedExp = dataFiled;
         filedExp = dataName + (filedExp.startsWiths("[") ? "" : ".") + filedExp;
-        var dataObject = { IDM: window.IDM };
+        var dataObject = {IDM: window.IDM};
         dataObject[dataName] = resultData;
         _defaultVal = window.IDM.express.replace.call(
-          this,
-          "@[" + filedExp + "]",
-          dataObject
+            this,
+            "@[" + filedExp + "]",
+            dataObject
         );
       }
       //对结果进行再次函数自定义
       if (
-        this.propData.customFunction &&
-        this.propData.customFunction.length > 0
+          this.propData.customFunction &&
+          this.propData.customFunction.length > 0
       ) {
         var params = this.commonParam();
         var resValue = "";
         try {
           resValue =
-            window[this.propData.customFunction[0].name] &&
-            window[this.propData.customFunction[0].name].call(this, {
-              ...params,
-              ...this.propData.customFunction[0].param,
-              moduleObject: this.moduleObject,
-              expressData: _defaultVal,
-              interfaceData: resultData,
-            });
-        } catch (error) {}
+              window[this.propData.customFunction[0].name] &&
+              window[this.propData.customFunction[0].name].call(this, {
+                ...params,
+                ...this.propData.customFunction[0].param,
+                moduleObject: this.moduleObject,
+                expressData: _defaultVal,
+                interfaceData: resultData,
+              });
+        } catch (error) {
+        }
         _defaultVal = resValue;
       }
 
@@ -746,12 +782,12 @@ export default {
         case "websocket":
           if (this.propData.messageRefreshKey && messageObject.message) {
             const messageData =
-              (typeof messageObject.message === "string" &&
-                JSON.parse(messageObject.message)) ||
-              messageObject.message;
+                (typeof messageObject.message === "string" &&
+                    JSON.parse(messageObject.message)) ||
+                messageObject.message;
             const arr = Array.isArray(this.propData.messageRefreshKey)
-              ? this.propData.messageRefreshKey
-              : [this.propData.messageRefreshKey];
+                ? this.propData.messageRefreshKey
+                : [this.propData.messageRefreshKey];
             if (messageData.badgeType && arr.includes(messageData.badgeType)) {
               this.reload();
             }
@@ -798,12 +834,12 @@ $scale: var(--i-comment-detail-scale);
     height: 100%;
     overflow: auto;
     padding: 10px;
+
     .i-comment-detail-main {
       display: flex;
       padding: calc(16px * #{$scale});
       background-color: #fff;
-      box-shadow: 0 calc(2px * #{$scale}) calc(12px * #{$scale}) 0
-        rgba(0, 0, 0, 0.07);
+      box-shadow: 0 calc(2px * #{$scale}) calc(12px * #{$scale}) 0 rgba(0, 0, 0, 0.07);
       border-radius: calc(6px * #{$scale});
       margin-bottom: 12px;
 
@@ -837,6 +873,7 @@ $scale: var(--i-comment-detail-scale);
     .i-comment-detail-content-left {
       width: calc(38px * #{$scale});
       min-width: calc(38px * #{$scale});
+
       .content-left-avatar {
         width: 100%;
         height: calc(38px * #{$scale});
@@ -860,6 +897,7 @@ $scale: var(--i-comment-detail-scale);
 
         .comment-star {
           cursor: pointer;
+
           &.active {
             color: rgb(193, 0, 0);
           }
@@ -909,15 +947,16 @@ $scale: var(--i-comment-detail-scale);
     width: 100%;
     height: 100%;
     z-index: 1;
-    background: rgba(0,0,0,.3);
+    background: rgba(0, 0, 0, .3);
     display: flex;
     justify-content: center;
     align-items: center;
+
     span {
       padding: calc(6px * #{ $scale }) calc(20px * #{ $scale });;
       color: #e6a23c;
       background: #fdf6ec;
-      border:calc(1px * #{ $scale }) solid #f5dab1;
+      border: calc(1px * #{ $scale }) solid #f5dab1;
       border-radius: calc(4px * #{ $scale });;
     }
   }
