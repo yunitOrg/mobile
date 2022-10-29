@@ -134,6 +134,7 @@ export default {
       total: 0,
       pageSize: 5,
       start: 0,
+      requestParams:[]
     };
   },
   props: {},
@@ -209,6 +210,7 @@ export default {
       this.loading = true;
       this.finished = false;
       this.infoList = [];
+      this.requestParams = [];
       this.initData();
     },
     /**
@@ -816,6 +818,34 @@ export default {
       }
       let url = `ctrl/dataSource/getDatas`;
       const routerParams = this.fileterParams();
+
+
+      let tempParams = {
+        id: dataSource.value,
+        pageSize: this.pageSize,
+        start: this.infoList.length,
+        type: this.curMode === 'new'?0:1,
+        ...routerParams
+      }
+
+      let flag = false
+      if (this.requestParams.length !== 0){
+        for (const param of this.requestParams) {
+          flag = JSON.stringify(tempParams) === JSON.stringify(param)
+          if (flag) {
+            break;
+          }
+        }
+      }
+
+      if (! flag){
+        this.requestParams.push({
+          id: dataSource.value,
+          pageSize: this.pageSize,
+          start: this.infoList.length,
+          type: this.curMode === 'new'?0:1,
+          ...routerParams
+        })
       IDM.http
         .post(
           url,
@@ -854,7 +884,7 @@ export default {
         })
         .always((res) => {
           this.loading = false;
-        });
+        });}
     },
     /**
      * 通用的获取表达式匹配后的结果

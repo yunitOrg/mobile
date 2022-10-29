@@ -50,12 +50,20 @@ export default {
       if (!this.finished){
         this.$emit('load')
       }
+    },
+    loading(newV,oldV){
+      if (newV){
+        this.$emit('load')
+      }else {
+        this.handleScroll()
+      }
     }
   },
   data() {
     return {
       list: {},
       preTime: {},
+      latestListHeight:null,
     }
   },
   mounted() {
@@ -67,6 +75,7 @@ export default {
     window.addEventListener('scroll', this.debounce(this.handleScroll))
   },
   methods: {
+
     handleScroll() {
       if (!this.finished){
         // 获取视窗高度
@@ -75,9 +84,9 @@ export default {
 
         let listHeight = this.list.offsetHeight
         let listTop = this.list.getBoundingClientRect().top
-        // console.log(domHeight,listTop,scrollTop,listHeight)
-        if (domHeight >= listHeight + listTop) {
+        if (domHeight >= listHeight + listTop && this.latestListHeight !== listHeight) {
           this.loading = true
+          this.latestListHeight = listHeight
           this.$emit('load')
         }
       }

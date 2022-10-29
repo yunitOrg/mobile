@@ -125,6 +125,7 @@ export default {
       pageSize: 5,
       start: 0,
       requestParams: [],
+      latestNum:null
     };
   },
   props: {},
@@ -195,6 +196,7 @@ export default {
             console.log(res, "接口数据");
             if (res.code === "200") {
               this.detailInfo = res.data
+              this.latestNum = this.detailInfo[this.propData.totalInterface]
             } else {
               console.log(url + "请求失败");
             }
@@ -235,6 +237,7 @@ export default {
       this.loading = true;
       this.finished = false;
       this.infoList = [];
+      this.requestParams = [];
       this.getDetail();
     },
     /**
@@ -660,6 +663,8 @@ export default {
       const routerParams = this.fileterParams();
       let url = `ctrl/dataSource/getDatas`;
 
+
+
       let tempParams = {
         pageSize: this.pageSize,
         start: this.infoList.length,
@@ -667,7 +672,6 @@ export default {
       }
 
       let flag = false
-
       if (this.requestParams.length !== 0){
         for (const param of this.requestParams) {
           flag = JSON.stringify(tempParams) === JSON.stringify(param)
@@ -716,7 +720,6 @@ export default {
               this.loading = false;
             });
       }
-
 
     },
     /**
@@ -852,6 +855,7 @@ $scale: var(--i-comment-detail-scale);
       background-color: #fff;
       box-shadow: 0px 2px 9px 7px rgba(238, 238, 238, 0.5);
       border-radius: calc(6px * #{$scale});
+      margin-bottom: 60px;
 
       .i-comment-detail-content-item {
         display: flex;
