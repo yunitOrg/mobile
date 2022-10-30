@@ -40,6 +40,7 @@ export default{
   },
   computed: {
     computedStyle () {
+      console.log(this, this.formData, '多行');
       let obj = {}
       obj['width'] = this.params['labelWidth'];
       obj['height'] = this.params['labelHeight']

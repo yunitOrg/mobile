@@ -17,7 +17,12 @@ export default{
     label: String,
     field: String,
     options: Object,
-    formData: Object,
+    formData: {
+      type: Object,
+      default: () => {
+        return {};
+      }
+    },
     params: Object,
     moduleObject: Object
   },
@@ -122,7 +127,7 @@ export default{
       }
     },
     onSelect (item) {
-      let temp = this.params.selectValue
+      let temp = this.params.selectValue;
       this.$set(this.formData, this.field, item[temp] || item.value)
       this.sheetShow = false
     }

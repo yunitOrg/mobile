@@ -227,6 +227,15 @@ export default {
       propData: this.propData
     }
   },
+  watch: {
+    formData: {
+      deep: true,
+      immediate: true,
+      handler(newVal) {
+        console.log(newVal, '总监听')
+      }
+    }
+  },
   mounted () {
     this.moduleObject = this.$root.moduleObject;
     this.init()
@@ -425,7 +434,7 @@ export default {
     },
     // 回填从router获取到的数据
     getPrevPageRouterParams () {
-      const obj = this.getRouterParams();
+      const obj = this.getRouterParams() || {};
       if (!obj.$el) {
         this.formData = obj
       }
@@ -433,7 +442,7 @@ export default {
     // 回填数据
     handleBackData () {
       if (this.moduleObject.env == "production") {
-        const obj = this.getRouterParams();
+        const obj = this.getRouterParams() || {};
         const routerParams = !obj.$el ? obj : {};
         this.propData.dataSource &&
           IDM.http
@@ -450,8 +459,9 @@ export default {
               }
             )
             .then((res) => {
+              console.log(res, '接口返回');
               if (res.status == 200 && res.data.code == 200) {
-                  this.formData = res.data.data;
+                  this.formData = res.data.data || {};
               } else {
                   IDM.message.error(res.data.message)
               }
