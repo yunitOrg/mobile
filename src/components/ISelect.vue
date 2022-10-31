@@ -72,6 +72,13 @@ export default {
       if (this.propData.tableMenu.filter(item => item.type === 'interface').length > 0) {
         this.initData()
       }
+      this.propData.tableMenu.forEach(item => {
+        if (item.selectVal) {
+          this.formData[item.field] = item.selectVal
+          // let obj = item.copyOptions && item.copyOptions.find(k => k.value == item.selectVal) || {};
+          // item.title = `${item.title}${obj.text}`
+        }
+      })
       this.handleChange()
     }
     this.init()
@@ -181,7 +188,7 @@ export default {
           ary.push(
             {
               [item.field]: this.formData[item.field],
-              font: (item.copyOptions.find(i => i.value === this.formData[item.field]) || {}).text
+              font: (item.copyOptions.find(i => i.value == this.formData[item.field]) || {}).text
             }
           )
         }
