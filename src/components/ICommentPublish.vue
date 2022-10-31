@@ -189,8 +189,9 @@ export default {
       let that = this;
       switch (messageObject.type) {
         case "replayComment":
-
-          that.commentPlaceholder = "回复@" + messageObject.message[that.propData.replayUserName] + ":";
+          if (that.propData.replayUserName) {
+            that.commentPlaceholder = "回复@" + messageObject.message[that.propData.replayUserName] + ":";
+          }
           that.replayId = messageObject.message[that.propData.replayId];
           that.isInReplayStatus = true;
           that.$nextTick(() => {
