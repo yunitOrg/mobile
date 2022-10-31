@@ -54,9 +54,9 @@ export default {
     loading(newV,oldV){
       if (newV){
         this.$emit('load')
-      }else {
-        this.handleScroll()
       }
+
+      this.handleScroll()
     }
   },
   data() {

@@ -802,6 +802,9 @@ export default {
         case "pageResize":
           this.convertAttrToStyleObject(messageObject.message);
           break;
+        case "replayComment":
+          this.reload();
+          break;
       }
     },
     /**

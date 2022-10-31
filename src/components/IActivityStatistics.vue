@@ -50,6 +50,19 @@
                 </div>
               </div>
             </div>
+
+            <van-empty
+                v-show="activityList.length === 0"
+                description="暂无数据"
+            >
+              <template #image>
+                <van-image
+                    :src="
+              IDM.url.getModuleAssetsWebPath(require('../assets/empty-default.png'), moduleObject)
+            "
+                />
+              </template>
+            </van-empty>
           </div>
         </template>
       </div>
