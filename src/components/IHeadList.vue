@@ -187,30 +187,16 @@ export default {
     },
     initData () {
       let that = this;
-      const customInterfaceUrl = '/ctrl/dataSource/getDatas';
       if (this.moduleObject.env == "production") {
         this.isLoading = true;
-        this.propData.dataSource &&
-          IDM.http
-            .post(
-              customInterfaceUrl,
-              {
-                id: this.propData.dataSource && this.propData.dataSource.value,
-              },
-              {
-                headers: {
-                  "Content-Type": "application/json;charset=UTF-8",
-                },
-              }
-            )
-            .done((res) => {
-              this.isLoading = false;
-              if (res.type === "success") {
-                that.list = res.data || [];
-              } else {
-                IDM.message.error(res.message);
-              }
-            });
+        IDM.datasource.request(this.propData.dataSource[0]?.id, {
+          moduleObject: this.moduleObject
+        }, (data) => {
+          this.isLoading = false;
+          if (data) {
+            that.list = data;
+          }
+        })
       } else {
         this.list =  [
           {
