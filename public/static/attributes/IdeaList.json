@@ -171,6 +171,17 @@
         "helpUrl": "",
         "children": [
           {
+            "type": "colorPicker",
+            "layoutType": "inline",
+            "text": "背景色",
+            "bindKey": "bgColor",
+            "placeholder": "请选择颜色",
+            "default": {
+              "hex": "#FFFFFF",
+              "hex8": "#FFFFFFFF"
+            }
+          },
+          {
             "type": "box",
             "layoutType": "block",
             "text": "容器内外边距",

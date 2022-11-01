@@ -261,6 +261,10 @@ export default {
           styleObject["padding-left"] = `${ulbox.paddingLeftVal}`;
         }
       }
+      if (this.propData.bgColor) {
+        let element =  this.propData.bgColor;
+        styleObject['background-color'] = element && element.hex8
+      }
       let listyleObject = {};
       if (this.propData.liBox) {
         let libox = this.propData.liBox || {};

@@ -74,9 +74,7 @@ export default {
       }
       this.propData.tableMenu.forEach(item => {
         if (item.selectVal) {
-          this.formData[item.field] = item.selectVal
-          // let obj = item.copyOptions && item.copyOptions.find(k => k.value == item.selectVal) || {};
-          // item.title = `${item.title}${obj.text}`
+          this.formData[item.field] = Number(item.selectVal)
         }
       })
       this.handleChange()
