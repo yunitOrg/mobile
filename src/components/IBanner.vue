@@ -57,26 +57,28 @@
                 <div class="idm-banner-swiper-pagination" v-show="propData.showBullet"></div>
             </div>
         </div>
-        <div
+        <ICommonMask :moduleObject="moduleObject" :propData="propData"></ICommonMask>
+        <!-- <div
             class="idm-banner-box-mask"
             v-if="moduleObject.env === 'develop' && propData.dataType === 'dataSource' && !propData.dataSource"
         >
             <span>！未绑定数据源</span>
-        </div>
+        </div> -->
     </div>
 </template>
 
 <script>
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 import 'swiper/css/swiper.min.css'
-import { getDatasInterfaceUrl } from '@/api/config'
 import { getBannerData } from '../mock/mockData'
 import adaptationScreen from '../mixins/adaptationScreen'
+import ICommonMask from '../commonComponents/ICommonMask'
 export default {
     name: 'IBanner',
     components: {
         Swiper,
-        SwiperSlide
+        SwiperSlide,
+        ICommonMask
     },
     mixins: [adaptationScreen],
     data() {
@@ -419,30 +421,20 @@ export default {
             this.initData()
         },
         getDataSourceData() {
-            window.IDM.http
-                .post(
-                    getDatasInterfaceUrl,
-                    {
-                        id: this.propData.dataSource && this.propData.dataSource.value,
-                        limit: this.propData.limit,
-                        start: 0
-                    },
-                    {
-                        headers: {
-                            'Content-Type': 'application/json;charset=UTF-8'
-                        }
-                    }
-                )
-                .then((res) => {
-                    //res.data
-                    if (res.status == 200 && res.data.code == 200) {
-                        this.bannerData = res.data.data
-                        this.initSwiper()
-                    } else {
-                        IDM.message.error(res.data.message)
-                    }
-                })
-                .catch((error) => {})
+            IDM.datasource.request(this.propData?.dataSource?.[0]?.id, {
+                moduleObject: this.moduleObject,
+                param: {
+                    limit: this.propData.limit,
+                    start: 0
+                }
+            }, (res) => {
+                if (res.code == 200) {
+                    this.bannerData = res.data
+                    this.initSwiper()
+                } else {
+                    IDM.message.error(res.message)
+                }
+            })
         },
         getCustomSourceData() {
             this.propData.customInterfaceUrl &&

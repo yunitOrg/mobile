@@ -46,7 +46,6 @@
 <script>
 import ICommonMask from '../commonComponents/ICommonMask'
 import { historyTodayData } from '../mock/mockData'
-import { getDatasInterfaceUrl } from '@/api/config'
 import adaptationScreenMixin from '../mixins/adaptationScreen'
 export default {
     name: 'IHistoryToday',
@@ -267,26 +266,16 @@ export default {
             if (this.moduleObject.env !== 'production') {
                 this.componentData = historyTodayData
             }
-            window.IDM.http
-                .post(
-                    getDatasInterfaceUrl,
-                    {
-                        id: this.propData.dataSource && this.propData.dataSource.value
-                    },
-                    {
-                        headers: {
-                            'Content-Type': 'application/json;charset=UTF-8'
-                        }
-                    }
-                )
-                .then((res) => {
-                    //res.data
-                    if (res.status == 200 && res.data.code == 200) {
-                        this.componentData = res.data.data
-                    } else {
-                        IDM.message.error(res.data.message)
-                    }
-                })
+            IDM.datasource.request(this.propData?.dataSource?.[0]?.id, {
+                moduleObject: this.moduleObject,
+                param: {}
+            }, (res) => {
+                if (res.code == 200) {
+                    this.componentData = res.data
+                } else {
+                    IDM.message.error(res.message)
+                }
+            })
         },
         receiveBroadcastMessage(object) {
             console.log('组件收到消息', object)

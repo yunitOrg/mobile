@@ -26,7 +26,6 @@
 </template>
 <script>
 import { getMyMessageTopData } from '../mock/mockData'
-import { getDatasInterfaceUrl } from '@/api/config'
 import adaptationScreenMixin from '../mixins/adaptationScreen'
 import ICommonMask from '../commonComponents/ICommonMask'
 export default {
@@ -242,28 +241,20 @@ export default {
                 this.pageData = getMyMessageTopData.call(this)
                 return
             }
-            window.IDM.http
-                .post(
-                    getDatasInterfaceUrl,
-                    {
-                        id: this.propData.dataSource && this.propData.dataSource.value,
-                        limit: this.propData.limit,
-                        start: 0
-                    },
-                    {
-                        headers: {
-                            'Content-Type': 'application/json;charset=UTF-8'
-                        }
-                    }
-                )
-                .then((res) => {
-                    //res.data
-                    if (res.status == 200 && res.data.code == 200) {
-                        this.pageData = res.data.data
-                    } else {
-                        IDM.message.error(res.data.message)
-                    }
-                })
+
+            IDM.datasource.request(this.propData?.dataSource?.[0]?.id, {
+                moduleObject: this.moduleObject,
+                param: {
+                    limit: this.propData.limit,
+                    start: 0
+                }
+            }, (res) => {
+                if (res.code == 200) {
+                    this.pageData = res.data
+                } else {
+                    IDM.message.error(res.message)
+                }
+            })
         },
         /**
          * 主题颜色

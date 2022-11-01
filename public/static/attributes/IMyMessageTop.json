@@ -499,8 +499,7 @@
                     "type": "treeSelect",
                     "layoutType": "inline",
                     "text": "数据源",
-                    "bindKey": "dataSource",
-                    "dataSourceUrl": "/ctrl/dataSource/getDatasourceByGroup"
+                    "bindKey": "dataSourceSelect"
                 },
                 {
                     "type": "group",

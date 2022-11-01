@@ -581,12 +581,11 @@
                     "multiple": true
                 },
                 {
-                    "type": "treeSelect",
+                    "type": "dataSourceSelect",
                     "layoutType": "inline",
                     "text": "数据源",
                     "desc": "数据返回示例：{value: [], count: 0, moreUrl: ''}",
-                    "bindKey": "dataSource",
-                    "dataSourceUrl": "/ctrl/dataSource/getDatasourceByGroup"
+                    "bindKey": "dataSource"
                 },
                 {
                     "type": "group",
@@ -617,7 +616,7 @@
                     "desc": "设置从列表项中展示的对应字段",
                     "children": [
                         {
-                            "type": "input",
+                            "type": "dataSourceFiledSelect",
                             "layoutType": "inline",
                             "text": "选中字段",
                             "bindKey": "isCheckField",
@@ -626,35 +625,35 @@
                             "default": "isCheck"
                         },
                         {
-                            "type": "input",
+                            "type": "dataSourceFiledSelect",
                             "layoutType": "inline",
                             "text": "标题字段",
                             "bindKey": "titleField",
                             "default": "title"
                         },
                         {
-                            "type": "input",
+                            "type": "dataSourceFiledSelect",
                             "layoutType": "inline",
                             "text": "头像字段",
                             "bindKey": "avatarField",
                             "default": "avatar"
                         },
                         {
-                            "type": "input",
+                            "type": "dataSourceFiledSelect",
                             "layoutType": "inline",
                             "text": "姓名字段",
                             "bindKey": "usernameField",
                             "default": "username"
                         },
                         {
-                            "type": "input",
+                            "type": "dataSourceFiledSelect",
                             "layoutType": "inline",
                             "text": "时间字段",
                             "bindKey": "timeField",
                             "default": "time"
                         },
                         {
-                            "type": "input",
+                            "type": "dataSourceFiledSelect",
                             "layoutType": "inline",
                             "text": "内容字段",
                             "bindKey": "contentField",

@@ -17,7 +17,7 @@ export default {
     },
     render(h) {
         if (
-            !this.propData.dataSource &&
+            !this.propData?.dataSource?.[0]?.id &&
             this.moduleObject.env === 'develop' &&
             this.propData.dataType !== 'customInterface'
         ) {

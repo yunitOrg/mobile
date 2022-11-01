@@ -411,7 +411,7 @@
                     "display": "@[dataType === 'custom']"
                 },
                 {
-                    "type": "treeSelect",
+                    "type": "dataSourceSelect",
                     "desc": "数据返回示例：{value: [{jumpUrl: '', image: '', imagexl: ''}], count: 0, moreUrl: ''},image:标准图片，imagexl：大尺寸图片",
                     "layoutType": "inline",
                     "text": "数据源",

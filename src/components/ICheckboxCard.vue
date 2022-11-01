@@ -1,21 +1,11 @@
 <template>
     <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id">
-        <ICheckboxCardItem
-            v-for="(item, index) in componentData"
-            :key="index"
-            :itemData="item"
-            :itemIndex="index"
-            :propData="propData"
-            :moduleObject="moduleObject"
-            @itemDataChange="itemDataChange"
-            @subItemChange="subItemChange"
-        ></ICheckboxCardItem>
+        <ICheckboxCardItem v-for="(item, index) in componentData" :key="index" :itemData="item" :itemIndex="index"
+            :propData="propData" :moduleObject="moduleObject" @itemDataChange="itemDataChange"
+            @subItemChange="subItemChange"></ICheckboxCardItem>
         <!-- empty placeholder -->
-        <ICommonEmpty
-            v-if="!isFirst && !isLoading && componentData.length === 0"
-            :moduleObject="moduleObject"
-            :propData="propData"
-        ></ICommonEmpty>
+        <ICommonEmpty v-if="!isFirst && !isLoading && componentData.length === 0" :moduleObject="moduleObject"
+            :propData="propData"></ICommonEmpty>
         <!-- page loading -->
         <div class="d-flex just-c" v-if="isLoading">
             <van-loading size="24px" vertical>加载中...</van-loading>
@@ -29,7 +19,6 @@ import { getCheckboxCardData } from '../mock/mockData'
 import ICommonMask from '../commonComponents/ICommonMask'
 import ICommonEmpty from '../commonComponents/ICommonEmpty'
 import adaptationScreenMixin from '../mixins/adaptationScreen'
-import { getDatasInterfaceUrl } from '@/api/config'
 export default {
     name: 'ICheckboxCard',
     components: {
@@ -235,10 +224,10 @@ export default {
                 var item = themeList[i]
                 IDM.setStyleToPageHead(
                     '.' +
-                        themeNamePrefix +
-                        item.key +
-                        (` #${this.moduleObject.id}` || 'module_demo') +
-                        ' .van-checkbox__icon--checked .van-icon',
+                    themeNamePrefix +
+                    item.key +
+                    (` #${this.moduleObject.id}` || 'module_demo') +
+                    ' .van-checkbox__icon--checked .van-icon',
                     {
                         color: '#FFFFFF',
                         'background-color': item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : '',
@@ -257,31 +246,19 @@ export default {
             }
             this.isFirst = false
             this.isLoading = true
-            window.IDM.http
-                .post(
-                    getDatasInterfaceUrl,
-                    {
-                        id: this.propData.dataSource && this.propData.dataSource.value,
-                        ...IDM.router.getParam(this.moduleObject.routerId)
-                    },
-                    {
-                        headers: {
-                            'Content-Type': 'application/json;charset=UTF-8'
-                        }
-                    }
-                )
-                .then((res) => {
-                    //res.data
-                    if (res.status == 200 && res.data.code == 200) {
-                        this.componentData = res.data.data
-                        this.sendMessageToFootBtn()
-                    } else {
-                        IDM.message.error(res.data.message)
-                    }
-                })
-                .finally(() => {
-                    this.isLoading = false
-                })
+            IDM.datasource.request(this.propData?.dataSource?.[0]?.id, {
+                moduleObject: this.moduleObject,
+                param: IDM.router.getParam(this.moduleObject.routerId)
+            }, (res) => {
+                if (res.code == 200) {
+                    this.componentData = res.data
+                    this.sendMessageToFootBtn()
+                } else {
+                    IDM.message.error(res.message)
+                }
+            }, () => { }, () => {
+                this.isLoading = false
+            })
         },
         receiveBroadcastMessage(object) {
             console.log('多选卡片收到消息 ----->', object)
