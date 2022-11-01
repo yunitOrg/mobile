@@ -1224,28 +1224,14 @@ export default {
         this.getRecord();
       } else if (this.propData.recordRemoveDataSource && item) {
         const dataSource = this.propData.recordRemoveDataSource;
-        const url = `ctrl/dataSource/getDatas`;
-        IDM.http
-          .post(
-            url,
-            {
-              id: dataSource.value,
-              text: item
-            },
-            {
-              headers: {
-                'Content-Type': 'application/json;charset=UTF-8'
-              }
-            }
-          )
-          .done(res => {
-            if (res.type === 'success') {
-              this.getRecord();
-            }
-          })
-          .error(err => {
-            console.log(err);
-          });
+        IDM.datasource.request(dataSource[0]?.id, {
+          moduleObject: this.moduleObject,
+          param: {
+            text: item
+          }
+        }, (data) => {
+          this.getRecord();
+        })
       }
     },
     getPopular() {
@@ -1261,34 +1247,14 @@ export default {
           return;
         }
         const dataSource = this.propData.popularDataSource;
-        const url = `ctrl/dataSource/getDatas`;
-        // const urlObject = IDM.url.queryObject();
-        // const routerParams = this.moduleObject.routerId
-        //   ? IDM.router.getParam(this.moduleObject.routerId)
-        //   : {};
-        IDM.http
-          .post(
-            url,
-            {
-              // ...urlObject,
-              // ...routerParams,
-              id: dataSource.value
-            },
-            {
-              headers: {
-                'Content-Type': 'application/json;charset=UTF-8'
-              }
-            }
-          )
-          .done(res => {
-            if (res.type === 'success') {
-              const resultData = this.customFormat(this.propData.customPopularFunction, res.data);
-              this.popularData = resultData;
-            }
-          })
-          .error(err => {
-            console.log(err);
-          });
+        IDM.datasource.request(dataSource[0]?.id, {
+          moduleObject: this.moduleObject
+        }, (data) => {
+          if (data) {
+            const resultData = this.customFormat(this.propData.customPopularFunction, data);
+            this.popularData = resultData;
+          }
+        })
       }
     },
     getRecord() {
@@ -1317,35 +1283,17 @@ export default {
         }
       } else if (this.propData.recordDataSource) {
         const dataSource = this.propData.recordDataSource;
-        const url = `ctrl/dataSource/getDatas`;
-        // const urlObject = IDM.url.queryObject();
-        // const routerParams = this.moduleObject.routerId
-        //   ? IDM.router.getParam(this.moduleObject.routerId)
-        //   : {};
-        IDM.http
-          .post(
-            url,
-            {
-              // ...urlObject,
-              // ...routerParams,
-              id: dataSource.value,
-              type: this.propData.recordLocalDisplayMode
-            },
-            {
-              headers: {
-                'Content-Type': 'application/json;charset=UTF-8'
-              }
-            }
-          )
-          .done(res => {
-            if (res.type === 'success') {
-              const resultData = this.customFormat(this.propData.customRecordFunction, res.data);
-              this.recordData = resultData;
-            }
-          })
-          .error(err => {
-            console.log(err);
-          });
+        IDM.datasource.request(dataSource[0]?.id, {
+          moduleObject: this.moduleObject,
+          param: {
+            type: this.propData.recordLocalDisplayMode
+          }
+        }, (data) => {
+          if (data) {
+            const resultData = this.customFormat(this.propData.customRecordFunction, data);
+            this.recordData = resultData;
+          }
+        })
       }
     },
     setRecord() {
@@ -1363,24 +1311,12 @@ export default {
         localStorage.setItem(storage, JSON.stringify([...record, currentItem]));
       } else if (this.propData.recordAdddataSource && this.searchValue) {
         const dataSource = this.propData.recordAdddataSource;
-        const url = `ctrl/dataSource/getDatas`;
-        IDM.http
-          .post(
-            url,
-            {
-              id: dataSource.value,
-              text: this.searchValue
-            },
-            {
-              headers: {
-                'Content-Type': 'application/json;charset=UTF-8'
-              }
-            }
-          )
-          .done(res => {})
-          .error(err => {
-            console.log(err);
-          });
+        IDM.datasource.request(dataSource[0]?.id, {
+          moduleObject: this.moduleObject,
+          param: {
+            text: this.searchValue
+          }
+        }, (data) => {})
       }
     }
   }

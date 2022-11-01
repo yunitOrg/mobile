@@ -494,41 +494,20 @@ export default {
         if (!this.moduleObject.env || this.moduleObject.env == 'develop') {
           return false;
         }
-        const url = `ctrl/dataSource/getDatas`;
-        // const urlObject = IDM.url.queryObject();
-        // const routerParams = this.moduleObject.routerId
-        //   ? IDM.router.getParam(this.moduleObject.routerId)
-        //   : {};
         this.isLoading = true;
-        IDM.http
-          .post(
-            url,
-            {
-              // ...urlObject,
-              // ...routerParams,
-              id: this.propData.columnsDataSource.value
-            },
-            {
-              headers: {
-                'Content-Type': 'application/json;charset=UTF-8'
-              }
-            }
-          )
-          .done(res => {
-            if (res.type === 'success') {
-              const resultData = this.customFormat(this.propData.columnsCustomFunction, res.data);
-              this.columns = resultData;
-              const pickerSelect = this.columns.find(item => item.isDefault);
-              this.pickerSelect = pickerSelect || {};
-              this.getChartData();
-            } else {
-              this.isLoading = false;
-            }
-          })
-          .error(err => {
-            console.log(err);
+        IDM.datasource.request(this.propData.columnsDataSource[0]?.id, {
+          moduleObject: this.moduleObject
+        }, (data) => {
+          if (data) {
+            const resultData = this.customFormat(this.propData.columnsCustomFunction, data);
+            this.columns = resultData;
+            const pickerSelect = this.columns.find(item => item.isDefault);
+            this.pickerSelect = pickerSelect || {};
+            this.getChartData();
+          } else {
             this.isLoading = false;
-          });
+          }
+        })
       }
     },
     getChartData() {
@@ -539,11 +518,6 @@ export default {
       ) {
         return false;
       }
-      const url = `ctrl/dataSource/getDatas`;
-      // const urlObject = IDM.url.queryObject();
-      // const routerParams = this.moduleObject.routerId
-      //   ? IDM.router.getParam(this.moduleObject.routerId)
-      //   : {};
       this.isLoading = true;
       const selectParams =
         this.propData.isShowTitleBar && this.propData.columnsType != 'none'
@@ -552,36 +526,22 @@ export default {
               selectedItem: this.pickerSelect
             }
           : {};
-      IDM.http
-        .post(
-          url,
-          {
-            // ...urlObject,
-            // ...routerParams,
-            id: this.propData.chartDataSource.value,
-            ...selectParams
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json;charset=UTF-8'
-            }
-          }
-        )
-        .done(res => {
-          this.isLoading = false;
-          if (res.type === 'success') {
-            const resultData = this.customFormat(this.propData.chartDataCustomFunction, res.data);
-            this.chartData = resultData;
-            this.drawChart();
-            this.$nextTick(() => {
-              this.chart.resize();
-            });
-          }
-        })
-        .error(err => {
-          console.log(err);
-          this.isLoading = false;
-        });
+      IDM.datasource.request(this.propData.chartDataSource[0]?.id, {
+        moduleObject: this.moduleObject,
+        param: {
+          ...selectParams
+        }
+      }, (data) => {
+        this.isLoading = false;
+        if (data) {
+          const resultData = this.customFormat(this.propData.chartDataCustomFunction, data);
+          this.chartData = resultData;
+          this.drawChart();
+          this.$nextTick(() => {
+            this.chart.resize();
+          });
+        }
+      })
     },
     /**
      * 把属性转换成样式对象

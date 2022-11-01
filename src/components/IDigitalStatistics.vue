@@ -56,11 +56,7 @@
     <div
       class="i-digitalStatistics-mask"
       v-if="
-        moduleObject.env !== 'production' &&
-        ((propData.isShowTitleBar &&
-          propData.columnsType == 'dataSource' &&
-          !propData.columnsDataSource) ||
-          !propData.dataSource)
+        moduleObject.env !== 'production' && !propData.dataSource
       "
     >
       <span>！未绑定数据源</span>
@@ -248,37 +244,20 @@ export default {
       ) {
         return false;
       }
-      const url = `ctrl/dataSource/getDatas`;
       // const urlObject = IDM.url.queryObject();
       // const routerParams = this.moduleObject.routerId
       //   ? IDM.router.getParam(this.moduleObject.routerId)
       //   : {};
       this.isLoading = true;
-      IDM.http
-        .post(
-          url,
-          {
-            // ...urlObject,
-            // ...routerParams,
-            id: this.propData.dataSource.value
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json;charset=UTF-8'
-            }
-          }
-        )
-        .done(res => {
-          if (res.type === 'success') {
-            const resultData = this.customFormat(this.propData.customFunction, res.data);
-            this.data = resultData;
-          }
-          this.isLoading = false;
-        })
-        .error(err => {
-          console.log(err);
-          this.isLoading = false;
-        });
+      IDM.datasource.request(this.propData.dataSource[0]?.id, {
+        moduleObject: this.moduleObject
+      }, (data) => {
+        this.isLoading = false;
+        if (data) {
+          const resultData = this.customFormat(this.propData.customFunction, data);
+          this.data = resultData;
+        }
+      })
     },
     itemClick(item) {
       if (

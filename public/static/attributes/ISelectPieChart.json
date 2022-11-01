@@ -101,12 +101,11 @@
           "default": "dataSource"
         },
         {
-          "type": "treeSelect",
+          "type": "dataSourceSelect",
           "layoutType": "block",
           "text": "下拉数据源",
           "desc": "用于选择下拉的数据源",
           "bindKey": "columnsDataSource",
-          "dataSourceUrl": "ctrl/dataSource/getDatasourceByGroup",
           "display": "@[isShowTitleBar&&columnsType=='dataSource']"
         },
         {
@@ -149,12 +148,11 @@
           ]
         },
         {
-          "type": "treeSelect",
+          "type": "dataSourceSelect",
           "layoutType": "block",
           "text": "图表数据源",
           "desc": "用于选择图表的数据源",
-          "bindKey": "chartDataSource",
-          "dataSourceUrl": "ctrl/dataSource/getDatasourceByGroup"
+          "bindKey": "chartDataSource"
         },
         {
           "type": "actionSelect",
@@ -281,12 +279,15 @@
           "display": "@[colorType=='static']"
         },
         {
-          "type": "input",
+          "type": "dataSourceFiledSelect",
           "layoutType": "inline",
           "text": "颜色字段",
           "desc": "可根据数据里的某字段控制图表颜色",
           "bindKey": "chartColorField",
-          "display": "@[colorType=='field']"
+          "display": "@[colorType=='field']",
+          "ctrlAttrObject": {
+            "dataSourceBindkey": "chartDataSource"
+          }
         },
         {
           "type": "group",
@@ -400,11 +401,14 @@
           "tabText": "字段[index]",
           "children": [
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "取值字段",
               "desc": "设置此字段的取值",
-              "bindKey": "name"
+              "bindKey": "name",
+              "ctrlAttrObject": {
+                "dataSourceBindkey": "chartDataSource"
+              }
             },
             {
               "type": "select",

@@ -55,12 +55,11 @@
           "default": "static"
         },
         {
-          "type": "treeSelect",
+          "type": "dataSourceSelect",
           "layoutType": "block",
           "text": "热门数据源",
           "desc": "用于选择热门的数据源",
           "bindKey": "popularDataSource",
-          "dataSourceUrl": "ctrl/dataSource/getDatasourceByGroup",
           "display": "@[showPopular&&popularType=='dataSource']"
         },
         {
@@ -126,12 +125,11 @@
           "default": "time"
         },
         {
-          "type": "treeSelect",
+          "type": "dataSourceSelect",
           "layoutType": "block",
           "text": "历史数据源",
           "desc": "用于选择历史的数据源，入参有{type: 历史排序规则,pageId,...urlObject}",
           "bindKey": "recordDataSource",
-          "dataSourceUrl": "ctrl/dataSource/getDatasourceByGroup",
           "display": "@[showRecord&&recordType=='dataSource']"
         },
         {
@@ -144,21 +142,19 @@
           "display": "@[showRecord&&recordType=='dataSource']"
         },
         {
-          "type": "treeSelect",
+          "type": "dataSourceSelect",
           "layoutType": "block",
           "text": "历史保存数据源",
           "desc": "用于选择保存历史的数据源，入参有{text: 当前搜索输入的文字}",
           "bindKey": "recordAdddataSource",
-          "dataSourceUrl": "ctrl/dataSource/getDatasourceByGroup",
           "display": "@[showRecord&&recordType=='dataSource']"
         },
         {
-          "type": "treeSelect",
+          "type": "dataSourceSelect",
           "layoutType": "block",
           "text": "历史删除数据源",
           "desc": "用于选择删除历史的数据源，入参有{text: 当前搜索输入的文字}",
           "bindKey": "recordRemoveDataSource",
-          "dataSourceUrl": "ctrl/dataSource/getDatasourceByGroup",
           "display": "@[showRecord&&recordType=='dataSource']"
         }
       ]

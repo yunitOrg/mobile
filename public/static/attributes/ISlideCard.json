@@ -130,13 +130,12 @@
           "display": "@[dataType=='customInterface']"
         },
         {
-          "type": "treeSelect",
-          "layoutType": "block",
-          "text": "组件数据源",
+          "type": "dataSourceSelect",
+          "layoutType": "inline",
+          "text": "数据源",
           "desc": "用于选择组件的数据源, 入参如下{id:数据源的id,pageId:页面id,...urlObject:当前路径参数}",
           "bindKey": "dataSource",
-          "display": "@[dataType=='dataSource']",
-          "dataSourceUrl": "ctrl/dataSource/getDatasourceByGroup"
+          "display": "@[dataType=='dataSource']"
         },
         {
           "type": "actionSelect",
@@ -300,30 +299,39 @@
           "desc": "用来设置每个item在标准格式下的取值字段",
           "children": [
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "循环字段",
               "desc": "举例：返回的数据中rows是要取的数组，则此处使用rows",
               "bindKey": "resDataField",
-              "default": ""
+              "default": "",
+              "ctrlAttrObject": {
+                "dataSourceBindkey": "dataSource"
+              }
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "图片字段",
               "desc": "举例：item数组下有imgUrl字段，为图片，则这里应填imgUrl",
               "bindKey": "imageField",
               "display": "@[displayType=='img']",
-              "default": "image"
+              "default": "image",
+              "ctrlAttrObject": {
+                "dataSourceBindkey": "dataSource"
+              }
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "图标字段",
               "desc": "举例：item数组下有iconUrl字段，为图标，则这里应填iconUrl",
               "bindKey": "iconField",
               "display": "@[displayType=='icon']",
-              "default": "icon"
+              "default": "icon",
+              "ctrlAttrObject": {
+                "dataSourceBindkey": "dataSource"
+              }
             },
             {
               "type": "input",
@@ -355,13 +363,16 @@
               "placeholder": "请输入"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "基本文字",
               "desc": "举例：item数组下有name字段，为基本文字，则这里应填name",
               "bindKey": "mainTextField",
               "default": "title",
-              "display": "@[showText]"
+              "display": "@[showText]",
+              "ctrlAttrObject": {
+                "dataSourceBindkey": "dataSource"
+              }
             }
           ]
         },
@@ -373,11 +384,14 @@
           "display": "@[showText]",
           "children": [
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "取值字段",
               "desc": "设置此项对应的取值",
-              "bindKey": "title"
+              "bindKey": "title",
+              "ctrlAttrObject": {
+                "dataSourceBindkey": "dataSource"
+              }
             },
             {
               "type": "inputNumber",
@@ -462,12 +476,15 @@
               "display": "@[itemJumpTarget=='router']"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "跳转字段",
               "desc": "单页面模式下，要跳转的页面",
               "bindKey": "itemJumpPageFeild",
-              "display": "@[itemJumpTarget=='feild']"
+              "display": "@[itemJumpTarget=='feild']",
+              "ctrlAttrObject": {
+                "dataSourceBindkey": "dataSource"
+              }
             },
             {
               "type": "actionSelect",

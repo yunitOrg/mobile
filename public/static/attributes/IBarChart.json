@@ -63,12 +63,11 @@
           "default": "暂无数据"
         },
         {
-          "type": "treeSelect",
-          "layoutType": "block",
-          "text": "图表数据源",
-          "desc": "用于选择图表的数据源",
-          "bindKey": "chartDataSource",
-          "dataSourceUrl": "ctrl/dataSource/getDatasourceByGroup"
+          "type": "dataSourceSelect",
+          "layoutType": "inline",
+          "text": "数据源",
+          "desc": "用于选择数据源",
+          "bindKey": "chartDataSource"
         },
         {
           "type": "actionSelect",
@@ -87,18 +86,24 @@
       "helpUrl": "",
       "children": [
         {
-          "type": "input",
+          "type": "dataSourceFiledSelect",
           "layoutType": "inline",
           "text": "X轴取值",
           "bindKey": "nameField",
-          "default": "nameList"
+          "default": "nameList",
+          "ctrlAttrObject": {
+            "dataSourceBindkey": "chartDataSource"
+          }
         },
         {
-          "type": "input",
+          "type": "dataSourceFiledSelect",
           "layoutType": "inline",
           "text": "Y轴取值",
           "bindKey": "valueField",
-          "default": "valueList"
+          "default": "valueList",
+          "ctrlAttrObject": {
+            "dataSourceBindkey": "chartDataSource"
+          }
         },
         {
           "type": "radio",

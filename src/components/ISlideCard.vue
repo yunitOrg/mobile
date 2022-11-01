@@ -384,37 +384,20 @@ export default {
           return;
         }
         const dataSource = this.propData.dataSource;
-        const url = `ctrl/dataSource/getDatas`;
         // const urlObject = IDM.url.queryObject();
         // const routerParams = this.moduleObject.routerId
         //   ? IDM.router.getParam(this.moduleObject.routerId)
         //   : {};
         this.isLoading = true;
-        IDM.http
-          .post(
-            url,
-            {
-              // ...urlObject,
-              // ...routerParams,
-              id: dataSource.value
-            },
-            {
-              headers: {
-                'Content-Type': 'application/json;charset=UTF-8'
-              }
-            }
-          )
-          .done(res => {
-            if (res.type === 'success') {
-              const resultData = this.customFormat(this.propData.customFunction, res.data);
-              this.setRows(resultData);
-            }
-            this.isLoading = false;
-          })
-          .error(err => {
-            console.log(err);
-            this.isLoading = false;
-          });
+        IDM.datasource.request(dataSource[0]?.id, {
+          moduleObject: this.moduleObject
+        }, (data) => {
+          this.isLoading = false;
+          if (data) {
+            const resultData = this.customFormat(this.propData.customFunction, data);
+            this.setRows(resultData);
+          }
+        })
       } else if (this.propData.dataType == 'static' && this.propData.dataStaticSet) {
         if (this.propData.dataStaticSet[0] && !this.propData.dataStaticSet[0].name) {
           this.setRows(devResult(this));
