@@ -22,7 +22,6 @@
 数据源应为:
 ```
 {
-    data:{
         dues: "20.00",
         computationRule:"#",
         list:[
@@ -41,6 +40,5 @@
                 attendance:"出席率"
             },......
         ]
-    }
 }
 ```

@@ -247,27 +247,20 @@ export default {
             },
           }
       ).done((res) => {
-        if (res.code === "200") {
-          let tempList = []
-          this.videoData = []
-          tempList = this.propData.dataFiled
-              ? this.getExpressData("dataName", this.propData.dataFiled, res)
-              : res;
-          for (let i = 0; i < tempList.length; i++) {
-            let tempItem = {}
-            tempItem.index = i
-            for (let name in tempList[i]) {
-              tempItem[name] = tempList[i][name]
-            }
-            tempItem.image = tempList[i][this.propData.videoImage]
-            tempItem.amountOfPlay = tempList[i][this.propData.videoAmountOfPlay]
-            tempItem.releaseDate = tempList[i][this.propData.videoReleaseDate]
-            tempItem.videoIntroduction = tempList[i][this.propData.videoIntroduction]
-            this.videoData.push(tempItem)
+        let tempList = []
+        this.videoData = []
+        tempList = res.data;
+        for (let i = 0; i < tempList.length; i++) {
+          let tempItem = {}
+          tempItem.index = i
+          for (let name in tempList[i]) {
+            tempItem[name] = tempList[i][name]
           }
-        } else {
-          this.videoData = []
-          console.log(url + "请求失败");
+          tempItem.image = tempList[i][this.propData.videoImage]
+          tempItem.amountOfPlay = tempList[i][this.propData.videoAmountOfPlay]
+          tempItem.releaseDate = tempList[i][this.propData.videoReleaseDate]
+          tempItem.videoIntroduction = tempList[i][this.propData.videoIntroduction]
+          this.videoData.push(tempItem)
         }
       }).error((response) => {
         this.videoData = []

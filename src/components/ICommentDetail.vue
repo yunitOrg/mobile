@@ -125,7 +125,7 @@ export default {
       pageSize: 5,
       start: 0,
       requestParams: [],
-      latestNum:null
+      latestNum: null
     };
   },
   props: {},
@@ -194,12 +194,8 @@ export default {
           )
           .done((res) => {
             console.log(res, "接口数据");
-            if (res.code === "200") {
-              this.detailInfo = res.data
-              this.latestNum = this.detailInfo[this.propData.totalInterface]
-            } else {
-              console.log(url + "请求失败");
-            }
+            this.detailInfo = res
+            this.latestNum = this.detailInfo[this.propData.totalInterface]
           })
           .error((response) => {
             console.log(url + "请求失败");
@@ -664,7 +660,6 @@ export default {
       let url = `ctrl/dataSource/getDatas`;
 
 
-
       let tempParams = {
         pageSize: this.pageSize,
         start: this.infoList.length,
@@ -672,7 +667,7 @@ export default {
       }
 
       let flag = false
-      if (this.requestParams.length !== 0){
+      if (this.requestParams.length !== 0) {
         for (const param of this.requestParams) {
           flag = JSON.stringify(tempParams) === JSON.stringify(param)
           if (flag) {
@@ -681,7 +676,7 @@ export default {
         }
       }
 
-      if (! flag){
+      if (!flag) {
         this.requestParams.push({
           pageSize: this.pageSize,
           start: this.infoList.length,
@@ -703,13 +698,13 @@ export default {
                 }
             )
             .done((res) => {
-              if (res.code !== "200" || res.data.length === 0) {
+              if (res.length === 0) {
                 this.finished = true;
               }
-              this.infoList = [...this.infoList, ...res.data.list];
+              this.infoList = [...this.infoList, ...res.list];
 
-              this.total = res.data.total;
-              if (this.infoList.length >= res.data.total) {
+              this.total = res.total;
+              if (this.infoList.length >= res.total) {
                 this.finished = true;
               }
             })

@@ -6,11 +6,11 @@
     idm-ctrl-id：组件的id，这个必须不能为空
   -->
   <div
-    class="i-all-comment-outer"
-    idm-ctrl="idm_module"
-    :id="moduleObject.id"
-    :idm-ctrl-id="moduleObject.id"
-    v-show="propData.defaultStatus != 'hidden'"
+      class="i-all-comment-outer"
+      idm-ctrl="idm_module"
+      :id="moduleObject.id"
+      :idm-ctrl-id="moduleObject.id"
+      v-show="propData.defaultStatus != 'hidden'"
   >
     <!--
       组件内部容器
@@ -25,16 +25,16 @@
       </div>
       <div v-if="curStatus && propData.newOrHot" class="i-all-comment-header-right">
         <div
-          class="header-right-btn"
-          :class="{ active: curMode === 'new' }"
-          @click="modeToggle('new')"
+            class="header-right-btn"
+            :class="{ active: curMode === 'new' }"
+            @click="modeToggle('new')"
         >
           最新
         </div>
         <div
-          class="header-right-btn"
-          :class="{ active: curMode === 'hot' }"
-          @click="modeToggle('hot')"
+            class="header-right-btn"
+            :class="{ active: curMode === 'hot' }"
+            @click="modeToggle('hot')"
         >
           最热
         </div>
@@ -43,48 +43,50 @@
 
     <div class="i-all-comment-content">
       <ILazyList
-        v-model="loading"
-        :finished="finished"
-        :finished-text="finishedText"
-        @load="initData"
+          v-model="loading"
+          :finished="finished"
+          :finished-text="finishedText"
+          @load="initData"
       >
         <div
-          class="i-all-comment-content-item"
-          v-for="(item, i) in infoList"
-          :key="i"
-          :class="{ 'border-none': infoList.length - 1 === i }"
+            class="i-all-comment-content-item"
+            v-for="(item, i) in infoList"
+            :key="i"
+            :class="{ 'border-none': infoList.length - 1 === i }"
         >
           <div class="i-all-comment-content-left">
-            <img v-if="item[propData.imgInterface]" :src="IDM.url.getWebPath(item[propData.imgInterface])" class="content-left-avatar">
-            <img v-else src="../assets/default_avatar.png" class="content-left-avatar" />
+            <img v-if="item[propData.imgInterface]" :src="IDM.url.getWebPath(item[propData.imgInterface])"
+                 class="content-left-avatar">
+            <img v-else src="../assets/default_avatar.png" class="content-left-avatar"/>
           </div>
           <div class="i-all-comment-content-right">
             <div class="content-right-top">
               <span class="comment-name">{{ item[propData.avatarInterface] }}</span>
               <span class="comment-time">{{ item[propData.timeInterface] }}</span>
               <span
-                v-if="propData.showStarBtn"
-                class="comment-star"
-                :class="{ active: item[propData.starInterface] }"
-                @click="starClick(item)"
-                ><svg-icon icon-class="commentStar" />{{ item[propData.starNumInterface] }}</span
+                  v-if="propData.showStarBtn"
+                  class="comment-star"
+                  :class="{ active: item[propData.starInterface] }"
+                  @click="starClick(item)"
+              ><svg-icon icon-class="commentStar"/>{{ item[propData.starNumInterface] }}</span
               >
             </div>
             <p class="content-right-center">{{ item[propData.btInterface] }}</p>
             <div class="content-right-bottom">
               <span class="comment-from">{{ item[propData.fromInterface] }}</span>
               <span class="comment-total" @click="replyClick(item)"
-                >共{{ item[propData.totalInterface] }}条回复<van-icon name="play"
+              >共{{ item[propData.totalInterface] }}条回复<van-icon name="play"
               /></span>
-              <span v-if="propData.showDelBtn && item[propData.delBtnFiled]" class="comment-del" @click="delClick(item)">删除</span>
+              <span v-if="propData.showDelBtn && item[propData.delBtnFiled]" class="comment-del"
+                    @click="delClick(item)">删除</span>
             </div>
           </div>
         </div>
       </ILazyList>
       <div
-        v-if="!curStatus && total > 3"
-        class="i-all-comment-content-more"
-        @click="statusToggle"
+          v-if="!curStatus && total > 3"
+          class="i-all-comment-content-more"
+          @click="statusToggle"
       >
         更多评论
       </div>
@@ -96,8 +98,9 @@
 </template>
 
 <script>
-import { List, Icon } from "vant";
+import {List, Icon} from "vant";
 import ILazyList from "@/commonComponents/ILazyList";
+
 export default {
   name: "IAllComment",
   components: {
@@ -112,19 +115,19 @@ export default {
         title: "全部评论",
         emptyDescription: "暂无评论",
         finishedTip: "数据已加载全部",
-        imgInterface:'img',
-        idInterface:'id',
-        avatarInterface:'avatar',
-        timeInterface:'time',
-        starInterface:'star',
-        starNumInterface:'starNum',
-        btInterface:'bt',
-        fromInterface:'from',
-        totalInterface:'total',
-        showStarBtn:true,
-        showDelBtn:true,
-        delBtnFiled:"showDel",
-        newOrHot:true
+        imgInterface: 'img',
+        idInterface: 'id',
+        avatarInterface: 'avatar',
+        timeInterface: 'time',
+        starInterface: 'star',
+        starNumInterface: 'starNum',
+        btInterface: 'bt',
+        fromInterface: 'from',
+        totalInterface: 'total',
+        showStarBtn: true,
+        showDelBtn: true,
+        delBtnFiled: "showDel",
+        newOrHot: true
       },
       loading: false,
       finished: false,
@@ -134,7 +137,7 @@ export default {
       total: 0,
       pageSize: 5,
       start: 0,
-      requestParams:[]
+      requestParams: []
     };
   },
   props: {},
@@ -158,23 +161,25 @@ export default {
     this.convertAttrToStyleObject();
     this.convertThemeListAttrToStyleObject();
   },
-  mounted() {},
-  destroyed() {},
+  mounted() {
+  },
+  destroyed() {
+  },
   methods: {
     /**
      * 删除
      */
-    delClick(item){
+    delClick(item) {
       if (this.propData.delCustomFunc && this.propData.delCustomFunc[0]) {
         const delCustomFunc = this.propData.delCustomFunc[0];
         const func = window[delCustomFunc.name];
         const that = this;
         func && func.call(this, {
-            record:item,
-            ...that.commonParam(),
-            customParam: delCustomFunc.param,
-            _this: that,
-          });
+          record: item,
+          ...that.commonParam(),
+          customParam: delCustomFunc.param,
+          _this: that,
+        });
       }
     },
     /**
@@ -183,14 +188,14 @@ export default {
     replyClick(item) {
       if (this.propData.replyJump && this.propData.replyJump[0]?.id)
         IDM.router.push(
-          this.moduleObject.pageid,
-          this.propData.replyJump[0]?.id,
-          {
-            keep: false,
-            params: item,
-            enterAnim: "",
-            quitAnim: "",
-          }
+            this.moduleObject.pageid,
+            this.propData.replyJump[0]?.id,
+            {
+              keep: false,
+              params: item,
+              enterAnim: "",
+              quitAnim: "",
+            }
         );
     },
     /**
@@ -234,9 +239,9 @@ export default {
       const base = this.propData.baseValue || 414;
       const ratio = this.propData.adaptationRatio || 1.2;
       const width =
-        this.moduleObject.env === "production"
-          ? window.innerWidth
-          : pageWidth || 414;
+          this.moduleObject.env === "production"
+              ? window.innerWidth
+              : pageWidth || 414;
       return (width / base - 1) * (ratio - 1) + 1;
     },
     /**
@@ -252,64 +257,64 @@ export default {
      */
     convertAttrToStyleObject(pageSize = {}) {
       var styleObject = {},
-        innerStyleObject = {},
-        titleStyleObject = {};
+          innerStyleObject = {},
+          titleStyleObject = {};
 
       const scale = this.getScale(pageSize.width);
       styleObject["--i-all-comment-scale"] = scale;
 
       if (this.propData.bgSize && this.propData.bgSize == "custom") {
         styleObject["background-size"] =
-          (this.propData.bgSizeWidth
-            ? this.propData.bgSizeWidth.inputVal +
-              this.propData.bgSizeWidth.selectVal
-            : "auto") +
-          " " +
-          (this.propData.bgSizeHeight
-            ? this.propData.bgSizeHeight.inputVal +
-              this.propData.bgSizeHeight.selectVal
-            : "auto");
+            (this.propData.bgSizeWidth
+                ? this.propData.bgSizeWidth.inputVal +
+                this.propData.bgSizeWidth.selectVal
+                : "auto") +
+            " " +
+            (this.propData.bgSizeHeight
+                ? this.propData.bgSizeHeight.inputVal +
+                this.propData.bgSizeHeight.selectVal
+                : "auto");
       } else if (this.propData.bgSize) {
         styleObject["background-size"] = this.propData.bgSize;
       }
       if (this.propData.positionX && this.propData.positionX.inputVal) {
         styleObject["background-position-x"] =
-          this.propData.positionX.inputVal + this.propData.positionX.selectVal;
+            this.propData.positionX.inputVal + this.propData.positionX.selectVal;
       }
       if (this.propData.positionY && this.propData.positionY.inputVal) {
         styleObject["background-position-y"] =
-          this.propData.positionY.inputVal + this.propData.positionY.selectVal;
+            this.propData.positionY.inputVal + this.propData.positionY.selectVal;
       }
 
       if (this.propData.innerBgSize && this.propData.innerBgSize == "custom") {
         innerStyleObject["background-size"] =
-          (this.propData.innerBgSizeWidth
-            ? this.propData.innerBgSizeWidth.inputVal +
-              this.propData.innerBgSizeWidth.selectVal
-            : "auto") +
-          " " +
-          (this.propData.innerBgSizeHeight
-            ? this.propData.innerBgSizeHeight.inputVal +
-              this.propData.innerBgSizeHeight.selectVal
-            : "auto");
+            (this.propData.innerBgSizeWidth
+                ? this.propData.innerBgSizeWidth.inputVal +
+                this.propData.innerBgSizeWidth.selectVal
+                : "auto") +
+            " " +
+            (this.propData.innerBgSizeHeight
+                ? this.propData.innerBgSizeHeight.inputVal +
+                this.propData.innerBgSizeHeight.selectVal
+                : "auto");
       } else if (this.propData.innerBgSize) {
         innerStyleObject["background-size"] = this.propData.innerBgSize;
       }
       if (
-        this.propData.innerPositionX &&
-        this.propData.innerPositionX.inputVal
+          this.propData.innerPositionX &&
+          this.propData.innerPositionX.inputVal
       ) {
         innerStyleObject["background-position-x"] =
-          this.propData.innerPositionX.inputVal +
-          this.propData.innerPositionX.selectVal;
+            this.propData.innerPositionX.inputVal +
+            this.propData.innerPositionX.selectVal;
       }
       if (
-        this.propData.innerPositionY &&
-        this.propData.innerPositionY.inputVal
+          this.propData.innerPositionY &&
+          this.propData.innerPositionY.inputVal
       ) {
         innerStyleObject["background-position-y"] =
-          this.propData.innerPositionY.inputVal +
-          this.propData.innerPositionY.selectVal;
+            this.propData.innerPositionY.inputVal +
+            this.propData.innerPositionY.selectVal;
       }
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
@@ -331,14 +336,14 @@ export default {
             case "bgColor":
               if (element && element.hex8) {
                 styleObject["background-color"] = IDM.hex8ToRgbaString(
-                  element.hex8
+                    element.hex8
                 );
               }
               break;
             case "innerBgColor":
               if (element && element.hex8) {
                 innerStyleObject["background-color"] = IDM.hex8ToRgbaString(
-                  element.hex8
+                    element.hex8
                 );
               }
               break;
@@ -377,8 +382,8 @@ export default {
               }
               if (element.marginBottomVal) {
                 innerStyleObject[
-                  "margin-bottom"
-                ] = `${element.marginBottomVal}`;
+                    "margin-bottom"
+                    ] = `${element.marginBottomVal}`;
               }
               if (element.marginLeftVal) {
                 innerStyleObject["margin-left"] = `${element.marginLeftVal}`;
@@ -388,13 +393,13 @@ export default {
               }
               if (element.paddingRightVal) {
                 innerStyleObject[
-                  "padding-right"
-                ] = `${element.paddingRightVal}`;
+                    "padding-right"
+                    ] = `${element.paddingRightVal}`;
               }
               if (element.paddingBottomVal) {
                 innerStyleObject[
-                  "padding-bottom"
-                ] = `${element.paddingBottomVal}`;
+                    "padding-bottom"
+                    ] = `${element.paddingBottomVal}`;
               }
               if (element.paddingLeftVal) {
                 innerStyleObject["padding-left"] = `${element.paddingLeftVal}`;
@@ -402,13 +407,13 @@ export default {
               break;
             case "bgImgUrl":
               styleObject[
-                "background-image"
-              ] = `url(${window.IDM.url.getWebPath(element)})`;
+                  "background-image"
+                  ] = `url(${window.IDM.url.getWebPath(element)})`;
               break;
             case "innerBgImgUrl":
               innerStyleObject[
-                "background-image"
-              ] = `url(${window.IDM.url.getWebPath(element)})`;
+                  "background-image"
+                  ] = `url(${window.IDM.url.getWebPath(element)})`;
               break;
             case "positionX":
               //背景横向偏移
@@ -437,133 +442,133 @@ export default {
             case "border":
               if (element.border.top.width > 0) {
                 styleObject["border-top-width"] =
-                  element.border.top.width + element.border.top.widthUnit;
+                    element.border.top.width + element.border.top.widthUnit;
                 styleObject["border-top-style"] = element.border.top.style;
                 if (element.border.top.colors.hex8) {
                   styleObject["border-top-color"] = IDM.hex8ToRgbaString(
-                    element.border.top.colors.hex8
+                      element.border.top.colors.hex8
                   );
                 }
               }
               if (element.border.right.width > 0) {
                 styleObject["border-right-width"] =
-                  element.border.right.width + element.border.right.widthUnit;
+                    element.border.right.width + element.border.right.widthUnit;
                 styleObject["border-right-style"] = element.border.right.style;
                 if (element.border.right.colors.hex8) {
                   styleObject["border-right-color"] = IDM.hex8ToRgbaString(
-                    element.border.right.colors.hex8
+                      element.border.right.colors.hex8
                   );
                 }
               }
               if (element.border.bottom.width > 0) {
                 styleObject["border-bottom-width"] =
-                  element.border.bottom.width + element.border.bottom.widthUnit;
+                    element.border.bottom.width + element.border.bottom.widthUnit;
                 styleObject["border-bottom-style"] =
-                  element.border.bottom.style;
+                    element.border.bottom.style;
                 if (element.border.bottom.colors.hex8) {
                   styleObject["border-bottom-color"] = IDM.hex8ToRgbaString(
-                    element.border.bottom.colors.hex8
+                      element.border.bottom.colors.hex8
                   );
                 }
               }
               if (element.border.left.width > 0) {
                 styleObject["border-left-width"] =
-                  element.border.left.width + element.border.left.widthUnit;
+                    element.border.left.width + element.border.left.widthUnit;
                 styleObject["border-left-style"] = element.border.left.style;
                 if (element.border.left.colors.hex8) {
                   styleObject["border-left-color"] = IDM.hex8ToRgbaString(
-                    element.border.left.colors.hex8
+                      element.border.left.colors.hex8
                   );
                 }
               }
 
               styleObject["border-top-left-radius"] =
-                element.radius.leftTop.radius +
-                element.radius.leftTop.radiusUnit;
+                  element.radius.leftTop.radius +
+                  element.radius.leftTop.radiusUnit;
               styleObject["border-top-right-radius"] =
-                element.radius.rightTop.radius +
-                element.radius.rightTop.radiusUnit;
+                  element.radius.rightTop.radius +
+                  element.radius.rightTop.radiusUnit;
               styleObject["border-bottom-left-radius"] =
-                element.radius.leftBottom.radius +
-                element.radius.leftBottom.radiusUnit;
+                  element.radius.leftBottom.radius +
+                  element.radius.leftBottom.radiusUnit;
               styleObject["border-bottom-right-radius"] =
-                element.radius.rightBottom.radius +
-                element.radius.rightBottom.radiusUnit;
+                  element.radius.rightBottom.radius +
+                  element.radius.rightBottom.radiusUnit;
               break;
             case "innerBorder":
               if (element.border.top.width > 0) {
                 innerStyleObject["border-top-width"] =
-                  element.border.top.width + element.border.top.widthUnit;
+                    element.border.top.width + element.border.top.widthUnit;
                 innerStyleObject["border-top-style"] = element.border.top.style;
                 if (element.border.top.colors.hex8) {
                   innerStyleObject["border-top-color"] = IDM.hex8ToRgbaString(
-                    element.border.top.colors.hex8
+                      element.border.top.colors.hex8
                   );
                 }
               }
               if (element.border.right.width > 0) {
                 innerStyleObject["border-right-width"] =
-                  element.border.right.width + element.border.right.widthUnit;
+                    element.border.right.width + element.border.right.widthUnit;
                 innerStyleObject["border-right-style"] =
-                  element.border.right.style;
+                    element.border.right.style;
                 if (element.border.right.colors.hex8) {
                   innerStyleObject["border-right-color"] = IDM.hex8ToRgbaString(
-                    element.border.right.colors.hex8
+                      element.border.right.colors.hex8
                   );
                 }
               }
               if (element.border.bottom.width > 0) {
                 innerStyleObject["border-bottom-width"] =
-                  element.border.bottom.width + element.border.bottom.widthUnit;
+                    element.border.bottom.width + element.border.bottom.widthUnit;
                 innerStyleObject["border-bottom-style"] =
-                  element.border.bottom.style;
+                    element.border.bottom.style;
                 if (element.border.bottom.colors.hex8) {
                   innerStyleObject["border-bottom-color"] =
-                    IDM.hex8ToRgbaString(element.border.bottom.colors.hex8);
+                      IDM.hex8ToRgbaString(element.border.bottom.colors.hex8);
                 }
               }
               if (element.border.left.width > 0) {
                 innerStyleObject["border-left-width"] =
-                  element.border.left.width + element.border.left.widthUnit;
+                    element.border.left.width + element.border.left.widthUnit;
                 innerStyleObject["border-left-style"] =
-                  element.border.left.style;
+                    element.border.left.style;
                 if (element.border.left.colors.hex8) {
                   innerStyleObject["border-left-color"] = IDM.hex8ToRgbaString(
-                    element.border.left.colors.hex8
+                      element.border.left.colors.hex8
                   );
                 }
               }
 
               innerStyleObject["border-top-left-radius"] =
-                element.radius.leftTop.radius +
-                element.radius.leftTop.radiusUnit;
+                  element.radius.leftTop.radius +
+                  element.radius.leftTop.radiusUnit;
               innerStyleObject["border-top-right-radius"] =
-                element.radius.rightTop.radius +
-                element.radius.rightTop.radiusUnit;
+                  element.radius.rightTop.radius +
+                  element.radius.rightTop.radiusUnit;
               innerStyleObject["border-bottom-left-radius"] =
-                element.radius.leftBottom.radius +
-                element.radius.leftBottom.radiusUnit;
+                  element.radius.leftBottom.radius +
+                  element.radius.leftBottom.radiusUnit;
               innerStyleObject["border-bottom-right-radius"] =
-                element.radius.rightBottom.radius +
-                element.radius.rightBottom.radiusUnit;
+                  element.radius.rightBottom.radius +
+                  element.radius.rightBottom.radiusUnit;
               break;
             case "font":
               titleStyleObject["font-family"] = element.fontFamily;
               if (element.fontColors.hex8) {
                 titleStyleObject["color"] = IDM.hex8ToRgbaString(
-                  element.fontColors.hex8
+                    element.fontColors.hex8
                 );
               }
               titleStyleObject["font-weight"] =
-                element.fontWeight && element.fontWeight.split(" ")[0];
+                  element.fontWeight && element.fontWeight.split(" ")[0];
               titleStyleObject["font-style"] = element.fontStyle;
               titleStyleObject["font-size"] =
-                element.fontSize + element.fontSizeUnit;
+                  element.fontSize + element.fontSizeUnit;
               titleStyleObject["line-height"] =
-                element.fontLineHeight +
-                (element.fontLineHeightUnit == "-"
-                  ? ""
-                  : element.fontLineHeightUnit);
+                  element.fontLineHeight +
+                  (element.fontLineHeightUnit == "-"
+                      ? ""
+                      : element.fontLineHeightUnit);
               titleStyleObject["text-align"] = element.fontTextAlign;
               titleStyleObject["text-decoration"] = element.fontDecoration;
               break;
@@ -571,19 +576,19 @@ export default {
               innerStyleObject["font-family"] = element.fontFamily;
               if (element.fontColors.hex8) {
                 innerStyleObject["color"] = IDM.hex8ToRgbaString(
-                  element.fontColors.hex8
+                    element.fontColors.hex8
                 );
               }
               innerStyleObject["font-weight"] =
-                element.fontWeight && element.fontWeight.split(" ")[0];
+                  element.fontWeight && element.fontWeight.split(" ")[0];
               innerStyleObject["font-style"] = element.fontStyle;
               innerStyleObject["font-size"] =
-                element.fontSize + element.fontSizeUnit;
+                  element.fontSize + element.fontSizeUnit;
               innerStyleObject["line-height"] =
-                element.fontLineHeight +
-                (element.fontLineHeightUnit == "-"
-                  ? ""
-                  : element.fontLineHeightUnit);
+                  element.fontLineHeight +
+                  (element.fontLineHeightUnit == "-"
+                      ? ""
+                      : element.fontLineHeightUnit);
               innerStyleObject["text-align"] = element.fontTextAlign;
               innerStyleObject["text-decoration"] = element.fontDecoration;
               break;
@@ -598,13 +603,13 @@ export default {
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id, styleObject);
       window.IDM.setStyleToPageHead(
-        this.moduleObject.id +
+          this.moduleObject.id +
           ` .i-all-comment-header .i-all-comment-header-left`,
-        titleStyleObject
+          titleStyleObject
       );
       window.IDM.setStyleToPageHead(
-        this.moduleObject.id + ` .i-all-comment-content`,
-        innerStyleObject
+          this.moduleObject.id + ` .i-all-comment-content`,
+          innerStyleObject
       );
     },
     /**
@@ -616,82 +621,82 @@ export default {
         return;
       }
       const themeNamePrefix =
-        IDM.setting &&
-        IDM.setting.applications &&
-        IDM.setting.applications.themeNamePrefix
-          ? IDM.setting.applications.themeNamePrefix
-          : "idm-theme-";
+          IDM.setting &&
+          IDM.setting.applications &&
+          IDM.setting.applications.themeNamePrefix
+              ? IDM.setting.applications.themeNamePrefix
+              : "idm-theme-";
       for (var i = 0; i < themeList.length; i++) {
         var item = themeList[i];
 
         IDM.setStyleToPageHead(
-          "." +
+            "." +
             themeNamePrefix +
             item.key +
             " #" +
             (this.moduleObject.packageid || "module_demo") +
             " .i-all-comment-header .i-all-comment-header-right",
-          {
-            "border-color": item.mainColor
-              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
-              : "",
-          }
+            {
+              "border-color": item.mainColor
+                  ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+                  : "",
+            }
         );
 
         IDM.setStyleToPageHead(
-          "." +
+            "." +
             themeNamePrefix +
             item.key +
             " #" +
             (this.moduleObject.packageid || "module_demo") +
             " .i-all-comment-header .header-right-btn",
-          {
-            color: item.mainColor
-              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
-              : "",
-          }
+            {
+              color: item.mainColor
+                  ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+                  : "",
+            }
         );
         IDM.setStyleToPageHead(
-          "." +
+            "." +
             themeNamePrefix +
             item.key +
             " #" +
             (this.moduleObject.packageid || "module_demo") +
             " .i-all-comment-header .header-right-btn.active",
-          {
-            "background-color": item.mainColor
-              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
-              : "",
-            color: "#fff",
-          }
+            {
+              "background-color": item.mainColor
+                  ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+                  : "",
+              color: "#fff",
+            }
         );
 
         IDM.setStyleToPageHead(
-          "." +
+            "." +
             themeNamePrefix +
             item.key +
             " #" +
             (this.moduleObject.packageid || "module_demo") +
             " .i-all-comment-content .i-all-comment-content-item .comment-star.active",
-          {
-            color: item.mainColor
-              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
-              : "",
-          }
+            {
+              color: item.mainColor
+                  ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+                  : "",
+            }
         );
 
         IDM.setStyleToPageHead(
-          "." +
+            "." +
             themeNamePrefix +
             item.key +
             " #" +
             (this.moduleObject.packageid || "module_demo") +
             " .i-all-comment-content-item .i-all-comment-content-right .content-right-bottom",
-          {
-            color: item.mainColor
-              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
-              : "",
-          }
+            {
+              color: item.mainColor
+                  ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+                  : "",
+            }
         );
       }
     },
@@ -703,19 +708,19 @@ export default {
       let urlObject = IDM.url.queryObject();
       var params = {
         pageId:
-          window.IDM.broadcast && window.IDM.broadcast.pageModule
-            ? window.IDM.broadcast.pageModule.id
-            : "",
+            window.IDM.broadcast && window.IDM.broadcast.pageModule
+                ? window.IDM.broadcast.pageModule.id
+                : "",
         urlData: JSON.stringify(urlObject),
       };
       return params;
     },
     // 获取router的数据
-    getRouterParams () {
-      return this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId): {};
+    getRouterParams() {
+      return this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId) : {};
     },
     // 过滤接口参数
-    fileterParams () {
+    fileterParams() {
       let obj = {};
       if (this.propData.customClickFunc && this.propData.customClickFunc.length > 0) {
         let name = this.propData.customClickFunc[0].name
@@ -744,7 +749,7 @@ export default {
                 bt: "1我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
                 from: "来自广东深圳",
                 total: 100,
-                showDel:true
+                showDel: true
               },
               {
                 img: "",
@@ -756,7 +761,7 @@ export default {
                 bt: "2我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
                 from: "来自广东深圳",
                 total: 100,
-                showDel:false
+                showDel: false
               },
               {
                 img: "",
@@ -768,7 +773,7 @@ export default {
                 bt: "3我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
                 from: "来自广东深圳",
                 total: 100,
-                showDel:true
+                showDel: true
               },
               {
                 img: "",
@@ -780,7 +785,7 @@ export default {
                 bt: "4我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
                 from: "来自广东深圳",
                 total: 100,
-                showDel:true
+                showDel: true
               },
               {
                 img: "",
@@ -824,12 +829,12 @@ export default {
         id: dataSource.value,
         pageSize: this.pageSize,
         start: this.infoList.length,
-        type: this.curMode === 'new'?0:1,
+        type: this.curMode === 'new' ? 0 : 1,
         ...routerParams
       }
 
       let flag = false
-      if (this.requestParams.length !== 0){
+      if (this.requestParams.length !== 0) {
         for (const param of this.requestParams) {
           flag = JSON.stringify(tempParams) === JSON.stringify(param)
           if (flag) {
@@ -838,53 +843,53 @@ export default {
         }
       }
 
-      if (! flag){
+      if (!flag) {
         this.requestParams.push({
           id: dataSource.value,
           pageSize: this.pageSize,
           start: this.infoList.length,
-          type: this.curMode === 'new'?0:1,
+          type: this.curMode === 'new' ? 0 : 1,
           ...routerParams
         })
-      IDM.http
-        .post(
-          url,
-          {
-            id: dataSource.value,
-            pageSize: this.pageSize,
-            start: this.infoList.length,
-            type: this.curMode === 'new'?0:1,
-            ...routerParams
-          },
-          {
-            headers: {
-              "Content-Type": "application/json;charset=UTF-8",
-            },
-          }
-        )
-        .done((res) => {
-          console.log(res, "接口数据");
-          if(res.code!=="200" || res.data.length===0){
-            this.finished = true;
-          }
-          // 简单模式下只展示三条
-          if (!this.curStatus) {
-            this.finished = true;
-            this.infoList = res.data.list.slice(0, 3);
-          } else {
-            this.infoList = [...this.infoList, ...res.data.list];
-            if (this.infoList.length >= res.data.total) {
-              this.finished = true;
-            }
-          }
-          this.total = res.data.total;
-        })
-        .error((response) => {
-          console.log(url + "请求失败");
-        })
-        .always((res) => {
-          this.loading = false;
-        });}
+        IDM.http
+            .post(
+                url,
+                {
+                  id: dataSource.value,
+                  pageSize: this.pageSize,
+                  start: this.infoList.length,
+                  type: this.curMode === 'new' ? 0 : 1,
+                  ...routerParams
+                },
+                {
+                  headers: {
+                    "Content-Type": "application/json;charset=UTF-8",
+                  },
+                }
+            )
+            .done((res) => {
+              if (res.length === 0) {
+                this.finished = true;
+              }
+              // 简单模式下只展示三条
+              if (!this.curStatus) {
+                this.finished = true;
+                this.infoList = res.list.slice(0, 3);
+              } else {
+                this.infoList = [...this.infoList, ...res.list];
+                if (this.infoList.length >= res.total) {
+                  this.finished = true;
+                }
+              }
+              this.total = res.total;
+            })
+            .error((response) => {
+              console.log(url + "请求失败");
+            })
+            .always((res) => {
+              this.loading = false;
+            });
+      }
     },
     /**
      * 通用的获取表达式匹配后的结果
@@ -895,32 +900,33 @@ export default {
       if (dataFiled) {
         var filedExp = dataFiled;
         filedExp = dataName + (filedExp.startsWiths("[") ? "" : ".") + filedExp;
-        var dataObject = { IDM: window.IDM };
+        var dataObject = {IDM: window.IDM};
         dataObject[dataName] = resultData;
         _defaultVal = window.IDM.express.replace.call(
-          this,
-          "@[" + filedExp + "]",
-          dataObject
+            this,
+            "@[" + filedExp + "]",
+            dataObject
         );
       }
       //对结果进行再次函数自定义
       if (
-        this.propData.customFunction &&
-        this.propData.customFunction.length > 0
+          this.propData.customFunction &&
+          this.propData.customFunction.length > 0
       ) {
         var params = this.commonParam();
         var resValue = "";
         try {
           resValue =
-            window[this.propData.customFunction[0].name] &&
-            window[this.propData.customFunction[0].name].call(this, {
-              ...params,
-              ...this.propData.customFunction[0].param,
-              moduleObject: this.moduleObject,
-              expressData: _defaultVal,
-              interfaceData: resultData,
-            });
-        } catch (error) {}
+              window[this.propData.customFunction[0].name] &&
+              window[this.propData.customFunction[0].name].call(this, {
+                ...params,
+                ...this.propData.customFunction[0].param,
+                moduleObject: this.moduleObject,
+                expressData: _defaultVal,
+                interfaceData: resultData,
+              });
+        } catch (error) {
+        }
         _defaultVal = resValue;
       }
 
@@ -948,12 +954,12 @@ export default {
         case "websocket":
           if (this.propData.messageRefreshKey && messageObject.message) {
             const messageData =
-              (typeof messageObject.message === "string" &&
-                JSON.parse(messageObject.message)) ||
-              messageObject.message;
+                (typeof messageObject.message === "string" &&
+                    JSON.parse(messageObject.message)) ||
+                messageObject.message;
             const arr = Array.isArray(this.propData.messageRefreshKey)
-              ? this.propData.messageRefreshKey
-              : [this.propData.messageRefreshKey];
+                ? this.propData.messageRefreshKey
+                : [this.propData.messageRefreshKey];
             if (messageData.badgeType && arr.includes(messageData.badgeType)) {
               this.reload();
             }
@@ -967,7 +973,7 @@ export default {
           break;
         case "refreshComment":
           this.reload();
-        break;
+          break;
       }
     },
     /**
@@ -1034,8 +1040,7 @@ $scale: var(--i-all-comment-scale);
 
   .i-all-comment-content {
     background-color: #fff;
-    box-shadow: 0 calc(2px * #{$scale}) calc(12px * #{$scale}) 0
-      rgba(0, 0, 0, 0.07);
+    box-shadow: 0 calc(2px * #{$scale}) calc(12px * #{$scale}) 0 rgba(0, 0, 0, 0.07);
     border-radius: calc(6px * #{$scale});
 
     .i-all-comment-content-item {
@@ -1050,6 +1055,7 @@ $scale: var(--i-all-comment-scale);
       .i-all-comment-content-left {
         width: calc(38px * #{$scale});
         min-width: calc(38px * #{$scale});
+
         .content-left-avatar {
           width: 100%;
           height: calc(38px * #{$scale});
@@ -1077,6 +1083,7 @@ $scale: var(--i-all-comment-scale);
 
           .comment-star {
             cursor: pointer;
+
             &.active {
               color: rgb(193, 0, 0);
             }
@@ -1136,15 +1143,16 @@ $scale: var(--i-all-comment-scale);
     width: 100%;
     height: 100%;
     z-index: 1;
-    background: rgba(0,0,0,.3);
+    background: rgba(0, 0, 0, .3);
     display: flex;
     justify-content: center;
     align-items: center;
+
     span {
       padding: calc(6px * #{ $scale }) calc(20px * #{ $scale });;
       color: #e6a23c;
       background: #fdf6ec;
-      border:calc(1px * #{ $scale }) solid #f5dab1;
+      border: calc(1px * #{ $scale }) solid #f5dab1;
       border-radius: calc(4px * #{ $scale });;
     }
   }

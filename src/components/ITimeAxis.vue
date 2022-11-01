@@ -6,11 +6,11 @@
     idm-ctrl-id：组件的id，这个必须不能为空
   -->
   <div
-    class="i-time-axis-outer"
-    idm-ctrl="idm_module"
-    :id="moduleObject.id"
-    :idm-ctrl-id="moduleObject.id"
-    v-show="propData.defaultStatus != 'hidden'"
+      class="i-time-axis-outer"
+      idm-ctrl="idm_module"
+      :id="moduleObject.id"
+      :idm-ctrl-id="moduleObject.id"
+      v-show="propData.defaultStatus != 'hidden'"
   >
     <!--
       组件内部容器
@@ -22,19 +22,19 @@
     <template v-else>
       <template v-if="infoList.length > 0">
         <div
-          class="i-time-axis-item"
-          v-for="(item, index) in infoList"
-          :key="index"
-          :class="`${item.level === 2?'active':''} ${propData.circlePostion}`"
+            class="i-time-axis-item"
+            v-for="(item, index) in infoList"
+            :key="index"
+            :class="`${item.level === 2?'active':''} ${propData.circlePostion}`"
         >
           <div class="item-label">
             <span>{{ item[propData.labelInterface] }}</span>
           </div>
-          <div class="item-style" >
+          <div class="item-style">
             <div class="item-style-line"></div>
             <div
-              class="item-style-circle"
-              :class="{ hollow: propData.circleStyle === 'hollow' }"
+                class="item-style-circle"
+                :class="{ hollow: propData.circleStyle === 'hollow' }"
             >
               <div class="circle-inner"></div>
             </div>
@@ -54,11 +54,11 @@
         </div>
       </template>
       <van-empty
-        v-else
-        :description="propData.emptyDescription"
+          v-else
+          :description="propData.emptyDescription"
       >
         <template #image>
-            <van-image :src="IDM.url.getModuleAssetsWebPath(require('../assets/empty-default.png'), moduleObject)" />
+          <van-image :src="IDM.url.getModuleAssetsWebPath(require('../assets/empty-default.png'), moduleObject)"/>
         </template>
       </van-empty>
     </template>
@@ -69,11 +69,12 @@
 </template>
 
 <script>
-import { Empty, Loading, Image as VanImage } from "vant";
+import {Empty, Loading, Image as VanImage} from "vant";
 import "vant/lib/empty/style";
 import "vant/lib/loading/style";
 import 'vant/lib/image/style';
-import { set } from 'vue';
+import {set} from 'vue';
+
 export default {
   name: "ITimeAxis",
   components: {
@@ -88,12 +89,12 @@ export default {
         connectLine: "dashed",
         circleStyle: "hollow",
         circlePostion: "center",
-        emptyDescription:'暂无数据',
-        labelInterface:'label',
-        titleInterface:'title',
-        descInterface:'desc',
-        iconInterface:'icon',
-        iconTextInterface:'iconText'
+        emptyDescription: '暂无数据',
+        labelInterface: 'label',
+        titleInterface: 'title',
+        descInterface: 'desc',
+        iconInterface: 'icon',
+        iconTextInterface: 'iconText'
       },
       isLoading: true,
       infoList: [],
@@ -105,16 +106,18 @@ export default {
     this.convertAttrToStyleObject();
     this.convertThemeListAttrToStyleObject();
   },
-  mounted() {},
-  destroyed() {},
+  mounted() {
+  },
+  destroyed() {
+  },
   methods: {
     /**
      * 适配页面
      */
-    getScale(pageWidth){
+    getScale(pageWidth) {
       const base = this.propData.baseValue || 414
       const ratio = this.propData.adaptationRatio || 1.2
-      const width = this.moduleObject.env ===  "production" ? window.innerWidth : pageWidth || 414
+      const width = this.moduleObject.env === "production" ? window.innerWidth : pageWidth || 414
       return (width / base - 1) * (ratio - 1) + 1
     },
     /**
@@ -128,35 +131,35 @@ export default {
     /**
      * 把属性转换成样式对象
      */
-    convertAttrToStyleObject(pageSize={}) {
+    convertAttrToStyleObject(pageSize = {}) {
       var styleObject = {},
-        connectLineObject = {},
-        cardStyleObject = {};
+          connectLineObject = {},
+          cardStyleObject = {};
 
-      const scale  = this.getScale(pageSize.width);
+      const scale = this.getScale(pageSize.width);
       styleObject['--i-time-axis-scale'] = scale;
 
       if (this.propData.bgSize && this.propData.bgSize == "custom") {
         styleObject["background-size"] =
-          (this.propData.bgSizeWidth
-            ? this.propData.bgSizeWidth.inputVal +
-              this.propData.bgSizeWidth.selectVal
-            : "auto") +
-          " " +
-          (this.propData.bgSizeHeight
-            ? this.propData.bgSizeHeight.inputVal +
-              this.propData.bgSizeHeight.selectVal
-            : "auto");
+            (this.propData.bgSizeWidth
+                ? this.propData.bgSizeWidth.inputVal +
+                this.propData.bgSizeWidth.selectVal
+                : "auto") +
+            " " +
+            (this.propData.bgSizeHeight
+                ? this.propData.bgSizeHeight.inputVal +
+                this.propData.bgSizeHeight.selectVal
+                : "auto");
       } else if (this.propData.bgSize) {
         styleObject["background-size"] = this.propData.bgSize;
       }
       if (this.propData.positionX && this.propData.positionX.inputVal) {
         styleObject["background-position-x"] =
-          this.propData.positionX.inputVal + this.propData.positionX.selectVal;
+            this.propData.positionX.inputVal + this.propData.positionX.selectVal;
       }
       if (this.propData.positionY && this.propData.positionY.inputVal) {
         styleObject["background-position-y"] =
-          this.propData.positionY.inputVal + this.propData.positionY.selectVal;
+            this.propData.positionY.inputVal + this.propData.positionY.selectVal;
       }
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
@@ -202,8 +205,8 @@ export default {
               break;
             case "bgImgUrl":
               styleObject[
-                "background-image"
-              ] = `url(${window.IDM.url.getWebPath(element)})`;
+                  "background-image"
+                  ] = `url(${window.IDM.url.getWebPath(element)})`;
               break;
             case "positionX":
               //背景横向偏移
@@ -224,54 +227,54 @@ export default {
             case "border":
               if (element.border.top.width > 0) {
                 styleObject["border-top-width"] =
-                  element.border.top.width + element.border.top.widthUnit;
+                    element.border.top.width + element.border.top.widthUnit;
                 styleObject["border-top-style"] = element.border.top.style;
                 if (element.border.top.colors.hex8) {
                   styleObject["border-top-color"] =
-                    IDM.hex8ToRgbaString(element.border.top.colors.hex8);
+                      IDM.hex8ToRgbaString(element.border.top.colors.hex8);
                 }
               }
               if (element.border.right.width > 0) {
                 styleObject["border-right-width"] =
-                  element.border.right.width + element.border.right.widthUnit;
+                    element.border.right.width + element.border.right.widthUnit;
                 styleObject["border-right-style"] = element.border.right.style;
                 if (element.border.right.colors.hex8) {
                   styleObject["border-right-color"] =
-                    IDM.hex8ToRgbaString(element.border.right.colors.hex8);
+                      IDM.hex8ToRgbaString(element.border.right.colors.hex8);
                 }
               }
               if (element.border.bottom.width > 0) {
                 styleObject["border-bottom-width"] =
-                  element.border.bottom.width + element.border.bottom.widthUnit;
+                    element.border.bottom.width + element.border.bottom.widthUnit;
                 styleObject["border-bottom-style"] =
-                  element.border.bottom.style;
+                    element.border.bottom.style;
                 if (element.border.bottom.colors.hex8) {
                   styleObject["border-bottom-color"] =
-                    IDM.hex8ToRgbaString(element.border.bottom.colors.hex8);
+                      IDM.hex8ToRgbaString(element.border.bottom.colors.hex8);
                 }
               }
               if (element.border.left.width > 0) {
                 styleObject["border-left-width"] =
-                  element.border.left.width + element.border.left.widthUnit;
+                    element.border.left.width + element.border.left.widthUnit;
                 styleObject["border-left-style"] = element.border.left.style;
                 if (element.border.left.colors.hex8) {
                   styleObject["border-left-color"] =
-                    IDM.hex8ToRgbaString(element.border.left.colors.hex8);
+                      IDM.hex8ToRgbaString(element.border.left.colors.hex8);
                 }
               }
 
               styleObject["border-top-left-radius"] =
-                element.radius.leftTop.radius +
-                element.radius.leftTop.radiusUnit;
+                  element.radius.leftTop.radius +
+                  element.radius.leftTop.radiusUnit;
               styleObject["border-top-right-radius"] =
-                element.radius.rightTop.radius +
-                element.radius.rightTop.radiusUnit;
+                  element.radius.rightTop.radius +
+                  element.radius.rightTop.radiusUnit;
               styleObject["border-bottom-left-radius"] =
-                element.radius.leftBottom.radius +
-                element.radius.leftBottom.radiusUnit;
+                  element.radius.leftBottom.radius +
+                  element.radius.leftBottom.radiusUnit;
               styleObject["border-bottom-right-radius"] =
-                element.radius.rightBottom.radius +
-                element.radius.rightBottom.radiusUnit;
+                  element.radius.rightBottom.radius +
+                  element.radius.rightBottom.radiusUnit;
               break;
             case "boxShadow":
               styleObject["box-shadow"] = element;
@@ -282,15 +285,15 @@ export default {
                 styleObject["color"] = IDM.hex8ToRgbaString(element.fontColors.hex8);
               }
               styleObject["font-weight"] =
-                element.fontWeight && element.fontWeight.split(" ")[0];
+                  element.fontWeight && element.fontWeight.split(" ")[0];
               styleObject["font-style"] = element.fontStyle;
               styleObject["font-size"] =
-                element.fontSize + element.fontSizeUnit;
+                  element.fontSize + element.fontSizeUnit;
               styleObject["line-height"] =
-                element.fontLineHeight +
-                (element.fontLineHeightUnit == "-"
-                  ? ""
-                  : element.fontLineHeightUnit);
+                  element.fontLineHeight +
+                  (element.fontLineHeightUnit == "-"
+                      ? ""
+                      : element.fontLineHeightUnit);
               styleObject["text-align"] = element.fontTextAlign;
               styleObject["text-decoration"] = element.fontDecoration;
               break;
@@ -307,12 +310,12 @@ export default {
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id, styleObject);
       window.IDM.setStyleToPageHead(
-        this.moduleObject.id + ` .i-time-axis-item .item-style-line`,
-        connectLineObject
+          this.moduleObject.id + ` .i-time-axis-item .item-style-line`,
+          connectLineObject
       );
       window.IDM.setStyleToPageHead(
-        this.moduleObject.id + ` .i-time-axis-item .item-desc`,
-        cardStyleObject
+          this.moduleObject.id + ` .i-time-axis-item .item-desc`,
+          cardStyleObject
       );
       this.initData();
     },
@@ -325,60 +328,60 @@ export default {
         return;
       }
       const themeNamePrefix =
-        IDM.setting &&
-        IDM.setting.applications &&
-        IDM.setting.applications.themeNamePrefix
-          ? IDM.setting.applications.themeNamePrefix
-          : "idm-theme-";
+          IDM.setting &&
+          IDM.setting.applications &&
+          IDM.setting.applications.themeNamePrefix
+              ? IDM.setting.applications.themeNamePrefix
+              : "idm-theme-";
       for (var i = 0; i < themeList.length; i++) {
         var item = themeList[i];
 
         IDM.setStyleToPageHead(
-          "." +
+            "." +
             themeNamePrefix +
             item.key +
             " #" +
             (this.moduleObject.packageid || "module_demo") +
             " .i-time-axis-item .item-style .item-style-circle",
-          {
-            "border-color" : item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
-          }
+            {
+              "border-color": item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
+            }
         );
 
         IDM.setStyleToPageHead(
-          "." +
+            "." +
             themeNamePrefix +
             item.key +
             " #" +
             (this.moduleObject.packageid || "module_demo") +
             " .i-time-axis-item.active .item-style-circle",
-          {
-            "background-color" : item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
-          }
+            {
+              "background-color": item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
+            }
         );
 
         IDM.setStyleToPageHead(
-          "." +
+            "." +
             themeNamePrefix +
             item.key +
             " #" +
             (this.moduleObject.packageid || "module_demo") +
             " .i-time-axis-item .item-style .item-style-circle .circle-inner",
-          {
-            "background-color" : item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
-          }
+            {
+              "background-color": item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
+            }
         );
 
         IDM.setStyleToPageHead(
-          "." +
+            "." +
             themeNamePrefix +
             item.key +
             " #" +
             (this.moduleObject.packageid || "module_demo") +
             " .i-time-axis-item .item-desc .item-desc-right",
-          {
-            "color" : item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
-          }
+            {
+              "color": item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : "",
+            }
         );
       }
     },
@@ -390,9 +393,9 @@ export default {
       let urlObject = IDM.url.queryObject();
       var params = {
         pageId:
-          window.IDM.broadcast && window.IDM.broadcast.pageModule
-            ? window.IDM.broadcast.pageModule.id
-            : "",
+            window.IDM.broadcast && window.IDM.broadcast.pageModule
+                ? window.IDM.broadcast.pageModule.id
+                : "",
         urlData: JSON.stringify(urlObject),
       };
       return params;
@@ -403,7 +406,7 @@ export default {
     initData() {
       if (!this.moduleObject.env || this.moduleObject.env == "develop") {
         // mock数据
-        setTimeout(()=>{
+        setTimeout(() => {
           this.infoList = [];
           const res = [
             {
@@ -412,7 +415,7 @@ export default {
                 {
                   label: "11-3",
                   title:
-                    "参加了《12》参加了《12》参加了《12》参加了《12》参加了《12》参加了《12》参加了《12》参加了《12》",
+                      "参加了《12》参加了《12》参加了《12》参加了《12》参加了《12》参加了《12》参加了《12》参加了《12》",
                   desc: "2021-12-11 12:33:33",
                   icon: "",
                   iconText: "组织生活",
@@ -475,8 +478,8 @@ export default {
             }
           });
           this.isLoading = false;
-        },1000)
-        
+        }, 1000)
+
         return;
       }
       let dataSource = this.propData.dataSource;
@@ -487,21 +490,20 @@ export default {
       this.infoList = [];
       let url = `ctrl/dataSource/getDatas`;
       IDM.http
-        .post(
-          url,
-          {
-            id: dataSource.value,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json;charset=UTF-8",
-            },
-          }
-        )
-        .done((res) => {
-          console.log(res, "接口数据");
-          if (res.code === "200") {
-            const data = res.data;
+          .post(
+              url,
+              {
+                id: dataSource.value,
+              },
+              {
+                headers: {
+                  "Content-Type": "application/json;charset=UTF-8",
+                },
+              }
+          )
+          .done((res) => {
+            console.log(res, "接口数据");
+            const data = res;
             data.forEach((item) => {
               item.level = 1;
               this.infoList.push(item);
@@ -512,16 +514,13 @@ export default {
                 });
               }
             });
-          } else {
+          })
+          .error((response) => {
             console.log(url + "请求失败");
-          }
-        })
-        .error((response) => {
-          console.log(url + "请求失败");
-        })
-        .always((res) => {
-          this.isLoading = false;
-        });
+          })
+          .always((res) => {
+            this.isLoading = false;
+          });
     },
     /**
      * 通用的获取表达式匹配后的结果
@@ -532,32 +531,33 @@ export default {
       if (dataFiled) {
         var filedExp = dataFiled;
         filedExp = dataName + (filedExp.startsWiths("[") ? "" : ".") + filedExp;
-        var dataObject = { IDM: window.IDM };
+        var dataObject = {IDM: window.IDM};
         dataObject[dataName] = resultData;
         _defaultVal = window.IDM.express.replace.call(
-          this,
-          "@[" + filedExp + "]",
-          dataObject
+            this,
+            "@[" + filedExp + "]",
+            dataObject
         );
       }
       //对结果进行再次函数自定义
       if (
-        this.propData.customFunction &&
-        this.propData.customFunction.length > 0
+          this.propData.customFunction &&
+          this.propData.customFunction.length > 0
       ) {
         var params = this.commonParam();
         var resValue = "";
         try {
           resValue =
-            window[this.propData.customFunction[0].name] &&
-            window[this.propData.customFunction[0].name].call(this, {
-              ...params,
-              ...this.propData.customFunction[0].param,
-              moduleObject: this.moduleObject,
-              expressData: _defaultVal,
-              interfaceData: resultData,
-            });
-        } catch (error) {}
+              window[this.propData.customFunction[0].name] &&
+              window[this.propData.customFunction[0].name].call(this, {
+                ...params,
+                ...this.propData.customFunction[0].param,
+                moduleObject: this.moduleObject,
+                expressData: _defaultVal,
+                interfaceData: resultData,
+              });
+        } catch (error) {
+        }
         _defaultVal = resValue;
       }
 
@@ -581,12 +581,12 @@ export default {
      */
     receiveBroadcastMessage(messageObject) {
       console.log("组件收到消息", messageObject);
-      switch(messageObject.type) {
+      switch (messageObject.type) {
         case 'websocket':
-          if(this.propData.messageRefreshKey && messageObject.message){
+          if (this.propData.messageRefreshKey && messageObject.message) {
             const messageData = typeof messageObject.message === 'string' && JSON.parse(messageObject.message) || messageObject.message
             const arr = Array.isArray(this.propData.messageRefreshKey) ? this.propData.messageRefreshKey : [this.propData.messageRefreshKey]
-            if(messageData.badgeType && arr.includes(messageData.badgeType)){
+            if (messageData.badgeType && arr.includes(messageData.badgeType)) {
               this.isLoading = true;
               this.initData();
             }
@@ -657,6 +657,7 @@ $scale: var(--i-time-axis-scale);
         flex: 1;
         border-left: 1px solid rgb(229, 229, 229);
       }
+
       .item-style-circle {
         width: calc(12px * #{ $scale });
         height: calc(12px * #{ $scale });
@@ -676,6 +677,7 @@ $scale: var(--i-time-axis-scale);
 
         &.hollow {
           background-color: transparent !important;
+
           .circle-inner {
             display: none;
           }
@@ -694,7 +696,7 @@ $scale: var(--i-time-axis-scale);
       .item-desc-left {
         display: flex;
         flex-direction: column;
-        
+
         flex: 1;
 
         .left-title {
@@ -716,6 +718,7 @@ $scale: var(--i-time-axis-scale);
         color: rgb(214, 27, 22);
         font-size: 13px;
         margin-left: 24px;
+
         img {
           width: 24px;
           height: 24px;
@@ -727,7 +730,6 @@ $scale: var(--i-time-axis-scale);
         //   max-height: calc(24px * #{ $scale });
         //   margin-bottom: calc(2px * #{ $scale });
 
-          
 
         //   .svg-icon {
         //     vertical-align: baseline;
@@ -769,7 +771,7 @@ $scale: var(--i-time-axis-scale);
       .item-label {
         align-items: flex-start;
       }
-      
+
       .item-style-line:first-child {
         display: none;
       }
@@ -784,7 +786,7 @@ $scale: var(--i-time-axis-scale);
       .item-label {
         align-items: flex-end;
       }
-      
+
       .item-style-line:last-child {
         display: none;
       }
@@ -803,15 +805,16 @@ $scale: var(--i-time-axis-scale);
     width: 100%;
     height: 100%;
     z-index: 1;
-    background: rgba(0,0,0,.3);
+    background: rgba(0, 0, 0, .3);
     display: flex;
     justify-content: center;
     align-items: center;
+
     span {
       padding: calc(6px * #{ $scale }) calc(20px * #{ $scale });;
       color: #e6a23c;
       background: #fdf6ec;
-      border:calc(1px * #{ $scale }) solid #f5dab1;
+      border: calc(1px * #{ $scale }) solid #f5dab1;
       border-radius: calc(4px * #{ $scale });;
     }
   }

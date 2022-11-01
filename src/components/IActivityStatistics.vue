@@ -130,7 +130,7 @@ export default {
             }
           },
         ],
-        zIndex:10,
+        zIndex: 10,
         headText: "党费缴纳",
         isShowBottomText: true,
         isShowMoney: false,
@@ -188,15 +188,15 @@ export default {
     },
 
     // 获取router的数据
-    getRouterParams () {
-      return this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId): {};
+    getRouterParams() {
+      return this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId) : {};
     },
     // 过滤接口参数
-    fileterParams (chooseData = []) {
+    fileterParams(chooseData = []) {
       let obj = {};
       if (this.propData.customClickFunc && this.propData.customClickFunc.length > 0) {
         let name = this.propData.customClickFunc[0].name
-        obj = window[name] && window[name].call(this, [this.getRouterParams(),chooseData]);
+        obj = window[name] && window[name].call(this, [this.getRouterParams(), chooseData]);
       }
       return obj
     },
@@ -211,50 +211,47 @@ export default {
           setTimeout(() => {
             this.activityList = [];
             const res = {
-              data: {
-                data: [
-                  {
-                    icon: "dydh",
-                    name: "党员大会",
-                    convene: "召开15次",
-                    personNum: "参会人数33人",
-                    attendance: "出席率25%"
-                  },
-                  {
-                    icon: "zwh",
-                    name: "支委会",
-                    convene: "召开15次",
-                    personNum: "参会人数33人",
-                    attendance: "出席率25%"
-                  },
-                  {
-                    icon: "dxzh",
-                    name: "党小组会",
-                    convene: "召开15次",
-                    personNum: "参会人数33人",
-                    attendance: "出席率25%"
-                  },
-                  {
-                    icon: "dk",
-                    name: "党课",
-                    convene: "召开15次",
-                    personNum: "参会人数33人",
-                    attendance: "出席率25%"
-                  },
-                  {
-                    icon: "ztdr",
-                    name: "主题党日",
-                    convene: "召开15次",
-                    personNum: "参会人数33人",
-                    attendance: "出席率25%"
-                  },
-                ],
-                dues: "20.00",
-              }
-
+              data: [
+                {
+                  icon: "dydh",
+                  name: "党员大会",
+                  convene: "召开15次",
+                  personNum: "参会人数33人",
+                  attendance: "出席率25%"
+                },
+                {
+                  icon: "zwh",
+                  name: "支委会",
+                  convene: "召开15次",
+                  personNum: "参会人数33人",
+                  attendance: "出席率25%"
+                },
+                {
+                  icon: "dxzh",
+                  name: "党小组会",
+                  convene: "召开15次",
+                  personNum: "参会人数33人",
+                  attendance: "出席率25%"
+                },
+                {
+                  icon: "dk",
+                  name: "党课",
+                  convene: "召开15次",
+                  personNum: "参会人数33人",
+                  attendance: "出席率25%"
+                },
+                {
+                  icon: "ztdr",
+                  name: "主题党日",
+                  convene: "召开15次",
+                  personNum: "参会人数33人",
+                  attendance: "出席率25%"
+                },
+              ],
+              dues: "20.00",
             };
-            this.activityList = res.data.data
-            this.dues = res.data.dues
+            this.activityList = res.data
+            this.dues = res.dues
             this.isLoading = false;
           }, 0)
         }
@@ -280,27 +277,19 @@ export default {
           }
       ).done((res) => {
         console.log(res, "接口数据");
-        if (res.code == "200" || res.code == 200) {
-          let tempList = {}
-          this.activityList = []
-          tempList = this.propData.dataFiled
-              ? this.getExpressData("dataName", this.propData.dataFiled, res)
-              : res;
-          this.dues = tempList[this.propData.dues]
-          let activityName = this.propData.activityList
-          for (let i = 0; i < tempList[activityName].length; i++) {
-            let tempItem = {}
-            tempItem.icon = tempList[activityName][i][this.propData.activityIcon]
-            tempItem.name = tempList[activityName][i][this.propData.activityName]
-            tempItem.personNum = tempList[activityName][i][this.propData.activityPersonNum]
-            tempItem.convene = tempList[activityName][i][this.propData.activityConvene]
-            tempItem.attendance = tempList[activityName][i][this.propData.activityAttendance]
-            this.activityList.push(tempItem)
-          }
-        } else {
-          this.activityList = []
-          this.dues = ""
-          console.log(url + "请求失败");
+        let tempList = {}
+        this.activityList = []
+        tempList = res;
+        this.dues = tempList[this.propData.dues]
+        let activityName = this.propData.activityList
+        for (let i = 0; i < tempList[activityName].length; i++) {
+          let tempItem = {}
+          tempItem.icon = tempList[activityName][i][this.propData.activityIcon]
+          tempItem.name = tempList[activityName][i][this.propData.activityName]
+          tempItem.personNum = tempList[activityName][i][this.propData.activityPersonNum]
+          tempItem.convene = tempList[activityName][i][this.propData.activityConvene]
+          tempItem.attendance = tempList[activityName][i][this.propData.activityAttendance]
+          this.activityList.push(tempItem)
         }
       }).error((response) => {
         this.activityList = []
@@ -417,7 +406,7 @@ export default {
               }
               break;
             case "zIndex":
-              styleContainer["z-index"]=this.propData.zIndex
+              styleContainer["z-index"] = this.propData.zIndex
               break;
             case "bgImgUrl":
               styleObject[
@@ -648,7 +637,7 @@ export default {
           this.convertAttrToStyleObject(messageObject.message);
           break;
         case 'iselect_chooseData':
-          if(messageObject.message.length !== 0){
+          if (messageObject.message.length !== 0) {
             this.initData(messageObject.message)
           }
           break;
