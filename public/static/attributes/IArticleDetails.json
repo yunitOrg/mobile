@@ -21,20 +21,26 @@
       "desc": "提供设置组件能达到展示效果的基本属性设置信息",
       "children": [
         {
-          "type": "input",
+          "type": "dataSourceFiledSelect",
           "layoutType": "inline",
           "text": "标题字段",
           "desc": "用于指定组件的标题取的值字段",
           "bindKey": "titleField",
-          "default": "title"
+          "default": "title",
+          "ctrlAttrObject": {
+            "dataSourceBindkey": "dataSource"
+          }
         },
         {
-          "type": "input",
+          "type": "dataSourceFiledSelect",
           "layoutType": "inline",
           "text": "内容字段",
           "desc": "用于指定组件的内容的取值字段",
           "bindKey": "contentField",
-          "default": "content"
+          "default": "content",
+          "ctrlAttrObject": {
+            "dataSourceBindkey": "dataSource"
+          }
         },
         {
           "type": "input",
@@ -53,7 +59,7 @@
           "default": "暂无数据"
         },
         {
-          "type": "treeSelect",
+          "type": "dataSourceSelect",
           "layoutType": "inline",
           "text": "数据源",
           "desc": "用于选择组件的数据源",
@@ -91,11 +97,14 @@
           "tabText": "字段[index]",
           "children": [
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "取值字段",
               "desc": "设置此扩展字段的取值",
-              "bindKey": "field"
+              "bindKey": "field",
+              "ctrlAttrObject": {
+                "dataSourceBindkey": "dataSource"
+              }
             },
             {
               "type": "select",

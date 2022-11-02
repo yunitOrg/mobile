@@ -225,32 +225,16 @@ export default {
       if (!dataSource) {
         return false;
       }
-      const url = `ctrl/dataSource/getDatas`;
       this.isLoading = true;
-      IDM.http
-        .post(
-          url,
-          {
-            ...this.customParamsFormat(),
-            id: dataSource.value
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json;charset=UTF-8'
-            }
-          }
-        )
-        .done(res => {
-          if (res.type === 'success') {
-            const resultData = this.customFormat(res.data);
-            this.articleData = resultData;
-          }
-          this.isLoading = false;
-        })
-        .error(err => {
-          console.log(err);
-          this.isLoading = false;
-        });
+      IDM.datasource.request(dataSource[0]?.id, {
+        moduleObject: this.moduleObject
+      }, (data) => {
+        this.isLoading = false;
+        if (data) {
+          const resultData = this.customFormat(data);
+          this.articleData = resultData;
+        }
+      })
     },
     /**
      * 把属性转换成样式对象
