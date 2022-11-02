@@ -135,6 +135,7 @@
           "text": "数据源",
           "desc": "用于选择组件的数据源, 入参如下{id:数据源的id,pageId:页面id,...urlObject:当前路径参数}",
           "bindKey": "dataSource",
+          "dataSourceUrl":"/ctrl/dataSource/getDatasourceByGroup",
           "display": "@[dataType=='dataSource']"
         },
         {

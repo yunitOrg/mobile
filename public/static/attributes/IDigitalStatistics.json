@@ -41,7 +41,8 @@
           "layoutType": "inline",
           "text": "数据源",
           "desc": "用于选择数据源",
-          "bindKey": "dataSource"
+          "bindKey": "dataSource",
+          "dataSourceUrl":"/ctrl/dataSource/getDatasourceByGroup"
         },
         {
           "type": "actionSelect",
