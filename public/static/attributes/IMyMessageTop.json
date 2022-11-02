@@ -496,7 +496,7 @@
             "desc": "点击？查看高级设置用法指南",
             "children": [
                 {
-                    "type": "treeSelect",
+                    "type": "dataSourceSelect",
                     "layoutType": "inline",
                     "text": "数据源",
                     "bindKey": "dataSourceSelect"
@@ -530,21 +530,21 @@
                     "desc": "设置组件中展示的对应字段",
                     "children": [
                         {
-                            "type": "input",
+                            "type": "dataSourceFiledSelect",
                             "layoutType": "inline",
                             "text": "头像字段",
                             "bindKey": "avatarField",
                             "default": "avatar"
                         },
                         {
-                            "type": "input",
+                            "type": "dataSourceFiledSelect",
                             "layoutType": "inline",
                             "text": "昵称字段",
                             "bindKey": "usernameField",
                             "default": "username"
                         },
                         {
-                            "type": "input",
+                            "type": "dataSourceFiledSelect",
                             "layoutType": "inline",
                             "text": "第一字段",
                             "desc": "名称下面显示的第一行数据，没有返回数据就不显示",
@@ -552,7 +552,7 @@
                             "default": "partySeniority"
                         },
                         {
-                            "type": "input",
+                            "type": "dataSourceFiledSelect",
                             "layoutType": "inline",
                             "text": "第二字段",
                             "desc": "名称下面显示的第二行数据，没有返回数据就不显示",
@@ -560,7 +560,7 @@
                             "default": "partyBranch"
                         },
                         {
-                            "type": "input",
+                            "type": "dataSourceFiledSelect",
                             "layoutType": "inline",
                             "text": "第三字段",
                             "desc": "名称下面显示的第三行数据，没有返回数据就不显示",
@@ -568,7 +568,7 @@
                             "default": "phone"
                         },
                         {
-                            "type": "input",
+                            "type": "dataSourceFiledSelect",
                             "layoutType": "inline",
                             "text": "右侧跳转",
                             "desc": "右侧跳转链接字段",
