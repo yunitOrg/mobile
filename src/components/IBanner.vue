@@ -57,13 +57,12 @@
                 <div class="idm-banner-swiper-pagination" v-show="propData.showBullet"></div>
             </div>
         </div>
-        <ICommonMask :moduleObject="moduleObject" :propData="propData"></ICommonMask>
-        <!-- <div
+        <div
             class="idm-banner-box-mask"
             v-if="moduleObject.env === 'develop' && propData.dataType === 'dataSource' && !propData.dataSource"
         >
             <span>！未绑定数据源</span>
-        </div> -->
+        </div>
     </div>
 </template>
 
@@ -72,13 +71,11 @@ import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 import 'swiper/css/swiper.min.css'
 import { getBannerData } from '../mock/mockData'
 import adaptationScreen from '../mixins/adaptationScreen'
-import ICommonMask from '../commonComponents/ICommonMask'
 export default {
     name: 'IBanner',
     components: {
         Swiper,
-        SwiperSlide,
-        ICommonMask
+        SwiperSlide
     },
     mixins: [adaptationScreen],
     data() {
