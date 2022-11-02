@@ -88,35 +88,24 @@ export default{
     },
     getSelectData () {
       console.log(999, this.moduleObject, this.params)
-      const customInterfaceUrl = '/ctrl/dataSource/getDatas';
       if (this.moduleObject.env == "production") {
-        this.params.selectSource &&
-          IDM.http.post(
-              customInterfaceUrl,
-              {
-                id: this.params.selectSource && this.params.selectSource.value,
-              },
-              {
-                headers: {
-                  "Content-Type": "application/json;charset=UTF-8",
-                },
-              }
-            )
-            .then((res) => {
-              if (res.status == 200 && res.data.code == 200) {
-                let ary = res.data.data || [];
-                let tem = this.params.selectName;
-                let str = this.params.selectValue;
-                this.actionList = ary.map(item => {
-                  return{
-                    name: item[tem],
-                    value: item[str]
-                  }
-                })
-              } else {
-                IDM.message.error(res.message);
-              }
-            });
+        if (this.params.selectSource) {
+          IDM.datasource.request(this.propData.selectSource[0]?.id, {
+            moduleObject: this.moduleObject
+          }, (data) => {
+            if (data) {
+              let ary = data || [];
+              let tem = this.params.selectName;
+              let str = this.params.selectValue;
+              this.actionList = ary.map(item => {
+                return{
+                  name: item[tem],
+                  value: item[str]
+                }
+              })
+            }
+          })
+        }
       }
     },
     getPageData () {

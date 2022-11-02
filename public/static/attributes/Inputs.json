@@ -549,7 +549,7 @@
                 "default": "[{ name: '全部', value: 0 }, { name: '新款商品', value: 1 }, { name: '活动商品', value: 2 }]"
               },
               {
-                "type": "input",
+                "type": "dataSourceFiledSelect",
                 "layoutType": "inline",
                 "text": "下拉数据name",
                 "bindKey": "selectName",
@@ -557,7 +557,7 @@
                 "default": "name"
               },
               {
-                "type": "input",
+                "type": "dataSourceFiledSelect",
                 "layoutType": "inline",
                 "text": "下拉数据value",
                 "bindKey": "selectValue",
@@ -565,13 +565,12 @@
                 "default": "value"
               },
               {
-                "type": "treeSelect",
+                "type": "dataSourceSelect",
                 "layoutType": "inline",
                 "text": "下拉数据源",
                 "desc": "下拉框数据源",
                 "display": "@[type=='actionSheet' && selectType=='interface']",
-                "bindKey": "selectSource",
-                "dataSourceUrl": "/ctrl/dataSource/getDatasourceByGroup"
+                "bindKey": "selectSource"
               }
             ],
             "default": [
@@ -857,12 +856,11 @@
             "multiple": false
           },
           {
-            "type": "treeSelect",
+            "type": "dataSourceSelect",
             "layoutType": "inline",
             "text": "form数据源",
             "desc": "用于form回填数据使用",
-            "bindKey": "dataSource",
-            "dataSourceUrl": "/ctrl/dataSource/getDatasourceByGroup"
+            "bindKey": "dataSource"
           },
           {
             "type": "input",

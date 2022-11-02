@@ -37,7 +37,6 @@
 </template>
 
 <script type="text/jsx">
-import { getDatasInterfaceUrl } from '@/api/config'
 import InputFactory from '../commonComponents/form/InputFactory.vue';
 export default {
   name: 'idm-form',
@@ -444,28 +443,16 @@ export default {
       if (this.moduleObject.env == "production") {
         const obj = this.getRouterParams() || {};
         const routerParams = !obj.$el ? obj : {};
-        this.propData.dataSource &&
-          IDM.http
-            .post(
-              getDatasInterfaceUrl,
-              {
-                id: this.propData.dataSource && this.propData.dataSource.value,
-                ...routerParams
-              },
-              {
-                headers: {
-                  "Content-Type": "application/json;charset=UTF-8",
-                },
-              }
-            )
-            .then((res) => {
-              console.log(res, '接口返回');
-              if (res.status == 200 && res.data.code == 200) {
-                  this.formData = res.data.data || {};
-              } else {
-                  IDM.message.error(res.data.message)
-              }
-            })
+        if (this.propData.dataSource) {
+          IDM.datasource.request(this.propData.dataSource[0]?.id, {
+            moduleObject: this.moduleObject,
+            param: {...routerParams}
+          }, (data) => {
+            if (data) {
+              this.formData = data;
+            }
+          })
+        }
       }
     },
     /**
