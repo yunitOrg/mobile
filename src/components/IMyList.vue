@@ -149,34 +149,15 @@ export default {
         return;
       }
       let url = `ctrl/dataSource/getDatas`;
-      IDM.http
-        .post(
-          url,
-          {
-            id: dataSource.value
-          },
-          {
-            headers: {
-              "Content-Type": "application/json;charset=UTF-8",
-            },
-          }
-        )
-        .done((res) => {
-          console.log(res, "接口数据");
-          if (res.code === "200") {
-            const result = res.data
-            this.infoList = result;
-          } else {
-            console.log(url + "请求失败");
-          }
-        })
-        .error((response) => {
-          console.log(url + "请求失败");
-        })
-        .always((res) => {
-          this.isLoading = false;
-          this.showStatusHandle();
-        });
+
+
+      IDM.datasource.request(this.propData.dataSource[0]?.id,{},(res) => {
+          const result = res
+          this.infoList = result;
+      })
+      this.isLoading = false;
+      this.showStatusHandle();
+
     },
     /**
      * 适配页面

@@ -476,7 +476,7 @@
           ]
         },
         {
-          "type": "treeSelect",
+          "type": "dataSourceSelect",
           "layoutType": "inline",
           "text": "数据源",
           "desc": "用于选择的数据源",

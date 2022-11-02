@@ -236,44 +236,25 @@ export default {
         return;
       }
       let url = `ctrl/dataSource/getDatas`;
-      IDM.http
-        .post(
-          url,
-          {
-            id: dataSource.value,
-            start: this.infoList.length,
-            limit: this.propData.defaultNumber,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json;charset=UTF-8",
-            },
-          }
-        )
-        .done((res) => {
-          console.log(res, "接口数据");
-          if (res.code === "200") {
-            const result = res.data;
-            this.total = result.total;
-            if (loadMore) {
-              this.infoList = [
-                ...this.infoList,
-                ...result[this.propData.listInterface],
-              ];
-            } else {
-              this.infoList = result[this.propData.listInterface];
-            }
-          } else {
-            console.log(url + "请求失败");
-          }
-        })
-        .error((response) => {
-          console.log(url + "请求失败");
-        })
-        .always((res) => {
-          this.isLoading = false;
-          this.isLoadingMore = false;
-        });
+
+      IDM.datasource.request(this.propData.dataSource[0]?.id,{
+        start: this.infoList.length,
+        limit: this.propData.defaultNumber,
+      },(res) => {
+        const result = res;
+        this.total = result.total;
+        if (loadMore) {
+          this.infoList = [
+            ...this.infoList,
+            ...result[this.propData.listInterface],
+          ];
+        } else {
+          this.infoList = result[this.propData.listInterface];
+        }
+      })
+      this.isLoading = false;
+      this.isLoadingMore = false;
+
     },
     /**
      * 适配页面
