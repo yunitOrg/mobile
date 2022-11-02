@@ -488,7 +488,7 @@
           "desc": "页面数据绑定",
           "children": [
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "右侧数字",
               "bindKey": "numInterface",

@@ -455,70 +455,70 @@
           "desc": "页面数据绑定",
           "children": [
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "头像地址",
               "bindKey": "imgInterface",
               "default": "img"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "标识",
               "bindKey": "idInterface",
               "default": "id"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "作者",
               "bindKey": "avatarInterface",
               "default": "avatar"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "时间",
               "bindKey": "timeInterface",
               "default": "time"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "已点赞",
               "bindKey": "starInterface",
               "default": "star"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "点赞数量",
               "bindKey": "starNumInterface",
               "default": "star"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "评论内容",
               "bindKey": "btInterface",
               "default": "bt"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "来自地区",
               "bindKey": "fromInterface",
               "default": "from"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "回复数量",
               "bindKey": "totalInterface",
               "default": "total"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "回复人",
               "bindKey": "replyInterface",

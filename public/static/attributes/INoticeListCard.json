@@ -523,7 +523,7 @@
           "desc": "页面数据绑定",
           "children": [
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "通知列表",
               "desc": "通知公告通知列表字段",
@@ -531,7 +531,7 @@
               "default": "list"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "日期",
               "desc": "日期格式:2022-08-08",
@@ -539,7 +539,7 @@
               "default": "date"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "公告标题",
               "bindKey": "btInterface",

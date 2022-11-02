@@ -624,7 +624,7 @@
           "desc": "设置从列表项中展示的对应字段",
           "children": [
             {
-              "type": "textarea",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "显示字段",
               "bindKey": "dataFiled",
@@ -633,7 +633,7 @@
               "placeholder": "示例：data 或者 [0].data[0]"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "视频图片",
               "desc": "每个视频的插图字段",
@@ -641,7 +641,7 @@
               "default": "image"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "播放量",
               "desc": "每个视频的播放量字段",
@@ -649,7 +649,7 @@
               "default": "amountOfPlay"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "发布时间",
               "desc": "每个视频的发布时间字段",
@@ -657,7 +657,7 @@
               "default": "releaseDate"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "视频详情",
               "desc": "每个视频的描述字段",

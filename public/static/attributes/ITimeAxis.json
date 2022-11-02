@@ -483,35 +483,35 @@
           "desc": "页面数据绑定",
           "children": [
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "日期",
               "bindKey": "labelInterface",
               "default": "label"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "标题",
               "bindKey": "titleInterface",
               "default": "title"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "描述",
               "bindKey": "descInterface",
               "default": "desc"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "图标路径",
               "bindKey": "iconInterface",
               "default": "icon"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "图标描述",
               "bindKey": "iconTextInterface",
