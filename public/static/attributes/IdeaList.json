@@ -292,42 +292,42 @@
             "desc": "页面数据绑定",
             "children": [
               {
-                "type": "textarea",
+                "type": "dataSourceFiledSelect",
                 "layoutType": "inline",
                 "text": "头像字段",
                 "bindKey": "ImgInterface",
                 "default": "headImg"
               },
               {
-                "type": "textarea",
+                "type": "dataSourceFiledSelect",
                 "layoutType": "inline",
                 "text": "标题字段",
                 "bindKey": "titleInterface",
                 "default": "title"
               },
               {
-                "type": "textarea",
+                "type": "dataSourceFiledSelect",
                 "layoutType": "inline",
                 "text": "描述字段",
                 "bindKey": "descInterface",
                 "default": "desc"
               },
               {
-                "type": "textarea",
+                "type": "dataSourceFiledSelect",
                 "layoutType": "inline",
                 "text": "日期字段",
                 "bindKey": "TimeInterface",
                 "default": "time"
               },
               {
-                "type": "textarea",
+                "type": "dataSourceFiledSelect",
                 "layoutType": "inline",
                 "text": "待回复字段",
                 "bindKey": "activeInterface",
                 "default": "type == '1'"
               },
               {
-                "type": "input",
+                "type": "dataSourceFiledSelect",
                 "layoutType": "inline",
                 "text": "跳转字段",
                 "desc": "跳转字段",
