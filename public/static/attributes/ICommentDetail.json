@@ -419,12 +419,12 @@
           ]
         },
         {
-          "type": "treeSelect",
+          "type": "dataSourceSelect",
           "layoutType": "inline",
           "text": "评论数据",
           "desc": "用于选择当前评论详情的数据源",
           "bindKey": "detailDataSource",
-          "dataSourceUrl": "ctrl/dataSource/getDatasourceByGroup"
+          "dataSourceUrl":"/ctrl/dataSource/getDatasourceByGroup"
         },
         {
           "type": "actionSelect",
@@ -435,12 +435,12 @@
           "multiple": false
         },
         {
-          "type": "treeSelect",
+          "type": "dataSourceSelect",
           "layoutType": "inline",
           "text": "回复数据",
           "desc": "用于选择当前评论回复的数据源",
           "bindKey": "dataSource",
-          "dataSourceUrl": "ctrl/dataSource/getDatasourceByGroup"
+          "dataSourceUrl":"/ctrl/dataSource/getDatasourceByGroup"
         },
         {
           "type": "actionSelect",

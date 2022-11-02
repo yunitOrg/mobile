@@ -267,16 +267,11 @@ export default {
 
       const routerParams = this.fileterParams(chooseData);
 
-      IDM.http.post(url, {
-            id: dataSource.value,
-            ...routerParams
-          }, {
-            headers: {
-              "Content-Type": "application/json;charset=UTF-8",
-            },
-          }
-      ).done((res) => {
-        console.log(res, "接口数据");
+
+
+      IDM.datasource.request(this.propData.dataSource[0]?.id,{
+        ...routerParams
+      },(res) => {
         let tempList = {}
         this.activityList = []
         tempList = res;
@@ -291,13 +286,8 @@ export default {
           tempItem.attendance = tempList[activityName][i][this.propData.activityAttendance]
           this.activityList.push(tempItem)
         }
-      }).error((response) => {
-        this.activityList = []
-        this.dues = ""
-        console.log(url + "请求失败");
-      }).always((res) => {
-        this.isLoading = false;
-      });
+      })
+
     },
     /**
      * 通用的url参数对象

@@ -471,12 +471,12 @@
           ]
         },
         {
-          "type": "treeSelect",
+          "type": "dataSourceSelect",
           "layoutType": "inline",
           "text": "数据源",
           "desc": "用于选择时间轴的数据源",
           "bindKey": "dataSource",
-          "dataSourceUrl": "ctrl/dataSource/getDatasourceByGroup"
+          "dataSourceUrl":"/ctrl/dataSource/getDatasourceByGroup"
         },
         {
           "type": "group",

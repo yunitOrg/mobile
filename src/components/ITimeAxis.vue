@@ -488,39 +488,21 @@ export default {
         return;
       }
       this.infoList = [];
-      let url = `ctrl/dataSource/getDatas`;
-      IDM.http
-          .post(
-              url,
-              {
-                id: dataSource.value,
-              },
-              {
-                headers: {
-                  "Content-Type": "application/json;charset=UTF-8",
-                },
-              }
-          )
-          .done((res) => {
-            console.log(res, "接口数据");
-            const data = res;
-            data.forEach((item) => {
-              item.level = 1;
-              this.infoList.push(item);
-              if (item.children) {
-                item.children.forEach((c) => {
-                  c.level = 2;
-                  this.infoList.push(c);
-                });
-              }
+
+      IDM.datasource.request(this.propData.dataSource[0]?.id,{},(res) => {
+        const data = res;
+        data.forEach((item) => {
+          item.level = 1;
+          this.infoList.push(item);
+          if (item.children) {
+            item.children.forEach((c) => {
+              c.level = 2;
+              this.infoList.push(c);
             });
-          })
-          .error((response) => {
-            console.log(url + "请求失败");
-          })
-          .always((res) => {
-            this.isLoading = false;
-          });
+          }
+        });
+      })
+
     },
     /**
      * 通用的获取表达式匹配后的结果

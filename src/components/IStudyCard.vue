@@ -238,15 +238,8 @@ export default {
         this.isLoading = false;
         return;
       }
-      let url = `ctrl/dataSource/getDatas`;
-      IDM.http.post(url, {
-            id: dataSource.value,
-          }, {
-            headers: {
-              "Content-Type": "application/json;charset=UTF-8",
-            },
-          }
-      ).done((res) => {
+
+      IDM.datasource.request(this.propData.dataSource[0]?.id,{},(res) => {
         let tempList = []
         this.videoData = []
         tempList = res.data;
@@ -262,12 +255,8 @@ export default {
           tempItem.videoIntroduction = tempList[i][this.propData.videoIntroduction]
           this.videoData.push(tempItem)
         }
-      }).error((response) => {
-        this.videoData = []
-        console.log(url + "请求失败");
-      }).always((res) => {
-        this.isLoading = false;
-      });
+      })
+
     },
     /**
      * 通用的url参数对象

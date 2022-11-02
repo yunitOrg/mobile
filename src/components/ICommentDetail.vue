@@ -178,31 +178,15 @@ export default {
       }
       let url = `ctrl/dataSource/getDatas`;
       const routerParams = this.detailFileterParams();
-      IDM.http
-          .post(
-              url,
-              {
-                id: dataSource.value,
-                commentId: this.commonParam() && this.commonParam().commentId,
-                ...routerParams
-              },
-              {
-                headers: {
-                  "Content-Type": "application/json;charset=UTF-8",
-                },
-              }
-          )
-          .done((res) => {
+
+      IDM.datasource.request(this.propData.detailDataSource[0]?.id,{
+            commentId: this.commonParam() && this.commonParam().commentId,
+            ...routerParams
+          },(res) => {
             console.log(res, "接口数据");
             this.detailInfo = res
             this.latestNum = this.detailInfo[this.propData.totalInterface]
           })
-          .error((response) => {
-            console.log(url + "请求失败");
-          })
-          .always((res) => {
-            this.loading = false;
-          });
     },
     /**
      * 删除
@@ -657,7 +641,6 @@ export default {
         return;
       }
       const routerParams = this.fileterParams();
-      let url = `ctrl/dataSource/getDatas`;
 
 
       let tempParams = {
@@ -682,38 +665,22 @@ export default {
           start: this.infoList.length,
           ...routerParams
         })
-        IDM.http
-            .post(
-                url,
-                {
-                  id: dataSource.value,
-                  pageSize: this.pageSize,
-                  start: this.infoList.length,
-                  ...routerParams
-                },
-                {
-                  headers: {
-                    "Content-Type": "application/json;charset=UTF-8",
-                  },
-                }
-            )
-            .done((res) => {
-              if (res.length === 0) {
-                this.finished = true;
-              }
-              this.infoList = [...this.infoList, ...res.list];
 
-              this.total = res.total;
-              if (this.infoList.length >= res.total) {
-                this.finished = true;
-              }
-            })
-            .error((response) => {
-              console.log(url + "请求失败");
-            })
-            .always((res) => {
-              this.loading = false;
-            });
+        IDM.datasource.request(this.propData.dataSource[0]?.id,{
+          pageSize: this.pageSize,
+          start: this.infoList.length,
+          ...routerParams
+        },(res) => {
+          if (res.length === 0) {
+            this.finished = true;
+          }
+          this.infoList = [...this.infoList, ...res.list];
+
+          this.total = res.total;
+          if (this.infoList.length >= res.total) {
+            this.finished = true;
+          }
+        })
       }
 
     },

@@ -826,7 +826,6 @@ export default {
 
 
       let tempParams = {
-        id: dataSource.value,
         pageSize: this.pageSize,
         start: this.infoList.length,
         type: this.curMode === 'new' ? 0 : 1,
@@ -845,50 +844,35 @@ export default {
 
       if (!flag) {
         this.requestParams.push({
-          id: dataSource.value,
           pageSize: this.pageSize,
           start: this.infoList.length,
           type: this.curMode === 'new' ? 0 : 1,
           ...routerParams
         })
-        IDM.http
-            .post(
-                url,
-                {
-                  id: dataSource.value,
-                  pageSize: this.pageSize,
-                  start: this.infoList.length,
-                  type: this.curMode === 'new' ? 0 : 1,
-                  ...routerParams
-                },
-                {
-                  headers: {
-                    "Content-Type": "application/json;charset=UTF-8",
-                  },
-                }
-            )
-            .done((res) => {
-              if (res.length === 0) {
-                this.finished = true;
-              }
-              // 简单模式下只展示三条
-              if (!this.curStatus) {
-                this.finished = true;
-                this.infoList = res.list.slice(0, 3);
-              } else {
-                this.infoList = [...this.infoList, ...res.list];
-                if (this.infoList.length >= res.total) {
-                  this.finished = true;
-                }
-              }
-              this.total = res.total;
-            })
-            .error((response) => {
-              console.log(url + "请求失败");
-            })
-            .always((res) => {
-              this.loading = false;
-            });
+
+
+        IDM.datasource.request(this.propData.dataSource[0]?.id,{
+          pageSize: this.pageSize,
+          start: this.infoList.length,
+          type: this.curMode === 'new' ? 0 : 1,
+          ...routerParams
+        },(res) => {
+          if (res.length === 0) {
+            this.finished = true;
+          }
+          // 简单模式下只展示三条
+          if (!this.curStatus) {
+            this.finished = true;
+            this.infoList = res.list.slice(0, 3);
+          } else {
+            this.infoList = [...this.infoList, ...res.list];
+            if (this.infoList.length >= res.total) {
+              this.finished = true;
+            }
+          }
+          this.total = res.total;
+        })
+
       }
     },
     /**
