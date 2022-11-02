@@ -355,13 +355,12 @@
             "default": false
           },
           {
-            "type": "treeSelect",
+            "type": "dataSourceSelect",
             "layoutType": "inline",
             "text": "数据源",
-            "desc": "用于回填数据使用",
-            "bindKey": "dataSource",
+            "desc": "用于选择数据源",
             "display": "@[requireFlag]",
-            "dataSourceUrl": "/ctrl/dataSource/getDatasourceByGroup"
+            "bindKey": "dataSource"
           },
           {
             "type": "actionSelect",

@@ -195,11 +195,11 @@
         "desc": "点击？查看高级设置用法指南",
         "children": [
           {
-            "type": "treeSelect",
+            "type": "dataSourceSelect",
             "layoutType": "inline",
             "text": "数据源",
-            "bindKey": "dataSource",
-            "dataSourceUrl":"/ctrl/dataSource/getDatasourceByGroup"
+            "desc": "用于选择数据源",
+            "bindKey": "dataSource"
           },
           {
             "type": "group",
@@ -207,34 +207,34 @@
             "desc": "页面数据绑定",
             "children": [
               {
-                "type": "textarea",
+                "type": "dataSourceFiledSelect",
                 "layoutType": "inline",
                 "text": "个人页签ID",
                 "bindKey": "selfInterface"
               },
               {
-                "type": "textarea",
+                "type": "dataSourceFiledSelect",
                 "layoutType": "inline",
                 "text": "头像字段",
                 "bindKey": "ImgInterface",
                 "default": "headImg"
               },
               {
-                "type": "textarea",
+                "type": "dataSourceFiledSelect",
                 "layoutType": "inline",
                 "text": "标题字段",
                 "bindKey": "titleInterface",
                 "default": "title"
               },
               {
-                "type": "textarea",
+                "type": "dataSourceFiledSelect",
                 "layoutType": "inline",
                 "text": "描述字段",
                 "bindKey": "descInterface",
                 "default": "desc"
               },
               {
-                "type": "textarea",
+                "type": "dataSourceFiledSelect",
                 "layoutType": "inline",
                 "text": "金额字段",
                 "bindKey": "moneyInterface",

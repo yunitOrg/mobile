@@ -143,29 +143,17 @@ export default {
     },
     initData () {
       let that = this;
-      const customInterfaceUrl = '/ctrl/dataSource/getDatas';
       if (this.moduleObject.env == "production") {
-        this.propData.dataSource &&
-          IDM.http
-            .post(
-              customInterfaceUrl,
-              {
-                id: this.propData.dataSource && this.propData.dataSource.value,
-              },
-              {
-                headers: {
-                  "Content-Type": "application/json;charset=UTF-8",
-                },
-              }
-            )
-            .then((res) => {
-              if (res.type === "success") {
-                that.pageDataList = res.data || [];
-                that.currentObj = res.data.find(item => item.id === that.propData.selfInterface)
-              } else {
-                IDM.message.error(res.message);
-              }
-            });
+        if (this.propData.dataSource) {
+          IDM.datasource.request(this.propData.dataSource[0]?.id, {
+            moduleObject: this.moduleObject
+          }, (data) => {
+            if (data) {
+              that.pageDataList = data;
+              that.currentObj = data.find(item => item.id === that.propData.selfInterface)
+            }
+          })
+        }
       }
     },
     init () {

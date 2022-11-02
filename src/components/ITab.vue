@@ -227,27 +227,16 @@ export default{
     },
     handleBackData (fn) {
       if (this.moduleObject.env == "production" && this.propData.requireFlag) {
-        this.propData.dataSource &&
-          IDM.http
-            .post(
-              getDatasInterfaceUrl,
-              {
-                id: this.propData.dataSource && this.propData.dataSource.value,
-              },
-              {
-                headers: {
-                  "Content-Type": "application/json;charset=UTF-8",
-                },
-              }
-            )
-            .then((res) => {
-              if (res.status == 200 && res.data.code == 200) {
-                  this.dataList = res.data.data;
-                  fn()
-              } else {
-                  IDM.message.error(res.data.message)
-              }
-            })
+        if (this.propData.dataSource) {
+          IDM.datasource.request(this.propData.dataSource[0]?.id, {
+            moduleObject: this.moduleObject
+          }, (data) => {
+            if (data) {
+              this.dataList = data;
+              fn();
+            }
+          })
+        }
       } else {
         fn();
       }

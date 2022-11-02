@@ -426,42 +426,42 @@
             "desc": "页面数据绑定",
             "children": [
               {
-                "type": "textarea",
+                "type": "dataSourceFiledSelect",
                 "layoutType": "inline",
                 "text": "头像字段",
                 "bindKey": "ImgInterface",
                 "default": "img"
               },
               {
-                "type": "textarea",
+                "type": "dataSourceFiledSelect",
                 "layoutType": "inline",
                 "text": "标题字段",
                 "bindKey": "titleInterface",
                 "default": "author"
               },
               {
-                "type": "textarea",
+                "type": "dataSourceFiledSelect",
                 "layoutType": "inline",
                 "text": "描述字段",
                 "bindKey": "descInterface",
                 "default": "desc"
               },
               {
-                "type": "textarea",
+                "type": "dataSourceFiledSelect",
                 "layoutType": "inline",
                 "text": "性别字段",
                 "bindKey": "sexInterface",
                 "default": "type == '1'"
               },
               {
-                "type": "textarea",
+                "type": "dataSourceFiledSelect",
                 "layoutType": "inline",
                 "text": "标签字段",
                 "bindKey": "tagField",
                 "default": "tag"
               },
               {
-                "type": "textarea",
+                "type": "dataSourceFiledSelect",
                 "layoutType": "inline",
                 "text": "激活字段",
                 "bindKey": "activeField",
