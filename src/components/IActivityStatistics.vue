@@ -270,7 +270,10 @@ export default {
 
 
       IDM.datasource.request(this.propData.dataSource[0]?.id,{
-        ...routerParams
+        moduleObject: this.moduleObject,
+        params:{
+          ...routerParams
+        }
       },(res) => {
         let tempList = {}
         this.activityList = []

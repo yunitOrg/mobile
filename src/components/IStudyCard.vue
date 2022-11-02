@@ -239,7 +239,9 @@ export default {
         return;
       }
 
-      IDM.datasource.request(this.propData.dataSource[0]?.id,{},(res) => {
+      IDM.datasource.request(this.propData.dataSource[0]?.id,{
+        moduleObject: this.moduleObject
+      },(res) => {
         let tempList = []
         this.videoData = []
         tempList = res.data;

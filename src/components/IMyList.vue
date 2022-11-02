@@ -151,7 +151,9 @@ export default {
       let url = `ctrl/dataSource/getDatas`;
 
 
-      IDM.datasource.request(this.propData.dataSource[0]?.id,{},(res) => {
+      IDM.datasource.request(this.propData.dataSource[0]?.id,{
+        moduleObject: this.moduleObject
+      },(res) => {
           const result = res
           this.infoList = result;
       })
