@@ -289,6 +289,7 @@ export default {
           tempItem.attendance = tempList[activityName][i][this.propData.activityAttendance]
           this.activityList.push(tempItem)
         }
+        this.isLoading = false;
       })
 
     },

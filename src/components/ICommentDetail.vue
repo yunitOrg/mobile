@@ -686,6 +686,7 @@ export default {
           if (this.infoList.length >= res.total) {
             this.finished = true;
           }
+          this.loading = false;
         })
       }
 

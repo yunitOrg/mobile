@@ -874,6 +874,7 @@ export default {
             }
           }
           this.total = res.total;
+          this.loading = false;
         })
 
       }

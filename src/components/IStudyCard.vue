@@ -242,6 +242,7 @@ export default {
       IDM.datasource.request(this.propData.dataSource[0]?.id,{
         moduleObject: this.moduleObject
       },(res) => {
+        console.log("studyCard",res)
         let tempList = []
         this.videoData = []
         tempList = res.data;
@@ -257,6 +258,7 @@ export default {
           tempItem.videoIntroduction = tempList[i][this.propData.videoIntroduction]
           this.videoData.push(tempItem)
         }
+        this.isLoading = false;
       })
 
     },

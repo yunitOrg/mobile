@@ -254,9 +254,9 @@ export default {
         } else {
           this.infoList = result[this.propData.listInterface];
         }
+        this.isLoading = false;
+        this.isLoadingMore = false;
       })
-      this.isLoading = false;
-      this.isLoadingMore = false;
 
     },
     /**
