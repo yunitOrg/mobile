@@ -7,7 +7,7 @@
   -->
   <div idm-ctrl="idm_module"
   :id="moduleObject.id" 
-  :idm-ctrl-id="moduleObject.id" 
+  :idm-ctrl-id="moduleObject.id"
   >
     <div class="idm_tags">
       <div class="idm-tips-title" v-if="propData.selfShow">{{propData.title}}</div>
@@ -21,7 +21,6 @@
 </template>
 
 <script>
-import { getDatasInterfaceUrl } from '@/api/config'
 export default {
   data () {
     return {
@@ -139,22 +138,19 @@ export default {
      * 获取数据源
     */
     getPageData () {
-      window.IDM.http
-      .post(
-        getDatasInterfaceUrl,
-        { id: this.propData.dataSource && this.propData.dataSource.value },
-        { headers: {'Content-Type': 'application/json;charset=UTF-8'} })
-      .then(res => {
-        if (res.status == 200 && res.data.code == 200) {
-            this.pageData = res.data.data
-            this.pageData.forEach(item => {
+      if (this.propData.dataSource) {
+        IDM.datasource.request(this.propData.dataSource[0]?.id, {
+            moduleObject: this.moduleObject
+          }, (data) => {
+            if (data) {
+              this.pageData = data;
+              this.pageData.forEach(item => {
               item.tab = item[this.propData.nameField]
             })
             this.tablist = this.pageData;
-        } else {
-            IDM.message.error(res.data.message)
-        }
-      })
+            }
+          })
+      }
     },
     handleClick (row, val) {
       this.tablist.forEach((item, index) => {
