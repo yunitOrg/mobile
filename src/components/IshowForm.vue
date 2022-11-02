@@ -210,28 +210,17 @@ export default {
       if (this.moduleObject.env == "production") {
         this.isLoading = true;
         const routerParams = this.fileterParams();
-        this.propData.dataSource &&
-          IDM.http
-            .post(
-              getDatasInterfaceUrl,
-              {
-                id: this.propData.dataSource && this.propData.dataSource.value,
-                ...routerParams
-              },
-              {
-                headers: {
-                  "Content-Type": "application/json;charset=UTF-8",
-                },
-              }
-            )
-            .then((res) => {
-              this.isLoading = false;
-              if (res.status == 200 && res.data.code == 200) {
-                  this.params = res.data.data
-              } else {
-                  IDM.message.error(res.data.message)
-              }
-            })
+        if (this.propData.dataSource) {
+          this.isLoading = false;
+          IDM.datasource.request(this.propData.dataSource[0]?.id, {
+            moduleObject: this.moduleObject,
+            param: { ...routerParams }
+          }, (data) => {
+            if (data) {
+              this.params = data;
+            }
+          })
+        }
       }
     },
     converThemeListObject () {

@@ -498,11 +498,11 @@
       "desc": "点击？查看高级设置用法指南",
       "children": [
         {
-          "type": "treeSelect",
+          "type": "dataSourceSelect",
           "layoutType": "inline",
           "text": "数据源",
-          "bindKey": "dataSource",
-          "dataSourceUrl": "/ctrl/dataSource/getDatasourceByGroup"
+          "desc": "用于选择数据源",
+          "bindKey": "dataSource"
         },
         {
           "type": "actionSelect",
@@ -518,42 +518,42 @@
           "desc": "设置从列表项中展示的对应字段",
           "children": [
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "地址字段",
               "bindKey": "addressField",
               "default": "address"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "时间字段",
               "bindKey": "timeField",
               "default": "time"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "联系人字段",
               "bindKey": "peopleField",
               "default": "people"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "活动内容字段",
               "bindKey": "activeField",
               "default": "active"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "资料字段",
               "bindKey": "infoField",
               "default": "info"
             },
             {
-              "type": "input",
+              "type": "dataSourceFiledSelect",
               "layoutType": "inline",
               "text": "活动总结字段",
               "bindKey": "activeSumField",
