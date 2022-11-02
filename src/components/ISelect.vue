@@ -102,33 +102,21 @@ export default {
     },
     initData () {
       let that = this;
-      const customInterfaceUrl = '/ctrl/dataSource/getDatas';
       if (this.moduleObject.env == "production") {
-        this.propData.dataSource &&
-          IDM.http
-            .post(
-              customInterfaceUrl,
-              {
-                id: this.propData.dataSource && this.propData.dataSource.value,
-              },
-              {
-                headers: {
-                  "Content-Type": "application/json;charset=UTF-8",
-                },
-              }
-            )
-            .then((res) => {
-              if (res.type === "success") {
-                that.pageData = res.data || {};
-                this.propData.tableMenu.forEach(item => {
+        if (this.propData.dataSource) {
+          IDM.datasource.request(this.propData.dataSource[0]?.id, {
+            moduleObject: this.moduleObject
+          }, (data) => {
+            if (data) {
+              this.pageData = data;
+              this.propData.tableMenu.forEach(item => {
                   if (item.type === 'interface') {
                     item.copyOptions = that.pageData[item.selectField]
                   }
                 })
-              } else {
-                IDM.message.error(res.message);
-              }
-            });
+            }
+          })
+        }
       }
     },
     converStyleObj () {

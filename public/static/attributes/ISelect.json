@@ -239,11 +239,11 @@
       "desc": "点击？查看高级设置用法指南",
       "children": [
         {
-          "type": "treeSelect",
+          "type": "dataSourceSelect",
           "layoutType": "inline",
           "text": "数据源",
-          "bindKey": "dataSource",
-          "dataSourceUrl": "/ctrl/dataSource/getDatasourceByGroup"
+          "desc": "用于选择数据源",
+          "bindKey": "dataSource"
         },
         {
           "type": "pageModuleSelect",
