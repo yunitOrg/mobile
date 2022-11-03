@@ -228,7 +228,6 @@ export default {
           }
         }, 1000);
 
-        return;
       }
       let dataSource = this.propData.dataSource;
       if (!dataSource) {
@@ -236,6 +235,7 @@ export default {
         return;
       }
       let url = `ctrl/dataSource/getDatas`;
+
 
       IDM.datasource.request(this.propData.dataSource[0]?.id,{
         moduleObject: this.moduleObject,
@@ -278,6 +278,7 @@ export default {
       this.propData = propData.compositeAttr || {};
       this.convertAttrToStyleObject();
       this.convertThemeListAttrToStyleObject();
+      this.initData()
     },
     /**
      * 把属性转换成样式对象
