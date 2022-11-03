@@ -499,7 +499,7 @@
                     "type": "dataSourceSelect",
                     "layoutType": "inline",
                     "text": "数据源",
-                    "bindKey": "dataSourceSelect"
+                    "bindKey": "dataSource"
                 },
                 {
                     "type": "group",
