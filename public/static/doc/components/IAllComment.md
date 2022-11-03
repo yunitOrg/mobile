@@ -12,12 +12,6 @@
 
 ```json
 {
-  "code": "200",
-  "type": "success",
-  "message": "操作成功",
-  "metadata": null,
-  "token": "",
-  "data": {
     "total": 10, // 总条数
     "list": [
       {
@@ -32,6 +26,5 @@
         "total": 100 // 回复数量
       }
     ]
-  }
 }
 ```

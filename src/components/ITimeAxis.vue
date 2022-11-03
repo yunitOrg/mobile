@@ -494,7 +494,7 @@ export default {
       IDM.datasource.request(this.propData.dataSource[0]?.id, {
         moduleObject: this.moduleObject
       }, (res) => {
-        const data = res;
+        const data = res.data;
         data.forEach((item) => {
           item.level = 1;
           this.infoList.push(item);
