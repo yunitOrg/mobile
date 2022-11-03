@@ -404,95 +404,97 @@ export default {
      * 加载动态数据
      */
     initData() {
-      if (!this.moduleObject.env || this.moduleObject.env == "develop") {
-        // mock数据
-        setTimeout(() => {
-          this.infoList = [];
-          const res = [
-            {
-              label: "2021",
-              children: [
-                {
-                  label: "11-3",
-                  title:
-                      "参加了《12》参加了《12》参加了《12》参加了《12》参加了《12》参加了《12》参加了《12》参加了《12》",
-                  desc: "2021-12-11 12:33:33",
-                  icon: "",
-                  iconText: "组织生活",
-                },
-                {
-                  label: "12-2",
-                  title: "参加了《12》",
-                  desc: "2021-12-11 12:33:33",
-                  icon: "",
-                  iconText: "组织生活",
-                },
-              ],
-            },
-            {
-              label: "2021",
-              children: [
-                {
-                  label: "11-3",
-                  title: "参加了《12》",
-                  desc: "2021-12-11 12:33:33",
-                  icon: "",
-                  iconText: "组织生活",
-                },
-                {
-                  label: "12-2",
-                  title: "参加了《12》",
-                  desc: "2021-12-11 12:33:33",
-                  icon: "",
-                  iconText: "组织生活",
-                },
-              ],
-            },
-            // {
-            //   label: "1937年7月7日",
-            //   title:
-            //     "日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争",
-            //   desc: "1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。",
-            // },
-            // {
-            //   label: "1937年7月7日",
-            //   title:
-            //     "日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争",
-            //   desc: "1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。",
-            // },
-            // {
-            //   label: "1937年7月7日",
-            //   title:
-            //     "日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争",
-            //   desc: "1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。",
-            // },
-          ];
-          res.forEach((item) => {
-            item.level = 1;
-            this.infoList.push(item);
-            if (item.children) {
-              item.children.forEach((c) => {
-                c.level = 2;
-                this.infoList.push(c);
-              });
-            }
-          });
-          this.isLoading = false;
-        }, 1000)
-
-        return;
-      }
       let dataSource = this.propData.dataSource;
+      if (!dataSource) {
+        if (!this.moduleObject.env || this.moduleObject.env == "develop") {
+          // mock数据
+          setTimeout(() => {
+            this.infoList = [];
+            const res = [
+              {
+                label: "2021",
+                children: [
+                  {
+                    label: "11-3",
+                    title:
+                        "参加了《12》参加了《12》参加了《12》参加了《12》参加了《12》参加了《12》参加了《12》参加了《12》",
+                    desc: "2021-12-11 12:33:33",
+                    icon: "",
+                    iconText: "组织生活",
+                  },
+                  {
+                    label: "12-2",
+                    title: "参加了《12》",
+                    desc: "2021-12-11 12:33:33",
+                    icon: "",
+                    iconText: "组织生活",
+                  },
+                ],
+              },
+              {
+                label: "2021",
+                children: [
+                  {
+                    label: "11-3",
+                    title: "参加了《12》",
+                    desc: "2021-12-11 12:33:33",
+                    icon: "",
+                    iconText: "组织生活",
+                  },
+                  {
+                    label: "12-2",
+                    title: "参加了《12》",
+                    desc: "2021-12-11 12:33:33",
+                    icon: "",
+                    iconText: "组织生活",
+                  },
+                ],
+              },
+              // {
+              //   label: "1937年7月7日",
+              //   title:
+              //     "日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争",
+              //   desc: "1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。",
+              // },
+              // {
+              //   label: "1937年7月7日",
+              //   title:
+              //     "日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争",
+              //   desc: "1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。",
+              // },
+              // {
+              //   label: "1937年7月7日",
+              //   title:
+              //     "日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争",
+              //   desc: "1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。1937年7月7日 日本帝国主义者以制造卢沟桥事变为七点，发动全面侵华战争。",
+              // },
+            ];
+            res.forEach((item) => {
+              item.level = 1;
+              this.infoList.push(item);
+              if (item.children) {
+                item.children.forEach((c) => {
+                  c.level = 2;
+                  this.infoList.push(c);
+                });
+              }
+            });
+            this.isLoading = false;
+          }, 1000)
+
+          return;
+        }
+      }
       if (!dataSource) {
         this.isLoading = false;
         return;
       }
       this.infoList = [];
 
-      IDM.datasource.request(this.propData.dataSource[0]?.id,{
+      IDM.datasource.request(this.propData.dataSource[0]?.id, {
         moduleObject: this.moduleObject
-      },(res) => {
-        const data = res;
+      }, (res) => {
+        const data = res.data;
         data.forEach((item) => {
           item.level = 1;
           this.infoList.push(item);

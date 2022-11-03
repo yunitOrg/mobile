@@ -4,11 +4,6 @@
 
 ```json
 {
-  "code": "200",
-  "type": "success",
-  "message": "操作成功",
-  "metadata": null,
-  "token": "",
   "data": [
     {
         "label": "2021", // 时间
@@ -37,11 +32,6 @@
 
 ```json
 {
-  "code": "200",
-  "type": "success",
-  "message": "操作成功",
-  "metadata": null,
-  "token": "",
   "data": [
       {
         label: "1937年7月7日", // 日期

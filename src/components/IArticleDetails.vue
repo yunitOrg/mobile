@@ -227,7 +227,10 @@ export default {
       }
       this.isLoading = true;
       IDM.datasource.request(dataSource[0]?.id, {
-        moduleObject: this.moduleObject
+        moduleObject: this.moduleObject,
+        param: {
+          ...this.customParamsFormat()
+        }
       }, (data) => {
         this.isLoading = false;
         if (data) {
