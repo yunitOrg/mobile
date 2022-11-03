@@ -489,7 +489,9 @@ export default {
       }
       this.infoList = [];
 
-      IDM.datasource.request(this.propData.dataSource[0]?.id,{},(res) => {
+      IDM.datasource.request(this.propData.dataSource[0]?.id,{
+        moduleObject: this.moduleObject
+      },(res) => {
         const data = res;
         data.forEach((item) => {
           item.level = 1;
@@ -501,6 +503,7 @@ export default {
             });
           }
         });
+        this.isLoading = false;
       })
 
     },

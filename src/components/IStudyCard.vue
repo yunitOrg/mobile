@@ -239,10 +239,12 @@ export default {
         return;
       }
 
-      IDM.datasource.request(this.propData.dataSource[0]?.id,{},(res) => {
+      IDM.datasource.request(this.propData.dataSource[0]?.id,{
+        moduleObject: this.moduleObject
+      },(res) => {
         let tempList = []
         this.videoData = []
-        tempList = res.data;
+        tempList = res[this.propData.dataFiled];
         for (let i = 0; i < tempList.length; i++) {
           let tempItem = {}
           tempItem.index = i
@@ -255,6 +257,7 @@ export default {
           tempItem.videoIntroduction = tempList[i][this.propData.videoIntroduction]
           this.videoData.push(tempItem)
         }
+        this.isLoading = false;
       })
 
     },

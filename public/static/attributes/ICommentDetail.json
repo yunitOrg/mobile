@@ -423,7 +423,8 @@
           "layoutType": "inline",
           "text": "评论数据",
           "desc": "用于选择当前评论详情的数据源",
-          "bindKey": "detailDataSource"
+          "bindKey": "detailDataSource",
+          "dataSourceUrl":"/ctrl/dataSource/getDatasourceByGroup"
         },
         {
           "type": "actionSelect",

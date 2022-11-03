@@ -179,14 +179,17 @@ export default {
       let url = `ctrl/dataSource/getDatas`;
       const routerParams = this.detailFileterParams();
 
-      IDM.datasource.request(this.propData.detailDataSource[0]?.id,{
-            commentId: this.commonParam() && this.commonParam().commentId,
-            ...routerParams
-          },(res) => {
-            console.log(res, "接口数据");
-            this.detailInfo = res
-            this.latestNum = this.detailInfo[this.propData.totalInterface]
-          })
+      IDM.datasource.request(this.propData.detailDataSource[0]?.id, {
+        moduleObject: this.moduleObject,
+        params: {
+          commentId: this.commonParam() && this.commonParam().commentId,
+          ...routerParams
+        }
+      }, (res) => {
+        console.log(res, "接口数据");
+        this.detailInfo = res
+        this.latestNum = this.detailInfo[this.propData.totalInterface]
+      })
     },
     /**
      * 删除
@@ -666,11 +669,14 @@ export default {
           ...routerParams
         })
 
-        IDM.datasource.request(this.propData.dataSource[0]?.id,{
-          pageSize: this.pageSize,
-          start: this.infoList.length,
-          ...routerParams
-        },(res) => {
+        IDM.datasource.request(this.propData.dataSource[0]?.id, {
+          moduleObject: this.moduleObject,
+          params:{
+            pageSize: this.pageSize,
+            start: this.infoList.length,
+            ...routerParams
+          }
+        }, (res) => {
           if (res.length === 0) {
             this.finished = true;
           }
@@ -680,6 +686,7 @@ export default {
           if (this.infoList.length >= res.total) {
             this.finished = true;
           }
+          this.loading = false;
         })
       }
 

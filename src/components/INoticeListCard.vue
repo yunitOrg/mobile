@@ -238,8 +238,11 @@ export default {
       let url = `ctrl/dataSource/getDatas`;
 
       IDM.datasource.request(this.propData.dataSource[0]?.id,{
-        start: this.infoList.length,
-        limit: this.propData.defaultNumber,
+        moduleObject: this.moduleObject,
+        params:{
+          start: this.infoList.length,
+          limit: this.propData.defaultNumber,
+        }
       },(res) => {
         const result = res;
         this.total = result.total;
@@ -251,9 +254,9 @@ export default {
         } else {
           this.infoList = result[this.propData.listInterface];
         }
+        this.isLoading = false;
+        this.isLoadingMore = false;
       })
-      this.isLoading = false;
-      this.isLoadingMore = false;
 
     },
     /**

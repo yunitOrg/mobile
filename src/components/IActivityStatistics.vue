@@ -270,7 +270,10 @@ export default {
 
 
       IDM.datasource.request(this.propData.dataSource[0]?.id,{
-        ...routerParams
+        moduleObject: this.moduleObject,
+        params:{
+          ...routerParams
+        }
       },(res) => {
         let tempList = {}
         this.activityList = []
@@ -286,6 +289,7 @@ export default {
           tempItem.attendance = tempList[activityName][i][this.propData.activityAttendance]
           this.activityList.push(tempItem)
         }
+        this.isLoading = false;
       })
 
     },

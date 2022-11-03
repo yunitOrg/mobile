@@ -852,10 +852,13 @@ export default {
 
 
         IDM.datasource.request(this.propData.dataSource[0]?.id,{
-          pageSize: this.pageSize,
-          start: this.infoList.length,
-          type: this.curMode === 'new' ? 0 : 1,
-          ...routerParams
+          moduleObject: this.moduleObject,
+          params:{
+            pageSize: this.pageSize,
+            start: this.infoList.length,
+            type: this.curMode === 'new' ? 0 : 1,
+            ...routerParams
+          }
         },(res) => {
           if (res.length === 0) {
             this.finished = true;
@@ -871,6 +874,7 @@ export default {
             }
           }
           this.total = res.total;
+          this.loading = false;
         })
 
       }
