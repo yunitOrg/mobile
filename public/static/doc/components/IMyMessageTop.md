@@ -81,7 +81,18 @@ basics@1.0.0
 #### 显示字段【dataFiled】
 
 #### 自定义函数【customFunction】
+##### 数据源接受参数
 
+```js
+// 如果有自定义参数函数
+IDM.datasource.request(this.propData?.dataSource?.[0]?.id, {
+    moduleObject: this.moduleObject,
+    param: {
+        limit: this.propData.limit,
+        start: this.currentPage
+    }
+})
+```
 ##### 接口返回数据格式
 
 ```js

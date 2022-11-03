@@ -193,6 +193,18 @@ mobile@1.0.0
 -   标识：`dataSource`
 -   默认值：`/ctrl/dataSource/getDatasourceByGroup`
 
+##### 数据源接受参数
+
+```js
+// 如果有自定义参数函数
+IDM.datasource.request(this.propData?.dataSource?.[0]?.id, {
+    moduleObject: this.moduleObject,
+    param: {
+        limit: this.propData.limit,
+        start: this.currentPage
+    }
+})
+```
 ##### 接口返回数据格式
 
 ```js

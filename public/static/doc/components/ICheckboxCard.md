@@ -25,6 +25,15 @@ mobile@1.0.0
 
 ### 基本属性
 
+##### 数据源接受参数
+
+```js
+IDM.datasource.request(this.propData?.dataSource?.[0]?.id, {
+    moduleObject: this.moduleObject,
+    param: IDM.router.getParam(this.moduleObject.routerId) // 上个页面传过来的参数
+})
+```
+
 ### 数据源 接口返回格式需要按照以下要求：
 
 ```js

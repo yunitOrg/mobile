@@ -82,6 +82,29 @@ basics@1.0.0
 
 #### 自定义函数【customFunction】
 
+##### 数据源接受参数
+
+```js
+// 如果有自定义参数函数
+let params = {}
+if (this.propData.paramsFunc && this.propData.paramsFunc.length > 0) {
+    const funcName = this.propData.paramsFunc[0].name
+    params =
+        window[funcName].call(this, {
+            routerParams: IDM.router.getParam(this.moduleObject.routerId)
+        }) || {}
+}
+IDM.datasource.request(this.propData?.dataSource?.[0]?.id, {
+    moduleObject: this.moduleObject,
+    param: {
+        ...params,
+        ...this.chooseTabParams, // 接口tab传来的参数
+        limit: this.propData.limit,
+        start: this.currentPage
+    }
+})
+```
+
 ##### 接口返回数据格式
 
 ```js

@@ -203,7 +203,6 @@ export default {
                 param: {
                     ...params,
                     ...this.chooseTabParams,
-                    id: this.propData.dataSource && this.propData.dataSource.value,
                     limit: this.propData.limit,
                     start: this.currentPage
                 }
