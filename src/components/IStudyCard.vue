@@ -242,10 +242,9 @@ export default {
       IDM.datasource.request(this.propData.dataSource[0]?.id,{
         moduleObject: this.moduleObject
       },(res) => {
-        console.log("studyCard",res)
         let tempList = []
         this.videoData = []
-        tempList = res.data;
+        tempList = res[this.propData.dataFiled];
         for (let i = 0; i < tempList.length; i++) {
           let tempItem = {}
           tempItem.index = i
