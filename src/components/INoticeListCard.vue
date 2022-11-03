@@ -6,27 +6,27 @@
     idm-ctrl-id：组件的id，这个必须不能为空
   -->
   <div
-    class="i-notice-list-card-outer"
-    idm-ctrl="idm_module"
-    :id="moduleObject.id"
-    :idm-ctrl-id="moduleObject.id"
-    v-show="propData.defaultStatus != 'hidden'"
+      class="i-notice-list-card-outer"
+      idm-ctrl="idm_module"
+      :id="moduleObject.id"
+      :idm-ctrl-id="moduleObject.id"
+      v-show="propData.defaultStatus != 'hidden'"
   >
     <div v-show="propData.isShowTitleBar" class="i-notice-list-card-header">
       <div
-        class="header-icon"
-        v-if="propData.showIcon && propData.titleIconPosition == 'left'"
+          class="header-icon"
+          v-if="propData.showIcon && propData.titleIconPosition == 'left'"
       >
-        <svg-icon icon-class="shu" />
+        <svg-icon icon-class="shu"/>
       </div>
       <div class="header-text">
         {{ propData.title }}
       </div>
       <div
-        class="header-icon"
-        v-if="propData.showIcon && propData.titleIconPosition == 'right'"
+          class="header-icon"
+          v-if="propData.showIcon && propData.titleIconPosition == 'right'"
       >
-        <svg-icon icon-class="shu" />
+        <svg-icon icon-class="shu"/>
       </div>
     </div>
     <van-loading v-if="isLoading" size="24px" vertical>加载中...</van-loading>
@@ -35,20 +35,20 @@
       <template v-if="infoList.length > 0">
         <ul>
           <li
-            v-for="(notice, n) in infoList"
-            :key="n"
-            @click="noticeClick(notice)"
+              v-for="(notice, n) in infoList"
+              :key="n"
+              @click="noticeClick(notice)"
           >
             <div class="i-notice-list-item">
               <div class="item-outer-circle">
                 <div class="item-inner-circle">
                   <div class="item-main-circle">
                     <span class="circle-day">{{
-                      notice[propData.dateInterface] | dayFilter
-                    }}</span>
+                        notice[propData.dateInterface] | dayFilter
+                      }}</span>
                     <span class="circle-month">{{
-                      notice[propData.dateInterface] | monthFilter
-                    }}</span>
+                        notice[propData.dateInterface] | monthFilter
+                      }}</span>
                   </div>
                 </div>
               </div>
@@ -57,9 +57,9 @@
           </li>
         </ul>
         <p
-          class="loading-more"
-          v-if="infoList.length < total"
-          @click="loadData"
+            class="loading-more"
+            v-if="infoList.length < total"
+            @click="loadData"
         >
           {{ isLoadingMore ? "加载中..." : "加载更多" }}
         </p>
@@ -67,7 +67,7 @@
       <van-empty v-else :description="propData.emptyDescription">
         <template #image>
           <van-image
-            :src="
+              :src="
               IDM.url.getModuleAssetsWebPath(
                 require('../assets/empty-default.png'),
                 moduleObject
@@ -78,8 +78,8 @@
       </van-empty>
     </div>
     <div
-      class="i-notice-list-card-mask"
-      v-if="moduleObject.env !== 'production' && !propData.dataSource"
+        class="i-notice-list-card-mask"
+        v-if="moduleObject.env !== 'production' && !propData.dataSource"
     >
       <span>！未绑定数据源</span>
     </div>
@@ -101,10 +101,11 @@ const months = {
   11: "十一",
   12: "十二",
 };
-import { Empty, Loading, Image as VanImage } from "vant";
+import {Empty, Loading, Image as VanImage} from "vant";
 import "vant/lib/empty/style";
 import "vant/lib/loading/style";
 import "vant/lib/image/style";
+
 export default {
   name: "INoticeListCard",
   components: {
@@ -149,18 +150,20 @@ export default {
     this.isLoading = true;
     this.initData();
   },
-  mounted() {},
-  destroyed() {},
+  mounted() {
+  },
+  destroyed() {
+  },
   methods: {
     noticeClick(notice) {
       if (this.propData.replyJump && this.propData.replyJump.length > 0) {
         IDM.router.push(
-          this.moduleObject.pageid,
-          this.propData.replyJump[0].id,
-          this.propData.isPageKeep,
-          notice,
-          "",
-          ""
+            this.moduleObject.pageid,
+            this.propData.replyJump[0].id,
+            this.propData.isPageKeep,
+            notice,
+            "",
+            ""
         );
       } else {
         IDM.message.warning("请选择要跳转的子页面");
@@ -189,47 +192,51 @@ export default {
      * 加载动态数据
      */
     initData(loadMore) {
-      if (!this.moduleObject.env || this.moduleObject.env == "develop") {
-        // mock数据
-        setTimeout(() => {
-          this.isLoading = false;
-          this.isLoadingMore = false;
-          const res = {
-            total: 10,
-            list: [
-              {
-                id: "1",
-                date: "2022-08-02 18:00:00",
-                bt: "关于十月份",
-              },
-              {
-                id: "2",
-                date: "2022-07-11",
-                bt: "关于十月份工作的通知细则",
-              },
-              {
-                id: "3",
-                date: "2022-10-24",
-                bt: "关于十月份工作的通知细则",
-              },
-              {
-                id: "4",
-                date: "2022-11-02",
-                bt: "关于十月份工作的通知细则",
-              },
-            ],
-          };
-
-          this.total = res.total;
-          if (loadMore) {
-            this.infoList = [...this.infoList, ...res.list];
-          } else {
-            this.infoList = res[this.propData.listInterface];
-          }
-        }, 1000);
-
-      }
       let dataSource = this.propData.dataSource;
+      if (!dataSource) {
+        if (!this.moduleObject.env || this.moduleObject.env == "develop") {
+          // mock数据
+          setTimeout(() => {
+            this.isLoading = false;
+            this.isLoadingMore = false;
+            const res = {
+              total: 10,
+              list: [
+                {
+                  id: "1",
+                  date: "2022-08-02 18:00:00",
+                  bt: "关于十月份",
+                },
+                {
+                  id: "2",
+                  date: "2022-07-11",
+                  bt: "关于十月份工作的通知细则",
+                },
+                {
+                  id: "3",
+                  date: "2022-10-24",
+                  bt: "关于十月份工作的通知细则",
+                },
+                {
+                  id: "4",
+                  date: "2022-11-02",
+                  bt: "关于十月份工作的通知细则",
+                },
+              ],
+            };
+
+            this.total = res.total;
+            if (loadMore) {
+              this.infoList = [...this.infoList, ...res.list];
+            } else {
+              this.infoList = res[this.propData.listInterface];
+            }
+          }, 1000);
+
+          return;
+        }
+      }
+
       if (!dataSource) {
         this.isLoading = false;
         return;
@@ -237,13 +244,13 @@ export default {
       let url = `ctrl/dataSource/getDatas`;
 
 
-      IDM.datasource.request(this.propData.dataSource[0]?.id,{
+      IDM.datasource.request(this.propData.dataSource[0]?.id, {
         moduleObject: this.moduleObject,
-        params:{
+        params: {
           start: this.infoList.length,
           limit: this.propData.defaultNumber,
         }
-      },(res) => {
+      }, (res) => {
         const result = res;
         this.total = result.total;
         if (loadMore) {
@@ -266,9 +273,9 @@ export default {
       const base = this.propData.baseValue || 414;
       const ratio = this.propData.adaptationRatio || 1.2;
       const width =
-        this.moduleObject.env === "production"
-          ? window.innerWidth
-          : pageWidth || 414;
+          this.moduleObject.env === "production"
+              ? window.innerWidth
+              : pageWidth || 414;
       return (width / base - 1) * (ratio - 1) + 1;
     },
     /**
@@ -294,25 +301,25 @@ export default {
 
       if (this.propData.bgSize && this.propData.bgSize == "custom") {
         styleObject["background-size"] =
-          (this.propData.bgSizeWidth
-            ? this.propData.bgSizeWidth.inputVal +
-              this.propData.bgSizeWidth.selectVal
-            : "auto") +
-          " " +
-          (this.propData.bgSizeHeight
-            ? this.propData.bgSizeHeight.inputVal +
-              this.propData.bgSizeHeight.selectVal
-            : "auto");
+            (this.propData.bgSizeWidth
+                ? this.propData.bgSizeWidth.inputVal +
+                this.propData.bgSizeWidth.selectVal
+                : "auto") +
+            " " +
+            (this.propData.bgSizeHeight
+                ? this.propData.bgSizeHeight.inputVal +
+                this.propData.bgSizeHeight.selectVal
+                : "auto");
       } else if (this.propData.bgSize) {
         styleObject["background-size"] = this.propData.bgSize;
       }
       if (this.propData.positionX && this.propData.positionX.inputVal) {
         styleObject["background-position-x"] =
-          this.propData.positionX.inputVal + this.propData.positionX.selectVal;
+            this.propData.positionX.inputVal + this.propData.positionX.selectVal;
       }
       if (this.propData.positionY && this.propData.positionY.inputVal) {
         styleObject["background-position-y"] =
-          this.propData.positionY.inputVal + this.propData.positionY.selectVal;
+            this.propData.positionY.inputVal + this.propData.positionY.selectVal;
       }
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
@@ -328,16 +335,16 @@ export default {
             case "bgColor":
               if (element && element.hex8) {
                 styleObject["background-color"] = IDM.hex8ToRgbaString(
-                  element.hex8
+                    element.hex8
                 );
                 outerCircleStyleObject["background-color"] =
-                  IDM.hex8ToRgbaString(element.hex8);
+                    IDM.hex8ToRgbaString(element.hex8);
               }
               break;
             case "innerBgColor":
               if (element && element.hex8) {
                 innerStyleObject["background-color"] = IDM.hex8ToRgbaString(
-                  element.hex8
+                    element.hex8
                 );
               }
               break;
@@ -376,8 +383,8 @@ export default {
               }
               if (element.marginBottomVal) {
                 innerStyleObject[
-                  "margin-bottom"
-                ] = `${element.marginBottomVal}`;
+                    "margin-bottom"
+                    ] = `${element.marginBottomVal}`;
               }
               if (element.marginLeftVal) {
                 innerStyleObject["margin-left"] = `${element.marginLeftVal}`;
@@ -387,13 +394,13 @@ export default {
               }
               if (element.paddingRightVal) {
                 innerStyleObject[
-                  "padding-right"
-                ] = `${element.paddingRightVal}`;
+                    "padding-right"
+                    ] = `${element.paddingRightVal}`;
               }
               if (element.paddingBottomVal) {
                 innerStyleObject[
-                  "padding-bottom"
-                ] = `${element.paddingBottomVal}`;
+                    "padding-bottom"
+                    ] = `${element.paddingBottomVal}`;
               }
               if (element.paddingLeftVal) {
                 innerStyleObject["padding-left"] = `${element.paddingLeftVal}`;
@@ -401,8 +408,8 @@ export default {
               break;
             case "bgImgUrl":
               styleObject[
-                "background-image"
-              ] = `url(${window.IDM.url.getWebPath(element)})`;
+                  "background-image"
+                  ] = `url(${window.IDM.url.getWebPath(element)})`;
               break;
             case "positionX":
               //背景横向偏移
@@ -423,115 +430,115 @@ export default {
             case "border":
               if (element.border.top.width > 0) {
                 styleObject["border-top-width"] =
-                  element.border.top.width + element.border.top.widthUnit;
+                    element.border.top.width + element.border.top.widthUnit;
                 styleObject["border-top-style"] = element.border.top.style;
                 if (element.border.top.colors.hex8) {
                   styleObject["border-top-color"] = IDM.hex8ToRgbaString(
-                    element.border.top.colors.hex8
+                      element.border.top.colors.hex8
                   );
                 }
               }
               if (element.border.right.width > 0) {
                 styleObject["border-right-width"] =
-                  element.border.right.width + element.border.right.widthUnit;
+                    element.border.right.width + element.border.right.widthUnit;
                 styleObject["border-right-style"] = element.border.right.style;
                 if (element.border.right.colors.hex8) {
                   styleObject["border-right-color"] = IDM.hex8ToRgbaString(
-                    element.border.right.colors.hex8
+                      element.border.right.colors.hex8
                   );
                 }
               }
               if (element.border.bottom.width > 0) {
                 styleObject["border-bottom-width"] =
-                  element.border.bottom.width + element.border.bottom.widthUnit;
+                    element.border.bottom.width + element.border.bottom.widthUnit;
                 styleObject["border-bottom-style"] =
-                  element.border.bottom.style;
+                    element.border.bottom.style;
                 if (element.border.bottom.colors.hex8) {
                   styleObject["border-bottom-color"] = IDM.hex8ToRgbaString(
-                    element.border.bottom.colors.hex8
+                      element.border.bottom.colors.hex8
                   );
                 }
               }
               if (element.border.left.width > 0) {
                 styleObject["border-left-width"] =
-                  element.border.left.width + element.border.left.widthUnit;
+                    element.border.left.width + element.border.left.widthUnit;
                 styleObject["border-left-style"] = element.border.left.style;
                 if (element.border.left.colors.hex8) {
                   styleObject["border-left-color"] = IDM.hex8ToRgbaString(
-                    element.border.left.colors.hex8
+                      element.border.left.colors.hex8
                   );
                 }
               }
 
               styleObject["border-top-left-radius"] =
-                element.radius.leftTop.radius +
-                element.radius.leftTop.radiusUnit;
+                  element.radius.leftTop.radius +
+                  element.radius.leftTop.radiusUnit;
               styleObject["border-top-right-radius"] =
-                element.radius.rightTop.radius +
-                element.radius.rightTop.radiusUnit;
+                  element.radius.rightTop.radius +
+                  element.radius.rightTop.radiusUnit;
               styleObject["border-bottom-left-radius"] =
-                element.radius.leftBottom.radius +
-                element.radius.leftBottom.radiusUnit;
+                  element.radius.leftBottom.radius +
+                  element.radius.leftBottom.radiusUnit;
               styleObject["border-bottom-right-radius"] =
-                element.radius.rightBottom.radius +
-                element.radius.rightBottom.radiusUnit;
+                  element.radius.rightBottom.radius +
+                  element.radius.rightBottom.radiusUnit;
               break;
             case "innerBorder":
               if (element.border.top.width > 0) {
                 innerStyleObject["border-top-width"] =
-                  element.border.top.width + element.border.top.widthUnit;
+                    element.border.top.width + element.border.top.widthUnit;
                 innerStyleObject["border-top-style"] = element.border.top.style;
                 if (element.border.top.colors.hex8) {
                   innerStyleObject["border-top-color"] = IDM.hex8ToRgbaString(
-                    element.border.top.colors.hex8
+                      element.border.top.colors.hex8
                   );
                 }
               }
               if (element.border.right.width > 0) {
                 innerStyleObject["border-right-width"] =
-                  element.border.right.width + element.border.right.widthUnit;
+                    element.border.right.width + element.border.right.widthUnit;
                 innerStyleObject["border-right-style"] =
-                  element.border.right.style;
+                    element.border.right.style;
                 if (element.border.right.colors.hex8) {
                   innerStyleObject["border-right-color"] = IDM.hex8ToRgbaString(
-                    element.border.right.colors.hex8
+                      element.border.right.colors.hex8
                   );
                 }
               }
               if (element.border.bottom.width > 0) {
                 innerStyleObject["border-bottom-width"] =
-                  element.border.bottom.width + element.border.bottom.widthUnit;
+                    element.border.bottom.width + element.border.bottom.widthUnit;
                 innerStyleObject["border-bottom-style"] =
-                  element.border.bottom.style;
+                    element.border.bottom.style;
                 if (element.border.bottom.colors.hex8) {
                   innerStyleObject["border-bottom-color"] =
-                    IDM.hex8ToRgbaString(element.border.bottom.colors.hex8);
+                      IDM.hex8ToRgbaString(element.border.bottom.colors.hex8);
                 }
               }
               if (element.border.left.width > 0) {
                 innerStyleObject["border-left-width"] =
-                  element.border.left.width + element.border.left.widthUnit;
+                    element.border.left.width + element.border.left.widthUnit;
                 innerStyleObject["border-left-style"] =
-                  element.border.left.style;
+                    element.border.left.style;
                 if (element.border.left.colors.hex8) {
                   innerStyleObject["border-left-color"] = IDM.hex8ToRgbaString(
-                    element.border.left.colors.hex8
+                      element.border.left.colors.hex8
                   );
                 }
               }
 
               innerStyleObject["border-top-left-radius"] =
-                element.radius.leftTop.radius +
-                element.radius.leftTop.radiusUnit;
+                  element.radius.leftTop.radius +
+                  element.radius.leftTop.radiusUnit;
               innerStyleObject["border-top-right-radius"] =
-                element.radius.rightTop.radius +
-                element.radius.rightTop.radiusUnit;
+                  element.radius.rightTop.radius +
+                  element.radius.rightTop.radiusUnit;
               innerStyleObject["border-bottom-left-radius"] =
-                element.radius.leftBottom.radius +
-                element.radius.leftBottom.radiusUnit;
+                  element.radius.leftBottom.radius +
+                  element.radius.leftBottom.radiusUnit;
               innerStyleObject["border-bottom-right-radius"] =
-                element.radius.rightBottom.radius +
-                element.radius.rightBottom.radiusUnit;
+                  element.radius.rightBottom.radius +
+                  element.radius.rightBottom.radiusUnit;
               break;
             case "boxShadow":
               styleObject["box-shadow"] = element;
@@ -543,19 +550,19 @@ export default {
               innerStyleObject["font-family"] = element.fontFamily;
               if (element.fontColors.hex8) {
                 innerStyleObject["color"] = IDM.hex8ToRgbaString(
-                  element.fontColors.hex8
+                    element.fontColors.hex8
                 );
               }
               innerStyleObject["font-weight"] =
-                element.fontWeight && element.fontWeight.split(" ")[0];
+                  element.fontWeight && element.fontWeight.split(" ")[0];
               innerStyleObject["font-style"] = element.fontStyle;
               innerStyleObject["font-size"] =
-                element.fontSize + element.fontSizeUnit;
+                  element.fontSize + element.fontSizeUnit;
               innerStyleObject["line-height"] =
-                element.fontLineHeight +
-                (element.fontLineHeightUnit == "-"
-                  ? ""
-                  : element.fontLineHeightUnit);
+                  element.fontLineHeight +
+                  (element.fontLineHeightUnit == "-"
+                      ? ""
+                      : element.fontLineHeightUnit);
               innerStyleObject["text-align"] = element.fontTextAlign;
               innerStyleObject["text-decoration"] = element.fontDecoration;
               break;
@@ -563,19 +570,19 @@ export default {
               titleFontStyleObject["font-family"] = element.fontFamily;
               if (element.fontColors.hex8) {
                 titleFontStyleObject["color"] = IDM.hex8ToRgbaString(
-                  element.fontColors.hex8
+                    element.fontColors.hex8
                 );
               }
               titleFontStyleObject["font-weight"] =
-                element.fontWeight && element.fontWeight.split(" ")[0];
+                  element.fontWeight && element.fontWeight.split(" ")[0];
               titleFontStyleObject["font-style"] = element.fontStyle;
               titleFontStyleObject["font-size"] =
-                element.fontSize + element.fontSizeUnit;
+                  element.fontSize + element.fontSizeUnit;
               titleFontStyleObject["line-height"] =
-                element.fontLineHeight +
-                (element.fontLineHeightUnit == "-"
-                  ? ""
-                  : element.fontLineHeightUnit);
+                  element.fontLineHeight +
+                  (element.fontLineHeightUnit == "-"
+                      ? ""
+                      : element.fontLineHeightUnit);
               titleFontStyleObject["text-align"] = element.fontTextAlign;
               titleFontStyleObject["text-decoration"] = element.fontDecoration;
               break;
@@ -584,18 +591,18 @@ export default {
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id, styleObject);
       window.IDM.setStyleToPageHead(
-        this.moduleObject.id + ` .i-notice-list-card-header .header-text`,
-        titleFontStyleObject
+          this.moduleObject.id + ` .i-notice-list-card-header .header-text`,
+          titleFontStyleObject
       );
       window.IDM.setStyleToPageHead(
-        this.moduleObject.id +
+          this.moduleObject.id +
           ` .i-notice-list-card-content .i-notice-list-item .item-outer-circle`,
-        outerCircleStyleObject
+          outerCircleStyleObject
       );
       window.IDM.setStyleToPageHead(
-        this.moduleObject.id +
+          this.moduleObject.id +
           ` .i-notice-list-card-content .i-notice-list-item`,
-        innerStyleObject
+          innerStyleObject
       );
     },
     /**
@@ -607,54 +614,54 @@ export default {
         return;
       }
       const themeNamePrefix =
-        IDM.setting &&
-        IDM.setting.applications &&
-        IDM.setting.applications.themeNamePrefix
-          ? IDM.setting.applications.themeNamePrefix
-          : "idm-theme-";
+          IDM.setting &&
+          IDM.setting.applications &&
+          IDM.setting.applications.themeNamePrefix
+              ? IDM.setting.applications.themeNamePrefix
+              : "idm-theme-";
       for (var i = 0; i < themeList.length; i++) {
         var item = themeList[i];
 
         IDM.setStyleToPageHead(
-          "." +
+            "." +
             themeNamePrefix +
             item.key +
             " #" +
             (this.moduleObject.packageid || "module_demo") +
             " .i-notice-list-card-header .header-icon",
-          {
-            color: item.mainColor
-              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
-              : "",
-          }
+            {
+              color: item.mainColor
+                  ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+                  : "",
+            }
         );
 
         IDM.setStyleToPageHead(
-          "." +
+            "." +
             themeNamePrefix +
             item.key +
             " #" +
             (this.moduleObject.packageid || "module_demo") +
             " .i-notice-list-card-content .i-notice-list-item .item-inner-circle",
-          {
-            "border-color": item.mainColor
-              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
-              : "",
-          }
+            {
+              "border-color": item.mainColor
+                  ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+                  : "",
+            }
         );
 
         IDM.setStyleToPageHead(
-          "." +
+            "." +
             themeNamePrefix +
             item.key +
             " #" +
             (this.moduleObject.packageid || "module_demo") +
             " .i-notice-list-card-content .i-notice-list-item .item-main-circle",
-          {
-            "background-color": item.mainColor
-              ? IDM.hex8ToRgbaString(item.mainColor.hex8)
-              : "",
-          }
+            {
+              "background-color": item.mainColor
+                  ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+                  : "",
+            }
         );
       }
     },
@@ -666,9 +673,9 @@ export default {
       let urlObject = IDM.url.queryObject();
       var params = {
         pageId:
-          window.IDM.broadcast && window.IDM.broadcast.pageModule
-            ? window.IDM.broadcast.pageModule.id
-            : "",
+            window.IDM.broadcast && window.IDM.broadcast.pageModule
+                ? window.IDM.broadcast.pageModule.id
+                : "",
         urlData: JSON.stringify(urlObject),
       };
       return params;
@@ -682,32 +689,33 @@ export default {
       if (dataFiled) {
         var filedExp = dataFiled;
         filedExp = dataName + (filedExp.startsWiths("[") ? "" : ".") + filedExp;
-        var dataObject = { IDM: window.IDM };
+        var dataObject = {IDM: window.IDM};
         dataObject[dataName] = resultData;
         _defaultVal = window.IDM.express.replace.call(
-          this,
-          "@[" + filedExp + "]",
-          dataObject
+            this,
+            "@[" + filedExp + "]",
+            dataObject
         );
       }
       //对结果进行再次函数自定义
       if (
-        this.propData.customFunction &&
-        this.propData.customFunction.length > 0
+          this.propData.customFunction &&
+          this.propData.customFunction.length > 0
       ) {
         var params = this.commonParam();
         var resValue = "";
         try {
           resValue =
-            window[this.propData.customFunction[0].name] &&
-            window[this.propData.customFunction[0].name].call(this, {
-              ...params,
-              ...this.propData.customFunction[0].param,
-              moduleObject: this.moduleObject,
-              expressData: _defaultVal,
-              interfaceData: resultData,
-            });
-        } catch (error) {}
+              window[this.propData.customFunction[0].name] &&
+              window[this.propData.customFunction[0].name].call(this, {
+                ...params,
+                ...this.propData.customFunction[0].param,
+                moduleObject: this.moduleObject,
+                expressData: _defaultVal,
+                interfaceData: resultData,
+              });
+        } catch (error) {
+        }
         _defaultVal = resValue;
       }
 
@@ -735,12 +743,12 @@ export default {
         case "websocket":
           if (this.propData.messageRefreshKey && messageObject.message) {
             const messageData =
-              (typeof messageObject.message === "string" &&
-                JSON.parse(messageObject.message)) ||
-              messageObject.message;
+                (typeof messageObject.message === "string" &&
+                    JSON.parse(messageObject.message)) ||
+                messageObject.message;
             const arr = Array.isArray(this.propData.messageRefreshKey)
-              ? this.propData.messageRefreshKey
-              : [this.propData.messageRefreshKey];
+                ? this.propData.messageRefreshKey
+                : [this.propData.messageRefreshKey];
             if (messageData.badgeType && arr.includes(messageData.badgeType)) {
               this.reload();
             }
@@ -781,8 +789,7 @@ $scale: var(--i-notice-list-card-scale);
   background-color: #fff;
   margin: calc($scale * 12px);
   padding: calc($scale * 16px) calc($scale * 16px) 0 calc($scale * 16px);
-  box-shadow: 0px calc($scale * 2px) calc($scale * 8px) 0px
-    rgba(194, 194, 194, 0.5);
+  box-shadow: 0px calc($scale * 2px) calc($scale * 8px) 0px rgba(194, 194, 194, 0.5);
   border-radius: calc($scale * 10px);
 
   .i-notice-list-card-header {
@@ -791,6 +798,7 @@ $scale: var(--i-notice-list-card-scale);
 
     .header-icon {
       color: #cd0502;
+
       .svg-icon {
         vertical-align: -0.2em;
       }
@@ -805,6 +813,7 @@ $scale: var(--i-notice-list-card-scale);
 
   .i-notice-list-card-content {
     padding-bottom: calc($scale * 16px);
+
     ul {
       display: flex;
       flex-wrap: wrap;
@@ -819,8 +828,7 @@ $scale: var(--i-notice-list-card-scale);
           font-size: calc($scale * 14px);
           color: #333333;
           font-weight: 700;
-          padding: 30% calc($scale * 14px) calc($scale * 14px)
-            calc($scale * 14px);
+          padding: 30% calc($scale * 14px) calc($scale * 14px) calc($scale * 14px);
           box-shadow: 0px 2px calc($scale * 8px) 0px rgba(194, 194, 194, 0.5);
           border: 1px solid rgba(227, 227, 227, 1);
           text-align: center;
@@ -845,9 +853,7 @@ $scale: var(--i-notice-list-card-scale);
             margin: 0 auto;
             top: 0;
             border-radius: 50%;
-            box-shadow: calc($scale * -10px) calc($scale * -10px)
-              calc($scale * 20px) calc($scale * -14px) rgba(194, 194, 194, 1)
-              inset;
+            box-shadow: calc($scale * -10px) calc($scale * -10px) calc($scale * 20px) calc($scale * -14px) rgba(194, 194, 194, 1) inset;
             transform: translateY(-50%) rotate(45deg);
 
             .item-inner-circle {
@@ -896,6 +902,7 @@ $scale: var(--i-notice-list-card-scale);
         &:nth-child(odd) {
           padding-right: calc($scale * 8px);
         }
+
         &:nth-child(even) {
           padding-left: calc($scale * 8px);
         }
@@ -925,6 +932,7 @@ $scale: var(--i-notice-list-card-scale);
     display: flex;
     justify-content: center;
     align-items: center;
+
     span {
       padding: calc(6px * #{$scale}) calc(20px * #{$scale});
       color: #e6a23c;

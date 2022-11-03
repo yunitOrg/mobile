@@ -22,7 +22,9 @@
         <div class="list-text">{{ item.tabText }}</div>
         <div v-if="item.showRightNum" class="list-right-num">
           <span
-              v-if="infoList && item.tabKey && infoList[item.tabKey]">{{ infoList[item.tabKey][propData.numInterface] }}</span>
+              v-if="infoList && item.tabKey && infoList[item.tabKey]">{{
+              infoList[item.tabKey][propData.numInterface]
+            }}</span>
           <span v-else>6</span>
         </div>
         <div v-if="item.showRightIcon" class="list-right-icon" :style="iconStyleObject(item)">
@@ -130,24 +132,26 @@ export default {
      * 加载动态数据
      */
     initData() {
-      if (!this.moduleObject.env || this.moduleObject.env == "develop") {
-        // mock数据
-        setTimeout(() => {
-          this.isLoading = false;
-          const res = {
-            wddn: {
-              num: 2
-            },
-            zzsh: {
-              num: 5
-            }
-          };
-          this.infoList = res;
-        }, 1000);
-
-        return;
-      }
       let dataSource = this.propData.dataSource;
+      if (!dataSource) {
+        if (!this.moduleObject.env || this.moduleObject.env == "develop") {
+          // mock数据
+          setTimeout(() => {
+            this.isLoading = false;
+            const res = {
+              wddn: {
+                num: 2
+              },
+              zzsh: {
+                num: 5
+              }
+            };
+            this.infoList = res;
+          }, 1000);
+
+          return;
+        }
+      }
       if (!dataSource) {
         this.isLoading = false;
         return;

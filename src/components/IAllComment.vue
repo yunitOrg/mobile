@@ -733,90 +733,92 @@ export default {
      */
     initData() {
       this.loading = true;
-      if (!this.moduleObject.env || this.moduleObject.env == "develop") {
-        // mock数据
-        setTimeout(() => {
-          const res = {
-            total: 10,
-            list: [
-              {
-                img: "",
-                id: "",
-                avatar: "Wunder",
-                time: "6分钟前",
-                star: true,
-                starNum: 100,
-                bt: "1我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
-                from: "来自广东深圳",
-                total: 100,
-                showDel: true
-              },
-              {
-                img: "",
-                id: "",
-                avatar: "The Shy",
-                time: "6分钟前",
-                star: false,
-                starNum: 100,
-                bt: "2我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
-                from: "来自广东深圳",
-                total: 100,
-                showDel: false
-              },
-              {
-                img: "",
-                id: "",
-                avatar: "Wunder",
-                time: "6分钟前",
-                star: false,
-                starNum: 100,
-                bt: "3我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
-                from: "来自广东深圳",
-                total: 100,
-                showDel: true
-              },
-              {
-                img: "",
-                id: "",
-                avatar: "The Shy",
-                time: "6分钟前",
-                star: true,
-                starNum: 100,
-                bt: "4我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
-                from: "来自广东深圳",
-                total: 100,
-                showDel: true
-              },
-              {
-                img: "",
-                id: "",
-                avatar: "Wunder",
-                time: "6分钟前",
-                star: false,
-                starNum: 100,
-                bt: "5我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
-                from: "来自广东深圳",
-                total: 100,
-              },
-            ],
-          };
-          // 简单模式下只展示三条
-          if (!this.curStatus) {
-            this.finished = true;
-            this.infoList = res.list.slice(0, 3);
-          } else {
-            if (this.infoList.length >= res.total) {
-              this.finished = true;
-            }
-            this.infoList = [...this.infoList, ...res.list];
-          }
-          this.total = res.total;
-          this.loading = false;
-        }, 500);
-
-        return;
-      }
       let dataSource = this.propData.dataSource;
+      if (!dataSource) {
+        if (!this.moduleObject.env || this.moduleObject.env == "develop") {
+          // mock数据
+          setTimeout(() => {
+            const res = {
+              total: 10,
+              list: [
+                {
+                  img: "",
+                  id: "",
+                  avatar: "Wunder",
+                  time: "6分钟前",
+                  star: true,
+                  starNum: 100,
+                  bt: "1我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
+                  from: "来自广东深圳",
+                  total: 100,
+                  showDel: true
+                },
+                {
+                  img: "",
+                  id: "",
+                  avatar: "The Shy",
+                  time: "6分钟前",
+                  star: false,
+                  starNum: 100,
+                  bt: "2我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
+                  from: "来自广东深圳",
+                  total: 100,
+                  showDel: false
+                },
+                {
+                  img: "",
+                  id: "",
+                  avatar: "Wunder",
+                  time: "6分钟前",
+                  star: false,
+                  starNum: 100,
+                  bt: "3我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
+                  from: "来自广东深圳",
+                  total: 100,
+                  showDel: true
+                },
+                {
+                  img: "",
+                  id: "",
+                  avatar: "The Shy",
+                  time: "6分钟前",
+                  star: true,
+                  starNum: 100,
+                  bt: "4我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
+                  from: "来自广东深圳",
+                  total: 100,
+                  showDel: true
+                },
+                {
+                  img: "",
+                  id: "",
+                  avatar: "Wunder",
+                  time: "6分钟前",
+                  star: false,
+                  starNum: 100,
+                  bt: "5我认为二级市场真正的问题在于拍卖行。在艺术家的推广上，拍卖行真的和画廊格格不入。",
+                  from: "来自广东深圳",
+                  total: 100,
+                },
+              ],
+            };
+            // 简单模式下只展示三条
+            if (!this.curStatus) {
+              this.finished = true;
+              this.infoList = res.list.slice(0, 3);
+            } else {
+              if (this.infoList.length >= res.total) {
+                this.finished = true;
+              }
+              this.infoList = [...this.infoList, ...res.list];
+            }
+            this.total = res.total;
+            this.loading = false;
+          }, 500);
+
+          return;
+        }
+      }
       if (!dataSource) {
         this.loading = false;
         return;
@@ -851,15 +853,15 @@ export default {
         })
 
 
-        IDM.datasource.request(this.propData.dataSource[0]?.id,{
+        IDM.datasource.request(this.propData.dataSource[0]?.id, {
           moduleObject: this.moduleObject,
-          params:{
+          params: {
             pageSize: this.pageSize,
             start: this.infoList.length,
             type: this.curMode === 'new' ? 0 : 1,
             ...routerParams
           }
-        },(res) => {
+        }, (res) => {
           if (res.length === 0) {
             this.finished = true;
           }
