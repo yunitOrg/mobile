@@ -79,12 +79,6 @@
               </div>
             </div>
           </div>
-
-          <van-empty
-              v-show="infoList.length === 0 && loading === false"
-              description="暂无回复"
-          >
-          </van-empty>
         </ILazyList>
       </div>
     </div>
