@@ -79,6 +79,12 @@
               </div>
             </div>
           </div>
+
+          <van-empty
+              v-show="infoList.length === 0"
+              description="暂无回复"
+          >
+          </van-empty>
         </ILazyList>
       </div>
     </div>
@@ -175,20 +181,12 @@ export default {
           return;
         }
       }
-      if (!dataSource) {
-        return;
-      }
-      let url = `ctrl/dataSource/getDatas`;
-      const routerParams = this.detailFileterParams();
 
+      const routerParams = this.detailFileterParams();
       IDM.datasource.request(this.propData.detailDataSource[0]?.id, {
         moduleObject: this.moduleObject,
-        params: {
-          commentId: this.commonParam() && this.commonParam().commentId,
-          ...routerParams
-        }
+        param: routerParams
       }, (res) => {
-        console.log(res, "接口数据");
         this.detailInfo = res
         this.latestNum = this.detailInfo[this.propData.totalInterface]
       })
@@ -561,7 +559,6 @@ export default {
      * 加载动态数据
      */
     initData() {
-      this.loading = true;
       let dataSource = this.propData.dataSource;
       if (!dataSource) {
         if (!this.moduleObject.env || this.moduleObject.env == "develop") {
@@ -676,7 +673,7 @@ export default {
 
         IDM.datasource.request(this.propData.dataSource[0]?.id, {
           moduleObject: this.moduleObject,
-          params: {
+          param: {
             pageSize: this.pageSize,
             start: this.infoList.length,
             ...routerParams
@@ -693,6 +690,8 @@ export default {
           }
           this.loading = false;
         })
+      }else {
+        this.loading = false;
       }
 
     },
