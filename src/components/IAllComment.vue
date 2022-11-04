@@ -723,7 +723,7 @@ export default {
     fileterParams() {
       let obj = {};
       if (this.propData.customClickFunc && this.propData.customClickFunc.length > 0) {
-        let name = this.propData.customClickFunc[0].name
+        let name = this.propData.customClickFunc[0].
         obj = window[name] && window[name].call(this, this.getRouterParams());
       }
       return obj
@@ -819,11 +819,7 @@ export default {
           return;
         }
       }
-      if (!dataSource) {
-        this.loading = false;
-        return;
-      }
-      let url = `ctrl/dataSource/getDatas`;
+
       const routerParams = this.fileterParams();
 
 
@@ -855,7 +851,7 @@ export default {
 
         IDM.datasource.request(this.propData.dataSource[0]?.id, {
           moduleObject: this.moduleObject,
-          params: {
+          param: {
             pageSize: this.pageSize,
             start: this.infoList.length,
             type: this.curMode === 'new' ? 0 : 1,

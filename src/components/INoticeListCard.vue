@@ -246,7 +246,7 @@ export default {
 
       IDM.datasource.request(this.propData.dataSource[0]?.id, {
         moduleObject: this.moduleObject,
-        params: {
+        param: {
           start: this.infoList.length,
           limit: this.propData.defaultNumber,
         }

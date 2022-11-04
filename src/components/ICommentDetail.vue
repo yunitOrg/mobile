@@ -81,7 +81,7 @@
           </div>
 
           <van-empty
-              v-show="infoList.length === 0"
+              v-show="infoList.length === 0 && loading === false"
               description="暂无回复"
           >
           </van-empty>
@@ -774,9 +774,6 @@ export default {
           break;
         case "pageResize":
           this.convertAttrToStyleObject(messageObject.message);
-          break;
-        case "replayComment":
-          this.reload();
           break;
       }
     },
