@@ -723,7 +723,7 @@ export default {
     fileterParams() {
       let obj = {};
       if (this.propData.customClickFunc && this.propData.customClickFunc.length > 0) {
-        let name = this.propData.customClickFunc[0].
+        let name = this.propData.customClickFunc[0].name
         obj = window[name] && window[name].call(this, this.getRouterParams());
       }
       return obj
