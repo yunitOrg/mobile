@@ -90,7 +90,7 @@ export default{
       console.log(999, this.moduleObject, this.params)
       if (this.moduleObject.env == "production") {
         if (this.params.selectSource) {
-          IDM.datasource.request(this.propData.selectSource[0]?.id, {
+          IDM.datasource.request(this.params.selectSource[0]?.id, {
             moduleObject: this.moduleObject
           }, (data) => {
             if (data) {
