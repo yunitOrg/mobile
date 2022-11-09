@@ -191,7 +191,7 @@ export default {
             this.moduleObject.pageid,
             this.propData.replyJump[0]?.id,
             {
-              keep: true,
+              keep: false,
               params: item,
               enterAnim: "",
               quitAnim: "",
