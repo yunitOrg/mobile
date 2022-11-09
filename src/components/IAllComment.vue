@@ -79,7 +79,8 @@
               /></span>
               <span v-if="propData.showDelBtn && item[propData.delBtnFiled]" class="comment-del"
                     @click="delClick(item)">删除</span>
-
+              <span v-if="!(propData.showDelBtn && item[propData.delBtnFiled])"
+                    class="comment-del"><span v-html="'\u2003\u2003'"></span></span>
             </div>
           </div>
         </div>
@@ -888,6 +889,18 @@ export default {
                 }
               }
             }
+
+
+            temp.sort((a,b)=>{
+              let dateA = a[timeInterface],dateB = b[timeInterface];
+
+              if(dateA>dateB){
+                return -1
+              }else{
+                return 1
+              }
+            })
+
 
             this.infoList=[]
             for (const item of temp) {

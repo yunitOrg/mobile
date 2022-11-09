@@ -707,6 +707,16 @@ export default {
             }
           }
 
+          temp.sort((a,b)=>{
+            let dateA = a[timeInterface],dateB = b[timeInterface];
+
+            if(dateA>dateB){
+              return -1
+            }else{
+              return 1
+            }
+          })
+
           this.infoList=[]
           for (const item of temp) {
             this.infoList.push(item)
