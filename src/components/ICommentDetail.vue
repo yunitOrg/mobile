@@ -38,7 +38,7 @@
               }}</span
             >
           </div>
-          <p class="content-right-center">{{ detailInfo[propData.btInterface] }}</p>
+          <p class="content-right-center" @click="showMore()">{{ detailInfo[propData.btInterface] }}</p>
           <div class="content-right-bottom">
             <span class="comment-time">{{ detailInfo[propData.timeInterface] }}</span>
             <span class="comment-total">评论 {{ detailInfo[propData.totalInterface] }}</span>
@@ -185,6 +185,16 @@ export default {
         this.latestNum = this.detailInfo[this.propData.totalInterface]
       })
     },
+
+    /**
+     * 评论内容过多后点击展示
+     */
+    showMore(){
+
+      const content = document.getElementsByClassName("content-right-center")[0]
+      content.classList.add("content-right-center-show")
+    },
+
     /**
      * 删除
      */
@@ -672,31 +682,36 @@ export default {
             ...routerParams
           }
         }, (res) => {
-          this.loading = true
           if (res.length === 0) {
             this.finished = true;
           }
-          this.infoList = [...this.infoList, ...res.list];
 
+          let temp = [...this.infoList, ...res.list]
 
           //结果去重
-          let len = this.infoList.length
+          let len = temp.length
 
           let avatarInterface = this.propData.avatarInterface
           let timeInterface = this.propData.timeInterface
           let btInterface = this.propData.btInterface
           for (let i = 0; i < len; i++) {
             for (let j = i + 1; j < len; j++) {
-              if (this.infoList[i][avatarInterface] === this.infoList[j][avatarInterface]
-                  && this.infoList[i][timeInterface] === this.infoList[j][timeInterface]
-                  && this.infoList[i][btInterface] === this.infoList[j][btInterface]) {
-                this.infoList.splice(i, i + 1)
+              if (temp[i][avatarInterface] === temp[j][avatarInterface]
+                  && temp[i][timeInterface] === temp[j][timeInterface]
+                  && temp[i][btInterface] === temp[j][btInterface]) {
+                temp.splice(i,  1)
                 len = len - 1;
                 i--;
                 break;
               }
             }
           }
+
+          this.infoList=[]
+          for (const item of temp) {
+            this.infoList.push(item)
+          }
+
 
           this.total = res.total;
           if (this.infoList.length >= res.total) {
@@ -912,6 +927,10 @@ $scale: var(--i-comment-detail-scale);
           color: rgb(193, 0, 0);
           margin: 0 6px;
         }
+      }
+
+      .content-right-center-show {
+        display: block;
       }
 
       .content-right-bottom {

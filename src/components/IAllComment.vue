@@ -866,21 +866,21 @@ export default {
             this.finished = true;
             this.infoList = res.list.slice(0, 3);
           } else {
-            this.infoList = [...this.infoList, ...res.list];
 
+            let temp = [...this.infoList, ...res.list]
 
             //结果去重
-            let len = this.infoList.length
+            let len = temp.length
 
             let avatarInterface = this.propData.avatarInterface
             let timeInterface = this.propData.timeInterface
             let btInterface = this.propData.btInterface
             for (let i = 0; i < len; i++) {
               for (let j = i + 1; j < len; j++) {
-                if (this.infoList[i][avatarInterface] === this.infoList[j][avatarInterface]
-                    && this.infoList[i][timeInterface] === this.infoList[j][timeInterface]
-                    && this.infoList[i][btInterface] === this.infoList[j][btInterface]) {
-                  this.infoList.splice(i, i+1)
+                if (temp[i][avatarInterface] === temp[j][avatarInterface]
+                    && temp[i][timeInterface] === temp[j][timeInterface]
+                    && temp[i][btInterface] === temp[j][btInterface]) {
+                  temp.splice(i, 1)
                   len = len - 1;
                   i--;
                   break;
@@ -888,11 +888,15 @@ export default {
               }
             }
 
+            this.infoList=[]
+            for (const item of temp) {
+              this.infoList.push(item)
+            }
+
             if (this.infoList.length >= res.total) {
               this.finished = true;
             }
           }
-
           this.total = res.total;
           this.loading = false;
         })
