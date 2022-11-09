@@ -921,6 +921,7 @@ $scale: var(--i-comment-detail-scale);
         display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
+        word-break: break-all;
         margin: 0 0 calc(8px * #{$scale}) 0;
 
         span {

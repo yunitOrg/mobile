@@ -80,6 +80,7 @@
               /></span>
               <span v-if="propData.showDelBtn && item[propData.delBtnFiled]" class="comment-del"
                     @click="delClick(item)">删除</span>
+
             </div>
           </div>
         </div>
@@ -1119,6 +1120,7 @@ $scale: var(--i-all-comment-scale);
           display: -webkit-box;
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 2;
+          word-break: break-all;
           margin: 0 0 calc(8px * #{$scale}) 0;
         }
 
