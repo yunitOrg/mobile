@@ -848,6 +848,14 @@
                     "text": "标题样式",
                     "children": [
                         {
+                            "type": "inputNumber",
+                            "layoutType": "inline",
+                            "text": "标题行数",
+                            "desc": "设置标题超出显示省略号的函数",
+                            "bindKey": "titleLineClamp",
+                            "default": 2
+                        },
+                        {
                             "type": "input",
                             "layoutType": "inline",
                             "text": "标题宽度",
