@@ -56,7 +56,7 @@
           <div
               class="i-comment-detail-content-item"
               v-for="(item, i) in infoList"
-              :key="i"
+              :key="item[propData.avatarInterface]+item[propData.timeInterface]"
               :class="{ 'border-none': infoList.length - 1 === i }"
           >
             <div class="i-comment-detail-content-left">
@@ -664,7 +664,6 @@ export default {
           start: this.infoList.length,
           ...routerParams
         })
-
         IDM.datasource.request(this.propData.dataSource[0]?.id, {
           moduleObject: this.moduleObject,
           param: {
@@ -673,10 +672,31 @@ export default {
             ...routerParams
           }
         }, (res) => {
+          this.loading = true
           if (res.length === 0) {
             this.finished = true;
           }
           this.infoList = [...this.infoList, ...res.list];
+
+
+          //结果去重
+          let len = this.infoList.length
+
+          let avatarInterface = this.propData.avatarInterface
+          let timeInterface = this.propData.timeInterface
+          let btInterface = this.propData.btInterface
+          for (let i = 0; i < len; i++) {
+            for (let j = i + 1; j < len; j++) {
+              if (this.infoList[i][avatarInterface] === this.infoList[j][avatarInterface]
+                  && this.infoList[i][timeInterface] === this.infoList[j][timeInterface]
+                  && this.infoList[i][btInterface] === this.infoList[j][btInterface]) {
+                this.infoList.splice(i, i + 1)
+                len = len - 1;
+                i--;
+                break;
+              }
+            }
+          }
 
           this.total = res.total;
           if (this.infoList.length >= res.total) {
@@ -684,7 +704,7 @@ export default {
           }
           this.loading = false;
         })
-      }else {
+      } else {
         this.loading = false;
       }
 
