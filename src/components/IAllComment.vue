@@ -51,7 +51,7 @@
         <div
             class="i-all-comment-content-item"
             v-for="(item, i) in infoList"
-            :key="i"
+            :key="item[propData.avatarInterface]+item[propData.timeInterface]"
             :class="{ 'border-none': infoList.length - 1 === i }"
         >
           <div class="i-all-comment-content-left">
@@ -866,7 +866,33 @@ export default {
             this.finished = true;
             this.infoList = res.list.slice(0, 3);
           } else {
-            this.infoList = [...this.infoList, ...res.list];
+
+            let temp = [...this.infoList, ...res.list]
+
+            //结果去重
+            let len = temp.length
+
+            let avatarInterface = this.propData.avatarInterface
+            let timeInterface = this.propData.timeInterface
+            let btInterface = this.propData.btInterface
+            for (let i = 0; i < len; i++) {
+              for (let j = i + 1; j < len; j++) {
+                if (temp[i][avatarInterface] === temp[j][avatarInterface]
+                    && temp[i][timeInterface] === temp[j][timeInterface]
+                    && temp[i][btInterface] === temp[j][btInterface]) {
+                  temp.splice(i, 1)
+                  len = len - 1;
+                  i--;
+                  break;
+                }
+              }
+            }
+
+            this.infoList=[]
+            for (const item of temp) {
+              this.infoList.push(item)
+            }
+
             if (this.infoList.length >= res.total) {
               this.finished = true;
             }

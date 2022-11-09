@@ -38,7 +38,7 @@
               }}</span
             >
           </div>
-          <p class="content-right-center">{{ detailInfo[propData.btInterface] }}</p>
+          <p class="content-right-center" @click="showMore()">{{ detailInfo[propData.btInterface] }}</p>
           <div class="content-right-bottom">
             <span class="comment-time">{{ detailInfo[propData.timeInterface] }}</span>
             <span class="comment-total">评论 {{ detailInfo[propData.totalInterface] }}</span>
@@ -56,7 +56,7 @@
           <div
               class="i-comment-detail-content-item"
               v-for="(item, i) in infoList"
-              :key="i"
+              :key="item[propData.avatarInterface]+item[propData.timeInterface]"
               :class="{ 'border-none': infoList.length - 1 === i }"
           >
             <div class="i-comment-detail-content-left">
@@ -185,6 +185,16 @@ export default {
         this.latestNum = this.detailInfo[this.propData.totalInterface]
       })
     },
+
+    /**
+     * 评论内容过多后点击展示
+     */
+    showMore(){
+
+      const content = document.getElementsByClassName("content-right-center")[0]
+      content.classList.add("content-right-center-show")
+    },
+
     /**
      * 删除
      */
@@ -664,7 +674,6 @@ export default {
           start: this.infoList.length,
           ...routerParams
         })
-
         IDM.datasource.request(this.propData.dataSource[0]?.id, {
           moduleObject: this.moduleObject,
           param: {
@@ -676,7 +685,33 @@ export default {
           if (res.length === 0) {
             this.finished = true;
           }
-          this.infoList = [...this.infoList, ...res.list];
+
+          let temp = [...this.infoList, ...res.list]
+
+          //结果去重
+          let len = temp.length
+
+          let avatarInterface = this.propData.avatarInterface
+          let timeInterface = this.propData.timeInterface
+          let btInterface = this.propData.btInterface
+          for (let i = 0; i < len; i++) {
+            for (let j = i + 1; j < len; j++) {
+              if (temp[i][avatarInterface] === temp[j][avatarInterface]
+                  && temp[i][timeInterface] === temp[j][timeInterface]
+                  && temp[i][btInterface] === temp[j][btInterface]) {
+                temp.splice(i,  1)
+                len = len - 1;
+                i--;
+                break;
+              }
+            }
+          }
+
+          this.infoList=[]
+          for (const item of temp) {
+            this.infoList.push(item)
+          }
+
 
           this.total = res.total;
           if (this.infoList.length >= res.total) {
@@ -684,7 +719,7 @@ export default {
           }
           this.loading = false;
         })
-      }else {
+      } else {
         this.loading = false;
       }
 
@@ -892,6 +927,10 @@ $scale: var(--i-comment-detail-scale);
           color: rgb(193, 0, 0);
           margin: 0 6px;
         }
+      }
+
+      .content-right-center-show {
+        display: block;
       }
 
       .content-right-bottom {
