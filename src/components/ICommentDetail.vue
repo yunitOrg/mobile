@@ -56,7 +56,7 @@
           <div
               class="i-comment-detail-content-item"
               v-for="(item, i) in infoList"
-              :key="item[propData.avatarInterface]+item[propData.timeInterface]"
+              :key="item.id"
               :class="{ 'border-none': infoList.length - 1 === i }"
           >
             <div class="i-comment-detail-content-left">
@@ -691,14 +691,10 @@ export default {
           //结果去重
           let len = temp.length
 
-          let avatarInterface = this.propData.avatarInterface
           let timeInterface = this.propData.timeInterface
-          let btInterface = this.propData.btInterface
           for (let i = 0; i < len; i++) {
             for (let j = i + 1; j < len; j++) {
-              if (temp[i][avatarInterface] === temp[j][avatarInterface]
-                  && temp[i][timeInterface] === temp[j][timeInterface]
-                  && temp[i][btInterface] === temp[j][btInterface]) {
+              if (temp[i].id === temp[j].id) {
                 temp.splice(i,  1)
                 len = len - 1;
                 i--;
