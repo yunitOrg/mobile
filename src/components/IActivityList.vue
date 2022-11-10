@@ -1,102 +1,74 @@
 <template>
     <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id" :title="propData.htmlTitle">
-        <ICommonListContainer
-            :moduleObject="moduleObject"
-            :ref="'listContainerRef-' + moduleObject.id"
-            :propData="propData"
-            :pageData="pageData"
-            :isFirst="isFirst"
-            :isLoading="isLoading"
-            @handleClickMore="handleClickMore"
-        >
+        <ICommonListContainer :moduleObject="moduleObject" :ref="'listContainerRef-' + moduleObject.id"
+            :propData="propData" :pageData="pageData" :isFirst="isFirst" :isLoading="isLoading"
+            @handleClickMore="handleClickMore">
             <!-- 列表内容 -->
             <template #list>
-                <div
-                    v-for="(item, index) in pageData.value"
-                    :key="index"
-                    class="box-line d-flex just-b position-r over-h"
-                    @click="handleItemClick(item)"
-                >
+                <div v-for="(item, index) in pageData.value" :key="index"
+                    class="box-line d-flex just-b position-r over-h" @click="handleItemClick(item)">
                     <!-- 左侧内容 -->
                     <div class="d-flex flex-d-c just-c align-c activity-list-left" v-if="propData.isShowLeftContent">
                         <div class="activity-list-time text-o-e">{{ getDataField(propData.timeField, item) }}</div>
                         <div class="activity-list-week text-o-e">{{ getDataField(propData.weekField, item) }}</div>
-                        <div
-                            class="activity-list-status nowrap"
-                            v-if="getDataField(propData.activityField, item)"
-                            :style="getActivityStatusStyle(getDataField(propData.activityField, item))"
-                        >
+                        <div class="activity-list-status nowrap" v-if="getDataField(propData.activityField, item)"
+                            :style="getActivityStatusStyle(getDataField(propData.activityField, item))">
                             {{ getDataField(propData.activityField, item) }}
                         </div>
                     </div>
                     <!-- 右上角报名状态 -->
-                    <div
-                        class="activity-list-sign-status"
-                        v-if="propData.signStatusPosition === 'rightTop'"
-                        :style="getSignStatusStyle(getDataField(propData.signField, item))"
-                    >
+                    <div class="activity-list-sign-status" v-if="propData.signStatusPosition === 'rightTop'"
+                        :style="getSignStatusStyle(getDataField(propData.signField, item))">
                         {{ getDataField(propData.signField, item) }}
                     </div>
                     <!-- 右侧内容 -->
-                    <div class="flex-1">
+                    <div class="flex-1" style="width: 200px">
                         <!-- 标题 -->
                         <div class="activity-list-title-line d-flex align-c just-b">
-                            <div class="d-flex align-c flex-1 white-nowrap">
-                                <span class="activity-list-title">{{ getDataField(propData.titleField, item) }}</span>
-                                <span
-                                    class="activity-list-user-status nowrap"
+                            <div class="d-flex align-c" style="width: 100%">
+                                <div class="activity-list-title">
+                                    <div class="text-o-e-2">{{
+                                            getDataField(propData.titleField, item)
+                                    }}</div>
+                                </div>
+                                <div class="activity-list-user-status nowrap"
                                     v-if="getDataField(propData.activityField, item)"
-                                    :style="getUserStatusStyle(getDataField(propData.userField, item))"
-                                    >{{ getDataField(propData.userField, item) }}</span
-                                >
+                                    :style="getUserStatusStyle(getDataField(propData.userField, item))">{{
+                                            getDataField(propData.userField, item)
+                                    }}</div>
                             </div>
                             <!-- 报名状态 -->
-                            <div
-                                v-if="
-                                    propData.signStatusPosition === 'titleLine' &&
-                                    getDataField(propData.signField, item)
-                                "
-                                class="activity-list-sign-status2 white-nowrap"
-                                :style="getSignStatusStyle(getDataField(propData.signField, item))"
-                            >
+                            <div v-if="
+                                propData.signStatusPosition === 'titleLine' &&
+                                getDataField(propData.signField, item)
+                            " class="activity-list-sign-status2"
+                                :style="getSignStatusStyle(getDataField(propData.signField, item))">
                                 {{ getDataField(propData.signField, item) }}
                             </div>
                         </div>
                         <!-- 标签 -->
-                        <div class="activity-list-tags text-o-e">
-                            <span
-                                class="activity-list-tag"
-                                v-for="(tag, indexs) in getDataField(propData.tagField, item)"
-                                :key="indexs"
-                                >{{ tag }}</span
-                            >
+                        <div class="activity-list-tags">
+                            <span class="activity-list-tag"
+                                v-for="(tag, indexs) in getDataField(propData.tagField, item)" :key="indexs">{{ tag
+                                }}</span>
                         </div>
                         <!-- 地点 -->
                         <div class="d-flex align-c activity-list-style-one-location-box text-o-e">
                             <div class="d-flex align-c activity-list-icon-container" v-if="propData.isShowLocationIcon">
-                                <svg
-                                    v-if="propData.locationIcon && propData.locationIcon.length"
-                                    class="activity-list-location-icon"
-                                    aria-hidden="true"
-                                >
+                                <svg v-if="propData.locationIcon && propData.locationIcon.length"
+                                    class="activity-list-location-icon" aria-hidden="true">
                                     <use :xlink:href="`#${propData.locationIcon[0]}`"></use>
                                 </svg>
-                                <svg-icon
-                                    v-else
-                                    icon-class="location"
-                                    className="activity-list-location-icon"
-                                ></svg-icon>
+                                <svg-icon v-else icon-class="location" className="activity-list-location-icon">
+                                </svg-icon>
                             </div>
                             <span class="text-o-e"> {{ getDataField(propData.locationField, item) }}</span>
                         </div>
                         <!-- 参与人数 -->
                         <div class="d-flex align-c activity-list-style-one-person-box text-o-e">
                             <div class="d-flex align-c activity-list-icon-container" v-if="propData.isShowPersonIcon">
-                                <svg
-                                    v-if="propData.personIcon && propData.personIcon.length"
-                                    class="activity-list-person-icon"
-                                    aria-hidden="true"
-                                >
+                                <svg v-if="propData.personIcon && propData.personIcon.length"
+                                    class="activity-list-person-icon" aria-hidden="true">
                                     <use :xlink:href="`#${propData.personIcon[0]}`"></use>
                                 </svg>
                                 <svg-icon v-else icon-class="ren" className="activity-list-person-icon"></svg-icon>
@@ -224,7 +196,8 @@ export default {
                 locationLineObj = {},
                 personIconObj = {},
                 personLineObj = {},
-                userStyleObj = {}
+                userStyleObj = {},
+                titleLineClampObj = {}
             for (const key in this.propData) {
                 if (this.propData.hasOwnProperty.call(this.propData, key)) {
                     const element = this.propData[key]
@@ -275,6 +248,10 @@ export default {
                             break
                         case 'titleWidth':
                             titleFontObj['width'] = element
+                            break
+                        case 'titleLineClamp':
+                            titleLineClampObj['line-clamp'] = element
+                            titleLineClampObj['-webkit-line-clamp'] = element
                             break
                         case 'titleBox':
                             IDM.style.setBoxStyle(titleBoxStyleObj, element)
@@ -360,6 +337,7 @@ export default {
             // 标题样式
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .activity-list-title-line', titleBoxStyleObj)
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .activity-list-title', titleFontObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .activity-list-title .text-o-e-2', titleLineClampObj)
             // 标签样式
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .activity-list-tag', tagStyleObj)
             // 地点行样式
@@ -400,10 +378,10 @@ export default {
                 }
                 IDM.setStyleToPageHead(
                     '.' +
-                        themeNamePrefix +
-                        item.key +
-                        (` #${this.moduleObject.id}-common-list` || 'module_demo') +
-                        ' .activity-list-tag',
+                    themeNamePrefix +
+                    item.key +
+                    (` #${this.moduleObject.id}-common-list` || 'module_demo') +
+                    ' .activity-list-tag',
                     bgColorObj
                 )
             }
@@ -439,8 +417,33 @@ export default {
 .box-line:last-child {
     border-bottom: 0 !important;
 }
+
 .nowrap {
     white-space: nowrap;
+}
+
+.activity-list-tags {
+    white-space: nowrap;
+    overflow-x: scroll;
+    .activity-list-tag {
+        display: inline-block;
+    }
+
+    &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        min-height: 0;
+        border-radius: 0;
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-track-piece,
+    &::-webkit-scrollbar-corner {
+        background-color: transparent;
+    }
 }
 
 .activity-list-sign-status {
@@ -450,13 +453,9 @@ export default {
     transform: rotate(40deg);
     padding: 30px 30px 5px 30px;
 }
+
 .activity-list-sign-status2 {
     border-radius: 100px;
     padding: 3px 10px;
-}
-.activity-list-title{
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
 }
 </style>

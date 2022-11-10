@@ -127,6 +127,14 @@
           "layoutType": "block",
           "text": "积分样式",
           "bindKey": "topScoreTips"
+        },
+        {
+          "type": "input",
+          "layoutType": "block",
+          "text": "积分文字距离分数距离",
+          "desc": "积分文字距离分数距离",
+          "bindKey": "scoreLeft",
+          "default": "10px"
         }
       ]
     },
@@ -142,7 +150,7 @@
           "text": "内外边距",
           "bindKey": "box",
           "default": {
-            "marginTopVal": "",
+            "marginTopVal": "2px",
             "marginRightVal": "",
             "marginBottomVal": "",
             "marginLeftVal": "",
@@ -150,6 +158,17 @@
             "paddingRightVal": "10px",
             "paddingBottomVal": "",
             "paddingLeftVal": "10px"
+          }
+        },
+        {
+          "type": "colorPicker",
+          "layoutType": "inline",
+          "text": "背景色",
+          "bindKey": "boxbottom",
+          "placeholder": "请选择颜色",
+          "default": {
+            "hex": "#FFFFFF",
+            "hex8": "#FFFFFFFF"
           }
         },
         {

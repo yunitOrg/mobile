@@ -5,7 +5,7 @@
       <span v-if="params.required" class="required">*</span>
       {{label}}
     </div>
-    <div class="form-cel" v-if="params['isImg']" :style="computedObj">
+    <div class="form-cel" style="padding: 0px 16px;" v-if="params['isImg']" :style="computedObj">
       <img :src="formData[field]"  :style="computedImgStyle" />
     </div>
     <van-field

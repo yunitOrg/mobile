@@ -182,8 +182,14 @@ export default{
             case 'topScoreTips':
               IDM.style.setFontStyle(topStyleTips, element)
               break
+            case 'scoreLeft':
+              topStyleTips['padding-left'] = element
+              break
             case 'box':
               IDM.style.setBoxStyle(bottomStyle, element)
+              break
+            case 'boxbottom':
+              bottomStyle['background-color'] = element && element.hex8
               break
             case 'scoreTitle':
               IDM.style.setFontStyle(scoreFont, element)

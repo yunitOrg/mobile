@@ -416,7 +416,7 @@ export default {
     position: relative;
   }
   .integral-bottom .integral-li:last-child{
-    border: 0;
+    border-bottom-width: 0 !important;
   }
   .integral-li{
     .integral-top{
