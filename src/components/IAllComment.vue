@@ -162,6 +162,9 @@ export default {
     this.moduleObject = this.$root.moduleObject;
     this.convertAttrToStyleObject();
     this.convertThemeListAttrToStyleObject();
+
+    // 抛出组件this
+    window[this.moduleObject.pageid] = this;
   },
   mounted() {
   },
