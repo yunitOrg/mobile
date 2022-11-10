@@ -64,11 +64,17 @@ export default {
       list: {},
       preTime: {},
       latestListHeight:null,
+      timer:null
     }
   },
   mounted() {
     this.preTime = new Date().getTime() //获取时间毫秒数
     this.list = this.$refs.lazyList
+
+
+    this.timer = setInterval(()=>{
+      this.handleScroll()
+    }, 500);
 
     this.loading = true
     this.$emit('load')
@@ -84,8 +90,7 @@ export default {
 
         let listHeight = this.list.offsetHeight
         let listTop = this.list.getBoundingClientRect().top
-        if (domHeight >= listHeight + listTop && this.latestListHeight !== listHeight) {
-          this.loading = true
+        if (domHeight+100 >= listHeight + listTop && this.latestListHeight !== listHeight) {
           this.latestListHeight = listHeight
           this.$emit('load')
         }
@@ -100,6 +105,8 @@ export default {
     }
   },
   destroyed() {
+    clearInterval(this.timer);
+    this.timer = "";
     window.removeEventListener('scroll', this.handleScroll)
   },
 }
