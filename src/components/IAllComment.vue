@@ -11,7 +11,6 @@
       :id="moduleObject.id"
       :idm-ctrl-id="moduleObject.id"
       v-show="propData.defaultStatus != 'hidden'"
-      :key="pagekey"
   >
     <!--
       组件内部容器
@@ -139,8 +138,7 @@ export default {
       total: 0,
       pageSize: 5,
       start: 0,
-      requestParams: [],
-      pagekey:0
+      requestParams: []
     };
   },
   props: {},
@@ -194,7 +192,7 @@ export default {
             this.moduleObject.pageid,
             this.propData.replyJump[0]?.id,
             {
-              keep: false,
+              keep: true,
               params: item,
               enterAnim: "",
               quitAnim: "",
@@ -982,10 +980,6 @@ export default {
           break;
         case "linkageReload":
           this.reload(true);
-          this.$nextTick(()=>{
-            this.pagekey++;
-            console.log(this.pagekey,111111111)
-          })
           break;
         case "pageResize":
           this.convertAttrToStyleObject(messageObject.message);
