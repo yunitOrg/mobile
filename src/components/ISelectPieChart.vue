@@ -254,7 +254,7 @@ export default {
           : [];
       } else {
         chartColors =
-          this.propData.chartColors?.map(item => item.color?.hex8).filter(item => !!item) || [];
+          this.propData.chartColors?.filter(item => item.color?.hex8).map(item => IDM.hex8ToRgbaString(item.color?.hex8)) || [];
       }
       return [...chartColors, ...defaultColors];
     }
@@ -344,6 +344,7 @@ export default {
       });
     },
     drawChart() {
+      this.chart.clear();
       const legendData = this.chartData?.map(item => item.name);
       const option = {
         color: this.colors,
@@ -359,7 +360,7 @@ export default {
           textStyle: {
             color:
               this.propData.legendFontColor && this.propData.legendFontColor.hex8
-                ? this.propData.legendFontColor.hex8
+                ? IDM.hex8ToRgbaString(this.propData.legendFontColor.hex8)
                 : '#666666',
             fontSize: this.getScale() * (this.propData.legendFontSize || 14)
           }
@@ -372,7 +373,7 @@ export default {
           textStyle: {
             color:
               this.propData.chartTitleFontColor && this.propData.chartTitleFontColor.hex8
-                ? this.propData.chartTitleFontColor.hex8
+                ? IDM.hex8ToRgbaString(this.propData.chartTitleFontColor.hex8)
                 : '#666666',
             fontSize: this.getScale() * (this.propData.chartTitleFontSize || 16),
             fontWeight: this.propData.chartTitleFontWeight || 'bolder'
@@ -396,7 +397,7 @@ export default {
                   fontSize: this.getScale() * (this.propData.chartLabelFontSize || 12),
                   color:
                     this.propData.chartLabelFontColor && this.propData.chartLabelFontColor.hex8
-                      ? this.propData.chartLabelFontColor.hex8
+                      ? IDM.hex8ToRgbaString(this.propData.chartLabelFontColor.hex8)
                       : '#666666'
                 }
               }
