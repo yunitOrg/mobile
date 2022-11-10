@@ -94,7 +94,7 @@ export default{
       if (this.propData.componentBorder) {
         IDM.style.setBorderStyle(styleObject, this.propData.componentBorder)
       }
-      window.IDM.setStyleToPageHead(this.id + " .input-component", styleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .input-component", styleObject);
     },
     handleClickCall (val) {
       this.$emit('callFunc', val)
