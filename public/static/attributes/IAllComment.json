@@ -69,7 +69,26 @@
           "layoutType": "inline",
           "text": "回复跳转",
           "bindKey": "replyJump",
-          "desc": "回复查看更多跳转页面"
+          "desc": "查看回复更多跳转页面"
+        },
+        {
+          "type": "radio",
+          "styleType": "radio",
+          "layoutType": "inline",
+          "text": "是否缓存",
+          "bindKey": "keepAlive",
+          "desc": "是否缓存本页面",
+          "default": false,
+          "dictionary": [
+              {
+                  "label": "是",
+                  "value": true
+              },
+              {
+                  "label": "否",
+                  "value": false
+              }
+          ]
         },
         {
           "type": "radio",

@@ -129,7 +129,8 @@ export default {
         showStarBtn: true,
         showDelBtn: true,
         delBtnFiled: "showDel",
-        newOrHot: true
+        newOrHot: true,
+        keepAlive:true
       },
       loading: false,
       finished: false,
@@ -196,7 +197,7 @@ export default {
             this.moduleObject.pageid,
             this.propData.replyJump[0]?.id,
             {
-              keep: true,
+              keep: this.propData.keepAlive,
               params: item,
               enterAnim: "",
               quitAnim: "",
