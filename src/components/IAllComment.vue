@@ -1000,6 +1000,9 @@ export default {
         case "refreshComment":
           this.reload();
           break;
+        case "pageActivated":
+          this.reload();
+          break;
       }
     },
     /**
