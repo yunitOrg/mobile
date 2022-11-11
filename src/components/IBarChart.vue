@@ -35,14 +35,10 @@
       }}</van-loading>
       <div
         v-show="!isLoading && chartData && Object.keys(chartData).length > 0"
-        class="i-barChart-content-wapper"
-      >
-        <div
-          key="i-barChart-content-chart"
-          :ref="`charts_container_${moduleObject.id}`"
-          class="i-barChart-content-chart"
-        />
-      </div>
+        key="i-barChart-content-chart"
+        :ref="`charts_container_${moduleObject.id}`"
+        class="i-barChart-content-chart"
+      />
       <van-empty
         v-show="!isLoading && (!chartData || Object.keys(chartData).length == 0)"
         :image-size="emptyImageSize"
@@ -203,6 +199,7 @@ export default {
       return (width / base - 1) * (ratio - 1) + 1;
     },
     drawChart() {
+      this.chart.clear();
       const nameList = this.getExpressData('data', this.propData.nameField, this.chartData);
       const valueList = this.getExpressData('data', this.propData.valueField, this.chartData);
       const colorList =
@@ -212,7 +209,7 @@ export default {
         this.propData.colorList[0].color.hex8
           ? this.propData.colorList.map(item => ({
               offset: item.offset && item.offset >= 0 && item.offset <= 1 ? item.offset : 0,
-              color: item.color && item.color.hex8 ? item.color.hex8 : '#188df0'
+              color: item.color && item.color.hex8 ? IDM.hex8ToRgbaString(item.color.hex8) : '#188df0'
             }))
           : [
               { offset: 0, color: '#188df0' },
@@ -233,7 +230,7 @@ export default {
             fontSize: this.getScale() * (this.propData.xAxisLabelFontSize || 12),
             color:
               this.propData.xAxisLabelFontColor && this.propData.xAxisLabelFontColor.hex8
-                ? this.propData.xAxisLabelFontColor.hex8
+                ? IDM.hex8ToRgbaString(this.propData.xAxisLabelFontColor.hex8)
                 : '#666666',
             fontWeight: this.propData.xAxisLabelFontWeight || 'normal'
           }
@@ -253,7 +250,7 @@ export default {
             fontSize: this.getScale() * (this.propData.extraXAxisLabelFontSize || 12),
             color:
               this.propData.extraXAxisLabelFontColor && this.propData.extraXAxisLabelFontColor.hex8
-                ? this.propData.extraXAxisLabelFontColor.hex8
+                ? IDM.hex8ToRgbaString(this.propData.extraXAxisLabelFontColor.hex8)
                 : '#666666'
           }
         }
@@ -267,14 +264,14 @@ export default {
             fontSize: this.getScale() * (this.propData.yAxisLabelFontSize || 12),
             color:
               this.propData.yAxisLabelFontColor && this.propData.yAxisLabelFontColor.hex8
-                ? this.propData.yAxisLabelFontColor.hex8
+                ? IDM.hex8ToRgbaString(this.propData.yAxisLabelFontColor.hex8)
                 : '#666666'
           },
           splitLine: {
             lineStyle: {
               color:
                 this.propData.yAxisSplitLineColor && this.propData.yAxisSplitLineColor.hex8
-                  ? this.propData.yAxisSplitLineColor.hex8
+                  ? IDM.hex8ToRgbaString(this.propData.yAxisSplitLineColor.hex8)
                   : '#cccccc'
             }
           }
@@ -289,7 +286,7 @@ export default {
           textStyle: {
             color:
               this.propData.chartTitleFontColor && this.propData.chartTitleFontColor.hex8
-                ? this.propData.chartTitleFontColor.hex8
+                ? IDM.hex8ToRgbaString(this.propData.chartTitleFontColor.hex8)
                 : '#666666',
             fontSize: this.getScale() * (this.propData.chartTitleFontSize || 16),
             fontWeight: this.propData.chartTitleFontWeight || 'bolder'
@@ -319,7 +316,7 @@ export default {
               ],
               color:
                 this.propData.barBgColor && this.propData.barBgColor.hex8
-                  ? this.propData.barBgColor.hex8
+                  ? IDM.hex8ToRgbaString(this.propData.barBgColor.hex8)
                   : '#ffffff'
             },
             label: {
@@ -328,7 +325,7 @@ export default {
               fontSize: this.getScale() * (this.propData.chartLabelFontSize || 12),
               color:
                 this.propData.chartLabelFontColor && this.propData.chartLabelFontColor.hex8
-                  ? this.propData.chartLabelFontColor.hex8
+                  ? IDM.hex8ToRgbaString(this.propData.chartLabelFontColor.hex8)
                   : '#666666'
             },
             itemStyle: {
@@ -908,6 +905,7 @@ $scale: var(--i-barChart-scale);
     flex-grow: 1;
     flex-shrink: 1;
     height: 0;
+    width: 100%;
 
     ::v-deep .van-loading {
       height: 100%;
@@ -922,18 +920,9 @@ $scale: var(--i-barChart-scale);
     ::v-deep .van-empty__description {
       font-size: inherit;
     }
-
-    .i-barChart-content-wapper {
+    .i-barChart-content-chart {
+      width: 100%;
       height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      .i-barChart-content-chart {
-        width: 100%;
-        height: 100%;
-        flex-grow: 1;
-        flex-shrink: 1;
-      }
     }
   }
 
