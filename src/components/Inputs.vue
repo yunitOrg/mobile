@@ -293,7 +293,7 @@ export default {
               IDM.style.setFontStyle(obj, element)
               break
             case 'itemBg':
-              obj['background-color'] = element && element.hex8
+              obj['background-color'] = element && element.hex
               break
             case 'itemBorder':
               IDM.style.setBorderStyle(obj, element)
