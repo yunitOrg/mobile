@@ -35,6 +35,10 @@
                         {
                             "label": "风格二",
                             "value": "styleTwo"
+                        },
+                        {
+                            "label": "自定义函数",
+                            "value": "customFunction"
                         }
                     ]
                 },
@@ -633,6 +637,22 @@
                     "default": 2
                 },
                 {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "阴影",
+                    "desc": "填写格式如下：10px 10px 5px #888888，更多请点击查看详细填写说明",
+                    "bindKey": "lineBoxShadow",
+                    "default": ""
+                },
+                {
+                    "type": "colorPicker",
+                    "layoutType": "inline",
+                    "text": "背景颜色",
+                    "bindKey": "lineBgColor",
+                    "placeholder": "请选择颜色",
+                    "default": {}
+                },
+                {
                     "type": "box",
                     "layoutType": "block",
                     "text": "内外边距",
@@ -1168,9 +1188,9 @@
                 {
                     "type": "font",
                     "layoutType": "block",
-                    "text": "进度字体",
-                    "bindKey": "processFont",
-                    "display": "@[styleType === 'styleTwo']"
+                    "text": "标题下方字体",
+                    "bindKey": "titleBottomFont",
+                    "display": "@[styleType === 'styleTwo' || styleType === 'customFunction']"
                 }
             ]
         },
@@ -1268,6 +1288,15 @@
                     "dictionary": []
                 },
                 {
+                    "type": "actionSelect",
+                    "layoutType": "block",
+                    "text": "自定义显示函数",
+                    "bindKey": "customShowFunction",
+                    "display": "@[styleType === 'customFunction']",
+                    "desc": "自定义风格样式显示函数，根据函数返回的html决定显示内容",
+                    "multiple": false
+                  },
+                {
                     "type": "group",
                     "text": "适配设置",
                     "desc": "通过设置属性来适配移动端页面尺寸",
@@ -1300,21 +1329,30 @@
                             "layoutType": "inline",
                             "text": "图片字段",
                             "bindKey": "imageField",
-                            "default": "image"
+                            "default": "image",
+                            "ctrlAttrObject": {
+                                "dataSourceBindkey": "dataSource"
+                            }
                         },
                         {
                             "type": "dataSourceFiledSelect",
                             "layoutType": "inline",
                             "text": "标题字段",
                             "bindKey": "titleField",
-                            "default": "title"
+                            "default": "title",
+                            "ctrlAttrObject": {
+                                "dataSourceBindkey": "dataSource"
+                            }
                         },
                         {
                             "type": "dataSourceFiledSelect",
                             "layoutType": "inline",
                             "text": "时间字段",
                             "bindKey": "timeField",
-                            "default": "time"
+                            "default": "time",
+                            "ctrlAttrObject": {
+                                "dataSourceBindkey": "dataSource"
+                            }
                         },
                         {
                             "type": "dataSourceFiledSelect",
@@ -1322,7 +1360,10 @@
                             "text": "地点字段",
                             "display": "@[styleType === 'styleOne']",
                             "bindKey": "locationField",
-                            "default": "location"
+                            "default": "location",
+                            "ctrlAttrObject": {
+                                "dataSourceBindkey": "dataSource"
+                            }
                         },
                         {
                             "type": "dataSourceFiledSelect",
@@ -1330,7 +1371,10 @@
                             "text": "人数字段",
                             "display": "@[styleType === 'styleOne']",
                             "bindKey": "personField",
-                            "default": "personNumber"
+                            "default": "personNumber",
+                            "ctrlAttrObject": {
+                                "dataSourceBindkey": "dataSource"
+                            }
                         },
                         {
                             "type": "dataSourceFiledSelect",
@@ -1338,7 +1382,10 @@
                             "text": "进度字段",
                             "display": "@[styleType === 'styleTwo']",
                             "bindKey": "processField",
-                            "default": "process"
+                            "default": "process",
+                            "ctrlAttrObject": {
+                                "dataSourceBindkey": "dataSource"
+                            }
                         },
                         {
                             "type": "dataSourceFiledSelect",
@@ -1346,7 +1393,10 @@
                             "text": "跳转字段",
                             "desc": "跳转链接的字段",
                             "bindKey": "jumpUrlField",
-                            "default": "jumpUrl"
+                            "default": "jumpUrl",
+                            "ctrlAttrObject": {
+                                "dataSourceBindkey": "dataSource"
+                            }
                         }
                     ]
                 },

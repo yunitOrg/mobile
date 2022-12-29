@@ -1,38 +1,22 @@
 <template>
     <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id" :title="propData.htmlTitle">
-        <ICommonListContainer
-            :moduleObject="moduleObject"
-            :ref="'listContainerRef-' + moduleObject.id"
-            :propData="propData"
-            :pageData="pageData"
-            :isFirst="isFirst"
-            :isLoading="isLoading"
-            @handleClickMore="handleClickMore"
-        >
+        <ICommonListContainer :moduleObject="moduleObject" :ref="'listContainerRef-' + moduleObject.id"
+            :propData="propData" :pageData="pageData" :isFirst="isFirst" :isLoading="isLoading"
+            @handleClickMore="handleClickMore">
             <template #list>
-                <div
-                    v-for="(item, index) in pageData.value"
-                    :key="index"
-                    class="box-line d-flex just-b"
-                    @click="handleItemClick(item)"
-                >
-                    <img
-                        v-if="propData.isShowLeftImage"
-                        :src="IDM.url.getWebPath(getDataField(propData.imageField, item))"
-                        alt="图片加载失败"
-                        class="common-list-left-image"
-                    />
+                <div v-for="(item, index) in pageData.value" :key="index" class="box-line d-flex just-b"
+                    @click="handleItemClick(item)">
+                    <img v-if="propData.isShowLeftImage"
+                        :src="IDM.url.getWebPath(getDataField(propData.imageField, item))" alt="图片加载失败"
+                        class="common-list-left-image" />
                     <div v-if="!propData.styleType || propData.styleType === 'styleOne'" class="flex-1">
                         <div class="d-flex common-list-title text-o-e">
                             {{ getDataField(propData.titleField, item) }}
                         </div>
                         <div class="d-flex common-list-style-one-time-box text-o-e">
                             <div class="d-flex align-c common-list-icon-container" v-if="propData.isShowTimeIcon">
-                                <svg
-                                    v-if="propData.timeIcon && propData.timeIcon.length"
-                                    class="common-list-time-icon"
-                                    aria-hidden="true"
-                                >
+                                <svg v-if="propData.timeIcon && propData.timeIcon.length" class="common-list-time-icon"
+                                    aria-hidden="true">
                                     <use :xlink:href="`#${propData.timeIcon[0]}`"></use>
                                 </svg>
                                 <svg-icon v-else icon-class="shijian" className="common-list-time-icon"></svg-icon>
@@ -41,52 +25,49 @@
                         </div>
                         <div class="d-flex align-c common-list-style-one-location-box text-o-e">
                             <div class="d-flex align-c common-list-icon-container" v-if="propData.isShowLocationIcon">
-                                <svg
-                                    v-if="propData.locationIcon && propData.locationIcon.length"
-                                    class="common-list-location-icon"
-                                    aria-hidden="true"
-                                >
+                                <svg v-if="propData.locationIcon && propData.locationIcon.length"
+                                    class="common-list-location-icon" aria-hidden="true">
                                     <use :xlink:href="`#${propData.locationIcon[0]}`"></use>
                                 </svg>
                                 <svg-icon v-else icon-class="location" className="common-list-location-icon"></svg-icon>
                             </div>
                             <span class="text-o-e"> {{ getDataField(propData.locationField, item) }}</span>
                         </div>
-                        <div class="d-flex just-b align-c common-list-style-one-person-box text-o-e" v-if="propData.isShowPersonLine">
+                        <div class="d-flex just-b align-c common-list-style-one-person-box text-o-e"
+                            v-if="propData.isShowPersonLine">
                             <div class="d-flex align-c">
                                 <div class="d-flex align-c common-list-icon-container" v-if="propData.isShowPersonIcon">
-                                    <svg
-                                        v-if="propData.personIcon && propData.personIcon.length"
-                                        class="common-list-person-icon"
-                                        aria-hidden="true"
-                                    >
+                                    <svg v-if="propData.personIcon && propData.personIcon.length"
+                                        class="common-list-person-icon" aria-hidden="true">
                                         <use :xlink:href="`#${propData.personIcon[0]}`"></use>
                                     </svg>
                                     <svg-icon v-else icon-class="ren" className="common-list-person-icon"></svg-icon>
                                 </div>
                                 <span class="text-o-e"> {{ getDataField(propData.personField, item) }}人参与</span>
                             </div>
-                            <div
-                                v-if="handleShowButton(item)"
-                                @click="handleClickButton"
-                                class="common-list-person-button"
-                            >
+                            <div v-if="handleShowButton(item)" @click="handleClickButton"
+                                class="common-list-person-button">
                                 {{ propData.buttonText }}
                             </div>
                         </div>
                     </div>
                     <div v-if="propData.styleType === 'styleTwo'" class="d-flex flex-d-c just-a flex-1">
-                        <div
-                            class="common-list-title"
-                            :class="[
-                                !propData.styleType || propData.styleType === 'styleOne' ? 'text-o-e' : 'text-o-e-2'
-                            ]"
-                        >
-                            {{ item.title }}
+                        <div class="common-list-title text-o-e-2">
+                            {{ getDataField(propData.titleField, item) }}
                         </div>
                         <div class="d-flex just-b align-c common-list-process-text text-o-e">
-                            <span>观看至{{ getDataField(propData.processField, item) }}</span
-                            ><span>{{ getDataField(propData.timeField, item) }}</span>
+                            <span>观看至{{ getDataField(propData.processField, item) }}</span><span>{{
+        getDataField(propData.timeField, item)
+}}</span>
+                        </div>
+                    </div>
+                    <div v-if="propData.styleType === 'customFunction'" class="d-flex flex-d-c just-b flex-1">
+                        <div class="common-list-title text-o-e-2">
+                            {{ getDataField(propData.titleField, item) }}
+                        </div>
+                        <div class="d-flex just-b align-c common-list-process-text"
+                            v-html="customFunctionContent(item)">
+
                         </div>
                     </div>
                 </div>
@@ -118,6 +99,15 @@ export default {
         this.convertThemeListAttrToStyleObject()
     },
     methods: {
+        // 自定义显示
+        customFunctionContent(item) {
+            let html = ''
+            const func = this.propData?.customShowFunction?.[0]
+            if (func) {
+                html = window?.[func.name]?.call(this, Object.assign(item, func.param))
+            }
+            return html
+        },
         // 按钮是否显示函数
         handleShowButton(item) {
             if (this.propData.isShowButtonFunction && this.propData.isShowButtonFunction.length > 0) {
@@ -131,7 +121,7 @@ export default {
                             moduleObject: this.moduleObject,
                             ...item
                         })
-                } catch (error) {}
+                } catch (error) { }
                 return resValue
             }
             return true
@@ -168,6 +158,14 @@ export default {
                             break
                         case 'lineBorder':
                             IDM.style.setBorderStyle(boxLineStyleObj, element)
+                            break
+                        case 'lineBoxShadow':
+                            boxLineStyleObj['box-shadow'] = element
+                            break
+                        case 'lineBgColor':
+                            if (element.hex8) {
+                                boxLineStyleObj['background-color'] = IDM.hex8ToRgbaString(element.hex8)
+                            }
                             break
                         // 标题样式
                         case 'lineTitleFontStyle':
@@ -269,7 +267,7 @@ export default {
                             break
 
                         // 样式二：进度行样式
-                        case 'processFont':
+                        case 'titleBottomFont':
                             IDM.style.setFontStyle(processLineObj, element)
                             this.adaptiveFontSize(processLineObj, element)
                             break
@@ -326,10 +324,10 @@ export default {
                 }
                 IDM.setStyleToPageHead(
                     '.' +
-                        themeNamePrefix +
-                        item.key +
-                        (` #${this.moduleObject.id}-common-list` || 'module_demo') +
-                        ' .common-list-person-button',
+                    themeNamePrefix +
+                    item.key +
+                    (` #${this.moduleObject.id}-common-list` || 'module_demo') +
+                    ' .common-list-person-button',
                     bgColorObj
                 )
             }
@@ -365,7 +363,7 @@ export default {
                 const data = getCommonListData.call(this)
                 if (this.propData.styleType === 'styleOne') {
                     data.value = data.value1
-                } else if (this.propData.styleType === 'styleTwo') {
+                } else {
                     data.value = data.value2
                 }
                 this.pageData = data
