@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import { getDatasInterfaceUrl } from '@/api/config'
 import html2Canvas from 'html2canvas'
 export default {
     data() {
@@ -259,41 +258,28 @@ export default {
 
             switch (this.propData.dialogShowType) {
                 case 'dataSource':
-                    window.IDM.http
-                        .post(
-                            getDatasInterfaceUrl,
-                            {
-                                id: this.propData.dataSource && this.propData.dataSource.value,
-                                limit: this.propData.limit,
-                                start: 0
-                            },
-                            {
-                                headers: {
-                                    'Content-Type': 'application/json;charset=UTF-8'
-                                }
+                    IDM.datasource.request(this.propData.dataSource[0]?.id, {
+                        moduleObject: this.moduleObject,
+                        param: {
+                            limit: this.propData.limit,
+                            start: 0
+                        }
+                    }, (data) => {
+                        this.isLoading = false;
+                        if (data) {
+                            if (data[this.propData.isShowDialog]) {
+                                this.componentData = data;
+                                this.handleOpen() 
                             }
-                        )
-                        .then((res) => {
-                            //res.data
-                            if (res.status == 200 && res.data.code == 200) {
-                                if (res.data.data.isShowDialog) {
-                                    this.componentData = res.data.data
-                                    this.handleOpen()
-                                }
-                            } else {
-                                IDM.message.error(res.data.message)
-                            }
-                        })
-                        .finally(() => {
-                            this.isLoading = false
-                        })
+                        }
+                    })
                     break
                 case 'action':
                     if (this.propData.dialogFun && this.propData.dialogFun.length > 0) {
                         const funcName = this.propData.dialogFun[0].name
                         if (window[funcName]) {
                             const result = window[funcName].call(this, {})
-                            if (result.isShowDialog) {
+                            if (result[this.propData.isShowDialog]) {
                                 this.handleOpen()
                                 this.componentData = result
                             }

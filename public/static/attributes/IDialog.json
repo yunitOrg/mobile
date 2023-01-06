@@ -794,13 +794,12 @@
                     "default": "dataSource"
                 },
                 {
-                    "type": "treeSelect",
+                    "type": "dataSourceSelect",
                     "layoutType": "inline",
                     "text": "数据源",
                     "desc": "数据源返回格式示例：{code: 200, data: { isShowDialog: true, username: \"用户名称\", avatar: \"头像url\", year:\"五\",empName: \"梦创\" }, message: \"success\"}, isShowDialog为true时显示弹窗",
                     "display": "@[dialogShowType === 'dataSource']",
-                    "bindKey": "dataSource",
-                    "dataSourceUrl": "/ctrl/dataSource/getDatasourceByGroup"
+                    "bindKey": "dataSource"
                 },
                 {
                     "type": "actionSelect",
@@ -828,6 +827,21 @@
                     "display": "@[dialogShowType=='action']",
                     "desc": "函数返回示例 return { isShowDialog: true, username: \"用户名称\", avatar: \"头像url\" }, message: \"success\"}, isShowDialog为true时显示弹窗",
                     "multiple": false
+                },
+                {
+                    "type": "group",
+                    "text": "字段设置",
+                    "desc": "设置组件中展示的对应字段",
+                    "children": [
+                        {
+                            "type": "dataSourceFiledSelect",
+                            "layoutType": "inline",
+                            "text": "是否弹框",
+                            "desc": "是否弹框",
+                            "bindKey": "isShowDialog",
+                            "default": "isShowDialog"
+                        }
+                    ]
                 }
             ]
         }
