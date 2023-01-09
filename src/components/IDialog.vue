@@ -43,6 +43,11 @@ export default {
         this.convertAttrToStyleObject()
         this.convertThemeListAttrToStyleObject()
     },
+    // mounted() {
+    //     if (this.propData.showFlag) {
+    //         localStorage.setItem('msgDialog', false);
+    //     }
+    // },
     methods: {
         textFilter(text) {
             if (!text) return ''
@@ -68,8 +73,20 @@ export default {
         },
         handleOpen() {
             if (this.moduleObject.env === 'develop') return
-            this.dialogVisible = true
-            this.openMyDialog()
+            if (this.propData.showFlag) {
+                let flag = localStorage.getItem('msgDialog');
+                if (flag) {
+                    this.closeMyDialog()
+                    this.dialogVisible = false
+                } else {
+                    this.dialogVisible = true
+                    this.openMyDialog()
+                }
+                
+            } else {
+                this.dialogVisible = true
+                this.openMyDialog()
+            }
         },
         handleSave() {
             if (this.moduleObject.env === 'develop') return
@@ -175,7 +192,10 @@ export default {
                             break
                         case 'width':
                         case 'height':
-                            styleObject[key] = element
+                            styleObject[key] = element;
+                            break
+                        case 'dialogIndex':
+                            styleObject['z-index'] = element;
                             break
                         // 左侧按钮
                         case 'leftBtnBg':
@@ -269,7 +289,10 @@ export default {
                         if (data) {
                             if (data[this.propData.isShowDialog]) {
                                 this.componentData = data;
-                                this.handleOpen() 
+                                this.handleOpen()
+                                if (this.propData.showFlag) {
+                                    localStorage.setItem('msgDialog', true);
+                                }
                             }
                         }
                     })
@@ -280,8 +303,11 @@ export default {
                         if (window[funcName]) {
                             const result = window[funcName].call(this, {})
                             if (result[this.propData.isShowDialog]) {
-                                this.handleOpen()
                                 this.componentData = result
+                                this.handleOpen()
+                                if (this.propData.showFlag) {
+                                    localStorage.setItem('msgDialog', true);
+                                }
                             }
                         }
                     }
@@ -339,7 +365,10 @@ export default {
 
 <style lang="scss" scoped>
 .idm-dialog-congratulate {
-    position: relative;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 .idm-dialog-congratulate-btn-group {
     position: absolute;

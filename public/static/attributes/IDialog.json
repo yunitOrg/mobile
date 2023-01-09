@@ -21,6 +21,14 @@
             "desc": "提供设置组件能达到展示效果的基本属性设置信息",
             "children": [
                 {
+                    "type": "switch",
+                    "layoutType": "inline",
+                    "text": "只弹一次",
+                    "bindKey": "showFlag",
+                    "desc": "只弹框一次，会在localStorage记录一个msgDialog:true， 下次页面加载会取localStorage的msgDialog是否是true 如果是true就不弹框",
+                    "default": false
+                },
+                {
                     "type": "select",
                     "layoutType": "inline",
                     "text": "风格样式",
@@ -133,6 +141,14 @@
                     "text": "高度",
                     "bindKey": "height",
                     "default": "500px"
+                },
+                {
+                    "type": "inputNumber",
+                    "layoutType": "inline",
+                    "text": "z-index",
+                    "bindKey": "dialogIndex",
+                    "desc": "图层索引",
+                    "default": 99
                 },
                 {
                     "type": "group",
