@@ -20,7 +20,7 @@
             <div v-if="propData.isShowLeftBtn" class="idm-dialog-congratulate-left-btn" @click="handleClose">
                 {{ propData.leftBtnText }}
             </div>
-            <div v-if="propData.isShowLeftBtn" class="idm-dialog-congratulate-right-btn" @click="handleSave">
+            <div v-if="propData.isShowRightBtn" class="idm-dialog-congratulate-right-btn" @click="handleSave">
                 {{ propData.rightBtnText }}
             </div>
         </div>
