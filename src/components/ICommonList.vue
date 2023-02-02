@@ -9,7 +9,7 @@
                     <img v-if="propData.isShowLeftImage"
                         :src="IDM.url.getWebPath(getDataField(propData.imageField, item))" alt="图片加载失败"
                         class="common-list-left-image" />
-                    <div v-if="!propData.styleType || propData.styleType === 'styleOne'" class="flex-1">
+                    <div v-if="!propData.styleType || propData.styleType === 'styleOne'" class="flex-1 over-h">
                         <div class="d-flex common-list-title text-o-e">
                             {{ getDataField(propData.titleField, item) }}
                         </div>
