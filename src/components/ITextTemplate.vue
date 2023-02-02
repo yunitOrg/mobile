@@ -118,11 +118,15 @@ export default {
         initData() {
             if (this.moduleObject.env !== 'production') {
                 this.componentData = {
-                    username: '陈独秀',
-                    joinYear: '2012',
-                    joinMonth: '2',
+                    memberName: '陈独秀',
+                    joinYear: '2020',
+                    joinMonth: '1',
                     joinDay: '1',
-                    empName: '梦创'
+                    num: '3',
+                    deptNameText: '梦创',
+                    createYear: '2023',
+                    createMonth: '1',
+                    createDay: '1',
                 }
                 return
             }
