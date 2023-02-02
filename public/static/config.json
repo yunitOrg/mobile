@@ -1,6 +1,6 @@
 {
   "version": "1.0.1",
-  "lasttime": "2022-09-09 15:15:19",
+  "lasttime": "2023-02-02 11:07:03",
   "author": "申龙",
   "className": "mobile",
   "module": [
@@ -234,7 +234,8 @@
       "className": "ICheckboxCard",
       "comType": "common",
       "comLangue": "vue"
-    },{
+    },
+    {
       "classId": "idm.component.mobile.imylist",
       "comName": "我的列表",
       "className": "IMyList",
@@ -294,6 +295,13 @@
       "classId": "idm.component.mobile.iheaderbar",
       "comName": "页面头部",
       "className": "IHeaderBar",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.itexttemplate",
+      "comName": "文本模板",
+      "className": "ITextTemplate",
       "comType": "common",
       "comLangue": "vue"
     }
