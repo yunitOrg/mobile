@@ -304,6 +304,13 @@
       "className": "ITextTemplate",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.itree",
+      "comName": "树形控件",
+      "className": "ITree",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }

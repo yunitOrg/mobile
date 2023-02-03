@@ -347,3 +347,39 @@ export const integralDetailData = {
         }
     ]
 }
+
+export const getTreeData = [
+    {
+        title: '0-0',
+        key: '0-0',
+        children: [
+            {
+                title: '0-0-0',
+                key: '0-0-0',
+                children: [
+                    { title: '0-0-0-0', key: '0-0-0-0' },
+                    { title: '0-0-0-1', key: '0-0-0-1' },
+                    { title: '0-0-0-2', key: '0-0-0-2' },
+                ]
+            },
+            {
+                title: '0-0-1',
+                key: '0-0-1',
+                children: [
+                    { title: '0-0-1-0', key: '0-0-1-0' },
+                    { title: '0-0-1-1', key: '0-0-1-1' },
+                    { title: '0-0-1-2', key: '0-0-1-2' },
+                ]
+            },
+        ],
+    },
+    {
+        title: '1-0-1',
+        key: '1-0-1',
+        children: [
+            { title: '1-0-1-0', key: '1-0-1-0' },
+            { title: '1-0-1-1', key: '1-0-1-1' },
+            { title: '1-0-1-2', key: '1-0-1-2' },
+        ]
+    },
+]
