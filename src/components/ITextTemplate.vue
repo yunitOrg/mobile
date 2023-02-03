@@ -131,7 +131,7 @@ export default {
                 return
             }
 
-            switch (this.propData.dialogShowType) {
+            switch (this.propData.dataType) {
                 case 'dataSource':
                     IDM.datasource.request(
                         this.propData.dataSource[0]?.id,
