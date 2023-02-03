@@ -94,10 +94,9 @@ export default {
                         ...newParam
                     }
                 },function(res){
-                    console.log('grid组件获取数据++++++++',res)
                     if ( res && res.length ) {
                         that.data_list = res;
-                        that.changeLines()
+                        that.changeOpenStatus(that.data_list)
                     }
                 },function(error){
                     //这里是请求失败的返回结果
@@ -105,8 +104,8 @@ export default {
                 })
             } else {
                 that.data_list = getTreeData
+                that.changeOpenStatus(that.data_list)
             }
-            this.changeOpenStatus(this.data_list)
         },
         changeOpenStatus(data) {
             for( let i = 0,maxi = data.length;i < maxi;i++ ) {

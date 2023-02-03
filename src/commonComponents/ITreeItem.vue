@@ -4,13 +4,13 @@
             <div @click="clickNode(item)" class="header flex_between">
                 <div class="header_left flex_start">
                     <div v-if="propData.showIcon && item.children && item.children.length" class="icon">
-                        <span v-if="item.showChildren" class="open">
+                        <span v-if="item.showChildren" class="open icon_block">
                             <svg v-if="propData.openIconClass && propData.openIconClass.length" class="idm_filed_svg_icon" aria-hidden="true" >
                                 <use :xlink:href="`#${propData.openIconClass[0]}`"></use>
                             </svg>
                             <SvgIcon v-else icon-class="open"></SvgIcon>
                         </span>
-                        <span v-else class="close">
+                        <span v-else class="close icon_block">
                             <svg v-if="propData.closeIconClass && propData.closeIconClass.length" class="idm_filed_svg_icon" aria-hidden="true" >
                                 <use :xlink:href="`#${propData.closeIconClass[0]}`"></use>
                             </svg>
@@ -32,6 +32,8 @@
 </template>
 <script>
 import SvgIcon from '../icons/SvgIcon.vue';
+import adaptationScreenMixin from '../mixins/adaptationScreen'
+
 export default {
     name: 'ITreeItem',
     props: [ 'tree_data','propData','moduleObject' ],
@@ -46,13 +48,14 @@ export default {
             deep: true
         }
     },
+    mixins: [adaptationScreenMixin],
     data() {
         return {
 
         }
     },
     created() {
-
+        this.convertAttrToStyleObjectItem()
     },
     methods: {
         clickNode(item) {
@@ -114,12 +117,17 @@ export default {
                             break;
                         case "fontNode":
                             IDM.style.setFontStyle(styleObjectText,element)
+                            this.adaptiveFontSize(styleObjectText,element)
                             break;
                         case "widthIconLeft":
                             styleObjectIconLeft['width'] = element;
                             break;
+                        case "heightIconLeft":
+                            styleObjectIconLeft['height'] = element;
+                            break;
                         case "fontIconLeft":
                             IDM.style.setFontStyle(styleObjectIconLeft,element)
+                            this.adaptiveFontSize(styleObjectIconLeft,element)
                             break;
                         case "boxIconLeft":
                             IDM.style.setBoxStyle(styleObjectIconLeft,element)
@@ -129,6 +137,7 @@ export default {
                             break;
                         case "fontIconRight":
                             IDM.style.setFontStyle(styleObjectIconRight,element)
+                            this.adaptiveFontSize(styleObjectIconRight,element)
                             break;
                         case "boxIconRight":
                             IDM.style.setBoxStyle(styleObjectIconRight,element)
@@ -144,8 +153,9 @@ export default {
             }
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .ITreeItem_app .header', styleObject);
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .ITreeItem_app .header .text', styleObjectText);
-            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .ITreeItem_app .header .header_left .icon .idm_filed_svg_icon', styleObjectIconLeft);
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .ITreeItem_app .header .header_left .icon .svg-icon', styleObjectIconLeft);
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .ITreeItem_app .header .header_left .icon .idm_filed_svg_icon', styleObjectIconLeft);
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .ITreeItem_app .header .header_left .icon .icon_block', styleObjectIconLeft);
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .ITreeItem_app .header .header_right .svg-icon', styleObjectIconRight);
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .ITreeItem_app .main', styleObjectMain);
         },
@@ -166,6 +176,20 @@ export default {
             margin-right: 5px;
             .svg-icon{
                 font-size: 20px;
+            }
+            .idm_filed_svg_icon{
+                width: 20px;
+                height: 20px;
+                fill: currentColor;
+            }
+            .icon_block{
+                width: 20px;
+                height: 20px;
+            }
+        }
+        .header_right{
+            .svg-icon{
+                // color: red;
             }
         }
     }
