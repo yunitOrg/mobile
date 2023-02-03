@@ -21,7 +21,7 @@
                 </div>
                 <div class="header_right">
                     <SvgIcon v-if="item.showChildren" icon-class="down-arrow"></SvgIcon>
-                    <SvgIcon v-else icon-class="right-arrow"></SvgIcon>
+                    <SvgIcon v-else icon-class="right-arrow55"></SvgIcon>
                 </div>
             </div>
             <div v-if="item.children && item.children.length && item.showChildren" class="main">
@@ -183,6 +183,7 @@ export default {
                 fill: currentColor;
             }
             .icon_block{
+                display: inline-block;
                 width: 20px;
                 height: 20px;
             }
