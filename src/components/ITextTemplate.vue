@@ -12,7 +12,8 @@ export default {
         return {
             moduleObject: {},
             propData: this.$root.propData.compositeAttr || {},
-            componentData: {}
+            componentData: {},
+            currentPage: 1
         }
     },
     mixins: [adaptationScreenMixin],
@@ -126,17 +127,29 @@ export default {
                     deptNameText: '梦创',
                     createYear: '2023',
                     createMonth: '1',
-                    createDay: '1',
+                    createDay: '1'
                 }
                 return
             }
-
+            let params = {}
+            if(this.propData.paramsFunc && this.propData.paramsFunc.length > 0) {
+                const funcName = this.propData.paramsFunc[0].name
+                params = window[funcName].call(this, {
+                    ...this.propData.paramsFunc[0].param
+                }) || {}
+            }
             switch (this.propData.dataType) {
                 case 'dataSource':
                     IDM.datasource.request(
                         this.propData.dataSource[0]?.id,
                         {
-                            moduleObject: this.moduleObject
+                            moduleObject: this.moduleObject,
+                            param: {
+                                ...params,
+                                ...IDM.router.getParam(this.moduleObject.routerId),
+                                limit: this.propData.limit,
+                                start: this.currentPage
+                            }
                         },
                         (data) => {
                             this.componentData = data
