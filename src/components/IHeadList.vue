@@ -185,12 +185,19 @@ export default {
     handleFunc(strFun) {
       return new Function(`return ${strFun}`)();
     },
+    // 获取router的数据
+    getRouterParams () {
+      return this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId): {};
+    },
     initData () {
       let that = this;
       if (this.moduleObject.env == "production") {
         this.isLoading = true;
+        const obj = this.getRouterParams() || {};
+        const routerParams = !obj.$el ? obj : {};
         IDM.datasource.request(this.propData.dataSource[0]?.id, {
-          moduleObject: this.moduleObject
+          moduleObject: this.moduleObject,
+          param: {...routerParams}
         }, (data) => {
           this.isLoading = false;
           if (data) {
