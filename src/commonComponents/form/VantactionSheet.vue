@@ -5,6 +5,12 @@
       {{label}}
     </div>
     <div class="celright" :style="`text-align:${params['inputAlign']}`" @click="handleShowSheet">{{formData[field] ? setFormName : params['placeholder']}}</div>
+    <template v-if="params['inputRightIconShow']">
+      <svg :style="computedIconStyle" aria-hidden="true" v-if="params['inputRightIcon'] && params['inputRightIcon'].length">
+        <use :xlink:href="`#${params['inputRightIcon'][0]}`"></use>
+      </svg>
+      <svg-icon v-else icon-class="right-arrow55" :style="computedIconStyle"></svg-icon>
+    </template>
     <van-action-sheet class="customclas" v-model="sheetShow" :actions="actionList" @select="onSelect" />
   </div>
 </template>
@@ -27,6 +33,14 @@ export default{
     moduleObject: Object
   },
   computed: {
+    computedIconStyle () {
+      let obj = {};
+      obj['color'] = this.params['inputRightIconColor'] && this.params['inputRightIconColor']['hex'];
+      obj['fill'] = this.params['inputRightIconColor'] && this.params['inputRightIconColor']['hex'];
+      obj['width'] = this.params['inputRightIconSize'] + 'px';
+      obj['height'] = this.params['inputRightIconSize'] + 'px';
+      return obj
+    },
     computedStyle () {
       let obj = {}
       obj['width'] = this.params['labelWidth'];

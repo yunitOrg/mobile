@@ -248,6 +248,42 @@
                 ]
               },
               {
+                "type": "group",
+                "text": "右侧图标",
+                "layoutType": "block",
+                "desc": "提供设置组件能达到展示效果的基本属性设置信息",
+                "display": "@[type=='actionSheet']",
+                "children": [
+                  {
+                    "type": "switch",
+                    "layoutType": "inline",
+                    "text": "图标显示",
+                    "bindKey": "inputRightIconShow",
+                    "desc": "右侧图标是否显示",
+                    "default": false
+                  },
+                  {
+                    "type": "iconSelect",
+                    "layoutType": "inline",
+                    "text": "自定义图标",
+                    "bindKey": "inputRightIcon"
+                  },
+                  {
+                    "type": "colorPicker",
+                    "layoutType": "inline",
+                    "text": "图标颜色",
+                    "bindKey": "inputRightIconColor"
+                  },
+                  {
+                    "type": "inputNumber",
+                    "layoutType": "inline",
+                    "text": "图标大小",
+                    "bindKey": "inputRightIconSize",
+                    "default": 20
+                  }
+                ]
+              },
+              {
                 "type": "input",
                 "layoutType": "inline",
                 "text": "文本",

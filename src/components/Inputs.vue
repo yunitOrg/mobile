@@ -216,6 +216,7 @@ export default {
             disabled: true,
             showAlign: 'left',
             placeholder: '请选择类型',
+            inputRightIconShow: true
           }
         ]
       }
@@ -411,6 +412,7 @@ export default {
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .idm-form", styleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .form-title", styleTitleObj);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .form-icon", styleIconObj);
+
       // 组件传递数据给其他组件方法、1：消息 sendBroadcastMessage   2：传递到上下文 getContextValue
       if (this.propData.triggerComponents && this.propData.triggerComponents.length > 0) {
         this.sendBroadcastMessage({
