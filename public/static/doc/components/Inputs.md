@@ -23,21 +23,26 @@ mobile@1.0.0
 - 增加了标题 form标题能够控制标题是否显示
 
 - 增加了底部按钮显示， 底部按钮可以随意定位，点击底部按钮自己处理点击事件，
-传递的参数只有一个对象包括：form整个表单数据 router跳转过来的页面数据  value当前点击的key
+传递的参数只有一个对象包括：form整个表单数据 router跳转过来的页面数据  value当前点击的key otherForm其他组件form发送的值
 
  源代码是这样：handleSubmit (row) {
   let that = this;
-  let { customClickFunc, key } = row;
-  if (customClickFunc && customClickFunc.length > 0 ) {
-    customClickFunc.forEach(item => {
-      window[item.name] && window[item.name].call(that, {
-        form: this.formData,
-        router: this.getRouterParams(),
-        value: key
-      });
-    })
+    let { customClickFunc, key, pageModuleSelectDataMultiple } = row;
+    //表单分组标识
+    let formGroupKey = this.propData.formFiledKey;
+    //所有返回结果
+    let moduleAllData = window.IDM.broadcast.getModuleContextValue(pageModuleSelectDataMultiple,formGroupKey);
+    if (customClickFunc && customClickFunc.length > 0 ) {
+      customClickFunc.forEach(item => {
+        window[item.name] && window[item.name].call(that, {
+          form: this.formData,
+          router: this.getRouterParams(),
+          value: key,
+          otherForm: moduleAllData
+        });
+      })
+    }
   }
-}
 
 -----------
 
