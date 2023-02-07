@@ -124,6 +124,13 @@
                 "bindKey": "customClickFunc",
                 "desc": "点击自定义函数",
                 "multiple": true
+              },
+              {
+                "type": "pageModuleSelect",
+                "layoutType": "inline",
+                "text": "提交范围",
+                "bindKey": "pageModuleSelectDataMultiple",
+                "multiple": true
               }
             ]
           },

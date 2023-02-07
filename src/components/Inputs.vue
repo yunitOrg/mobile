@@ -517,13 +517,18 @@ export default {
     // 按钮
     handleSubmit (row) {
       let that = this;
-      let { customClickFunc, key } = row;
+      let { customClickFunc, key, pageModuleSelectDataMultiple } = row;
+      //表单分组标识
+      let formGroupKey = this.propData.formFiledKey;
+      //所有返回结果
+      let moduleAllData = window.IDM.broadcast.getModuleContextValue(pageModuleSelectDataMultiple,formGroupKey);
       if (customClickFunc && customClickFunc.length > 0 ) {
         customClickFunc.forEach(item => {
           window[item.name] && window[item.name].call(that, {
             form: this.formData,
             router: this.getRouterParams(),
-            value: key
+            value: key,
+            otherForm: moduleAllData
           });
         })
       }
