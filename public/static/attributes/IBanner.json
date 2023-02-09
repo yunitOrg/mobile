@@ -162,6 +162,13 @@
                     ]
                 },
                 {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "图片宽度",
+                    "bindKey": "imageWidth",
+                    "default": "86%"
+                },
+                {
                     "type": "inputNumber",
                     "layoutType": "inline",
                     "text": "分界点",

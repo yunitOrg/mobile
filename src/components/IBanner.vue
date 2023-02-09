@@ -31,31 +31,6 @@
                 </swiper-slide>
                 <div v-show="propData.showBullet" class="idm-banner-swiper-pagination" slot="pagination"></div>
             </swiper>
-            <div class="idm-banner-box-swiper-container">
-                <ul class="swiper-wrapper">
-                    <li
-                        class="swiper-slide idm-banner-box-swiper-item-container banner-item-container"
-                        v-for="(item, index) in bannerData.value"
-                        :key="index"
-                        @click="handleClick(item, index)"
-                    >
-                        <img
-                            v-if="isSmallScreen || !item.imagexl"
-                            :src="item.image && getImageUrl(item.image)"
-                            class="slider-img"
-                            alt=""
-                        />
-                        <img
-                            v-else
-                            :src="getImageUrl(item.imagexl) || getImageUrl(item.image)"
-                            class="slider-img"
-                            alt=""
-                        />
-                        <span class="idm-banner-box-swiper-text" v-if="item.title">{{ item.title }}</span>
-                    </li>
-                </ul>
-                <div class="idm-banner-swiper-pagination" v-show="propData.showBullet"></div>
-            </div>
         </div>
         <div
             class="idm-banner-box-mask"
@@ -79,7 +54,6 @@ export default {
     },
     mixins: [adaptationScreen],
     data() {
-        const _this = this
         return {
             moduleObject: {},
             propData: this.$root.propData.compositeAttr || {
@@ -350,6 +324,9 @@ export default {
                             break
                         case 'imgBorderRadius':
                             bannerItemStyleObj['border-radius'] = element.inputVal + element.selectVal
+                            break
+                        case 'imageWidth':
+                            bannerItemStyleObj['width'] = element
                             break
                         case 'marginTop':
                             styleObject['margin-top'] = element.inputVal + element.selectVal
