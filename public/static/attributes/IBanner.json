@@ -43,15 +43,15 @@
                     "bindKey": "pagePosition",
                     "dictionary": [
                         {
-                            "label": "left",
+                            "label": "左侧",
                             "value": "flex-start"
                         },
                         {
-                            "label": "center",
+                            "label": "居中",
                             "value": "center"
                         },
                         {
-                            "label": "right",
+                            "label": "右侧",
                             "value": "right"
                         }
                     ],
