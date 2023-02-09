@@ -157,7 +157,8 @@ export default {
         convertAttrToStyleObject() {
             var styleObject = {}
             let bannerItemStyleObj = {}
-            let bannerFontStyleObj = {}
+            let bannerFontStyleObj = {},
+            bulletsObj = {}
             if (this.propData.bgSize && this.propData.bgSize == 'custom') {
                 styleObject['background-size'] =
                     (this.propData.bgSizeWidth
@@ -343,6 +344,10 @@ export default {
                 bannerItemStyleObj
             )
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-banner-box-swiper-text', bannerFontStyleObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-banner-swiper-pagination', {
+                'justify-content': this.propData.pagePosition,
+                padding: '0 20px'
+            })
             this.initData()
         },
         /**

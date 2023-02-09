@@ -37,6 +37,27 @@
                     "default": true
                 },
                 {
+                    "type": "select",
+                    "layoutType": "inline",
+                    "text": "分页位置",
+                    "bindKey": "pagePosition",
+                    "dictionary": [
+                        {
+                            "label": "left",
+                            "value": "flex-start"
+                        },
+                        {
+                            "label": "center",
+                            "value": "center"
+                        },
+                        {
+                            "label": "right",
+                            "value": "right"
+                        }
+                    ],
+                    "default": "center"
+                },
+                {
                     "type": "radio",
                     "styleType": "radio",
                     "layoutType": "inline",
