@@ -1048,6 +1048,14 @@
       "desc": "点击？查看高级设置用法指南",
       "children": [
         {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "刷新消息名",
+          "desc": "此属性用来规定重加载的消息名",
+          "bindKey": "reloadKey",
+          "default": "linkageReload"
+        },
+        {
           "type": "group",
           "text": "适配设置",
           "desc": "通过设置属性来适配移动端页面尺寸",
