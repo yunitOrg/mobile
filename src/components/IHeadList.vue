@@ -12,7 +12,7 @@
     <div class="idm-iheadlist">
       <van-search v-if="false" class="idm-search" v-model="searchVal" placeholder="请输入党员姓名关键词快速查找内容" />
       <div class="iheadlist-ul">
-        <li v-for="(item, index) in list" :key="index">
+        <li v-for="(item, index) in list" :key="index" @click="jumpUrl(item)">
           <div class="iheadlist-img" v-if="propData.headImg">
             <img :src="item[propData.ImgInterface] || defaultImg" alt="">
           </div>
@@ -55,7 +55,7 @@
               </div>
               <span class="iheadlist-desc" v-if="propData.isDesc">{{item[propData.descInterface] || item.desc}}</span>
             </div>
-            <div class="iheadlist-icon" v-if="propData.showIcon" @click="handleClick(item)">
+            <div class="iheadlist-icon" v-if="propData.showIcon" @click.stop="handleClick(item)">
               <svg
                 class="idm_svg_author_icon idm_button_svg_icon"
                 aria-hidden="true"
@@ -236,6 +236,30 @@ export default {
       this.converTitleStyleObject();
       this.converDescStyleObject();
       this.converThemeListObject();
+    },
+    jumpUrl (item) {
+      switch (this.propData.itemJumpStyle) {
+        case '_child':
+          if (this.propData.itemPageList && this.propData.itemPageList.length > 0) {
+              IDM.router.push(
+                  this.moduleObject.pageid,
+                  this.propData.itemPageList[0].id,
+                  this.propData.isItemKeep,
+                  item,
+                  '',
+                  ''
+              )
+          } else {
+              IDM.message.warning('请选择要跳转的子页面')
+          }
+          break
+        case '_custom_func':
+          if (this.propData.jumpItemCustomFunc && this.propData.jumpItemCustomFunc.length > 0) {
+              const funcName = this.propData.jumpItemCustomFunc[0].name
+              window[funcName] && window[funcName].call(this, item)
+          }
+          break
+      }
     },
     converThemeListObject () {
       let themeList = this.propData.themeList;
@@ -558,6 +582,7 @@ export default {
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .iheadlist-desc", styleObject);
     },
     handleClick (row) {
+      console.log(33)
       this.changeEventFunHandle("clickFunction", "", { current: row });
     },
     /**
