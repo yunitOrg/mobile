@@ -232,6 +232,7 @@ export default {
       }
     },   
     init () {
+      console.log(this.propData, '打印数据');
       this.handleStyle();
       this.initData();
     },
