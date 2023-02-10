@@ -1,5 +1,5 @@
 {
-  "classId": "idm.component.mobile.threeFont",
+  "classId": "idm.component.mobile.ithreeFont",
   "comName": "三行文字数据",
   "className": "IthreeFont",
   "comType": "common",
@@ -40,7 +40,7 @@
         {
           "type": "switch",
           "layoutType": "inline",
-          "text": "总个数",
+          "text": "个数显示",
           "desc": "总个数是否显示",
           "bindKey": "isNumberFlag",
           "display": "@[isTips]",
@@ -63,6 +63,52 @@
           "bindKey": "numberGe",
           "default": "个",
           "display": "@[isTips]"
+        },
+        {
+          "type": "group",
+          "text": "左侧图标",
+          "desc": "设置标题图标属性，颜色会覆盖主题色",
+          "display": "@[isTips]",
+          "children": [
+              {
+                  "type": "iconSelect",
+                  "layoutType": "inline",
+                  "text": "选择图标",
+                  "bindKey": "titleIcon",
+                  "default": ""
+              },
+              {
+                  "type": "colorPicker",
+                  "layoutType": "inline",
+                  "desc": "设置图标颜色，会覆盖主题色",
+                  "text": "图标颜色",
+                  "bindKey": "titleIconFontColor",
+                  "default": {}
+              },
+              {
+                  "type": "inputNumber",
+                  "layoutType": "inline",
+                  "text": "图标大小",
+                  "bindKey": "titleIconFontSize",
+                  "default": 18
+              },
+              {
+                  "type": "box",
+                  "layoutType": "block",
+                  "text": "内外边距",
+                  "bindKey": "leftIconBox",
+                  "default": {
+                      "marginTopVal": "",
+                      "marginRightVal": "",
+                      "marginBottomVal": "",
+                      "marginLeftVal": "-5px",
+                      "paddingTopVal": "",
+                      "paddingRightVal": "",
+                      "paddingBottomVal": "",
+                      "paddingLeftVal": ""
+                  }
+              }
+          ]
         },
         {
           "type": "table",
@@ -147,7 +193,7 @@
               "type": "colorPicker",
               "layoutType": "inline",
               "text": "背景色",
-              "bindKey": "bgColor",
+              "bindKey": "tableColor",
               "placeholder": "请选择颜色",
               "default": {
                 "hex8": "#FFFFFFFF"
@@ -329,7 +375,7 @@
               "text": "列表字段",
               "desc": "列表字段",
               "bindKey": "listFiled",
-              "default": "list"
+              "default": "listbox"
             },
             {
               "type": "dataSourceFiledSelect",

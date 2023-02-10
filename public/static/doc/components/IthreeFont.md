@@ -3,7 +3,7 @@
 ## 组件类名（className）
 IthreeFont
 ## 组件类ID（classId）
-idm.component.mobile.threeFont
+idm.component.mobile.ithreeFont
 ## 组件开发语言（comLangue）
 vue
 ## 组件类型（comType）
@@ -15,7 +15,7 @@ mobile@1.0.1
 
 ```json
 {
-  "list": [
+  "listbox": [
     {
       "num": 21,
       "font": "党委"

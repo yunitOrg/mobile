@@ -8,7 +8,15 @@
   <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id">
     <div class="threefont">
       <div class="threefont-top" v-if="propData.isTips">
-        <div>
+        <div class="threefont-left">
+          <svg
+              v-if="propData.titleIcon && propData.titleIcon.length"
+              class="threefont-iconshu"
+              aria-hidden="true"
+          >
+              <use :xlink:href="`#${propData.titleIcon[0]}`"></use>
+          </svg>
+          <svg-icon v-else icon-class="shu" className="threefont-iconshu"></svg-icon>
           <span class="top-title">{{ propData.titleDesc }}</span>
         </div>
         <div v-if="propData.isNumberFlag">
@@ -17,7 +25,7 @@
         </div>
       </div>
       <div class="threefont-ul">
-        <div class="threefont-li" v-for="(item, index) in list" :key="index" :style="computedStyle(item)">
+        <div class="threefont-li" v-for="(item, index) in listbox" :key="index" :style="computedStyle(item)">
           <div :style="handleNumberStyle(item)">{{ handleNumberFont(item, index)}}</div>
           <div :style="handleFontStyle(item)" >{{ handleTitleFont(item, index) }}</div>
         </div>
@@ -31,7 +39,7 @@ export default {
   name: 'IthreeFont',
   data () {
     return {
-      list: [],
+      listbox: [],
       allNumber: '',
       fieldList: [],
       moduleObject: {},
@@ -82,7 +90,7 @@ export default {
       return style;
     },
     computedStyle(item) {
-      let { libox, border, bgColor, liWidth, liHeight } = item;
+      let { libox, border, tableColor, liWidth, liHeight } = item;
       let style = {};
       if (libox) {
         IDM.style.setBoxStyle(style, libox)
@@ -96,8 +104,8 @@ export default {
       if (border) {
         IDM.style.setBorderStyle(style, border)
       }
-      if (bgColor) {
-        style['background-color'] = bgColor && bgColor.hex8
+      if (tableColor) {
+        style['background-color'] = tableColor && tableColor.hex8
       }
       return style;
     },
@@ -119,7 +127,6 @@ export default {
     },
     handleStyle() {
       let styleObject = {},
-        liStyle = {},
         titleStyle = {},
         titleFont = {},
         numberFont = {},
@@ -166,6 +173,18 @@ export default {
             case 'unitFont':
               IDM.style.setFontStyle(unitFont, element);
               break
+            case 'titleIconFontColor':
+              tipsStyleObj['color'] = element.hex;
+              tipsStyleObj["fill"] = element.hex;
+              break
+            case 'titleIconFontSize':
+              tipsStyleObj['font-size'] = element + 'px';
+              tipsStyleObj['width'] = element + 'px';
+              tipsStyleObj['height'] = element + 'px';
+              break
+            case 'leftIconBox':
+              IDM.style.setBoxStyle(tipsStyleObj, element);
+              break
           }
         }
       }
@@ -174,6 +193,7 @@ export default {
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .threefont-top .top-title", titleStyle);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .threefont-top .top-number", numberFont);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .threefont-top .top-unit", unitFont);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .threefont-top .threefont-iconshu", unitFont);
     },
     // 过滤接口参数
     fileterParams() {
@@ -186,7 +206,7 @@ export default {
     },
     initData () {
       if (this.moduleObject.env == "production") {
-        this.list = this.propData && (this.propData.tableMenu || []);
+        this.listbox = this.propData && (this.propData.tableMenu || []);
         if (this.propData.dataSource) {
           const routerParams = this.fileterParams();
           IDM.datasource.request(this.propData.dataSource[0]?.id, {
@@ -195,9 +215,9 @@ export default {
           }, (data) => {
             if (data) {
               if (data instanceof Array) {
-                let list = (data || {})[this.propData.listFiled];
-                this.propData.tableMenu = this.propData.tableMenu.slice(0, list.length);
-                this.fieldList = list;
+                let listAry = (data || {})[this.propData.listFiled];
+                this.propData.tableMenu = this.propData.tableMenu.slice(0, listAry.length);
+                this.fieldList = listAry;
                 this.allNumber = (data || {})[this.propData.allNumberField];
               } else {
                 console.warn('接口返回必须是数组');
@@ -206,7 +226,8 @@ export default {
           })
         }
       } else {
-        this.list = this.propData && (this.propData.tableMenu || []);
+        console.log(999);
+        this.listbox = this.propData && (this.propData.tableMenu || []);
         this.allNumber = this.propData.allNumberVal;
       }
     },   
@@ -237,12 +258,16 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .threefont{
   .threefont-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    .threefont-left{
+      display: flex;
+      align-items: center;
+    }
     span{
       display: inline-block;
     }

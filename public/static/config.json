@@ -313,9 +313,16 @@
       "comLangue": "vue"
     },
     {
-      "classId": "idm.component.mobile.threeFont",
+      "classId": "idm.component.mobile.ithreeFont",
       "comName": "三行文字数据",
       "className": "IthreeFont",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.ifontShow",
+      "comName": "三行文字展示",
+      "className": "IfontShow",
       "comType": "common",
       "comLangue": "vue"
     }
