@@ -350,6 +350,13 @@
       "desc": "点击？查看高级设置用法指南",
       "children": [
         {
+          "type": "input",
+          "layoutType": "block",
+          "text": "接收消息key",
+          "desc": "接收消息key, 组件收到消息后 会传给自定义函数里，在自定义函数里可以处理参数",
+          "bindKey": "messageKey"
+        },
+        {
           "type": "actionSelect",
           "layoutType": "block",
           "text": "请求参数自定义函数",

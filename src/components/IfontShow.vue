@@ -226,7 +226,6 @@ export default {
           })
         }
       } else {
-        console.log(999);
         this.listbox = this.propData && (this.propData.tableMenu || []);
         this.allNumber = this.propData.allNumberVal;
       }
@@ -248,7 +247,7 @@ export default {
      */
     receiveBroadcastMessage(object) {
       switch (object.type) {
-        case 'linkageDemand':
+        case this.propData.messageKey:
           console.log('IthreeFont接收消息: ', object.message)
           this.inforobj = object.message;
           this.initData();
