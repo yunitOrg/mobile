@@ -190,10 +190,10 @@ export default {
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .threefont", styleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .threefont-top", titleStyle);
-      window.IDM.setStyleToPageHead(this.moduleObject.id + " .threefont-top .top-title", titleStyle);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .threefont-top .top-title", titleFont);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .threefont-top .top-number", numberFont);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .threefont-top .top-unit", unitFont);
-      window.IDM.setStyleToPageHead(this.moduleObject.id + " .threefont-top .threefont-iconshu", unitFont);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .threefont-top .threefont-iconshu", tipsStyleObj);
     },
     // 过滤接口参数
     fileterParams() {
