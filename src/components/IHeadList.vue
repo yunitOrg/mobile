@@ -189,15 +189,27 @@ export default {
     getRouterParams () {
       return this.moduleObject.routerId ? IDM.router.getParam(this.moduleObject.routerId): {};
     },
+    // 过滤接口参数
+    fileterParams() {
+      let obj = {};
+      if (this.propData.customFuncParameter && this.propData.customFuncParameter.length > 0) {
+        let name = this.propData.customFuncParameter[0].name;
+        const params = this.getRouterParams() || {};
+        const routerParams = !params.$el ? params : {};
+        obj = window[name] && window[name].call(this, routerParams);
+      }
+      return obj
+    },
     initData () {
       let that = this;
       if (this.moduleObject.env == "production") {
         this.isLoading = true;
+        const costomParams = this.fileterParams();
         const obj = this.getRouterParams() || {};
         const routerParams = !obj.$el ? obj : {};
         IDM.datasource.request(this.propData.dataSource[0]?.id, {
           moduleObject: this.moduleObject,
-          param: {...routerParams}
+          param: {...routerParams, ...costomParams}
         }, (data) => {
           this.isLoading = false;
           if (data) {
