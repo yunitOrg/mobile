@@ -124,6 +124,7 @@ export default {
           itemStyleObject = {},
           fontStyle = {},
           chooseFontStyle = {},
+          styleDropdom = {},
           selectFont = {};
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
@@ -157,6 +158,9 @@ export default {
             case 'selectFont':
               IDM.style.setFontStyle(selectFont, element, true)
               break
+            case 'popPosition':
+              styleDropdom['top'] = element + '!important'
+              break
           }
         }
       }
@@ -166,6 +170,7 @@ export default {
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .idm-select .select-span", fontStyle);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .idm-select .van-dropdown-menu__title--active", chooseFontStyle);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .idm-select .van-cell", selectFont);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .idm-select .van-dropdown-item", styleDropdom);
     },
     handleChange () {
       let ary = []

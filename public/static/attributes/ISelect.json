@@ -55,6 +55,13 @@
           "default": true
         },
         {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "弹出框位置",
+          "bindKey": "popPosition",
+          "default": "0px"
+        },
+        {
           "type": "table",
           "text": "页签选项设置",
           "bindKey": "tableMenu",
