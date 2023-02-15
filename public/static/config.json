@@ -318,6 +318,13 @@
       "className": "IfontShow",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.icell",
+      "comName": "单元格",
+      "className": "Icell",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }
