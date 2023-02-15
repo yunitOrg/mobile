@@ -1192,7 +1192,6 @@ export default {
           message: text,
           rangeModule: moduleIdArray,
           messageKey: this.propData.formFiledKey||this.propData.ctrlId,
-          triggerType: option===true?'AT':(option?'MT':'OT')
         })
       }
     },
