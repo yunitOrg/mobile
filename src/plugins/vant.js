@@ -21,7 +21,8 @@ import {
     DropdownItem,
     Popup,
     ActionSheet,
-    List
+    List,
+    Cell,
 } from 'vant'
 
 Vue.use(Tab)
@@ -34,6 +35,7 @@ Vue.use(Tab)
     .use(Uploader)
     .use(Form)
     .use(Field)
+    .use(Cell)
     .use(CellGroup)
     .use(Search)
     .use(Switch)
