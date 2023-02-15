@@ -1,8 +1,5 @@
 <template>
-  <div idm-ctrl="idm_module"
-       :id="moduleObject.id"
-       :idm-ctrl-id="moduleObject.id"
-       class="IActivity-Statistics">
+  <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id" class="IActivity-Statistics">
     <div class="header" v-if="propData.isShowHeader">
       <div class="header-background"></div>
       <div class="header-container">
@@ -24,9 +21,7 @@
             </div>
           </div>
           <div class="list">
-            <div class="list-item" v-for="(activity,index) in activityList"
-                 :key="index"
-            >
+            <div class="list-item" @click="clickItem(activity)" v-for="(activity,index) in activityList" :key="index" >
               <div class="activity-icon">
                 <svg-icon :icon-class="activity.icon" v-if="moduleObject.env === 'develop' && !propData.dataSource"/>
                 <img :src="activity.icon" v-if="!!propData.dataSource" alt=""/>
@@ -51,16 +46,9 @@
               </div>
             </div>
 
-            <van-empty
-                v-show="activityList.length === 0"
-                description="暂无数据"
-            >
+            <van-empty v-show="activityList.length === 0" description="暂无数据" >
               <template #image>
-                <van-image
-                    :src="
-              IDM.url.getModuleAssetsWebPath(require('../assets/empty-default.png'), moduleObject)
-            "
-                />
+                <van-image :src=" IDM.url.getModuleAssetsWebPath(require('../assets/empty-default.png'), moduleObject) " />
               </template>
             </van-empty>
           </div>
@@ -161,6 +149,26 @@ export default {
     this.convertThemeListAttrToStyleObject();
   },
   methods: {
+    clickItem(item) {
+      if ( this.propData.jumpFunction && this.propData.jumpFunction.length ) {
+        let that = this;
+        if(this.moduleObject.env=="develop"){
+            return;
+        }
+        let urlObject = window.IDM.url.queryObject(),
+        pageId = window.IDM.broadcast&&window.IDM.broadcast.pageModule?window.IDM.broadcast.pageModule.id:"";
+        var clickFunction = this.propData.jumpFunction;
+        clickFunction&&clickFunction.forEach(item1=>{
+            window[item1.name]&&window[item1.name].call(this,{
+                urlData:urlObject,
+                pageId,
+                customParam:item1.param,
+                _this:this,
+                item: item
+            });
+        })
+      } 
+    },
     /**
      * 适配页面
      */

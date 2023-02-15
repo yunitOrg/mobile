@@ -588,6 +588,14 @@
           "multiple": false
         },
         {
+            "type": "actionSelect",
+            "layoutType": "block",
+            "text": "点击跳转自定义函数",
+            "bindKey": "jumpFunction",
+            "desc": "点击元素跳转时自定义函数",
+            "multiple": false
+        },
+        {
           "type": "group",
           "text": "字段设置",
           "desc": "设置从列表项中展示的对应字段",
