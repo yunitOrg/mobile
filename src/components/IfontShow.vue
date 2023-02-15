@@ -214,14 +214,10 @@ export default {
             param: { ...routerParams }
           }, (data) => {
             if (data) {
-              if (data instanceof Array) {
-                let listAry = (data || {})[this.propData.listFiled];
-                this.propData.tableMenu = this.propData.tableMenu.slice(0, listAry.length);
-                this.fieldList = listAry;
-                this.allNumber = (data || {})[this.propData.allNumberField];
-              } else {
-                console.warn('接口返回必须是数组');
-              }
+              let listAry = (data || {})[this.propData.listFiled];
+              this.propData.tableMenu = this.propData.tableMenu.slice(0, listAry.length);
+              this.fieldList = listAry;
+              this.allNumber = (data || {})[this.propData.allNumberField];
             }
           })
         }
