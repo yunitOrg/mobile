@@ -213,7 +213,7 @@ export default {
 
 <style lang="scss">
 .idm-text-template-title,
-.idm-text-template-title {
+.idm-text-template-content {
     * {
         font: inherit;
     }
