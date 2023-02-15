@@ -143,6 +143,9 @@ export default {
                         case 'heightInfo':
                             styleObject['height'] = element
                             break
+                        case "minHeightInfo":
+                            styleObject['min-height'] = element
+                            break;
                         case 'bgColorInfo':
                             if (element && element.hex8) {
                                 styleObject['background-color'] = element.hex8
@@ -202,6 +205,8 @@ export default {
                         case "boxInfoMessage":
                             IDM.setBoxStyle(styleObjectMessage,element)
                             break;
+                        case "maxRow":
+                            styleObjectMessage['-webkit-line-clamp'] = element;
                     }
                 }
             }
@@ -218,8 +223,7 @@ export default {
             this.convertAttrToStyleObjectTitle()
             this.convertAttrToStyleObjectContent()
             this.convertAttrToStyleObjectInfo()
-            const styleObject = {},
-                contentObj = {}
+            const styleObject = {};
             if (this.propData.bgSize && this.propData.bgSize == 'custom') {
                 styleObject['background-size'] =
                     (this.propData.bgSizeWidth
@@ -270,17 +274,12 @@ export default {
                         case 'box':
                             IDM.style.setBoxStyle(styleObject, element)
                             break
-                        case 'contentBox':
-                            IDM.style.setBoxStyle(contentObj, element)
-                            break
                         case 'border':
                             IDM.style.setBorderStyle(styleObject, element)
                             break
-                        
-                        case 'contentFont':
-                            IDM.style.setFontStyle(contentObj, element)
-                            this.adaptiveFontSize(contentObj, element)
-                            break
+                        case 'paddingTop':
+                            styleObject['padding-top'] = element + ' !important'
+                            break;
                     }
                 }
             }
@@ -447,6 +446,10 @@ export default {
                 color: #333333;
                 letter-spacing: 0;
                 line-height: 20px;
+                overflow: hidden; //超出的文本隐藏
+                display: -webkit-box;
+                -webkit-line-clamp: 4; // 超出多少行
+                -webkit-box-orient: vertical;
             }
         }
     }

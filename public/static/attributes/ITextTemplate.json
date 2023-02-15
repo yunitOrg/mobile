@@ -255,6 +255,22 @@
                     "default": ""
                 },
                 {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "最大高度",
+                    "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
+                    "bindKey": "minHeightInfo",
+                    "default": ""
+                },
+                {
+                    "type": "inputNumber",
+                    "layoutType": "inline",
+                    "text": "最大行数",
+                    "desc": "正文最多显示多少行，超出隐藏",
+                    "bindKey": "maxRow",
+                    "default": "4"
+                },
+                {
                     "type": "group",
                     "text": "背景设置",
                     "desc": "点击？查看背景设置用法指南",
@@ -600,6 +616,14 @@
                             "display": "@[bgImgUrl]"
                         }
                     ]
+                },
+                {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "上边距",
+                    "desc": "页面顶部元素距离页面顶部的预留距离",
+                    "bindKey": "paddingTop",
+                    "default": ""
                 },
                 {
                     "type": "box",
