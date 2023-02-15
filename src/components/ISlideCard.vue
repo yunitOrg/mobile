@@ -399,7 +399,7 @@ export default {
           }
         })
       } else if (this.propData.dataType == 'static' && this.propData.dataStaticSet) {
-        if (this.propData.dataStaticSet[0] && !this.propData.dataStaticSet[0].name) {
+        if (this.propData.dataStaticSet[0] && !this.propData.dataStaticSet[0].key) {
           this.setRows(devResult(this));
         } else {
           this.setRows(this.propData.dataStaticSet);

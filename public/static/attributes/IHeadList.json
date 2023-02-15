@@ -468,6 +468,14 @@
         "desc": "点击？查看高级设置用法指南",
         "children": [
           {
+            "type": "actionSelect",
+            "layoutType": "block",
+            "text": "请求参数自定义函数",
+            "desc": "请求参数自定义函数",
+            "bindKey": "customFuncParameter",
+            "multiple": false
+          },
+          {
             "type": "dataSourceSelect",
             "layoutType": "inline",
             "text": "数据源",

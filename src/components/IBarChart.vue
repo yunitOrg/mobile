@@ -123,7 +123,8 @@ export default {
       propData: this.$root.propData.compositeAttr || {},
       isLoading: false,
       chartData: {},
-      chart: null
+      chart: null,
+      addParams: {}
     };
   },
   props: {},
@@ -178,7 +179,8 @@ export default {
             }
           }
           break;
-        case 'linkageReload':
+        case [this.propData.reloadKey]:
+          this.addParams = messageObject.message || {};
           this.initData();
           break;
         case 'pageResize':
@@ -424,7 +426,10 @@ export default {
       //   : {};
       this.isLoading = true;
       IDM.datasource.request(this.propData.chartDataSource[0]?.id, {
-        moduleObject: this.moduleObject
+        moduleObject: this.moduleObject,
+        param: {
+          ...this.addParams
+        }
       }, (data) => {
         this.isLoading = false;
         if(data) {

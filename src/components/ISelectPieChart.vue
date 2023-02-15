@@ -213,7 +213,8 @@ export default {
       columns: [],
       pickerSelect: {},
       chartData: [],
-      chart: null
+      chart: null,
+      addParams: {}
     };
   },
   props: {},
@@ -303,7 +304,8 @@ export default {
             }
           }
           break;
-        case 'linkageReload':
+        case [this.propData.reloadKey]:
+          this.addParams = messageObject.message || {};
           this.initData();
           break;
         case 'pageResize':
@@ -530,7 +532,8 @@ export default {
       IDM.datasource.request(this.propData.chartDataSource[0]?.id, {
         moduleObject: this.moduleObject,
         param: {
-          ...selectParams
+          ...selectParams,
+          ...this.addParams
         }
       }, (data) => {
         this.isLoading = false;

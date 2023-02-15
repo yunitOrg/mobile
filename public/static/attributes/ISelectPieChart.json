@@ -1128,6 +1128,14 @@
       "desc": "点击？查看高级设置用法指南",
       "children": [
         {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "刷新消息名",
+          "desc": "此属性用来规定重加载的消息名",
+          "bindKey": "reloadKey",
+          "default": "linkageReload"
+        },
+        {
           "type": "actionSelect",
           "layoutType": "block",
           "text": "下拉切换自定义函数",
