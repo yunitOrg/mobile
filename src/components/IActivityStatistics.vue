@@ -295,6 +295,7 @@ export default {
           tempItem.personNum = tempList[activityName][i][this.propData.activityPersonNum]
           tempItem.convene = tempList[activityName][i][this.propData.activityConvene]
           tempItem.attendance = tempList[activityName][i][this.propData.activityAttendance]
+          tempItem.id = tempList[activityName][i]['id']
           this.activityList.push(tempItem)
         }
         this.isLoading = false;
