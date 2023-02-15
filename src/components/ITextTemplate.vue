@@ -30,13 +30,13 @@ export default {
         return {
             moduleObject: {},
             propData: this.$root.propData.compositeAttr || {
-                isShowTitle: true,
-                titleText: '测试标题',
-                contextText: '<div>@[memberName]同志</div><div>@[joinYear]年@[joinMonth]月@[joinDay]日，您光荣加入了中国共产党</div><div>那一刻，是您人生道路上的新起点，是您永远难忘的“政治生日”。今年是您的第@[num]个政治生日，谨向您送上生日的问候和祝福！</div><div>希望您时刻牢记入党誓词，认真履行党员义务，铭记党的宗旨，发挥党员先锋模范作用，为共产主义事业奋斗终生。</div><div style="text-align:right">@[deptNameText]委员会组织部</div><div style="text-align:right">@[createYear]年@[createMonth]月@[createDay]日</div>',
-                isShowInfo: true,
-                isShowInfoTitle: true,
-                isShowInfoTitleImg: true,
-                isShowInfoLabel: true
+                // isShowTitle: true,
+                // titleText: '测试标题',
+                // contextText: '<div>@[memberName]同志</div><div>@[joinYear]年@[joinMonth]月@[joinDay]日，您光荣加入了中国共产党</div><div>那一刻，是您人生道路上的新起点，是您永远难忘的“政治生日”。今年是您的第@[num]个政治生日，谨向您送上生日的问候和祝福！</div><div>希望您时刻牢记入党誓词，认真履行党员义务，铭记党的宗旨，发挥党员先锋模范作用，为共产主义事业奋斗终生。</div><div style="text-align:right">@[deptNameText]委员会组织部</div><div style="text-align:right">@[createYear]年@[createMonth]月@[createDay]日</div>',
+                // isShowInfo: true,
+                // isShowInfoTitle: true,
+                // isShowInfoTitleImg: true,
+                // isShowInfoLabel: true
             },
             componentData: {},
             currentPage: 1
@@ -97,7 +97,7 @@ export default {
                     }
                 }
             }
-            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-text-template-title', styleObject)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-text-template-title span', styleObject)
         },
         convertAttrToStyleObjectContent() {
             let styleObject= {};
@@ -112,7 +112,7 @@ export default {
                             IDM.style.setFontStyle(styleObject, element)
                             this.adaptiveFontSize(styleObject, element)
                             break
-                        case "boxTitle":
+                        case "contentBox":
                             IDM.style.setBoxStyle(styleObject,element)
                             break;
                     }
@@ -125,6 +125,7 @@ export default {
             let styleObjectTitleBox = {};
             let styleObjectTitle = {};
             let styleObjectTitleImg = {};
+            let styleObjectTitleText = {};
             let styleObjectLine = {};
             let styleObjectLabel = {};
             let styleObjectMessage = {};
@@ -150,7 +151,7 @@ export default {
                         case 'bgImgUrlInfo':
                             styleObject['background-image'] = `url(${window.IDM.url.getWebPath(element)})`
                             break
-                        case "boxTitle":
+                        case "boxInfo":
                             IDM.style.setBoxStyle(styleObject,element)
                             break;
                         
@@ -178,8 +179,8 @@ export default {
                             IDM.style.setBoxStyle(styleObjectTitleImg,element)
                             break;
                         case 'fontInfoTitle':
-                            IDM.style.setFontStyle(styleObjectTitle, element)
-                            this.adaptiveFontSize(styleObjectTitle, element)
+                            IDM.style.setFontStyle(styleObjectTitleText, element)
+                            this.adaptiveFontSize(styleObjectTitleText, element)
                             break
                     
                         case 'colorLine':
@@ -205,8 +206,9 @@ export default {
                 }
             }
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .info', styleObject)
-            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .info .title .title', styleObjectTitleBox)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .info .title', styleObjectTitleBox)
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .info .title .title_main', styleObjectTitle)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .info .title .title_main .text', styleObjectTitleText)
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .info .title .title_main img', styleObjectTitleImg)
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .info .message .label .line', styleObjectLine)
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .info .message .label .text', styleObjectLabel)
@@ -289,23 +291,26 @@ export default {
             //请求数据源
             this.initData()
         },
+        getMockData() {
+            this.componentData = {
+                memberName: '陈独秀',
+                joinYear: '2020',
+                joinMonth: '1',
+                joinDay: '1',
+                num: '3',
+                deptNameText: '梦创',
+                createYear: '2023',
+                createMonth: '1',
+                createDay: '1',
+
+                infoTitle: '党务小知识',
+                infoLabel: '党龄',
+                infoMessage: '指成为正式党员后的全部时间。党员的党龄，从预备期满转为正式党员之日算起。'
+            }
+        },
         initData() {
             if (this.moduleObject.env !== 'production') {
-                this.componentData = {
-                    memberName: '陈独秀',
-                    joinYear: '2020',
-                    joinMonth: '1',
-                    joinDay: '1',
-                    num: '3',
-                    deptNameText: '梦创',
-                    createYear: '2023',
-                    createMonth: '1',
-                    createDay: '1',
-
-                    infoTitle: '党务小知识',
-                    infoLabel: '党龄',
-                    infoMessage: '指成为正式党员后的全部时间。党员的党龄，从预备期满转为正式党员之日算起。'
-                }
+                this.getMockData()
                 return
             }
             let params = {}
@@ -317,21 +322,25 @@ export default {
             }
             switch (this.propData.dataType) {
                 case 'dataSource':
-                    IDM.datasource.request(
-                        this.propData.dataSource[0]?.id,
-                        {
-                            moduleObject: this.moduleObject,
-                            param: {
-                                ...params,
-                                ...IDM.router.getParam(this.moduleObject.routerId),
-                                limit: this.propData.limit,
-                                start: this.currentPage
+                    if ( this.propData.dataSource && this.propData.dataSource[0] ) {
+                        IDM.datasource.request(
+                            this.propData.dataSource[0]?.id,
+                            {
+                                moduleObject: this.moduleObject,
+                                param: {
+                                    ...params,
+                                    ...IDM.router.getParam(this.moduleObject.routerId),
+                                    limit: this.propData.limit,
+                                    start: this.currentPage
+                                }
+                            },
+                            (data) => {
+                                this.componentData = data
                             }
-                        },
-                        (data) => {
-                            this.componentData = data
-                        }
-                    )
+                        )
+                    } else {
+                        this.getMockData()
+                    }
                     break
                 case 'customFunction':
                     if (this.propData.customFunction && this.propData.customFunction.length > 0) {
@@ -377,6 +386,12 @@ export default {
 </script>
 <style lang="scss" scoped>
 .ITextTemplate_app{
+    .idm-text-template-title{
+        text-align: center;
+        span{
+            display: inline-block;
+        }
+    }
     .info{
         position: relative;
         margin-top: 50px;
@@ -438,7 +453,7 @@ export default {
 }
 </style>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .idm-text-template-title,
 .idm-text-template-content {
     * {

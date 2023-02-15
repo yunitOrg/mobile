@@ -161,7 +161,7 @@
                     "text": "宽",
                     "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
                     "bindKey": "widthTitle",
-                    "default": "100%"
+                    "default": ""
                 },
                 {
                     "type": "input",
@@ -189,8 +189,7 @@
                     "type": "box",
                     "layoutType": "block",
                     "text": "容器边距",
-                    "bindKey": "boxTitle",
-                    "default": { }
+                    "bindKey": "boxTitle"
                 },
                 {
                     "type": "border",
@@ -311,7 +310,7 @@
                             "text": "偏移量",
                             "desc": "元素相对自身在垂直方向的偏移量，可设置为高度的一半",
                             "bindKey": "positionYInfoTitle",
-                            "default": "20px"
+                            "default": "-20px"
                         },
                         {
                             "type": "input",
