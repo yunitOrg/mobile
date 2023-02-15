@@ -1,7 +1,25 @@
 <template>
-    <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id">
-        <div v-if="propData.isShowTitle" class="idm-text-template-title" v-html="textFilter(propData.titleText)"></div>
+    <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id" class="ITextTemplate_app">
+        <div v-if="propData.isShowTitle" class="idm-text-template-title">
+            <span v-html="textFilter(propData.titleText)"></span>
+        </div>
         <div class="idm-text-template-content" v-html="textFilter(propData.contextText)"></div>
+        <div v-if="propData.isShowInfo" class="info">
+            <div v-if="propData.isShowInfoTitle" class="title flex_center">
+                <div class="title_main flex_center">
+                    <img v-if="propData.isShowInfoTitleImg" :src="getImageUrl()" alt="">
+                    <span class="text">{{ componentData[this.propData.dataFieldInfoTitle || 'infoTitle'] }}</span>
+                </div>
+            </div>
+            <div class="message">
+                <div v-if="propData.isShowInfoLabel" class="label flex_center">
+                    <div class="line"></div>
+                    <div class="text">{{ componentData[this.propData.dataFieldInfoLabel || 'infoLabel']  }}</div>
+                    <div class="line"></div>
+                </div>
+                <div class="content">{{ componentData[this.propData.dataFieldInfoMessage || 'infoMessage'] }}</div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -11,7 +29,15 @@ export default {
     data() {
         return {
             moduleObject: {},
-            propData: this.$root.propData.compositeAttr || {},
+            propData: this.$root.propData.compositeAttr || {
+                isShowTitle: true,
+                titleText: '测试标题',
+                contextText: '<div>@[memberName]同志</div><div>@[joinYear]年@[joinMonth]月@[joinDay]日，您光荣加入了中国共产党</div><div>那一刻，是您人生道路上的新起点，是您永远难忘的“政治生日”。今年是您的第@[num]个政治生日，谨向您送上生日的问候和祝福！</div><div>希望您时刻牢记入党誓词，认真履行党员义务，铭记党的宗旨，发挥党员先锋模范作用，为共产主义事业奋斗终生。</div><div style="text-align:right">@[deptNameText]委员会组织部</div><div style="text-align:right">@[createYear]年@[createMonth]月@[createDay]日</div>',
+                isShowInfo: true,
+                isShowInfoTitle: true,
+                isShowInfoTitleImg: true,
+                isShowInfoLabel: true
+            },
             componentData: {},
             currentPage: 1
         }
@@ -22,6 +48,13 @@ export default {
         this.convertAttrToStyleObject()
     },
     methods: {
+        getImageUrl(item) {
+            if ( this.propData.infoTitleImgUrl ) {
+                return IDM.url.getWebPath(this.propData.infoTitleImgUrl)
+            } else {
+                return IDM.url.getModuleAssetsWebPath(require(`../assets/danghui.png`),this.moduleObject)
+            }
+        },
         textFilter(text) {
             if (!text) return ''
             console.log(text, this.componentData)
@@ -36,9 +69,154 @@ export default {
             this.propData = propData.compositeAttr || {}
             this.convertAttrToStyleObject()
         },
+        convertAttrToStyleObjectTitle() {
+            let styleObject= {};
+            for (const key in this.propData) {
+                if (this.propData.hasOwnProperty.call(this.propData, key)) {
+                    const element = this.propData[key]
+                    if (!element && element !== false && element != 0) {
+                        continue
+                    }
+                    switch (key) {
+                        case 'widthTitle':
+                            styleObject['width'] = element
+                            break
+                        case 'heightTitle':
+                            styleObject['height'] = element
+                            break
+                        case 'titleFont':
+                            IDM.style.setFontStyle(styleObject, element)
+                            this.adaptiveFontSize(styleObject, element)
+                            break
+                        case "boxTitle":
+                            IDM.style.setBoxStyle(styleObject,element)
+                            break;
+                        case "borderTitle":
+                            IDM.style.setBorderStyle(styleObject,element)
+                            break;
+                    }
+                }
+            }
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-text-template-title', styleObject)
+        },
+        convertAttrToStyleObjectContent() {
+            let styleObject= {};
+            for (const key in this.propData) {
+                if (this.propData.hasOwnProperty.call(this.propData, key)) {
+                    const element = this.propData[key]
+                    if (!element && element !== false && element != 0) {
+                        continue
+                    }
+                    switch (key) {
+                        case 'contentFont':
+                            IDM.style.setFontStyle(styleObject, element)
+                            this.adaptiveFontSize(styleObject, element)
+                            break
+                        case "boxTitle":
+                            IDM.style.setBoxStyle(styleObject,element)
+                            break;
+                    }
+                }
+            }
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-text-template-content', styleObject)
+        },
+        convertAttrToStyleObjectInfo() {
+            let styleObject= {};
+            let styleObjectTitleBox = {};
+            let styleObjectTitle = {};
+            let styleObjectTitleImg = {};
+            let styleObjectLine = {};
+            let styleObjectLabel = {};
+            let styleObjectMessage = {};
+
+            for (const key in this.propData) {
+                if (this.propData.hasOwnProperty.call(this.propData, key)) {
+                    const element = this.propData[key]
+                    if (!element && element !== false && element != 0) {
+                        continue
+                    }
+                    switch (key) {
+                        case 'widthInfo':
+                            styleObject['width'] = element
+                            break
+                        case 'heightInfo':
+                            styleObject['height'] = element
+                            break
+                        case 'bgColorInfo':
+                            if (element && element.hex8) {
+                                styleObject['background-color'] = element.hex8
+                            }
+                            break
+                        case 'bgImgUrlInfo':
+                            styleObject['background-image'] = `url(${window.IDM.url.getWebPath(element)})`
+                            break
+                        case "boxTitle":
+                            IDM.style.setBoxStyle(styleObject,element)
+                            break;
+                        
+
+                        case 'minWidthInfoTitle':
+                            styleObjectTitle['min-width'] = element
+                            break
+                        case 'heightInfoTitle':
+                            styleObjectTitle['height'] = element
+                            break
+                        case 'positionYInfoTitle':
+                            styleObjectTitleBox['top'] = element
+                            break
+                        case "boxInfoTitle":
+                            IDM.style.setBoxStyle(styleObjectTitle,element)
+                            break;
+                        
+                        case 'WidthInfoTitleImg':
+                            styleObjectTitleImg['width'] = element
+                            break
+                        case 'heightInfoTitleImg':
+                            styleObjectTitleImg['height'] = element
+                            break
+                        case "boxInfoTitleImg":
+                            IDM.style.setBoxStyle(styleObjectTitleImg,element)
+                            break;
+                        case 'fontInfoTitle':
+                            IDM.style.setFontStyle(styleObjectTitle, element)
+                            this.adaptiveFontSize(styleObjectTitle, element)
+                            break
+                    
+                        case 'colorLine':
+                            if (element && element.hex8) {
+                                styleObjectLine['background-color'] = element.hex8
+                            }
+                            break
+                        case 'fontInfoLabel':
+                            IDM.style.setFontStyle(styleObjectLabel,element)
+                            this.adaptiveFontSize(styleObjectLabel, element)
+                            break;
+                        case "boxInfoLabel":
+                            IDM.style.setBoxStyle(styleObjectLabel,element)
+                            break;
+                        case "fontInfoMessage":
+                            IDM.style.setFontStyle(styleObjectMessage,element)
+                            this.adaptiveFontSize(styleObjectMessage, element)
+                            break;
+                        case "boxInfoMessage":
+                            IDM.setBoxStyle(styleObjectMessage,element)
+                            break;
+                    }
+                }
+            }
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .info', styleObject)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .info .title .title', styleObjectTitleBox)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .info .title .title_main', styleObjectTitle)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .info .title .title_main img', styleObjectTitleImg)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .info .message .label .line', styleObjectLine)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .info .message .label .text', styleObjectLabel)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .info .message .content', styleObjectMessage)
+        },
         convertAttrToStyleObject() {
+            this.convertAttrToStyleObjectTitle()
+            this.convertAttrToStyleObjectContent()
+            this.convertAttrToStyleObjectInfo()
             const styleObject = {},
-                titleObj = {},
                 contentObj = {}
             if (this.propData.bgSize && this.propData.bgSize == 'custom') {
                 styleObject['background-size'] =
@@ -96,10 +274,7 @@ export default {
                         case 'border':
                             IDM.style.setBorderStyle(styleObject, element)
                             break
-                        case 'titleFont':
-                            IDM.style.setFontStyle(titleObj, element)
-                            this.adaptiveFontSize(titleObj, element)
-                            break
+                        
                         case 'contentFont':
                             IDM.style.setFontStyle(contentObj, element)
                             this.adaptiveFontSize(contentObj, element)
@@ -108,8 +283,6 @@ export default {
                 }
             }
             window.IDM.setStyleToPageHead(this.moduleObject.id, styleObject)
-            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-text-template-title', titleObj)
-            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-text-template-content', contentObj)
             this.initData()
         },
         reload() {
@@ -127,7 +300,11 @@ export default {
                     deptNameText: '梦创',
                     createYear: '2023',
                     createMonth: '1',
-                    createDay: '1'
+                    createDay: '1',
+
+                    infoTitle: '党务小知识',
+                    infoLabel: '党龄',
+                    infoMessage: '指成为正式党员后的全部时间。党员的党龄，从预备期满转为正式党员之日算起。'
                 }
                 return
             }
@@ -178,18 +355,6 @@ export default {
         },
         setContextValue(object) {
             console.log('统一接口设置的值', object)
-            if (object.type != 'pageCommonInterface') {
-                return
-            }
-            //这里使用的是子表，所以要循环匹配所有子表的属性然后再去设置修改默认值
-            if (object.key == this.propData.dataName) {
-                // this.propData.fontContent = this.getExpressData(this.propData.dataName,this.propData.dataFiled,object.data);
-                this.$set(
-                    this.propData,
-                    'fontContent',
-                    this.getExpressData(this.propData.dataName, this.propData.dataFiled, object.data)
-                )
-            }
         },
         sendBroadcastMessage(object) {
             window.IDM.broadcast && window.IDM.broadcast.send(object)
@@ -210,8 +375,70 @@ export default {
     }
 }
 </script>
+<style lang="scss" scoped>
+.ITextTemplate_app{
+    .info{
+        position: relative;
+        margin-top: 50px;
+        padding: 32px 13px;
+        box-sizing: border-box;
+        background-image: url(../assets/info-bg.png);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        .title{
+            position: absolute;
+            top: -20px;
+            left: 0;
+            right: 0;
+            .title_main{
+                min-width: 160px;
+                height: 40px;
+                padding: 0 17px;
+                background: #BD1E25;
+                border-radius: 12px;
+                img{
+                    width: 26px;
+                    height: 28px;
+                    margin-right: 12px;
+                }
+                .text{
+                    font-family: FZDBSJW--GB1-0;
+                    font-size: 17px;
+                    color: #FFFFFF;
+                    letter-spacing: 0.8px;
+                }
+            }
+        }
+        .message{
+            .label{
+                .line{
+                    width: 20px;
+                    height: 1px;
+                    background: #BD1E25;
+                }
+                .text{
+                    margin: 0 10px;
+                    font-family: PingFang-SC-Bold;
+                    font-size: 14px;
+                    color: #BD1E25;
+                    letter-spacing: 0;
+                }
+            }
+            .content{
+                margin-top: 9px;
+                text-indent: 2em;
+                font-family: PingFangSC-Regular;
+                font-size: 12px;
+                color: #333333;
+                letter-spacing: 0;
+                line-height: 20px;
+            }
+        }
+    }
+}
+</style>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .idm-text-template-title,
 .idm-text-template-content {
     * {
