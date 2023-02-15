@@ -1181,10 +1181,20 @@ export default {
     sendSearchValue(text, type) {
       this.sendBroadcastMessage({
         type: 'linkageResult',
-        rangeModule:
-          this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
+        rangeModule: this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
         message: { text, type }
       });
+      if(this.propData.linkageDemandPageModule&&this.propData.linkageDemandPageModule.length>0){
+        let moduleIdArray = [];
+        this.propData.linkageDemandPageModule.forEach(item=>{moduleIdArray.push(item.moduleId)});
+        this.sendBroadcastMessage({
+          type:"linkageDemand",
+          message: text,
+          rangeModule: moduleIdArray,
+          messageKey: this.propData.formFiledKey||this.propData.ctrlId,
+          triggerType: option===true?'AT':(option?'MT':'OT')
+        })
+      }
     },
     onSearch(val) {
       this.preSearchValue = val;

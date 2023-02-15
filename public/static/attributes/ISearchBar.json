@@ -60,7 +60,7 @@
           "text": "热门数据源",
           "desc": "用于选择热门的数据源",
           "bindKey": "popularDataSource",
-          "dataSourceUrl":"/ctrl/dataSource/getDatasourceByGroup",
+          "dataSourceUrl": "/ctrl/dataSource/getDatasourceByGroup",
           "display": "@[showPopular&&popularType=='dataSource']"
         },
         {
@@ -131,7 +131,7 @@
           "text": "历史数据源",
           "desc": "用于选择历史的数据源，入参有{type: 历史排序规则,pageId,...urlObject}",
           "bindKey": "recordDataSource",
-          "dataSourceUrl":"/ctrl/dataSource/getDatasourceByGroup",
+          "dataSourceUrl": "/ctrl/dataSource/getDatasourceByGroup",
           "display": "@[showRecord&&recordType=='dataSource']"
         },
         {
@@ -149,7 +149,7 @@
           "text": "历史保存数据源",
           "desc": "用于选择保存历史的数据源，入参有{text: 当前搜索输入的文字}",
           "bindKey": "recordAdddataSource",
-          "dataSourceUrl":"/ctrl/dataSource/getDatasourceByGroup",
+          "dataSourceUrl": "/ctrl/dataSource/getDatasourceByGroup",
           "display": "@[showRecord&&recordType=='dataSource']"
         },
         {
@@ -158,7 +158,7 @@
           "text": "历史删除数据源",
           "desc": "用于选择删除历史的数据源，入参有{text: 当前搜索输入的文字}",
           "bindKey": "recordRemoveDataSource",
-          "dataSourceUrl":"/ctrl/dataSource/getDatasourceByGroup",
+          "dataSourceUrl": "/ctrl/dataSource/getDatasourceByGroup",
           "display": "@[showRecord&&recordType=='dataSource']"
         }
       ]
@@ -595,7 +595,7 @@
       "type": "group",
       "text": "面板样式",
       "desc": "用于设置容纳热门和历史的外层容器样式",
-      "display":"@[showPopular||showRecord]",
+      "display": "@[showPopular||showRecord]",
       "helpUrl": "",
       "children": [
         {
@@ -1108,14 +1108,6 @@
       "desc": "点击？查看高级设置用法指南",
       "children": [
         {
-          "type": "pageModuleSelect",
-          "layoutType": "block",
-          "text": "tab菜单联动组件",
-          "desc": "选择点击tab需要联动的组件",
-          "bindKey": "triggerComponents",
-          "multiple": true
-        },
-        {
           "type": "group",
           "text": "适配设置",
           "desc": "通过设置属性来适配移动端页面尺寸",
@@ -1135,6 +1127,45 @@
               "desc": "与基准值配合使用，如果在实际预览屏幕宽为基准值的两倍，则此组件所有可适配的内容都会基于此处设置的适配比例相对应的进行放大缩小，例如此处设置1.2，则会相对应的放大至1.2倍",
               "bindKey": "adaptationRatio",
               "default": "1.2"
+            }
+          ]
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "表单标识",
+          "bindKey": "formFiledKey",
+          "desc": "如果为空则会提交表单时用唯一标识作为key",
+          "default": ""
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "分组标识",
+          "bindKey": "formGroupKey",
+          "desc": "表单分组标识，用于批量提交分组标识相同的表单控件值，减少提交控件一个一个选择控件的范围",
+          "default": "formGroupKey"
+        },
+        {
+          "type": "group",
+          "text": "联动组件",
+          "desc": "当选择的数据有变动会联动这里选择的组件，把当前选中的对象传递给这些组件",
+          "children": [
+            {
+                "type": "pageModuleSelect",
+                "layoutType": "block",
+                "text": "需求组件范围",
+                "desc": "当前选项变更需要联动其他组件需求值（比如下拉选项数据等）的组件范围",
+                "bindKey": "linkageDemandPageModule",
+                "multiple": true
+            },
+            {
+              "type": "pageModuleSelect",
+              "layoutType": "block",
+              "text": "tab菜单联动组件",
+              "desc": "选择点击tab需要联动的组件",
+              "bindKey": "triggerComponents",
+              "multiple": true
             }
           ]
         }
