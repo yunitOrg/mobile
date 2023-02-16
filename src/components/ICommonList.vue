@@ -277,7 +277,7 @@ export default {
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .box-line', boxLineStyleObj)
             // 标题样式
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .common-list-title', lineTitleFontStyleObj)
-            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .common-list-title .text-o-e-2', lineTitleClampObj)
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .common-list-title.text-o-e-2', lineTitleClampObj)
             // 图片样式
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .common-list-left-image', imageStyleObj)
             // 时间行样式

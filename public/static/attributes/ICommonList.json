@@ -633,7 +633,7 @@
                     "text": "标题行数",
                     "desc": "设置标题文本超过换行的行数，如果没有超过则不生效",
                     "bindKey": "lineTitleClamp",
-                    "display": "@[styleType == 'styleTwo']",
+                    "display": "@[styleType == 'styleTwo' || styleType == 'customFunction']",
                     "default": 2
                 },
                 {
