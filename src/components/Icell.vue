@@ -117,6 +117,13 @@ export default {
       }
       return obj
     },
+    // 接收消息后执行函数
+    handleMsgFun () {
+      if (this.propData.getMsgHandle && this.propData.getMsgHandle.length > 0) {
+        let name = this.propData.getMsgHandle[0].name;
+        window[name] && window[name].call(this);
+      }
+    },
     /**
      * 组件通信：接收消息的方法
      * @param {
@@ -131,7 +138,8 @@ export default {
       switch (object.type) {
         case this.propData.messageKey:
           console.log('Icell接收消息: ', object.message);
-          this.inforobj = this.fileterParams(object.message)
+          this.inforobj = this.fileterParams(object.message);
+          this.handleMsgFun();
           break;
       }
     },

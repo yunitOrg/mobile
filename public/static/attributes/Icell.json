@@ -193,6 +193,14 @@
             "desc": "点击执行函数",
             "bindKey": "customFunc",
             "multiple": false
+          },
+          {
+            "type": "actionSelect",
+            "layoutType": "block",
+            "text": "收到消息后执行函数",
+            "desc": "收到消息后执行函数",
+            "bindKey": "getMsgHandle",
+            "multiple": false
           }
         ]
       }
