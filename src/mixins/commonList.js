@@ -326,6 +326,16 @@ export default {
                     }
                     this.initData()
                     break
+                case 'linkageResult':
+                    // 接受到数组
+                    if(Array.isArray(messageObject.message)){
+                        this.pageData.value = messageObject.message
+                    }
+                    // 接受到含更多连接，角标，数组
+                    if(Array.isArray(messageObject?.message?.value)){
+                        this.pageData = messageObject.message
+                    }
+                    break
             }
             console.log('组件收到消息', messageObject)
         }
