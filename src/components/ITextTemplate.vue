@@ -415,7 +415,7 @@ export default {
 .ITextTemplate_app{
     position: relative;
     .logo{
-        width: 28vw;
+        width: 28%;
         margin: 0 auto 10px auto;
         img{
             width: 100%;

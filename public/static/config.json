@@ -325,6 +325,13 @@
       "className": "Icell",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.ipopbutton",
+      "comName": "弹出框按钮",
+      "className": "IPopButton",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }

@@ -1,31 +1,46 @@
 <template>
-    <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id" class="ITree_app">
-        <ITreeItem :tree_data="data_list" :propData="propData" :moduleObject="moduleObject"></ITreeItem>
+    <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id" class="IPopButton_app">
+        <div @click="clickButton" class="IPopButton_app_main">
+            IPopButton
+        </div>
+        <div v-show="is_show_pop">
+            <van-popup v-model="const_boolean" @close="closePop" :position="propData.position" :overlay="propData.overlay" :round="propData.round" :closeable="propData.closeable" :close-icon-position="propData.closePosition" style="height: 40%">
+                <template>
+                    <div class="drag_container IPopButton_app_pop" idm-ctrl-inner :idm-ctrl-id="moduleObject.id" :idm-container-index="1" >
+                    </div>
+                </template>
+            </van-popup>
+        </div>
     </div>
 </template>
   
 <script>
 import { getTreeData } from '../mock/mockData'
-import ITreeItem from '../commonComponents/ITreeItem'
 export default {
-    name: 'ITree',
-    components: { ITreeItem },
+    name: 'IPopButton',
+    components: {  },
     data() {
         return {
             moduleObject: {},
             propData: this.$root.propData.compositeAttr || {
-                showIcon: true,
-                defaultOpen: true
+                position: 'bottom',
+                closeable: false,
+                round: false,
+                overlay: true,
+                closePosition: '',
             },
             data_list: [],
             demand_params: {},
             conditionObject: {},
+            is_show_pop: false,
+            const_boolean: true,
         }
     },
     props: {
     },
     created() {
         this.moduleObject = this.$root.moduleObject;
+        this.getPopStatus()
         this.convertAttrToStyleObject();
         this.initData()
     },
@@ -36,6 +51,24 @@ export default {
     },
     destroyed() { },
     methods: {
+        closePop() {
+            this.is_show_pop = false;
+            this.const_boolean = false;
+        },
+        getPopStatus() {
+            if ( this.propData.defaultOpen ) {
+                this.is_show_pop = true;
+            } else {
+                this.is_show_pop = false;
+            }
+        },
+        clickButton() {
+            // if ( this. ) {
+
+            // }
+            this.is_show_pop = true;
+            this.const_boolean = true;
+        },
         makeParamsData(data) {
             let result = {};
             if ( this.propData.paramsMakeFunction && this.propData.paramsMakeFunction.length && window[this.propData.paramsMakeFunction[0].name] ) {
@@ -96,7 +129,6 @@ export default {
                 },function(res){
                     if ( res && res.length ) {
                         that.data_list = res;
-                        that.changeOpenStatus(that.data_list)
                     }
                 },function(error){
                     //这里是请求失败的返回结果
@@ -104,19 +136,6 @@ export default {
                 })
             } else {
                 that.data_list = getTreeData
-                that.changeOpenStatus(that.data_list)
-            }
-        },
-        changeOpenStatus(data) {
-            for( let i = 0,maxi = data.length;i < maxi;i++ ) {
-                if ( this.propData.defaultOpen && data[i].children && data[i].children.length ) {
-                    this.$set(data[i],'showChildren',true)
-                } else {
-                    this.$set(data[i],'showChildren',false)
-                }
-                if ( data[i].children && data[i].children.length ) {
-                    this.changeOpenStatus(data[i].children)
-                }
             }
         },
         /**
@@ -124,6 +143,7 @@ export default {
          */
         propDataWatchHandle(propData) {
             this.propData = propData.compositeAttr || {};
+            this.getPopStatus()
             this.convertAttrToStyleObject();
             this.initData()
         },
@@ -315,10 +335,14 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.ITree_app{
+.IPopButton_app{
     height: 100%;
     padding: 0 15px;
-    overflow-y: auto;
+    overflow: auto;
+    height: ca;
+    .IPopButton_app_pop{
+        height: 100%;
+    }
 }
 
 </style>
