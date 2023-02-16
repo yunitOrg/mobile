@@ -1,5 +1,8 @@
 <template>
     <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id" class="ITextTemplate_app">
+        <div v-if="propData.isShowLogo" class="logo">
+            <img :src="getImageUrl('logoImgUrl')" alt="">
+        </div>
         <div v-if="propData.isShowTitle" class="idm-text-template-title">
             <span v-html="textFilter(propData.titleText)"></span>
         </div>
@@ -7,7 +10,7 @@
         <div v-if="propData.isShowInfo" class="info">
             <div v-if="propData.isShowInfoTitle" class="title flex_center">
                 <div class="title_main flex_center">
-                    <img v-if="propData.isShowInfoTitleImg" :src="getImageUrl()" alt="">
+                    <img v-if="propData.isShowInfoTitleImg" :src="getImageUrl('infoTitleImgUrl')" alt="">
                     <span class="text">{{ componentData[this.propData.dataFieldInfoTitle || 'infoTitle'] }}</span>
                 </div>
             </div>
@@ -36,7 +39,8 @@ export default {
                 // isShowInfo: true,
                 // isShowInfoTitle: true,
                 // isShowInfoTitleImg: true,
-                // isShowInfoLabel: true
+                // isShowInfoLabel: true,
+                // isShowLogo: true
             },
             componentData: {},
             currentPage: 1
@@ -48,11 +52,11 @@ export default {
         this.convertAttrToStyleObject()
     },
     methods: {
-        getImageUrl(item) {
-            if ( this.propData.infoTitleImgUrl ) {
-                return IDM.url.getWebPath(this.propData.infoTitleImgUrl)
+        getImageUrl(key) {
+            if ( this.propData[key] ) {
+                return IDM.url.getWebPath(this.propData[key])
             } else {
-                return IDM.url.getModuleAssetsWebPath(require(`../assets/danghui.png`),this.moduleObject)
+                return IDM.url.getModuleAssetsWebPath(require(`../assets/${key}.png`),this.moduleObject)
             }
         },
         textFilter(text) {
@@ -68,6 +72,29 @@ export default {
         propDataWatchHandle(propData) {
             this.propData = propData.compositeAttr || {}
             this.convertAttrToStyleObject()
+        },
+        convertAttrToStyleObjectLogo() {
+            let styleObject= {};
+            for (const key in this.propData) {
+                if (this.propData.hasOwnProperty.call(this.propData, key)) {
+                    const element = this.propData[key]
+                    if (!element && element !== false && element != 0) {
+                        continue
+                    }
+                    switch (key) {
+                        case 'widthLogo':
+                            styleObject['width'] = element;
+                            break
+                        case "heightLogo":
+                            styleObject['height'] = element;
+                            break;
+                        case 'boxLogo':
+                            IDM.style.setBoxStyle(styleObject,element)
+                            break;
+                    }
+                }
+            }
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .logo', styleObject)
         },
         convertAttrToStyleObjectTitle() {
             let styleObject= {};
@@ -223,6 +250,7 @@ export default {
             this.convertAttrToStyleObjectTitle()
             this.convertAttrToStyleObjectContent()
             this.convertAttrToStyleObjectInfo()
+            this.convertAttrToStyleObjectLogo()
             const styleObject = {};
             if (this.propData.bgSize && this.propData.bgSize == 'custom') {
                 styleObject['background-size'] =
@@ -385,6 +413,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 .ITextTemplate_app{
+    position: relative;
+    .logo{
+        width: 28vw;
+        margin: 0 auto 10px auto;
+        img{
+            width: 100%;
+        }
+    }
     .idm-text-template-title{
         text-align: center;
         span{
