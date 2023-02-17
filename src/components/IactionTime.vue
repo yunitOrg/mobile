@@ -19,7 +19,7 @@
         <div>{{form.time}}</div>
       </div>
       <van-action-sheet v-model="showactive" :actions="actions" @select="onSelect" class="actionli" cancel-text="取消" />
-      <van-calendar v-model="showtime" :show-confirm="false" @confirm="onConfirm" class="actiontime" />
+      <van-calendar v-model="showtime" :show-confirm="false" @confirm="onConfirm" :min-date="minDate" :max-date="maxDate" class="actiontime" />
     </div>
   </div>
 </template>
@@ -33,6 +33,8 @@ export default {
       propData: this.$root.propData.compositeAttr || {
         height: '45px'
       },
+      minDate: new Date(2022, 0, 1),
+      maxDate: new Date(2023, 12, 31),
       form: {
         active: {name: ''},
         time: ''
