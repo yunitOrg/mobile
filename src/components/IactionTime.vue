@@ -18,8 +18,8 @@
         <span>召开时间：</span>
         <div>{{form.time}}</div>
       </div>
-      <van-action-sheet v-model="showactive" :actions="actions" @select="onSelect" cancel-text="取消" />
-      <van-calendar v-model="showtime" :show-confirm="false" @confirm="onConfirm" />
+      <van-action-sheet v-model="showactive" :actions="actions" @select="onSelect" class="actionli" cancel-text="取消" />
+      <van-calendar v-model="showtime" :show-confirm="false" @confirm="onConfirm" class="actiontime" />
     </div>
   </div>
 </template>
@@ -81,10 +81,22 @@ export default {
             case 'boxborder':
               IDM.style.setBorderStyle(styleObject, element, true);
               break
+            case 'timeHei':
+              tipsStyleObj['height'] = element + ' !important';
+              break
+            case 'actionHei':
+              rightStyle['height'] = element + ' !important';
+              break
+            case 'actionMaxHei':
+              leftStyle['max-height'] = element + ' !important';
+              break
           }
         }
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .actiontime-wrap", styleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .actiontime-wrap .actionli", rightStyle);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .actiontime-wrap .actionli .van-action-sheet__content", leftStyle);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .actiontime-wrap .actiontime", tipsStyleObj);
     },
     // 过滤接口参数
     fileterParams() {
@@ -143,12 +155,26 @@ export default {
       this.showtime = false;
       this.handleSendMsg();
     },
+    hadnleFilterMsg(msg) {
+      let obj = {};
+      if (this.propData.handleFilter && this.propData.handleFilter.length > 0) {
+        let name = this.propData.handleFilter[0].name
+        obj = window[name] && window[name].call(this, msg);
+      }
+      return obj
+    },
     handleSendMsg () {
       if (this.propData.triggerComponents && this.propData.triggerComponents.length > 0) {
+        let obj = {}
+        if (this.propData.handleFilter && this.propData.handleFilter.length > 0) {
+          obj = this.hadnleFilterMsg(this.form);
+        } else {
+          obj = this.form;
+        }
         this.sendBroadcastMessage({
           type: this.propData.sendKey,
           rangeModule: this.propData.triggerComponents && this.propData.triggerComponents.map(el => el.moduleId),
-          message: this.form
+          message: obj
         })
       }
     },

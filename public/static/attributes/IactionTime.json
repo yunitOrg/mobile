@@ -17,6 +17,37 @@
       },
       {
         "type": "group",
+        "text": "基本属性",
+        "desc": "提供设置组件能达到展示效果的基本属性设置信息",
+        "children": [
+          {
+            "type": "input",
+            "layoutType": "inline",
+            "text": "日历高度",
+            "desc": "日历高度",
+            "bindKey": "timeHei",
+            "default": "80%"
+          },
+          {
+            "type": "input",
+            "layoutType": "block",
+            "text": "动作面板高度",
+            "desc": "动作面板高度",
+            "bindKey": "actionHei",
+            "default": "60%"
+          },
+          {
+            "type": "input",
+            "layoutType": "block",
+            "text": "动作最大高度",
+            "desc": "动作面板最大高度",
+            "bindKey": "actionMaxHei",
+            "default": "300px"
+          }
+        ]
+      },
+      {
+        "type": "group",
         "text": "外层样式",
         "desc": "点击？查看样式设置用法指南",
         "helpUrl": "",
@@ -119,6 +150,14 @@
             "text": "发送消息key",
             "desc": "发送消息key",
             "bindKey": "sendKey"
+          },
+          {
+            "type": "actionSelect",
+            "layoutType": "block",
+            "text": "发送消息处理函数",
+            "desc": "发送消息处理函数",
+            "bindKey": "handleFilter",
+            "multiple": false
           }
         ]
       }
