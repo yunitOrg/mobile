@@ -23,6 +23,7 @@ import {
     ActionSheet,
     List,
     Cell,
+    Picker 
 } from 'vant'
 
 Vue.use(Tab)
@@ -47,3 +48,4 @@ Vue.use(Tab)
     .use(Popup)
     .use(ActionSheet)
     .use(List)
+    .use(Picker)

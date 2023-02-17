@@ -1,21 +1,26 @@
 <template>
     <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id" class="IPopButton_app">
         <div @click="clickButton" class="IPopButton_app_main">
-            IPopButton
+            <div class="label">{{ propData.label }}</div>
+            <div v-if="propData.showValue" class="value">{{ value }}</div>
         </div>
         <div v-show="is_show_pop">
-            <van-popup v-model="const_boolean" @close="closePop" :position="propData.position" :overlay="propData.overlay" :round="propData.round" :closeable="propData.closeable" :close-icon-position="propData.closePosition" style="height: 40%">
-                <template>
+            <van-popup v-model="const_boolean" @close="closePop" :position="propData.position" :overlay="propData.overlay" :round="propData.round" :closeable="propData.closeable" :close-icon-position="propData.closePosition" :style="getPopStyle()">
+                <template v-if="propData.popContentType == 'custom'">
                     <div class="drag_container IPopButton_app_pop" idm-ctrl-inner :idm-ctrl-id="moduleObject.id" :idm-container-index="1" >
                     </div>
                 </template>
+                <template v-else-if="propData.popContentType == 'picker'">
+                    <van-picker :title="propData.titlePicker" :value-key="propData.labelKey" :show-toolbar="propData.showToolbar" :columns="data_list" @confirm="onConfirm" @cancel="onCancel" @change="onChange" >
+                    </van-picker>
+                </template>
             </van-popup>
         </div>
+        
     </div>
 </template>
   
 <script>
-import { getTreeData } from '../mock/mockData'
 export default {
     name: 'IPopButton',
     components: {  },
@@ -23,13 +28,32 @@ export default {
         return {
             moduleObject: {},
             propData: this.$root.propData.compositeAttr || {
+                label: '按钮',
                 position: 'bottom',
                 closeable: false,
                 round: false,
                 overlay: true,
                 closePosition: '',
+                popContentType: 'picker',
+                dataSourceType: 'static',
+                // picker
+                showToolbar: true,
+                titlePicker: '标题',
+                labelKey: 'label',
+                staticData: [
+                    {
+                        label: '杭州',
+                        value: '1'
+                    },
+                    {
+                        label: '宁波',
+                        value: '2'
+                    }
+                ]
+
             },
-            data_list: [],
+            value: 'value值',
+            data_list: [ ],
             demand_params: {},
             conditionObject: {},
             is_show_pop: false,
@@ -40,6 +64,7 @@ export default {
     },
     created() {
         this.moduleObject = this.$root.moduleObject;
+        this.value = this.propData.defaultValue;
         this.getPopStatus()
         this.convertAttrToStyleObject();
         this.initData()
@@ -51,6 +76,58 @@ export default {
     },
     destroyed() { },
     methods: {
+        getPopStyle() {
+            let styleObject = {};
+            styleObject['width'] = this.propData.widthPop;
+            styleObject['height'] = this.propData.heightPop;
+            return styleObject
+        },
+        onConfirm(value) {
+            console.log(value)
+            this.value = value[this.propData.labelKey];
+            this.is_show_pop = false;
+            this.const_boolean = false;
+            let that = this;
+            if(this.moduleObject.env=="develop"){
+                return;
+            }
+            let urlObject = window.IDM.url.queryObject(),
+            pageId = window.IDM.broadcast&&window.IDM.broadcast.pageModule?window.IDM.broadcast.pageModule.id:"";
+           
+            var clickFunction = this.propData.clickConfirmFunction;
+            clickFunction&&clickFunction.forEach(item=>{
+                    window[item.name]&&window[item.name].call(this,{
+                    urlData:urlObject,
+                    pageId,
+                    customParam:item.param,
+                    value: value,
+                    _this:this
+                });
+            })
+        },
+        onCancel() {
+            this.is_show_pop = false;
+            this.const_boolean = false;
+            let that = this;
+            if(this.moduleObject.env=="develop"){
+                return;
+            }
+            let urlObject = window.IDM.url.queryObject(),
+            pageId = window.IDM.broadcast&&window.IDM.broadcast.pageModule?window.IDM.broadcast.pageModule.id:"";
+           
+            var clickFunction = this.propData.clickConcelFunction;
+            clickFunction&&clickFunction.forEach(item=>{
+                    window[item.name]&&window[item.name].call(this,{
+                    urlData:urlObject,
+                    pageId,
+                    customParam:item.param,
+                    _this:this
+                });
+            })
+        },
+        onChange(picker,value) {
+            console.log(value)
+        },
         closePop() {
             this.is_show_pop = false;
             this.const_boolean = false;
@@ -63,9 +140,6 @@ export default {
             }
         },
         clickButton() {
-            // if ( this. ) {
-
-            // }
             this.is_show_pop = true;
             this.const_boolean = true;
         },
@@ -82,6 +156,46 @@ export default {
                 return result
             }
             return data
+        },
+        getInitDataStatic() {
+            this.data_list = this.propData.staticData;
+            console.log('data_list',this.data_list)
+        },
+        getInitDataApi(newParam) {
+            let that = this;
+            if ( this.propData.dataSource && this.propData.dataSource.length ) {
+                IDM.datasource.request(this.propData.dataSource[0].id,{
+                    moduleObject:this.moduleObject,
+                    param:{
+                        ...newParam
+                    }
+                },function(res){
+                    if ( res && res.length ) {
+                        that.data_list = res;
+                    }
+                },function(error){
+                    //这里是请求失败的返回结果
+                    console.log('error',error)
+                })
+            } else {
+                that.data_list = []
+            }
+        },
+        getInitDataCustom(params) {
+            if(this.propData.getDataFunction&&this.propData.getDataFunction.length>0){
+                var resValue = [];
+                try {
+                    resValue = window[this.propData.getDataFunction[0].name]&&window[this.propData.getDataFunction[0].name].call(this,
+                        {
+                            ...params,
+                            ...this.propData.getDataFunction[0].param,
+                            moduleObject:this.moduleObject,
+                            _this: this
+                        });
+                } catch (error) {
+                }
+                this.data_list = resValue;
+            }
         },
         initData() {
             var params = this.commonParam();
@@ -118,24 +232,16 @@ export default {
             }
             params = this.makeParamsData(params)
             let newParam = { ...params };
-            let that = this;
             console.log('newParam',newParam)
-            if ( this.propData.dataSource && this.propData.dataSource.length ) {
-                IDM.datasource.request(this.propData.dataSource[0].id,{
-                    moduleObject:this.moduleObject,
-                    param:{
-                        ...newParam
-                    }
-                },function(res){
-                    if ( res && res.length ) {
-                        that.data_list = res;
-                    }
-                },function(error){
-                    //这里是请求失败的返回结果
-                    console.log('error',error)
-                })
-            } else {
-                that.data_list = getTreeData
+            switch ( this.propData.dataSourceType ) {
+                case 'static':
+                    this.getInitDataStatic()
+                    break;
+                case "dataSource":
+                    this.getInitDataApi(newParam)
+                    break;
+                case "custom":
+                    this.getInitDataCustom(newParam)
             }
         },
         /**
@@ -143,6 +249,7 @@ export default {
          */
         propDataWatchHandle(propData) {
             this.propData = propData.compositeAttr || {};
+            this.value = this.propData.defaultValue;
             this.getPopStatus()
             this.convertAttrToStyleObject();
             this.initData()
@@ -167,7 +274,52 @@ export default {
                 IDM.setStyleToPageHead( "." + themeNamePrefix + item.key + " #" + (this.moduleObject.packageid || "module_demo") + " .ant-select-focused .ant-select-selection, .ant-select-selection:focus, .ant-select-selection:active", borderObject );
             }
         },
+        convertAttrToStyleObjectDom() {
+            let styleObject = {};
+            let styleObjectLabel = {};
+            let styleObjectValue = {};
+            for (const key in this.propData) {
+                if (this.propData.hasOwnProperty.call(this.propData, key)) {
+                    const element = this.propData[key];
+                    if (!element && element !== false && element != 0) {
+                        continue;
+                    }
+                    switch (key) {
+                        case "fontLabel":
+                            IDM.style.setFontStyle(styleObjectLabel,element)
+                            break;
+                        case "boxLabel":
+                            IDM.style.setBoxStyle(styleObjectLabel,element)
+                            break;
+                        case "fontValue":
+                            IDM.style.setFontStyle(styleObjectValue,element)
+                            break;
+                        case "boxValue":
+                            IDM.style.setBoxStyle(styleObjectValue,element)
+                            break;  
+                        case "layout":
+                            if(element.display&&element.display=="flex"){
+                                if(element.direction){
+                                    styleObject["flex-direction"]=element.direction;
+                                }
+                                if(element.direction){
+                                    styleObject["align-items"]=element.align;
+                                }
+                                if(element.direction){
+                                    styleObject["justify-content"]=element.justify;
+                                }
+                            } 
+                            styleObject["display"]=element.display;
+                            break;
+                    }
+                }
+            }
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IPopButton_app_main', styleObject);
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IPopButton_app_main .label', styleObjectLabel);
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .IPopButton_app_main .value', styleObjectValue);
+        },
         convertAttrToStyleObject() {
+            this.convertAttrToStyleObjectDom()
             var styleObject = {};
             if (this.propData.bgSize && this.propData.bgSize == "custom") {
                 styleObject["background-size"] = (this.propData.bgSizeWidth ? this.propData.bgSizeWidth.inputVal + this.propData.bgSizeWidth.selectVal : "auto") + " " + (this.propData.bgSizeHeight ? this.propData.bgSizeHeight.inputVal + this.propData.bgSizeHeight.selectVal : "auto")
@@ -341,6 +493,9 @@ export default {
     overflow: auto;
     height: ca;
     .IPopButton_app_pop{
+        height: 100%;
+    }
+    .IPopButton_app_main{
         height: 100%;
     }
 }

@@ -27,7 +27,7 @@
                     "text": "默认显示",
                     "desc":"是否默认显示弹框",
                     "bindKey": "defaultOpen",
-                    "default": true,
+                    "default": false,
                     "dictionary": [
                         {
                             "label": "是",
@@ -81,6 +81,25 @@
                     "type": "radio",
                     "styleType": "radio",
                     "layoutType": "inline",
+                    "text": "选择结果",
+                    "desc":"是否显示选择值，关键字为value，进行选择操作后可自定义函数修改value的值。",
+                    "bindKey": "showValue",
+                    "default": false,
+                    "dictionary": [
+                        {
+                            "label": "是",
+                            "value": true
+                        },
+                        {
+                            "label": "否",
+                            "value": false
+                        }
+                    ]
+                },
+                {
+                    "type": "radio",
+                    "styleType": "radio",
+                    "layoutType": "inline",
                     "text": "圆角显示",
                     "desc":"弹框是否以圆角形式显示",
                     "bindKey": "round",
@@ -95,6 +114,22 @@
                             "value": false
                         }
                     ]
+                },
+                {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "标签名称",
+                    "desc": "按钮的标签名称",
+                    "bindKey": "label",
+                    "default": "按钮"
+                },
+                {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "默认值",
+                    "desc": "默认显示的结果值",
+                    "bindKey": "defaultValue",
+                    "default": "value默认值"
                 },
                 {
                     "type": "select",
@@ -151,17 +186,165 @@
                             "value": "bottom-right"
                         }
                     ]
+                },
+                {
+                    "type": "select",
+                    "layoutType": "inline",
+                    "text": "弹框内容",
+                    "bindKey": "popContentType",
+                    "default": "custom",
+                    "dictionary": [
+                        {
+                            "label": "自定义拖拽容器",
+                            "value": "custom"
+                        },
+                        {
+                            "label": "选择器",
+                            "value": "picker"
+                        }
+                    ]
                 }
             ]
         },
-        
-       
+        {
+            "type": "group",
+            "text": "选择器基本属性",
+            "children":[
+                {
+                    "type": "radio",
+                    "styleType": "radio",
+                    "layoutType": "inline",
+                    "text": "顶部栏",
+                    "desc":"是否显示顶部栏",
+                    "bindKey": "showToolbar",
+                    "default": true,
+                    "dictionary": [
+                        {
+                            "label": "是",
+                            "value": true
+                        },
+                        {
+                            "label": "否",
+                            "value": false
+                        }
+                    ]
+                },
+                {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "顶部标题",
+                    "desc": "顶部栏标题",
+                    "bindKey": "titlePicker",
+                    "default": "选择"
+                },
+                {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "文字键名",
+                    "desc": "选项对象中，选项文字对应的键名",
+                    "bindKey": "labelKey",
+                    "default": "label"
+                },
+                {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "值键名",
+                    "desc": "选项对象中，值对应的键名",
+                    "bindKey": "valueKey",
+                    "default": "value"
+                },
+                {
+                    "type": "actionSelect",
+                    "layoutType": "block",
+                    "text": "确认自定义函数",
+                    "bindKey": "clickConfirmFunction",
+                    "desc": "点击确定时，触发自定义函数",
+                    "multiple": false
+                },
+                {
+                    "type": "actionSelect",
+                    "layoutType": "block",
+                    "text": "取消自定义函数",
+                    "bindKey": "clickConcelFunction",
+                    "desc": "点击取消时，触发自定义函数",
+                    "multiple": false
+                }
+            ]
+        },
+        {
+            "type": "group",
+            "text": "元素基本样式",
+            "children":[
+                {
+                    "type": "group",
+                    "text": "标签样式",
+                    "children":[
+                        {
+                            "type": "font",
+                            "layoutType": "block",
+                            "text": "文字",
+                            "bindKey": "fontLabel"
+                        },
+                        {
+                            "type": "box",
+                            "layoutType": "block",
+                            "text": "内外边距",
+                            "bindKey": "boxLabel"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "text": "结果值样式",
+                    "children":[
+                        {
+                            "type": "font",
+                            "layoutType": "block",
+                            "text": "文字",
+                            "bindKey": "fontValue"
+                        },
+                        {
+                            "type": "box",
+                            "layoutType": "block",
+                            "text": "内外边距",
+                            "bindKey": "boxValue"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "text": "弹框样式",
+                    "children":[
+                        {
+                            "type": "input",
+                            "layoutType": "inline",
+                            "text": "宽度",
+                            "bindKey": "widthPop",
+                            "default": ""
+                        },
+                        {
+                            "type": "input",
+                            "layoutType": "inline",
+                            "text": "高度",
+                            "bindKey": "heightPop",
+                            "default": "40%"
+                        }
+                    ]
+                }
+            ]
+        },
         {
             "type": "group",
             "text": "容器样式设置",
             "desc": "点击？查看样式设置用法指南",
             "helpUrl": "",
             "children": [
+                {
+                    "type": "layout",
+                    "layoutType": "inline",
+                    "text": "样式布局",
+                    "bindKey": "layout"
+                },
                 {
                     "type": "inlineGroup",
                     "text": "宽高",
@@ -390,10 +573,72 @@
             "desc": "点击？查看高级设置用法指南",
             "children": [
                 {
+                    "type": "select",
+                    "layoutType": "inline",
+                    "text": "数据来源",
+                    "bindKey": "dataSourceType",
+                    "default": "static",
+                    "dictionary": [
+                        {
+                            "label": "静态数据",
+                            "value": "static"
+                        },
+                        {
+                            "label": "数据源",
+                            "value": "dataSource"
+                        },
+                        {
+                            "label": "自定义",
+                            "value": "custom"
+                        }
+                    ]
+                },
+                {
+                    "type": "table",
+                    "text": "应用配置",
+                    "bindKey": "staticData",
+                    "tabText": "应用[index]",
+                    "openGroup": true,
+                    "display":"@[dataSourceType=='static']",
+                    "children": [
+                        {
+                            "type": "input",
+                            "layoutType": "inline",
+                            "text": "选项值",
+                            "desc": "选项对应的value值",
+                            "bindKey": "value",
+                            "default": ""
+                        },
+                        {
+                            "type": "input",
+                            "layoutType": "inline",
+                            "text": "选项名称",
+                            "desc": "选项要显示的名称",
+                            "bindKey": "label",
+                            "default": ""
+                        }
+                    ],
+                    "default": [
+                        {
+                            "value": 1,
+                            "label": "选项一"
+                        }
+                    ]
+                },
+                {
                     "type": "dataSourceSelect",
                     "layoutType": "inline",
                     "text": "数据源",
-                    "bindKey": "dataSource"
+                    "bindKey": "dataSource",
+                    "display":"@[dataSourceType=='dataSource']"
+                },
+                {
+                    "type": "actionSelect",
+                    "layoutType": "block",
+                    "text": "自定义函数",
+                    "bindKey": "getDataFunction",
+                    "display":"@[dataSourceType=='custom']",
+                    "multiple": false
                 },
                 {
                     "type": "table",
@@ -476,14 +721,6 @@
                     "text": "参数自定义函数",
                     "bindKey": "paramsMakeFunction",
                     "desc": "用于请求数据源时，对请求参数进行处理，返回处理后的参数",
-                    "multiple": false
-                },
-                {
-                    "type": "actionSelect",
-                    "layoutType": "block",
-                    "text": "节点点击自定义函数",
-                    "bindKey": "clickNodeFunction",
-                    "desc": "点击节点时，触发自定义函数",
                     "multiple": false
                 }
             ]

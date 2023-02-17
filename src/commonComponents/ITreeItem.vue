@@ -3,7 +3,7 @@
         <div v-for="(item,index) in tree_data" :key="index">
             <div @click="clickNode(item)" class="header flex_between">
                 <div class="header_left flex_start">
-                    <div v-if="propData.showIcon && item.children && item.children.length" class="icon">
+                    <div @click.stop="clickIcon(item)" v-if="propData.showIcon && item.children && item.children.length" class="icon">
                         <span v-if="item.showChildren" class="open icon_block">
                             <svg v-if="propData.openIconClass && propData.openIconClass.length" class="idm_filed_svg_icon" aria-hidden="true" >
                                 <use :xlink:href="`#${propData.openIconClass[0]}`"></use>
@@ -58,6 +58,13 @@ export default {
         this.convertAttrToStyleObjectItem()
     },
     methods: {
+        clickIcon(item) {
+            if ( item.children && item.children.length ) {
+                item.showChildren = !item.showChildren;
+            } else {
+                item.showChildren = false;
+            }
+        },
         clickNode(item) {
             if ( item.children && item.children.length ) {
                 item.showChildren = !item.showChildren;
