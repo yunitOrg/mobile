@@ -10,13 +10,25 @@
   :idm-ctrl-id="moduleObject.id"
   >
     <div class="actiontime-wrap">
-      <div class="action actionbox" @click="handleShow(1)">
-        <span>活动类型：</span>
-        <div>{{form.active['name']}}</div>
+      <div class="action actionbox" >
+        <span @click="handleShow(1)">活动类型：</span>
+        <div v-if="form.active['name']">
+          <span @click="handleShow(1)">{{form.active['name']}} </span>
+          <span @click="handleClose(1)">
+            <svg-icon icon-class="close1" className="actionclose">
+          </svg-icon>
+          </span>
+        </div>
       </div>
-      <div class="action timebox" @click="handleShow(2)">
-        <span>召开时间：</span>
-        <div>{{form.time}}</div>
+      <div class="action timebox" >
+        <span @click="handleShow(2)">召开时间：</span>
+        <div v-if="form.time">
+          <span @click="handleShow(2)">{{form.time}}</span>
+          <span @click="handleClose(2)">
+            <svg-icon icon-class="close1" className="actionclose">
+            </svg-icon>
+          </span>
+        </div>
       </div>
       <van-action-sheet v-model="showactive" :actions="actions" @select="onSelect" class="actionli" cancel-text="取消" />
       <van-calendar v-model="showtime" :show-confirm="false" @confirm="onConfirm" :min-date="minDate" :max-date="maxDate" class="actiontime" />
@@ -157,6 +169,18 @@ export default {
       this.showtime = false;
       this.handleSendMsg();
     },
+    handleClose (type) {
+      switch (type) {
+        case 1:
+          this.form.active = {}
+          break
+        case 2:
+          this.form.time = ''
+          break
+      }
+      console.log(this.form)
+      this.handleSendMsg();
+    },
     hadnleFilterMsg(msg) {
       let obj = {};
       if (this.propData.handleFilter && this.propData.handleFilter.length > 0) {
@@ -207,6 +231,10 @@ export default {
     flex: 1;
     display: flex;
     justify-content: center;
+  }
+  .actionclose{
+    margin-left: 3px;
+    color: #aba7a7;
   }
 }
 </style>
