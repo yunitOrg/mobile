@@ -304,7 +304,7 @@ export default {
             }
           }
           break;
-        case [this.propData.reloadKey]:
+        case this.propData.reloadKey:
           this.addParams = messageObject.message || {};
           this.initData();
           break;
