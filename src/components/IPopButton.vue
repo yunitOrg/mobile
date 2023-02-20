@@ -2,7 +2,7 @@
     <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id" class="IPopButton_app">
         <div @click="clickButton" class="IPopButton_app_main">
             <div class="label">{{ propData.label }}</div>
-            <div v-if="propData.showValue" class="value">{{ value }}</div>
+            <div v-if="propData.showValue" class="value">{{ form[this.propData.labelKey || 'label'] }}</div>
         </div>
         <div v-show="is_show_pop">
             <van-popup v-model="const_boolean" @close="closePop" :position="propData.position" :overlay="propData.overlay" :round="propData.round" :closeable="propData.closeable" :close-icon-position="propData.closePosition" :style="getPopStyle()">
@@ -11,7 +11,7 @@
                     </div>
                 </template>
                 <template v-else-if="propData.popContentType == 'picker'">
-                    <van-picker :title="propData.titlePicker" :value-key="propData.labelKey" :show-toolbar="propData.showToolbar" :columns="data_list" @confirm="onConfirm" @cancel="onCancel" @change="onChange" >
+                    <van-picker :title="propData.titlePicker" :default-index="default_index" :value-key="propData.labelKey" :show-toolbar="propData.showToolbar" :columns="data_list" @confirm="onConfirm" @cancel="onCancel" @change="onChange" >
                     </van-picker>
                 </template>
             </van-popup>
@@ -52,7 +52,8 @@ export default {
                 ]
 
             },
-            value: 'value值',
+            form: {},
+            default_index: 0,
             data_list: [ ],
             demand_params: {},
             conditionObject: {},
@@ -76,6 +77,24 @@ export default {
     },
     destroyed() { },
     methods: {
+        getDefaultValue() {
+            if ( this.propData.defaultValue !== 0 && !this.propData.defaultValue ) {
+                return 
+            }
+            let result = this.data_list.find((item,index) => {
+                if ( item[this.propData.valueKey] == this.propData.defaultValue ) {
+                    this.default_index = index;
+                    return item
+                }
+            })
+            if ( result ) {
+                this.form = result;
+            } else {
+                this.form = { }
+                this.default_index = 0;
+            }
+            this.postMessage()            
+        },
         getPopStyle() {
             let styleObject = {};
             styleObject['width'] = this.propData.widthPop;
@@ -84,7 +103,7 @@ export default {
         },
         onConfirm(value) {
             console.log(value)
-            this.value = value[this.propData.labelKey];
+            this.form = value;
             this.is_show_pop = false;
             this.const_boolean = false;
             let that = this;
@@ -100,10 +119,33 @@ export default {
                     urlData:urlObject,
                     pageId,
                     customParam:item.param,
-                    value: value,
+                    value: this.form,
                     _this:this
                 });
             })
+            this.postMessage()
+        },
+        postMessage() {
+            if(this.propData.linkageDemandPageModule&&this.propData.linkageDemandPageModule.length>0){
+                let moduleIdArray = [];
+                this.propData.linkageDemandPageModule.forEach(item=>{moduleIdArray.push(item.moduleId)});
+                this.sendBroadcastMessage({
+                    type:"linkageDemand",
+                    message: this.form,
+                    rangeModule: moduleIdArray,
+                    messageKey: this.propData.formFiledKey||this.propData.ctrlId,
+                })
+            }
+            if(this.propData.linkageResultPageModule&&this.propData.linkageResultPageModule.length>0){
+                let moduleIdArray = [];
+                this.propData.linkageResultPageModule.forEach(item=>{moduleIdArray.push(item.moduleId)});
+                this.sendBroadcastMessage({
+                    type: "linkageResult",
+                    message: this.form,
+                    rangeModule: moduleIdArray,
+                    messageKey: this.propData.formFiledKey||this.propData.ctrlId,
+                })
+            }
         },
         onCancel() {
             this.is_show_pop = false;
@@ -159,6 +201,7 @@ export default {
         },
         getInitDataStatic() {
             this.data_list = this.propData.staticData;
+            this.getDefaultValue()
             console.log('data_list',this.data_list)
         },
         getInitDataApi(newParam) {
@@ -172,6 +215,7 @@ export default {
                 },function(res){
                     if ( res && res.length ) {
                         that.data_list = res;
+                        that.getDefaultValue()
                     }
                 },function(error){
                     //这里是请求失败的返回结果
@@ -179,6 +223,7 @@ export default {
                 })
             } else {
                 that.data_list = []
+                that.getDefaultValue()
             }
         },
         getInitDataCustom(params) {
@@ -195,6 +240,7 @@ export default {
                 } catch (error) {
                 }
                 this.data_list = resValue;
+                this.getDefaultValue()
             }
         },
         initData() {

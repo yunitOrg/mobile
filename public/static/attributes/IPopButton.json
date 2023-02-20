@@ -669,22 +669,6 @@
                             "multiple": false
                         }
                     ]
-                },
-                {
-                    "type": "group",
-                    "text": "字段设置",
-                    "children":[
-                        {
-                            "type": "dataSourceFiledSelect",
-                            "layoutType": "inline",
-                            "text": "节点名称",
-                            "bindKey": "dataFieldTitle",
-                            "default": "title",
-                            "ctrlAttrObject": {
-                                "dataSourceBindkey": "dataSource"
-                            }
-                        }
-                    ]
                 }
             ]
         },
@@ -712,6 +696,29 @@
                             "desc": "与基准值配合使用，如果在实际预览屏幕宽为基准值的两倍，则此组件所有可适配的内容都会基于此处设置的适配比例相对应的进行放大缩小，例如此处设置1.2，则会相对应的放大至1.2倍",
                             "bindKey": "adaptationRatio",
                             "default": "1.2"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "text": "联动组件",
+                    "desc": "当选择的数据有变动会联动这里选择的组件，把当前选中的对象传递给这些组件",
+                    "children": [
+                        {
+                            "type": "pageModuleSelect",
+                            "layoutType": "block",
+                            "text": "需求组件范围",
+                            "desc": "当前选项变更需要联动其他组件需求值（比如下拉选项数据等）的组件范围",
+                            "bindKey": "linkageDemandPageModule",
+                            "multiple": true
+                        },
+                        {
+                            "type": "pageModuleSelect",
+                            "layoutType": "block",
+                            "text": "结果组件范围",
+                            "desc": "当前选项变更需要联动其他组件变更结果值的组件范围",
+                            "bindKey": "linkageResultPageModule",
+                            "multiple": true
                         }
                     ]
                 },
