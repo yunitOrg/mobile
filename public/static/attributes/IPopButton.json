@@ -116,6 +116,25 @@
                     ]
                 },
                 {
+                    "type": "radio",
+                    "styleType": "radio",
+                    "layoutType": "inline",
+                    "text": "锁定滚动",
+                    "desc":"是否锁定背景滚动",
+                    "bindKey": "lockScroll",
+                    "default": true,
+                    "dictionary": [
+                        {
+                            "label": "是",
+                            "value": true
+                        },
+                        {
+                            "label": "否",
+                            "value": false
+                        }
+                    ]
+                },
+                {
                     "type": "input",
                     "layoutType": "inline",
                     "text": "标签名称",
