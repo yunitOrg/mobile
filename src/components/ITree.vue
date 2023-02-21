@@ -205,7 +205,7 @@ export default {
                             IDM.style.setFontStyle(styleObject,element)
                             break;
                         case "scroll":
-                            styleObjectDragContainer['overflow-y'] = element;
+                            styleObject['overflow-y'] = element;
                             break;
                     }
                 }
