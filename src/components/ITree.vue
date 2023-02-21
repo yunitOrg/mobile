@@ -204,6 +204,9 @@ export default {
                         case "font":
                             IDM.style.setFontStyle(styleObject,element)
                             break;
+                        case "scroll":
+                            styleObjectDragContainer['overflow-y'] = element;
+                            break;
                     }
                 }
             }
@@ -318,7 +321,7 @@ export default {
 .ITree_app{
     height: 100%;
     padding: 0 15px;
-    overflow-y: auto;
+    // overflow-y: auto;
 }
 
 </style>
