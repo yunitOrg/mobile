@@ -50,6 +50,7 @@ export default {
       let styleObject = {},
         leftStyle = {},
         rightStyle = {},
+        cellStyle = {},
         tipsStyleObj = {};
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
@@ -94,12 +95,16 @@ export default {
             case 'rightFont':
               IDM.style.setFontStyle(rightStyle, element, true);
               break
+            case 'isFontRight':
+              element && (cellStyle['flex'] = 30);
+              break
           }
         }
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .icell-wrap .van-cell", styleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .icell-wrap .van-cell__title span", leftStyle);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .icell-wrap .van-cell__value span", rightStyle);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .icell-wrap .van-cell__value", cellStyle);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .icell-wrap .icell-icon", tipsStyleObj);
     },
     handleClick () {
@@ -155,6 +160,10 @@ export default {
 .icell-wrap{
   .van-cell{
     align-items: center;
+  }
+  .van-cell__value{
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 </style>
