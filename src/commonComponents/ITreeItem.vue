@@ -1,26 +1,30 @@
 <template>
     <div class="ITreeItem_app">
         <div v-for="(item,index) in tree_data" :key="index">
-            <div @click="clickNode(item)" class="header flex_between">
+            <div @click="clickNode(item)" class="header flex_between" :class="item.children && item.children.length ? 'header_border' : ''">
                 <div class="header_left flex_start">
                     <div @click.stop="clickIcon(item)" v-if="propData.showIcon && item.children && item.children.length" class="icon">
                         <span v-if="item.showChildren" class="open icon_block">
                             <svg v-if="propData.openIconClass && propData.openIconClass.length" class="idm_filed_svg_icon" aria-hidden="true" >
                                 <use :xlink:href="`#${propData.openIconClass[0]}`"></use>
                             </svg>
-                            <SvgIcon v-else icon-class="open"></SvgIcon>
+                            <!-- <SvgIcon v-else icon-class="open"></SvgIcon> -->
+                            <SvgIcon v-else icon-class="tree_icon"></SvgIcon>
                         </span>
                         <span v-else class="close icon_block">
                             <svg v-if="propData.closeIconClass && propData.closeIconClass.length" class="idm_filed_svg_icon" aria-hidden="true" >
                                 <use :xlink:href="`#${propData.closeIconClass[0]}`"></use>
                             </svg>
-                            <SvgIcon v-else icon-class="close"></SvgIcon>
+                            <!-- <SvgIcon v-else icon-class="close"></SvgIcon> -->
+                            <SvgIcon v-else icon-class="tree_icon"></SvgIcon>
                         </span>
                     </div>
+
                     <div class="text">{{ item[propData.dataFieldTitle || 'title'] }}</div>
                 </div>
                 <div class="header_right">
-                    <SvgIcon v-if="item.showChildren" icon-class="down-arrow"></SvgIcon>
+                    <SvgIcon v-if="item.children && item.children.length && item.showChildren" icon-class="minus"></SvgIcon>
+                    <SvgIcon v-else-if="item.children && item.children.length && !item.showChildren" icon-class="plus"></SvgIcon>
                     <SvgIcon v-else icon-class="right-arrow55"></SvgIcon>
                 </div>
             </div>
@@ -177,22 +181,21 @@ export default {
     }
     .header{
         height: 50px;
-        border-bottom: 1px solid rgba(229,229,229,1);
         .icon{
             display: inline-block;
-            margin-right: 5px;
+            margin-right: 10px;
             .svg-icon{
-                font-size: 20px;
+                font-size: 12px;
             }
             .idm_filed_svg_icon{
-                width: 20px;
-                height: 20px;
+                width: 12px;
+                height: 12px;
                 fill: currentColor;
             }
             .icon_block{
                 display: inline-block;
-                width: 20px;
-                height: 20px;
+                width: 12px;
+                height: 12px;
             }
         }
         .header_right{
@@ -200,6 +203,9 @@ export default {
                 // color: red;
             }
         }
+    }
+    .header_border{
+        border-bottom: 1px solid rgba(229,229,229,1);
     }
 }
 </style>
