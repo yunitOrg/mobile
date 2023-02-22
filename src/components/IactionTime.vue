@@ -30,8 +30,8 @@
           </span>
         </div>
       </div>
-      <van-action-sheet v-model="showactive" :actions="actions" @select="onSelect" class="actionli" cancel-text="取消" />
-      <van-calendar v-model="showtime" :show-confirm="false" @confirm="onConfirm" :min-date="minDate" :max-date="maxDate" class="actiontime" />
+      <van-action-sheet v-model="showactive" :actions="actions" @select="onSelect" class="actionli" cancel-text="取消" get-container="body" />
+      <van-calendar v-model="showtime" :show-confirm="false" @confirm="onConfirm" :min-date="minDate" :max-date="maxDate" class="actiontime" get-container="body" />
     </div>
   </div>
 </template>
@@ -108,9 +108,9 @@ export default {
         }
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .actiontime-wrap", styleObject);
-      window.IDM.setStyleToPageHead(this.moduleObject.id + " .actiontime-wrap .actionli", rightStyle);
-      window.IDM.setStyleToPageHead(this.moduleObject.id + " .actiontime-wrap .actionli .van-action-sheet__content", leftStyle);
-      window.IDM.setStyleToPageHead(this.moduleObject.id + " .actiontime-wrap .actiontime", tipsStyleObj);
+      window.IDM.setStyleToPageHead(".actionli", rightStyle);
+      window.IDM.setStyleToPageHead(".actionli .van-action-sheet__content", leftStyle);
+      window.IDM.setStyleToPageHead(".actiontime", tipsStyleObj);
     },
     // 过滤接口参数
     fileterParams() {
