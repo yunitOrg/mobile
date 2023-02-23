@@ -26,7 +26,15 @@
           "text": "标题显示",
           "desc": "标题是否显示",
           "bindKey": "isTitleShow",
-          "default": false
+          "default": true
+        },
+        {
+          "type": "switch",
+          "layoutType": "inline",
+          "text": "图片显示",
+          "desc": "图片是否显示",
+          "bindKey": "isimageShow",
+          "default": true
         },
         {
           "type": "input",
@@ -79,6 +87,21 @@
               }
             }
           ]
+        },
+        {
+          "type": "font",
+          "layoutType": "block",
+          "text": "标题字体",
+          "bindKey": "titleFont"
+        },
+        {
+          "type": "textarea",
+          "layoutType": "inline",
+          "text": "内容文本",
+          "bindKey": "contextText",
+          "defaultValRegExp": false,
+          "desc": "可用文本表达式配置",
+          "default": "<div style=\"line-height:30px;padding-top:5px;\"><span style=\"color:#666666\">名称：</span><span style=\"color:#333333\">@[name]</span></div><div style=\"line-height:30px\"><span style=\"color:#666666\">类别：</span><span style=\"color:#333333\">@[category]</span></div><div style=\"line-height:30px\"><span style=\"color:#666666\">领导班子当选日期：</span><span style=\"color:#333333\">@[getTime]</span></div><div style=\"line-height:30px\"><span style=\"color:#666666\">本届截止日期：</span><span style=\"color:#333333\">@[cutTime]</span></div><div style=\"line-height:30px\"><span style=\"color:#666666\">换届提议日期：</span><span style=\"color:#333333\">@[changeTime]</span></div><div style=\"line-height:30px\"><span style=\"color:#666666\">批准建立党组织日期：</span><span style=\"color:#333333\">@[joinTime]</span></div><div style=\"line-height:30px\"><span style=\"color:#666666\">党组织联系人：</span><span style=\"color:#333333\">@[contactPeople]</span></div><div style=\"line-height:30px\"><span style=\"color:#666666\">党组织书记：</span><span style=\"color:#333333\">@[secretaryPeople]</span></div>"
         }
       ]
     },
@@ -108,7 +131,7 @@
               "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
               "bindKey": "height",
               "width": "60px",
-              "default": "auto"
+              "default": "250px"
             }
           ]
         },
@@ -141,6 +164,51 @@
         {
           "type": "input",
           "layoutType": "inline",
+          "text": "渐变色",
+          "desc": "背景渐变色",
+          "bindKey": "bglinear",
+          "default": "linear-gradient(180deg, #FFEDED 0%, #FFFFFF 50%)"
+        },
+        {
+          "type": "uploadImage",
+          "layoutType": "inline",
+          "text": "背景图片",
+          "bindKey": "uploadImage",
+          "placeholder": "可输入图片地址或直接上传"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "图片宽",
+          "bindKey": "imageWidth",
+          "default": "100px"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "图片高",
+          "bindKey": "imageHeight",
+          "default": "100px"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "图片top",
+          "desc": "图片定位top",
+          "bindKey": "imageTop",
+          "default": "20px"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "图片right",
+          "desc": "图片定位right",
+          "bindKey": "imageRight",
+          "default": "20px"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
           "text": "容器阴影",
           "bindKey": "boxShadow",
           "default": "0px 0px 10px 0px #ccc"
@@ -159,34 +227,17 @@
       "desc": "点击？查看高级设置用法指南",
       "children": [
         {
-          "type": "actionSelect",
-          "layoutType": "block",
-          "text": "参数、消息过滤函数",
-          "desc": "参数、消息过滤函数",
-          "bindKey": "paramsMsgFun",
-          "multiple": false
-        },
-        {
-          "type": "input",
-          "layoutType": "block",
-          "text": "接收消息key",
-          "desc": "接收消息key, 组件收到消息后 会传给自定义函数里，在自定义函数里可以处理参数",
-          "bindKey": "messageKey"
+          "type": "dataSourceSelect",
+          "layoutType": "inline",
+          "text": "数据源",
+          "bindKey": "dataSource"
         },
         {
           "type": "actionSelect",
           "layoutType": "block",
-          "text": "点击执行函数",
-          "desc": "点击执行函数",
-          "bindKey": "customFunc",
-          "multiple": false
-        },
-        {
-          "type": "actionSelect",
-          "layoutType": "block",
-          "text": "收到消息后执行函数",
-          "desc": "收到消息后执行函数",
-          "bindKey": "getMsgHandle",
+          "text": "自定义参数",
+          "bindKey": "paramsFunc",
+          "desc": "设置数据源自定义参数函数",
           "multiple": false
         }
       ]
