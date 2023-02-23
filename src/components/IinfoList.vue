@@ -88,7 +88,7 @@ export default {
       let styleObject = {},
         titleStyle = {},
         imageStyle = {},
-        cellStyle = {},
+        contentStyle = {},
         tipsStyleObj = {};
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
@@ -150,6 +150,12 @@ export default {
             case 'leftIconBox':
               IDM.style.setBoxStyle(tipsStyleObj, element);
               break
+            case 'contentLeft':
+              contentStyle['left'] = element;
+              break
+            case 'contentRight':
+              contentStyle['right'] = element;
+              break
           }
         }
       }
@@ -157,6 +163,7 @@ export default {
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .infolist-wrap .info-icon", tipsStyleObj);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .infolist-wrap .infolist-title", titleStyle);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .infolist-wrap .infolist-image", imageStyle);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .infolist-wrap .idm-text-info-content", contentStyle);
     },
     getMockData() {
         this.componentData = {
@@ -169,6 +176,16 @@ export default {
             contactPeople: 'XXX',
             secretaryPeople: 'XXX'
         }
+    },
+    /**
+     * 组件通信：接收消息的方法
+     */
+    receiveBroadcastMessage(messageObject) {
+      switch (messageObject.type) {
+        case 'linkageReload':
+          this.initData();
+          break;
+      }
     },
     initData () {
       console.log(this.propData, this.moduleObject, '数据');

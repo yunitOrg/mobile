@@ -209,6 +209,22 @@
         {
           "type": "input",
           "layoutType": "inline",
+          "text": "内容left",
+          "desc": "内容定位left",
+          "bindKey": "contentLeft",
+          "default": "10px"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "内容right",
+          "desc": "内容定位right",
+          "bindKey": "contentRight",
+          "default": "10px"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
           "text": "容器阴影",
           "bindKey": "boxShadow",
           "default": "0px 0px 10px 0px #ccc"
