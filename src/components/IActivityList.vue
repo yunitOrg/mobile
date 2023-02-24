@@ -401,7 +401,15 @@ export default {
                 return
             }
             this.isFirst = false
-            this.getDataSourceData()
+            switch(this.propData.dataType) {
+                case 'dataSource':
+                  this.getDataSourceData()
+                  break
+                case 'customFunction':
+                    this.functionGetData()
+                    break
+
+            }
         },
         setContextValue(object) {
             console.log('统一接口设置的值', object)
