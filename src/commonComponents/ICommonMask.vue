@@ -19,7 +19,7 @@ export default {
         if (
             !this.propData?.dataSource?.[0]?.id &&
             this.moduleObject.env === 'develop' &&
-            this.propData.dataType !== 'customInterface'
+            this.propData.dataType !== 'customInterface' && this.propData.dataType !== 'customFunction'
         ) {
             return h(
                 'div',
