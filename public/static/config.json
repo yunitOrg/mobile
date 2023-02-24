@@ -339,6 +339,13 @@
       "className": "IactionTime",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.iinfoList",
+      "comName": "信息列表",
+      "className": "IinfoList",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }

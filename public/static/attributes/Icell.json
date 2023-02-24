@@ -29,6 +29,14 @@
             "default": "单元格"
           },
           {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "是否居右",
+            "desc": "文字是否居右",
+            "bindKey": "isFontRight",
+            "default": false
+          },
+          {
             "type": "group",
             "text": "右侧图标",
             "desc": "设置标题图标属性，颜色会覆盖主题色",

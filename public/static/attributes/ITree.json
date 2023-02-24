@@ -59,6 +59,28 @@
                     ]
                 },
                 {
+                    "type": "select",
+                    "layoutType": "inline",
+                    "text": "滚动条",
+                    "desc":"容器滚动条显示状态",
+                    "bindKey": "scroll",
+                    "default": "auto",
+                    "dictionary": [
+                        {
+                            "label": "显示",
+                            "value": "scroll"
+                        },
+                        {
+                            "label": "隐藏",
+                            "value": "hidden"
+                        },
+                        {
+                            "label": "自适应",
+                            "value": "auto"
+                        }
+                    ]
+                },
+                {
                     "type": "iconSelect",
                     "layoutType": "inline",
                     "text": "展开图标",

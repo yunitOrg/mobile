@@ -5,7 +5,7 @@
             <div v-if="propData.showValue" class="value">{{ form[this.propData.labelKey || 'label'] }}</div>
         </div>
         <div v-show="is_show_pop">
-            <van-popup v-model="const_boolean" @close="closePop" :position="propData.position" :overlay="propData.overlay" :round="propData.round" :closeable="propData.closeable" :close-icon-position="propData.closePosition" :style="getPopStyle()">
+            <van-popup v-model="const_boolean" @close="closePop" :lock-scroll="propData.lockScroll" :position="propData.position" :overlay="propData.overlay" :round="propData.round" :closeable="propData.closeable" :close-icon-position="propData.closePosition" :style="getPopStyle()">
                 <template v-if="propData.popContentType == 'custom'">
                     <div class="drag_container IPopButton_app_pop" idm-ctrl-inner :idm-ctrl-id="moduleObject.id" :idm-container-index="1" >
                     </div>
