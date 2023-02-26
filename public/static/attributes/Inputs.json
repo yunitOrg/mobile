@@ -183,6 +183,10 @@
                   {
                     "label": "动作面板",
                     "value": "actionSheet"
+                  },
+                  {
+                    "label": "选择标签",
+                    "value": "chooseTag"
                   }
                 ]
               },
