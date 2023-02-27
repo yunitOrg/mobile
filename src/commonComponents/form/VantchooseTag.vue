@@ -94,7 +94,7 @@ export default {
       if (typeof this.formData[field] == 'string') {
         this.activeList = this.formData[field] && this.formData[field].split(',');
       } else {
-        this.activeList = this.formData[field];
+        this.activeList = this.formData[field] || [];
       }
     },
     handleClick (row) {
