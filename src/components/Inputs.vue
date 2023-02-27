@@ -223,11 +223,15 @@ export default {
             type: 'chooseTag',
             labelShow: true,
             labelBlock: true,
-            showAlign: 'center',
+            showAlign: 'left',
+            tagMarginBtm: '10px',
             labelWidth: '100px',
             labelHeight: 'auto',
             label: '标签',
-            field: 'chooseTag'
+            field: 'chooseTag',
+            tagWidth: '80px',
+            tagHeight: '32px',
+            tagSplitWidth: '10px'
           }
         ]
       }
