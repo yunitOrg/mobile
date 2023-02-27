@@ -93,7 +93,7 @@ export default {
       let field = this.field;
       if (typeof this.formData[field] == 'string') {
         this.activeList = this.formData[field] && this.formData[field].split(',');
-      } else if (this.formData[field] instanceof Array) {
+      } else {
         this.activeList = this.formData[field];
       }
     },
