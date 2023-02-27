@@ -98,6 +98,8 @@ export default {
             case 'isFontRight':
               element && (cellStyle['flex'] = 30);
               break
+            case 'fontStyle':
+              cellStyle['text-align'] = element == '1' ? 'left' : (element == '2' ? 'center' : 'right');
           }
         }
       }
