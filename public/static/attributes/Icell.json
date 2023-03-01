@@ -31,10 +31,32 @@
           {
             "type": "switch",
             "layoutType": "inline",
-            "text": "是否居右",
-            "desc": "文字是否居右",
+            "text": "是否一行",
+            "desc": "文字是否一行",
             "bindKey": "isFontRight",
             "default": false
+          },
+          {
+            "type": "select",
+            "layoutType": "inline",
+            "text": "文字位置",
+            "desc": "文字位置",
+            "bindKey": "fontStyle",
+            "default": "1",
+            "dictionary": [
+              {
+                "label": "左边",
+                "value": "1"
+              },
+              {
+                "label": "中间",
+                "value": "2"
+              },
+              {
+                "label": "右边",
+                "value": "3"
+              }
+            ]
           },
           {
             "type": "group",
