@@ -355,12 +355,39 @@
             "default": false
           },
           {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "覆盖静态",
+            "desc":"覆盖静态数据",
+            "bindKey": "coverStaticData",
+            "default": false,
+            "display": "@[requireFlag]"
+          },
+          {
             "type": "dataSourceSelect",
             "layoutType": "inline",
             "text": "数据源",
             "desc": "用于选择数据源",
             "display": "@[requireFlag]",
             "bindKey": "dataSource"
+          },
+          {
+            "type": "actionSelect",
+            "layoutType": "block",
+            "text": "参数自定义函数",
+            "bindKey": "paramsFunction",
+            "desc": "请求参数，接收参数为格式为{}",
+            "multiple": true,
+            "display": "@[requireFlag]"
+          },
+          {
+            "type": "actionSelect",
+            "layoutType": "block",
+            "text": "格式化返回数据函数",
+            "bindKey": "formatFunction",
+            "desc": "格式化返回数据函数",
+            "multiple": true,
+            "display": "@[requireFlag]"
           },
           {
             "type": "actionSelect",
