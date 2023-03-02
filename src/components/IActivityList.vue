@@ -47,13 +47,13 @@
                             </div>
                         </div>
                         <!-- 标签 -->
-                        <div class="activity-list-tags">
+                        <div class="activity-list-tags" v-if="propData.styleType === 'styleOne'">
                             <span class="activity-list-tag"
                                 v-for="(tag, indexs) in getDataField(propData.tagField, item)" :key="indexs">{{ tag
                                 }}</span>
                         </div>
                         <!-- 地点 -->
-                        <div class="d-flex align-c activity-list-style-one-location-box text-o-e">
+                        <div class="d-flex align-c activity-list-style-one-location-box text-o-e" v-if="propData.styleType === 'styleOne'">
                             <div class="d-flex align-c activity-list-icon-container" v-if="propData.isShowLocationIcon">
                                 <svg v-if="propData.locationIcon && propData.locationIcon.length"
                                     class="activity-list-location-icon" aria-hidden="true">
@@ -65,7 +65,7 @@
                             <span class="text-o-e"> {{ getDataField(propData.locationField, item) }}</span>
                         </div>
                         <!-- 参与人数 -->
-                        <div class="d-flex align-c activity-list-style-one-person-box text-o-e">
+                        <div class="d-flex align-c activity-list-style-one-person-box text-o-e" v-if="propData.styleType === 'styleOne'">
                             <div class="d-flex align-c activity-list-icon-container" v-if="propData.isShowPersonIcon">
                                 <svg v-if="propData.personIcon && propData.personIcon.length"
                                     class="activity-list-person-icon" aria-hidden="true">
@@ -75,6 +75,7 @@
                             </div>
                             <span class="text-o-e">参与人数：{{ getDataField(propData.personNumberField, item) }}</span>
                         </div>
+                        <div v-if="propData.styleType === 'customFunction'" v-html="customFunctionContent(item)"></div>
                     </div>
                 </div>
             </template>
@@ -109,6 +110,15 @@ export default {
             this.propData = propData.compositeAttr || {}
             this.convertAttrToStyleObject()
             this.convertThemeListAttrToStyleObject()
+        },
+        // 自定义显示
+        customFunctionContent(item) {
+            let html = ''
+            const func = this.propData?.customShowFunction?.[0]
+            if (func) {
+                html = window?.[func.name]?.call(this, Object.assign(item, func.param))
+            }
+            return html
         },
         /**
          * 获取用户当前活动的状态样式

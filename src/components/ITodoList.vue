@@ -26,6 +26,7 @@
                             >[{{ getDataField(propData.moduleField, item) }}]</span
                         >{{ getDataField(propData.titleField, item) }}
                     </div>
+                    <div v-html="customFunctionContent(item)"></div>
                 </div>
             </template>
         </ICommonListContainer>
@@ -55,6 +56,15 @@ export default {
         this.convertThemeListAttrToStyleObject()
     },
     methods: {
+        // 自定义显示
+        customFunctionContent(item) {
+            let html = ''
+            const func = this.propData?.titleBottomContentFunction?.[0]
+            if (func) {
+                html = window?.[func.name]?.call(this, Object.assign(item, func.param))
+            }
+            return html
+        },
         getReadStatus(item) {
             let result = false
             switch (this.propData.hasReadJudge) {
@@ -147,24 +157,6 @@ export default {
             if (!themeList) {
                 return
             }
-            // const themeNamePrefix =
-            //     IDM.setting && IDM.setting.applications && IDM.setting.applications.themeNamePrefix
-            //         ? IDM.setting.applications.themeNamePrefix
-            //         : 'idm-theme-'
-            // for (var i = 0; i < themeList.length; i++) {
-            //     var item = themeList[i]
-            //     let moduleColorObj = {
-            //         'font-size': item.mainColor ? IDM.hex8ToRgbaString(item.mainColor.hex8) : ''
-            //     }
-            //     IDM.setStyleToPageHead(
-            //         '.' +
-            //             themeNamePrefix +
-            //             item.key +
-            //             (` #${this.moduleObject.id}-common-list` || 'module_demo') +
-            //             ' .module-name',
-            //         moduleColorObj
-            //     )
-            // }
             // 通用样式
             this.$nextTick(() => {
                 this.$refs['listContainerRef-' + this.moduleObject.id].convertThemeListAttrToStyleObject()
