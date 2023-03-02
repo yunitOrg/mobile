@@ -229,10 +229,15 @@ export default{
       if (this.moduleObject.env == "production" && this.propData.requireFlag) {
         if (this.propData.dataSource) {
           IDM.datasource.request(this.propData.dataSource[0]?.id, {
-            moduleObject: this.moduleObject
+            moduleObject: this.moduleObject,
+            param: this.setCustomParam()
           }, (data) => {
             if (data) {
-              this.dataList = data;
+              this.dataList = this.formatData(data);
+              if(this.propData.coverStaticData) {
+                this.allTabList = this.dataList
+                return
+              }
               fn();
             }
           })
@@ -240,6 +245,24 @@ export default{
       } else {
         fn();
       }
+    },
+    setCustomParam(){
+      let obj = {}
+      const func = this.propData.paramsFunction?.[0]
+      obj = window[func.name] && window[func.name].call(this, {
+          ...this.commonParam(),
+          _this: this,
+        });
+      return obj
+    },
+    formatData(data){
+      const func = this.propData.formatFunction?.[0]
+      data = window[func.name] && window[func.name].call(this, {
+          ...this.commonParam(),
+          _this: this,
+          data
+        });
+      return data
     },
     // 设置主题
     converThemeListObject () {

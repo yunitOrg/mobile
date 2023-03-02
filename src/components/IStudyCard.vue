@@ -651,7 +651,7 @@ $imgScale: var(--i-studycard-imgScale);
     padding: 0 calc(12px * #{ $scale });
 
     &-header {
-      margin: calc(18px * #{ $scale }) 0 calc(8px * #{ $scale }) 0;
+      margin: calc(12px * #{ $scale }) 0 calc(8px * #{ $scale }) 0;
       display: flex;
       justify-content: space-between;
       align-items: center;

@@ -1,7 +1,7 @@
 <template>
     <div class="ITreeItem_app">
         <div v-for="(item,index) in tree_data" :key="index">
-            <div @click="clickNode(item)" class="header flex_between" :class="item.children && item.children.length ? 'header_border' : ''">
+            <div @click="clickNode(item)" class="header flex_between header_border">
                 <div class="header_left flex_start">
                     <div @click.stop="clickIcon(item)" v-if="propData.showIcon && item.children && item.children.length" class="icon">
                         <span v-if="item.showChildren" class="open icon_block">
@@ -9,14 +9,14 @@
                                 <use :xlink:href="`#${propData.openIconClass[0]}`"></use>
                             </svg>
                             <!-- <SvgIcon v-else icon-class="open"></SvgIcon> -->
-                            <SvgIcon v-else icon-class="tree_icon"></SvgIcon>
+                            <!-- <SvgIcon v-else icon-class="tree_icon"></SvgIcon> -->
                         </span>
                         <span v-else class="close icon_block">
                             <svg v-if="propData.closeIconClass && propData.closeIconClass.length" class="idm_filed_svg_icon" aria-hidden="true" >
                                 <use :xlink:href="`#${propData.closeIconClass[0]}`"></use>
                             </svg>
                             <!-- <SvgIcon v-else icon-class="close"></SvgIcon> -->
-                            <SvgIcon v-else icon-class="tree_icon"></SvgIcon>
+                            <!-- <SvgIcon v-else icon-class="tree_icon"></SvgIcon> -->
                         </span>
                     </div>
 

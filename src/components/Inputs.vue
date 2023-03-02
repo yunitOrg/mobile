@@ -217,6 +217,21 @@ export default {
             showAlign: 'left',
             placeholder: '请选择类型',
             inputRightIconShow: true
+          },
+          {
+            key: '9',
+            type: 'chooseTag',
+            labelShow: true,
+            labelBlock: true,
+            showAlign: 'left',
+            tagMarginBtm: '10px',
+            labelWidth: '100px',
+            labelHeight: 'auto',
+            label: '标签',
+            field: 'chooseTag',
+            tagWidth: '80px',
+            tagHeight: '32px',
+            tagSplitWidth: '10px'
           }
         ]
       }

@@ -183,6 +183,10 @@
                   {
                     "label": "动作面板",
                     "value": "actionSheet"
+                  },
+                  {
+                    "label": "选择标签",
+                    "value": "chooseTag"
                   }
                 ]
               },
@@ -614,6 +618,113 @@
                 "desc": "下拉框数据源",
                 "display": "@[type=='actionSheet' && selectType=='interface']",
                 "bindKey": "selectSource"
+              },
+              {
+                "type": "group",
+                "text": "选择标签",
+                "layoutType": "block",
+                "desc": "提供设置组件能达到展示效果的基本属性设置信息",
+                "display": "@[type=='chooseTag']",
+                "children": [
+                  {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "标签宽",
+                    "desc": "标签宽",
+                    "bindKey": "tagWidth",
+                    "default": "80px",
+                    "display": "@[type=='chooseTag']"
+                  },
+                  {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "标签高",
+                    "desc": "标签高",
+                    "bindKey": "tagHeight",
+                    "default": "32px",
+                    "display": "@[type=='chooseTag']"
+                  },
+                  {
+                    "type": "font",
+                    "layoutType": "block",
+                    "text": "标签字体",
+                    "desc": "标签字体",
+                    "bindKey": "tagFont"
+                  },
+                  {
+                    "type": "font",
+                    "layoutType": "block",
+                    "text": "选中字体",
+                    "desc": "标签选中字体",
+                    "bindKey": "tagDefaultFont"
+                  },
+                  {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "标签标题",
+                    "desc": "标签标题距离下间距",
+                    "bindKey": "tagMarginBtm",
+                    "default": "10px",
+                    "display": "@[type=='chooseTag']"
+                  },
+                  {
+                    "type": "border",
+                    "layoutType": "block",
+                    "text": "标签边框",
+                    "bindKey": "tagBorder",
+                    "display": "@[type=='chooseTag']"
+                  },
+                  {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "标签间距",
+                    "desc": "标签之间的间距",
+                    "bindKey": "tagSplitWidth",
+                    "default": "5px",
+                    "display": "@[type=='chooseTag']"
+                  },
+                  {
+                    "type": "border",
+                    "layoutType": "block",
+                    "text": "标签选择",
+                    "desc": "标签选择颜色",
+                    "bindKey": "tagChooseColor",
+                    "display": "@[type=='chooseTag']"
+                  },
+                  {
+                    "type": "actionSelect",
+                    "layoutType": "block",
+                    "text": "请求参数自定义函数",
+                    "desc": "请求参数自定义函数",
+                    "bindKey": "tagCustomFun",
+                    "display": "@[type=='chooseTag']",
+                    "multiple": false
+                  },
+                  {
+                    "type": "dataSourceSelect",
+                    "layoutType": "inline",
+                    "text": "数据源",
+                    "desc": "选择数据源",
+                    "display": "@[type=='chooseTag']",
+                    "bindKey": "tagSource"
+                  },
+                  {
+                    "type": "dataSourceFiledSelect",
+                    "layoutType": "inline",
+                    "text": "数据name",
+                    "bindKey": "tagFieldName",
+                    "display": "@[type=='chooseTag']",
+                    "default": "name"
+                  },
+                  {
+                    "type": "dataSourceFiledSelect",
+                    "layoutType": "inline",
+                    "text": "数据value",
+                    "bindKey": "tagFieldValue",
+                    "display": "@[type=='chooseTag']",
+                    "default": "value"
+                  }
+                ]
               }
             ],
             "default": [
