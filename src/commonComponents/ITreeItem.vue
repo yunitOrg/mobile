@@ -199,9 +199,7 @@ export default {
             }
         }
         .header_right{
-            .svg-icon{
-                // color: red;
-            }
+            margin-left: 15px;
         }
     }
     .header_border{
