@@ -734,6 +734,22 @@
                 "display": "@[type=='checkbox']",
                 "children": [
                   {
+                    "type": "box",
+                    "layoutType": "block",
+                    "text": "内外边距",
+                    "bindKey": "cheboxbox",
+                    "default": {
+                      "marginTopVal": "",
+                      "marginRightVal": "",
+                      "marginBottomVal": "",
+                      "marginLeftVal": "",
+                      "paddingTopVal": "10px",
+                      "paddingRightVal": "",
+                      "paddingBottomVal": "",
+                      "paddingLeftVal": ""
+                    }
+                  },
+                  {
                     "type": "input",
                     "layoutType": "inline",
                     "text": "复选框间距",

@@ -103,6 +103,7 @@ export default{
     },
     setStyleObject () {
       let obj = {},
+        groupObj = {},
         styleobj = {};
       if (this.params.cheboxSplitWidth) {
         obj['margin-left'] = this.params.cheboxSplitWidth;
@@ -113,6 +114,13 @@ export default{
       if (this.params.cheboxFont) {
         IDM.style.setFontStyle(styleobj, this.params.cheboxFont);
       }
+      if (!this.params.labelBlock) {
+        groupObj['justify-content'] = 'flex-end'
+      }
+      if (this.params.cheboxbox) {
+        IDM.style.setBoxStyle(groupObj, this.params.cheboxbox);
+      }
+      window.IDM.setStyleToPageHead(".chebox-group", groupObj);
       window.IDM.setStyleToPageHead(".chebox-group .cheboxvan+.cheboxvan", obj);
       window.IDM.setStyleToPageHead(".chebox-group .van-checkbox__label", styleobj);
     }
@@ -128,6 +136,5 @@ export default{
 .chebox-group{
   display: flex;
   flex: 1;
-  justify-content: flex-end;
 }
 </style>
