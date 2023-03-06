@@ -156,7 +156,9 @@ export default {
             labelBlock: false,
             disabled: false,
             cheboxSplitWidth: '10px',
-            cheboxFontWidth: '10px'
+            cheboxFontWidth: '10px',
+            checkboxType: 'routerParams',
+            checkboxFiledSource: 'checkboxFiledSource'
           },
           {
             key: '5',

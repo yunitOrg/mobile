@@ -784,12 +784,39 @@
                     "multiple": false
                   },
                   {
+                    "type": "select",
+                    "layoutType": "inline",
+                    "text": "数据类型",
+                    "desc": "数据源可以从路由获取或者调用接口获取",
+                    "display": "@[type=='checkbox']",
+                    "bindKey": "checkboxType",
+                    "dictionary": [
+                      {
+                        "label": "路由数据",
+                        "value": "routerParams"
+                      },
+                      {
+                        "label": "接口获取",
+                        "value": "interface"
+                      }
+                    ],
+                    "default": "interface"
+                  },
+                  {
                     "type": "dataSourceSelect",
                     "layoutType": "inline",
                     "text": "数据源",
                     "desc": "选择数据源，[{label: '标签一', value: '1'},{label: '标签二', value: '2'}]",
-                    "display": "@[type=='checkbox']",
+                    "display": "@[type=='checkbox' && checkboxType=='interface']",
                     "bindKey": "checkboxSource"
+                  },
+                  {
+                    "type": "dataSourceFiledSelect",
+                    "layoutType": "inline",
+                    "text": "路由字段",
+                    "bindKey": "routerCheckboxField",
+                    "display": "@[type=='checkbox' && checkboxType=='routerParams']",
+                    "default": "checkboxFiledSource"
                   },
                   {
                     "type": "dataSourceFiledSelect",

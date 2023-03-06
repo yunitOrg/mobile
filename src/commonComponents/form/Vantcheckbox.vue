@@ -83,23 +83,39 @@ export default{
         this.checkboxList = [{label: '标签一', value: '1'},{label: '标签二', value: '2'}]
         return
       }
-      const routerParams = this.fileterParams();
-      IDM.datasource.request(this.params.checkboxSource[0]?.id, {
-        moduleObject: this.moduleObject,
-        param: { ...routerParams }
-      }, (data) => {
-        if (data) {
-          let ary = data || [];
-          let tem = this.params.checkboxFieldName;
-          let str = this.params.checkboxFieldValue;
-          this.checkboxList = ary.map(item => {
-            return{
-              label: item[tem],
-              value: item[str]
-            }
-          })
-        }
-      })
+      console.log(this.params, this.formData, '从路由获取数据');
+      if (this.params.checkboxType =='routerParams') {
+        let routerSorce = this.params.checkboxFiledSource,
+          tem = this.params.checkboxFieldName,
+          str = this.params.checkboxFieldValue;
+        let result = this.formData[routerSorce] || [];
+        this.checkboxList = result.map(item => {
+          return{
+            label: item[tem],
+            value: item[str]
+          }
+        })
+        return
+      }
+      if (this.params.checkboxType == 'interface') {
+        const routerParams = this.fileterParams();
+        IDM.datasource.request(this.params.checkboxSource[0]?.id, {
+          moduleObject: this.moduleObject,
+          param: { ...routerParams }
+        }, (data) => {
+          if (data) {
+            let ary = data || [];
+            let tem = this.params.checkboxFieldName;
+            let str = this.params.checkboxFieldValue;
+            this.checkboxList = ary.map(item => {
+              return{
+                label: item[tem],
+                value: item[str]
+              }
+            })
+          }
+        })
+      }
     },
     setStyleObject () {
       let obj = {},
