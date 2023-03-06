@@ -725,6 +725,73 @@
                     "default": "value"
                   }
                 ]
+              },
+              {
+                "type": "group",
+                "text": "复选框",
+                "layoutType": "block",
+                "desc": "提供设置组件能达到展示效果的基本属性设置信息",
+                "display": "@[type=='checkbox']",
+                "children": [
+                  {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "复选框间距",
+                    "desc": "复选框与复选框间距",
+                    "bindKey": "cheboxSplitWidth",
+                    "default": "10px",
+                    "display": "@[type=='checkbox']"
+                  },
+                  {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "文字间距",
+                    "desc": "文字与复选框间距",
+                    "bindKey": "cheboxFontWidth",
+                    "default": "10px",
+                    "display": "@[type=='checkbox']"
+                  },
+                  {
+                    "type": "font",
+                    "layoutType": "block",
+                    "text": "字体",
+                    "desc": "字体",
+                    "bindKey": "cheboxFont"
+                  },
+                  {
+                    "type": "actionSelect",
+                    "layoutType": "block",
+                    "text": "请求参数自定义函数",
+                    "desc": "请求参数自定义函数",
+                    "bindKey": "checkboxCustomFun",
+                    "display": "@[type=='checkbox']",
+                    "multiple": false
+                  },
+                  {
+                    "type": "dataSourceSelect",
+                    "layoutType": "inline",
+                    "text": "数据源",
+                    "desc": "选择数据源",
+                    "display": "@[type=='checkbox']",
+                    "bindKey": "checkboxSource"
+                  },
+                  {
+                    "type": "dataSourceFiledSelect",
+                    "layoutType": "inline",
+                    "text": "数据label",
+                    "bindKey": "checkboxFieldName",
+                    "display": "@[type=='checkbox']",
+                    "default": "label"
+                  },
+                  {
+                    "type": "dataSourceFiledSelect",
+                    "layoutType": "inline",
+                    "text": "数据value",
+                    "bindKey": "checkboxFieldValue",
+                    "display": "@[type=='checkbox']",
+                    "default": "value"
+                  }
+                ]
               }
             ],
             "default": [

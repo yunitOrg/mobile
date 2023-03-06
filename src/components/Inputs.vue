@@ -97,7 +97,7 @@ export default {
             imgWidth: '30px',
             imgHeight: '30px',
             imgRadius: true,
-            isImg: true,
+            isImg: false,
             labelBlock: false,
             inputAlign: 'right',
             required: true,
@@ -153,7 +153,10 @@ export default {
             showAlign: 'left',
             label: '复选框',
             field: 'checkbox',
-            disabled: false
+            labelBlock: false,
+            disabled: false,
+            cheboxSplitWidth: '10px',
+            cheboxFontWidth: '10px'
           },
           {
             key: '5',
@@ -240,15 +243,6 @@ export default {
   provide () {
     return {
       propData: this.propData
-    }
-  },
-  watch: {
-    formData: {
-      deep: true,
-      immediate: true,
-      handler(newVal) {
-        console.log(newVal, '总监听')
-      }
     }
   },
   mounted () {
@@ -536,6 +530,7 @@ export default {
       //表单分组标识
       let formGroupKey = this.propData.formFiledKey;
       //所有返回结果
+      console.log(this.formData, 888)
       let moduleAllData = window.IDM.broadcast.getModuleContextValue(pageModuleSelectDataMultiple,formGroupKey);
       if (customClickFunc && customClickFunc.length > 0 ) {
         customClickFunc.forEach(item => {
