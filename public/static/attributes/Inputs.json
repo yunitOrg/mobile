@@ -704,7 +704,7 @@
                     "type": "dataSourceSelect",
                     "layoutType": "inline",
                     "text": "数据源",
-                    "desc": "选择数据源",
+                    "desc": "选择数据源,比如：[{label: '标签一', value: '1'},{label: '标签二', value: '2'}]",
                     "display": "@[type=='chooseTag']",
                     "bindKey": "tagSource"
                   },
@@ -787,7 +787,7 @@
                     "type": "dataSourceSelect",
                     "layoutType": "inline",
                     "text": "数据源",
-                    "desc": "选择数据源",
+                    "desc": "选择数据源，[{label: '标签一', value: '1'},{label: '标签二', value: '2'}]",
                     "display": "@[type=='checkbox']",
                     "bindKey": "checkboxSource"
                   },
