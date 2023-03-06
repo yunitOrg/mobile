@@ -22,7 +22,7 @@
         </div>
         <div class="infolist-right-font">
           <span class="infolist-arc"></span>
-          <span class="infolist-tips">类别：{{componentData.style}}</span>
+          <span class="infolist-tips">类别：{{componentData[propData.styleField] || componentData.style}}</span>
         </div>
       </div>
       <div class="infolist-image" v-if="propData.isimageShow">
