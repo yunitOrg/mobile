@@ -2,10 +2,10 @@
     <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id" class="IPopButton_app">
         <div @click="clickButton" class="IPopButton_app_main">
             <div class="label">{{ propData.label }}</div>
-            <div v-if="propData.showValue" class="value">{{ form[this.propData.labelKey || 'label'] }}</div>
+            <div v-if="propData.showValue" class="value">{{ form[propData.labelKey || 'label'] }}</div>
         </div>
         <div v-show="is_show_pop">
-            <van-popup v-model="const_boolean" @close="closePop" :lock-scroll="propData.lockScroll" :position="propData.position" :overlay="propData.overlay" :round="propData.round" :closeable="propData.closeable" :close-icon-position="propData.closePosition" :style="getPopStyle()">
+            <van-popup v-model="const_boolean" @close="closePop" :lock-scroll="propData.lockScroll" :position="propData.position" get-container="body" :overlay="propData.overlay" :round="propData.round" :closeable="propData.closeable" :close-icon-position="propData.closePosition" :style="getPopStyle()">
                 <template v-if="propData.popContentType == 'custom'">
                     <div class="drag_container IPopButton_app_pop" idm-ctrl-inner :idm-ctrl-id="moduleObject.id" :idm-container-index="1" >
                     </div>
@@ -180,6 +180,10 @@ export default {
             } else {
                 this.is_show_pop = false;
             }
+        },
+        changePopStatus(data) {
+            this.is_show_pop = data;
+            this.const_boolean = data;
         },
         clickButton() {
             this.is_show_pop = true;
@@ -502,6 +506,9 @@ export default {
                 if(object.messageKey){
                     this.onReInitDataMsgKey(object.message,object.messageKey);
                 }
+            }
+            if ( object.type && object.type == this.propData.changePopStatusMessageKey ) {
+                this.changePopStatus( this.propData.changePopStatusMessageValue ? object.message[this.propData.changePopStatusMessageValue] : message )
             }
         },
         /**
