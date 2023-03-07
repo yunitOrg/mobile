@@ -154,11 +154,20 @@
         {
           "type": "textarea",
           "layoutType": "inline",
+          "text": "名称",
+          "bindKey": "contentFontTitle",
+          "defaultValRegExp": false,
+          "desc": "可用文本表达式配置",
+          "default": "<div style=\"line-height:30px;padding-top:5px;\"><span style=\"color:#666666\">名称：</span><span style=\"color:#333333\">@[name]</span></div>"
+        },
+        {
+          "type": "textarea",
+          "layoutType": "inline",
           "text": "内容文本",
           "bindKey": "contextText",
           "defaultValRegExp": false,
           "desc": "可用文本表达式配置",
-          "default": "<div style=\"line-height:30px;padding-top:5px;\"><span style=\"color:#666666\">名称：</span><span style=\"color:#333333\">@[name]</span></div><div style=\"line-height:30px\"><span style=\"color:#666666\">类别：</span><span style=\"color:#333333\">@[category]</span></div><div style=\"line-height:30px\"><span style=\"color:#666666\">领导班子当选日期：</span><span style=\"color:#333333\">@[getTime]</span></div><div style=\"line-height:30px\"><span style=\"color:#666666\">本届截止日期：</span><span style=\"color:#333333\">@[cutTime]</span></div><div style=\"line-height:30px\"><span style=\"color:#666666\">换届提议日期：</span><span style=\"color:#333333\">@[changeTime]</span></div><div style=\"line-height:30px\"><span style=\"color:#666666\">批准建立党组织日期：</span><span style=\"color:#333333\">@[joinTime]</span></div><div style=\"line-height:30px\"><span style=\"color:#666666\">党组织联系人：</span><span style=\"color:#333333\">@[contactPeople]</span></div><div style=\"line-height:30px\"><span style=\"color:#666666\">党组织书记：</span><span style=\"color:#333333\">@[secretaryPeople]</span></div>"
+          "default": "<div style=\"line-height:30px\"><span style=\"color:#666666\">类别：</span><span style=\"color:#333333\">@[category]</span></div><div style=\"line-height:30px\"><span style=\"color:#666666\">领导班子当选日期：</span><span style=\"color:#333333\">@[getTime]</span></div><div style=\"line-height:30px\"><span style=\"color:#666666\">本届截止日期：</span><span style=\"color:#333333\">@[cutTime]</span></div><div style=\"line-height:30px\"><span style=\"color:#666666\">换届提议日期：</span><span style=\"color:#333333\">@[changeTime]</span></div><div style=\"line-height:30px\"><span style=\"color:#666666\">批准建立党组织日期：</span><span style=\"color:#333333\">@[joinTime]</span></div><div style=\"line-height:30px\"><span style=\"color:#666666\">党组织联系人：</span><span style=\"color:#333333\">@[contactPeople]</span></div><div style=\"line-height:30px\"><span style=\"color:#666666\">党组织书记：</span><span style=\"color:#333333\">@[secretaryPeople]</span></div>"
         }
       ]
     },
@@ -315,6 +324,21 @@
       "text": "高级",
       "desc": "点击？查看高级设置用法指南",
       "children": [
+        {
+          "type": "input",
+          "layoutType": "block",
+          "text": "接收消息key",
+          "desc": "接收消息key, 组件收到消息后 会传给自定义函数里，在自定义函数里可以处理参数",
+          "bindKey": "messageKey"
+        },
+        {
+          "type": "actionSelect",
+          "layoutType": "block",
+          "text": "点击名称",
+          "desc": "点击名称执行函数",
+          "bindKey": "handleComstomClick",
+          "multiple": false
+        },
         {
           "type": "dataSourceSelect",
           "layoutType": "inline",

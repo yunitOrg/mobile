@@ -115,12 +115,31 @@ export default {
         window[name] && window[name].call(this);
       }
     },
+    /**
+     * 交互功能：获取需要返回的值，返回格式如下
+     * @return {
+     *    type:"success",
+     *    message:"type为失败的时候原因",
+     *    key:"定义的key标识，一般组件定义了一个属性，然后获取指定属性填写的值，这样返回后就能识别对应的字段或者元数据",
+     *    data:{要返回的值，内容为：字符串 or 数组 or 对象},
+     * }
+     */
+    getContextValue ()  {
+      let result = {
+        type: "success",
+        message: '',
+        key: this.propData.formFiledKey || this.propData.ctrlId,
+        data: this.inforobj
+      };
+      return result;
+    },
     // 过滤接口参数
     fileterParams(message) {
+      let moduleAllData = window.IDM.broadcast.getModuleContextValue(this.propData.pageModuleSelectDataMultiple,this.propData.formFiledKey);
       let obj = {};
       if (this.propData.paramsMsgFun && this.propData.paramsMsgFun.length > 0) {
         let name = this.propData.paramsMsgFun[0].name
-        obj = window[name] && window[name].call(this, {msg: message});
+        obj = window[name] && window[name].call(this, {msg: message, otherData: moduleAllData});
       }
       return obj
     },

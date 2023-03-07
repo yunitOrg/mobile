@@ -123,6 +123,21 @@
         "desc": "点击？查看高级设置用法指南",
         "children": [
           {
+            "type": "input",
+            "layoutType": "inline",
+            "text": "分组标识",
+            "desc": "传递给上下文组件",
+            "bindKey": "formFiledKey",
+            "default": "formGroupKey"
+          },
+          {
+            "type": "pageModuleSelect",
+            "layoutType": "inline",
+            "text": "提交范围",
+            "bindKey": "pageModuleSelectDataMultiple",
+            "multiple": true
+          },
+          {
             "type": "actionSelect",
             "layoutType": "block",
             "text": "下拉参数过滤",

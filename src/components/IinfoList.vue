@@ -28,6 +28,7 @@
       <div class="infolist-image" v-if="propData.isimageShow">
         <img :src="getImageUrl('uploadImage')" alt="">
       </div>
+      <div class="infolist-fonttitle" v-html="textFilter(propData.contentFontTitle)" @click="handleClickTitle"></div>
       <div class="idm-text-info-content" v-html="textFilter(propData.contextText)"></div>
     </div>
   </div>
@@ -43,6 +44,7 @@ export default {
         // isimageShow: true,
         // isTitleShow: true,
         // title: '支部信息',
+        // contentTitle: '名称：',
         // ulbox: {
         //   marginTopVal: "",
         //   marginRightVal: "10px",
@@ -68,7 +70,8 @@ export default {
         //   "hex": "#f00"
         // },
         // bglinear: 'linear-gradient(180deg, #FFEDED 0%, #FFFFFF 50%)',
-        // contextText: '<div>名称：@[name]</div><div>类别：@[category]</div><div>领导班子当选日期：@[getTime]</div><div>本届截止日期：@[cutTime]</div><div>换届提议日期：@[changeTime]</div><div>批准建立党组织日期：@[joinTime]</div><div>党组织联系人：@[contactPeople]</div><div>党组织书记：@[secretaryPeople]</div>'
+        // contentFontTitle: "<div>名称：@[name]</div>",
+        // contextText: '<div>类别：@[category]</div><div>领导班子当选日期：@[getTime]</div><div>本届截止日期：@[cutTime]</div><div>换届提议日期：@[changeTime]</div><div>批准建立党组织日期：@[joinTime]</div><div>党组织联系人：@[contactPeople]</div><div>党组织书记：@[secretaryPeople]</div>'
       },
       componentData: {}
     }
@@ -87,6 +90,12 @@ export default {
           return IDM.url.getWebPath(this.propData[key])
       } else {
           return IDM.url.getModuleAssetsWebPath(require(`../assets/${key}.png`),this.moduleObject)
+      }
+    },
+    handleClickTitle () {
+      if (this.propData.handleComstomClick && this.propData.handleComstomClick.length > 0) {
+        let name = this.propData.handleComstomClick[0].name
+        window[name] && window[name].call(this);
       }
     },
     textFilter(text) {
@@ -225,8 +234,13 @@ export default {
      * 组件通信：接收消息的方法
      */
     receiveBroadcastMessage(messageObject) {
+      console.log('IinfoList接收消息: ', messageObject);
       switch (messageObject.type) {
         case 'linkageReload':
+          this.initData();
+          break;
+        case this.propData.messageKey:
+          this.inforobj = messageObject.message;
           this.initData();
           break;
       }
@@ -242,7 +256,8 @@ export default {
       if(this.propData.paramsFunc && this.propData.paramsFunc.length > 0) {
           const funcName = this.propData.paramsFunc[0].name
           params = window[funcName].call(this, {
-              ...this.propData.paramsFunc[0].param
+              ...this.propData.paramsFunc[0].param,
+              ...this.inforobj
           }) || {}
       }
       if ( this.propData.dataSource && this.propData.dataSource[0] ) {

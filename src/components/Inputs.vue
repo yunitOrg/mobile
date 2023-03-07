@@ -535,7 +535,7 @@ export default {
       //表单分组标识
       let formGroupKey = this.propData.formFiledKey;
       //所有返回结果
-      console.log(this.formData, 888)
+      console.log(this.formData, pageModuleSelectDataMultiple, 888)
       let moduleAllData = window.IDM.broadcast.getModuleContextValue(pageModuleSelectDataMultiple,formGroupKey);
       if (customClickFunc && customClickFunc.length > 0 ) {
         customClickFunc.forEach(item => {
