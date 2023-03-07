@@ -496,6 +496,14 @@
                     "default": ""
                 },
                 {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "overflow",
+                    "desc": "设置容器的overflow属性",
+                    "bindKey": "overflow",
+                    "default": "hidden"
+                },
+                {
                     "type": "colorPicker",
                     "layoutType": "inline",
                     "text": "背景颜色",

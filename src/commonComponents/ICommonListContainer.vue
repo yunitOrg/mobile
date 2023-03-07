@@ -128,6 +128,9 @@ export default {
                         case 'border':
                             IDM.style.setBorderStyle(styleObject, element)
                             break
+                        case 'overflow':
+                            styleObject['overflow'] = element
+                            break
 
                         // 标题样式
                         case 'titleFontStyle':
