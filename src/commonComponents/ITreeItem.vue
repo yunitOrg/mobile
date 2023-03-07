@@ -19,10 +19,9 @@
                             <!-- <SvgIcon v-else icon-class="tree_icon"></SvgIcon> -->
                         </span>
                     </div>
-
                     <div class="text">{{ item[propData.dataFieldTitle || 'title'] }}</div>
                 </div>
-                <div class="header_right">
+                <div @click.stop="clickIcon(item)" class="header_right">
                     <SvgIcon v-if="item.children && item.children.length && item.showChildren" icon-class="minus"></SvgIcon>
                     <SvgIcon v-else-if="item.children && item.children.length && !item.showChildren" icon-class="plus"></SvgIcon>
                     <SvgIcon v-else icon-class="right-arrow55"></SvgIcon>
@@ -70,6 +69,7 @@ export default {
             }
         },
         clickNode(item) {
+            console.log('点击节点',item)
             if ( item.children && item.children.length ) {
                 item.showChildren = !item.showChildren;
             } else {
@@ -199,9 +199,7 @@ export default {
             }
         }
         .header_right{
-            .svg-icon{
-                // color: red;
-            }
+            margin-left: 15px;
         }
     }
     .header_border{

@@ -11,13 +11,19 @@
   >
     <div class="infolist-wrap">
       <div class="info-title" v-if="propData.isTitleShow">
-        <svg v-if="propData.titleIcon && propData.titleIcon.length"
+        <div>
+          <svg v-if="propData.titleIcon && propData.titleIcon.length"
             class="info-icon" aria-hidden="true">
-          <use :xlink:href="`#${propData.titleIcon[0]}`"></use>
-        </svg>
-        <svg-icon v-else icon-class="shu" className="info-icon">
-        </svg-icon>
-        <span class="infolist-title">{{ propData.title }}</span>
+            <use :xlink:href="`#${propData.titleIcon[0]}`"></use>
+          </svg>
+          <svg-icon v-else icon-class="shu" className="info-icon">
+          </svg-icon>
+          <span class="infolist-title">{{ propData.title }}</span>
+        </div>
+        <div class="infolist-right-font">
+          <span class="infolist-arc"></span>
+          <span class="infolist-tips">类别：{{componentData[propData.styleField] || componentData.style}}</span>
+        </div>
       </div>
       <div class="infolist-image" v-if="propData.isimageShow">
         <img :src="getImageUrl('uploadImage')" alt="">
@@ -50,8 +56,17 @@ export default {
         // boxShadow: "0 0 10px 0 #C2C2C2",
         // imageWidth: '100px',
         // imageHeight: '100px',
-        // imageTop: '20px',
-        // imageRight: '20px',
+        // imageTop: '0',
+        // imageRight: '0',
+        // imageBottom: '20px',
+        // imageLeft: '20px',
+        // arcWidth: '10px',
+        // arcHeight: '10px',
+        // arcRadius: '10px',
+        // arcLeft: '5px',
+        // arcFontColor: {
+        //   "hex": "#f00"
+        // },
         // bglinear: 'linear-gradient(180deg, #FFEDED 0%, #FFFFFF 50%)',
         // contextText: '<div>名称：@[name]</div><div>类别：@[category]</div><div>领导班子当选日期：@[getTime]</div><div>本届截止日期：@[cutTime]</div><div>换届提议日期：@[changeTime]</div><div>批准建立党组织日期：@[joinTime]</div><div>党组织联系人：@[contactPeople]</div><div>党组织书记：@[secretaryPeople]</div>'
       },
@@ -89,6 +104,8 @@ export default {
         titleStyle = {},
         imageStyle = {},
         contentStyle = {},
+        arcStyle = {},
+        tipsStyle = {},
         tipsStyleObj = {};
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
@@ -138,6 +155,30 @@ export default {
             case 'imageRight':
               imageStyle['right'] = element;
               break
+            case 'imageBottom':
+              imageStyle['bottom'] = element;
+              break
+            case 'imageLeft':
+              imageStyle['left'] = element;
+              break
+            case 'arcWidth':
+              arcStyle['width'] = element;
+              break
+            case 'arcHeight':
+              arcStyle['height'] = element;
+              break
+            case 'arcFontColor':
+              arcStyle['background-color'] = element.hex;
+              break
+            case 'arcRadius':
+              arcStyle['border-radius'] = element;
+              break
+            case 'arcLeft':
+              arcStyle['margin-right'] = element;
+              break
+            case 'tipsFont':
+              IDM.style.setFontStyle(tipsStyle, element)
+              break
             case 'titleIconFontColor':
               tipsStyleObj['color'] = element.hex;
               tipsStyleObj["fill"] = element.hex;
@@ -164,6 +205,8 @@ export default {
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .infolist-wrap .infolist-title", titleStyle);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .infolist-wrap .infolist-image", imageStyle);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .infolist-wrap .idm-text-info-content", contentStyle);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .infolist-wrap .infolist-arc", arcStyle);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .infolist-wrap .infolist-tips", tipsStyle);
     },
     getMockData() {
         this.componentData = {
@@ -174,7 +217,8 @@ export default {
             changeTime: '2020-12-30',
             joinTime: '2020-12-30',
             contactPeople: 'XXX',
-            secretaryPeople: 'XXX'
+            secretaryPeople: 'XXX',
+            style: '党支部'
         }
     },
     /**
@@ -230,6 +274,13 @@ export default {
 <style lang="scss" scoped>
 .infolist-wrap{
   position: relative;
+  .infolist-arc{
+    display: inline-block;
+  }
+  .info-title{
+    display: flex;
+    justify-content: space-between;
+  }
   .infolist-image{
     position: absolute;
     img{

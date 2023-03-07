@@ -45,7 +45,7 @@
         },
         {
           "type": "group",
-          "text": "右侧图标",
+          "text": "左侧图标",
           "desc": "设置标题图标属性，颜色会覆盖主题色",
           "children": [
             {
@@ -85,6 +85,63 @@
                 "paddingBottomVal": "",
                 "paddingLeftVal": ""
               }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "text": "右侧图标",
+          "desc": "设置标题图标属性，颜色会覆盖主题色",
+          "children": [
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "圆角宽",
+              "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
+              "bindKey": "arcWidth",
+              "width": "60px",
+              "default": "10px"
+            },
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "圆角高",
+              "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
+              "bindKey": "arcHeight",
+              "width": "60px",
+              "default": "10px"
+            },
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "圆角",
+              "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
+              "bindKey": "arcRadius",
+              "width": "60px",
+              "default": "10px"
+            },
+            {
+              "type": "colorPicker",
+              "layoutType": "inline",
+              "desc": "设置图标颜色，会覆盖主题色",
+              "text": "图标颜色",
+              "bindKey": "arcFontColor",
+              "default": {}
+            },
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "间距",
+              "desc": "圆距离右间距",
+              "bindKey": "arcLeft",
+              "width": "60px",
+              "default": "5px"
+            },
+            {
+              "type": "font",
+              "layoutType": "block",
+              "text": "右侧标题字体",
+              "bindKey": "tipsFont"
             }
           ]
         },
@@ -209,6 +266,22 @@
         {
           "type": "input",
           "layoutType": "inline",
+          "text": "图片bottom",
+          "desc": "图片定位bottom",
+          "bindKey": "imageBottom",
+          "default": "20px"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "图片left",
+          "desc": "图片定位left",
+          "bindKey": "imageLeft",
+          "default": "20px"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
           "text": "内容left",
           "desc": "内容定位left",
           "bindKey": "contentLeft",
@@ -255,6 +328,20 @@
           "bindKey": "paramsFunc",
           "desc": "设置数据源自定义参数函数",
           "multiple": false
+        },
+        {
+          "type": "group",
+          "text": "字段设置",
+          "desc": "页面数据绑定",
+          "children": [
+            {
+              "type": "dataSourceFiledSelect",
+              "layoutType": "inline",
+              "text": "类别",
+              "bindKey": "styleField",
+              "default": "style"
+            }
+          ]
         }
       ]
     }
