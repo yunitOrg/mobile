@@ -85,7 +85,7 @@ export default{
       }
       console.log(this.params, this.formData, '从路由获取数据');
       if (this.params.checkboxType =='routerParams') {
-        let routerSorce = this.params.checkboxFiledSource,
+        let routerSorce = this.params.routerCheckboxField,
           tem = this.params.checkboxFieldName,
           str = this.params.checkboxFieldValue;
         let result = this.formData[routerSorce] || [];

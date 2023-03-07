@@ -247,10 +247,12 @@ export default {
       propData: this.propData
     }
   },
-  mounted () {
+  created(){
     this.moduleObject = this.$root.moduleObject;
-    this.init()
     this.getPrevPageRouterParams();
+  },
+  mounted () {
+    this.init()
   },
   computed: {
     showTitle () {
@@ -447,6 +449,7 @@ export default {
     // 回填从router获取到的数据
     getPrevPageRouterParams () {
       const obj = this.getRouterParams() || {};
+      console.log(obj,"路由数据")
       if (!obj.$el) {
         this.formData = obj
       }
