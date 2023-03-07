@@ -146,9 +146,9 @@
                     "type": "input",
                     "layoutType": "inline",
                     "text": "默认值",
-                    "desc": "默认显示的结果值",
+                    "desc": "默认显示的结果值，选择器下拉数据中对应的valueKey",
                     "bindKey": "defaultValue",
-                    "default": "value默认值"
+                    "default": "1"
                 },
                 {
                     "type": "select",
@@ -589,7 +589,7 @@
         {
             "type": "group",
             "text": "数据源",
-            "desc": "点击？查看高级设置用法指南",
+            "desc": "获取选择器数据列表数据的数据源配置",
             "children": [
                 {
                     "type": "select",
@@ -661,7 +661,7 @@
                 },
                 {
                     "type": "table",
-                    "text": "接收其他组件联动参数",
+                    "text": "接收其他组件联动参数，用于获取数据源数据时作为参数",
                     "bindKey": "linkageParamList",
                     "tabText": "参数[index]",
                     "children": [
@@ -720,7 +720,7 @@
                 },
                 {
                     "type": "group",
-                    "text": "联动组件",
+                    "text": "数据变动联动组件",
                     "desc": "当选择的数据有变动会联动这里选择的组件，把当前选中的对象传递给这些组件",
                     "children": [
                         {
@@ -738,6 +738,29 @@
                             "desc": "当前选项变更需要联动其他组件变更结果值的组件范围",
                             "bindKey": "linkageResultPageModule",
                             "multiple": true
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "text": "弹框显隐状态配置",
+                    "desc": "接收其他组件参数来改变弹出框显示隐藏的状态",
+                    "children":[
+                        {
+                            "type": "input",
+                            "layoutType": "inline",
+                            "text": "消息类型key",
+                            "desc": "消息通知的消息类型key",
+                            "bindKey": "changePopStatusMessageKey",
+                            "default": "changePopStatusMessage"
+                        },
+                        {
+                            "type": "input",
+                            "layoutType": "inline",
+                            "text": "结果值",
+                            "desc": "消息通知中改变弹框状态的值，显示则返回true，隐藏则返回false。例：message:{status:true}，则这里填写status；message:true，则这里不填",
+                            "bindKey": "changePopStatusMessageValue",
+                            "default": ""
                         }
                     ]
                 },
