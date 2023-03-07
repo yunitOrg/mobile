@@ -122,7 +122,10 @@ export default{
         groupObj = {},
         styleobj = {};
       if (this.params.cheboxSplitWidth) {
-        obj['margin-left'] = this.params.cheboxSplitWidth;
+        obj['margin-right'] = this.params.cheboxSplitWidth;
+      }
+      if (this.params.checkboxcell) {
+        IDM.style.setBoxStyle(obj, this.params.checkboxcell)
       }
       if (this.params.cheboxFontWidth) {
         styleobj['margin-left'] = this.params.cheboxFontWidth;
@@ -132,12 +135,14 @@ export default{
       }
       if (!this.params.labelBlock) {
         groupObj['justify-content'] = 'flex-end'
+      } else {
+        groupObj['flex-wrap'] = 'wrap';
       }
       if (this.params.cheboxbox) {
         IDM.style.setBoxStyle(groupObj, this.params.cheboxbox);
       }
       window.IDM.setStyleToPageHead(".chebox-group", groupObj);
-      window.IDM.setStyleToPageHead(".chebox-group .cheboxvan+.cheboxvan", obj);
+      window.IDM.setStyleToPageHead(".chebox-group .cheboxvan", obj);
       window.IDM.setStyleToPageHead(".chebox-group .van-checkbox__label", styleobj);
     }
   },
@@ -151,6 +156,6 @@ export default{
 <style lang="scss">
 .chebox-group{
   display: flex;
-  flex: 1;
+  // flex: 1;
 }
 </style>

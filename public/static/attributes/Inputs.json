@@ -750,6 +750,13 @@
                     }
                   },
                   {
+                    "type": "box",
+                    "layoutType": "block",
+                    "text": "标签间距",
+                    "desc": "标签之间的间距",
+                    "bindKey": "checkboxcell"
+                  },
+                  {
                     "type": "input",
                     "layoutType": "inline",
                     "text": "复选框间距",
