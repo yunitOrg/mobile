@@ -749,7 +749,7 @@
                         {
                             "type": "input",
                             "layoutType": "inline",
-                            "text": "消息类型key",
+                            "text": "消息key",
                             "desc": "消息通知的消息类型key",
                             "bindKey": "changePopStatusMessageKey",
                             "default": "changePopStatusMessage"
