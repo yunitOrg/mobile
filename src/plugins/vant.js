@@ -2,6 +2,7 @@ import Vue from 'vue'
 import 'vant/lib/index.css'
 import {
     Tab,
+    Tag,
     Tabs,
     Col,
     Row,
@@ -27,6 +28,7 @@ import {
 } from 'vant'
 
 Vue.use(Tab)
+    .use(Tag)
     .use(Tabs)
     .use(Col)
     .use(Row)

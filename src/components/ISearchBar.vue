@@ -139,23 +139,8 @@
 
 <script>
 const devPopularResult = ['党费缴纳', '主题教育', '学习', '积分', '学时', '党费缴纳', '主题教育'];
-import { Empty, Loading, Image as VanImage, Search, Tag, Cell } from 'vant';
-import 'vant/lib/empty/style';
-import 'vant/lib/loading/style';
-import 'vant/lib/image/style';
-import 'vant/lib/search/style';
-import 'vant/lib/tag/style';
-import 'vant/lib/cell/style';
 export default {
   name: 'ISearchBar',
-  components: {
-    [Empty.name]: Empty,
-    [Loading.name]: Loading,
-    [VanImage.name]: VanImage,
-    [Search.name]: Search,
-    [Tag.name]: Tag,
-    [Cell.name]: Cell
-  },
   data() {
     // showAction: true,
     // autofocus: false,
