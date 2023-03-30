@@ -394,6 +394,7 @@ export default {
             label: {
               show: this.propData.showLabel,
               formatter: '{value|{c}}',
+              alignTo: 'labelLine',
               rich: {
                 value: {
                   fontSize: this.getScale() * (this.propData.chartLabelFontSize || 12),
