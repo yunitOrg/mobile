@@ -12,8 +12,8 @@
     <div class="actiontime-wrap">
       <div class="action actionbox" >
         <span @click="handleShow(1)">活动类型：</span>
-        <div v-if="form.active['name']">
-          <span @click="handleShow(1)">{{form.active['name']}} </span>
+        <div style="display:flex;" v-if="form.active['name']">
+          <span style="display:inline-block;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" @click="handleShow(1)">{{form.active['name']}} </span>
           <span @click="handleClose(1)">
             <svg-icon icon-class="close1" className="actionclose">
           </svg-icon>
@@ -138,7 +138,7 @@ export default {
         this.actions = [
           { name: '选项一', value: 1 },
           { name: '选项二', value: 2 },
-          { name: '选项三', value: 3 },
+          { name: '选项三选项三选项三', value: 3 },
         ]
       }
     },
