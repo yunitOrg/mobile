@@ -492,7 +492,10 @@ export default {
       this.infoList = [];
 
       IDM.datasource.request(this.propData.dataSource[0]?.id, {
-        moduleObject: this.moduleObject
+        moduleObject: this.moduleObject,
+        param: {
+          ...this.setCustomParams()
+        }
       }, (res) => {
         const data = res.data;
         data.forEach((item) => {
@@ -508,6 +511,17 @@ export default {
         this.isLoading = false;
       })
 
+    },
+    setCustomParams(){
+      let obj = {}
+      const func = this.propData.paramsMakeFunction?.[0]
+      if(func){
+        obj = window[func.name] && window[func.name].call(this,{
+          _this:this,
+          customParams:func.param
+        })
+      }
+      return obj
     },
     /**
      * 通用的获取表达式匹配后的结果

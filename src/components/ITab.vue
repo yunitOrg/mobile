@@ -8,6 +8,7 @@
   <div idm-ctrl="idm_module"
   :id="moduleObject.id" 
   :idm-ctrl-id="moduleObject.id" 
+  v-show="propData.defaultStatus != 'hidden'"
   >
     <van-tabs class="tab-ul" v-model="activeTab"
     :lazy-render="false"
@@ -249,19 +250,23 @@ export default{
     setCustomParam(){
       let obj = {}
       const func = this.propData.paramsFunction?.[0]
-      obj = window[func.name] && window[func.name].call(this, {
+      if(func){
+        obj = window[func.name] && window[func.name].call(this, {
           ...this.commonParam(),
           _this: this,
         });
+      }
       return obj
     },
     formatData(data){
       const func = this.propData.formatFunction?.[0]
-      data = window[func.name] && window[func.name].call(this, {
+      if(func){
+        data = window[func.name] && window[func.name].call(this, {
           ...this.commonParam(),
           _this: this,
           data
         });
+      }
       return data
     },
     // 设置主题
@@ -426,6 +431,12 @@ export default{
           activeKey: that.activeTab
         });
       });
+    },
+    showThisModuleHandle() {
+      this.propData.defaultStatus = "default";
+    },
+    hideThisModuleHandle() {
+      this.propData.defaultStatus = "hidden";
     },
   }
 }
