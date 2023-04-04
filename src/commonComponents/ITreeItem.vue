@@ -198,7 +198,17 @@ export default {
                 height: 12px;
             }
         }
+        .header_left{
+            width: calc(100% - 35px);
+            .text{
+                white-space: nowrap;
+                overflow-x: hidden;
+                text-overflow: ellipsis;
+            }
+        }
         .header_right{
+            width: 20px;
+            flex-shrink: 0;
             margin-left: 15px;
         }
     }
