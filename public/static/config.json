@@ -346,6 +346,20 @@
       "className": "IinfoList",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.ipartyInfo",
+      "comName": "党员信息",
+      "className": "IpartyInfo",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.iprogressCourse",
+      "comName": "发展过程",
+      "className": "IprogressCourse",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }
