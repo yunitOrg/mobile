@@ -133,7 +133,7 @@
               "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
               "bindKey": "height",
               "width": "60px",
-              "default": "250px"
+              "default": "auto"
             }
           ]
         },
@@ -160,7 +160,7 @@
           "bindKey": "bgColor",
           "placeholder": "请选择颜色",
           "default": {
-            "hex8": "#FFFFFFFF"
+            "hex8": "#CD0502FF"
           }
         },
         {
