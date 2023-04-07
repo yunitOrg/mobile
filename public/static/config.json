@@ -360,6 +360,13 @@
       "className": "IprogressCourse",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.icommonTitle",
+      "comName": "通用标题样式1",
+      "className": "IcommonTitle",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }
