@@ -5,9 +5,7 @@
     id：使用moduleObject.id，如果id不使用这个将会被idm-ctrl-id属性替换
     idm-ctrl-id：组件的id，这个必须不能为空
   -->
-  <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id">
-    <div>
-      fsd
-    </div>
+  <div >
+    ffd
   </div>
 </template>
