@@ -8,12 +8,17 @@
   <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id">
     <div class="commontitle-wrap">
       <div class="common-title">
-        <svg v-if="propData.titleIcon && propData.titleIcon.length"
-          class="info-icon" aria-hidden="true">
-          <use :xlink:href="`#${propData.titleIcon[0]}`"></use>
-        </svg>
-        <svg-icon v-else icon-class="shuact" className="info-icon">
-        </svg-icon>
+        <template v-if="propData.loadsvg == 'svg'">
+          <svg v-if="propData.titleIcon && propData.titleIcon.length"
+            class="info-icon" aria-hidden="true">
+            <use :xlink:href="`#${propData.titleIcon[0]}`"></use>
+          </svg>
+          <svg-icon v-else icon-class="shuact" className="info-icon">
+          </svg-icon>
+        </template>
+        <template v-if="propData.loadsvg == 'image'">
+          <img :src="getImageUrl('uploadImage')" class="common-svgimg" alt="">
+        </template>
         <span class="pro-title">{{ propData.title }}</span>
       </div>
       <div>
@@ -33,7 +38,12 @@ export default{
   data() {
     return {
       moduleObject: {},
-      propData: this.$root.propData.compositeAttr || {}
+      propData: this.$root.propData.compositeAttr || {
+        loadsvg: 'image',
+        title: '办文效能',
+        imagewidth: '10px',
+        imageheight: '36px'
+      }
     }
   },
   mounted() {
@@ -45,10 +55,19 @@ export default{
       this.propData = propData.compositeAttr || {};
       this.init();
     },
+    getImageUrl(key) {
+      if (this.propData[key]) {
+        return IDM.url.getWebPath(this.propData[key])
+      } else {
+        return IDM.url.getModuleAssetsWebPath(require(`../assets/rect.png`), this.moduleObject)
+      }
+    },
     handleStyle () {
       let styleObject = {},
         tipsStyleObj = {},
         titlebox = {},
+        imgObject = {},
+        imgboxobject = {},
         titleStyle = {};
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
@@ -82,6 +101,12 @@ export default{
               tipsStyleObj['color'] = element.hex;
               tipsStyleObj["fill"] = element.hex;
               break
+            case 'imagewidth':
+              imgObject['width'] = element;
+              break
+            case 'imageheight':
+              imgObject['height'] = element;
+              break
             case 'titleIconFontSize':
               tipsStyleObj['font-size'] = element + 'px';
               tipsStyleObj['width'] = element + 'px';
@@ -89,6 +114,7 @@ export default{
               break
             case 'leftIconBox':
               IDM.style.setBoxStyle(tipsStyleObj, element);
+              IDM.style.setBoxStyle(imgObject, element);
               break
             case 'titleBox':
               IDM.style.setBoxStyle(titlebox, element);
@@ -101,6 +127,7 @@ export default{
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .commontitle-wrap", styleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .commontitle-wrap .info-icon", tipsStyleObj);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + " .commontitle-wrap .common-svgimg", imgObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .commontitle-wrap .common-title", titlebox);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .commontitle-wrap .pro-title", titleStyle);
     },
@@ -114,8 +141,15 @@ export default{
 
 <style lang="scss" scoped>
 .commontitle-wrap{
+  .common-title{
+    display: flex;
+    align-items: center;
+  }
   .idm-dragbox{
     min-height: 100px;
+  }
+  .common-svgimg{
+    display: inline-block;
   }
 }
 </style>

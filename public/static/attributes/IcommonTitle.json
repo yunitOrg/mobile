@@ -50,11 +50,29 @@
           "desc": "设置标题图标属性，颜色会覆盖主题色",
           "children": [
             {
+              "type": "radio",
+              "layoutType": "inline",
+              "text": "加载图标",
+              "bindKey": "loadsvg",
+              "dictionary": [
+                {
+                    "label": "svg",
+                    "value": "svg"
+                },
+                {
+                    "label": "image",
+                    "value": "image"
+                }
+              ],
+              "default": "image"
+            },
+            {
               "type": "iconSelect",
               "layoutType": "inline",
               "text": "选择图标",
               "bindKey": "titleIcon",
-              "default": ""
+              "default": "",
+              "display": "@[loadsvg='svg']"
             },
             {
               "type": "colorPicker",
@@ -62,14 +80,42 @@
               "desc": "设置图标颜色，会覆盖主题色",
               "text": "图标颜色",
               "bindKey": "titleIconFontColor",
-              "default": {}
+              "default": {},
+              "display": "@[loadsvg='svg']"
             },
             {
               "type": "inputNumber",
               "layoutType": "inline",
               "text": "图标大小",
               "bindKey": "titleIconFontSize",
-              "default": 18
+              "default": 18,
+              "display": "@[loadsvg='svg']"
+            },
+            {
+              "type": "uploadImage",
+              "layoutType": "inline",
+              "text": "图片",
+              "bindKey": "uploadImage",
+              "placeholder": "可输入图片地址或直接上传",
+              "display": "@[loadsvg='image']"
+            },
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "图片宽",
+              "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
+              "bindKey": "imagewidth",
+              "width": "60px",
+              "default": "5px"
+            },
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "图片高",
+              "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
+              "bindKey": "imageheight",
+              "width": "60px",
+              "default": "22px"
             },
             {
               "type": "box",
@@ -101,7 +147,7 @@
             "marginLeftVal": "",
             "paddingTopVal": "",
             "paddingRightVal": "",
-            "paddingBottomVal": "",
+            "paddingBottomVal": "20px",
             "paddingLeftVal": ""
           }
         },
