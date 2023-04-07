@@ -367,6 +367,13 @@
       "className": "IcommonTitle",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.icrossFont",
+      "comName": "横向文字",
+      "className": "IcrossFont",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }
