@@ -19,7 +19,221 @@
       "type": "group",
       "text": "基本属性",
       "desc": "提供设置组件能达到展示效果的基本属性设置信息",
-      "children": []
+      "children": [
+        {
+          "type": "table",
+          "text": "页签选项设置",
+          "bindKey": "tableMenu",
+          "tabText": "页签[index]",
+          "children": [
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "tab标识",
+              "bindKey": "key"
+            },
+            {
+              "type": "group",
+              "text": "方块样式",
+              "children": [
+                {
+                  "type": "input",
+                  "layoutType": "block",
+                  "text": "方块宽",
+                  "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
+                  "bindKey": "blockwidth",
+                  "width": "60px",
+                  "default": "10px"
+                },
+                {
+                  "type": "input",
+                  "layoutType": "block",
+                  "text": "方块高",
+                  "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
+                  "bindKey": "blockheight",
+                  "width": "60px",
+                  "default": "10px"
+                },
+                {
+                  "type": "colorPicker",
+                  "layoutType": "inline",
+                  "text": "方块色",
+                  "bindKey": "blockbgColor",
+                  "placeholder": "请选择颜色",
+                  "default": {
+                    "hex8": "#0091FFFF"
+                  }
+                },
+                {
+                  "type": "box",
+                  "layoutType": "block",
+                  "text": "标题间距",
+                  "bindKey": "blockbox",
+                  "default": {
+                    "marginTopVal": "",
+                    "marginRightVal": "",
+                    "marginBottomVal": "",
+                    "marginLeftVal": "",
+                    "paddingTopVal": "",
+                    "paddingRightVal": "5px",
+                    "paddingBottomVal": "",
+                    "paddingLeftVal": ""
+                  }
+                }
+              ]
+            },
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "text": "标题",
+              "desc": "容器的标题",
+              "bindKey": "title",
+              "default": "收文："
+            },
+            {
+              "type": "dataSourceFiledSelect",
+              "layoutType": "inline",
+              "text": "标题字段",
+              "desc": "标题绑定字段",
+              "bindKey": "titleField"
+            },
+            {
+              "type": "font",
+              "layoutType": "block",
+              "text": "字体",
+              "desc": "标题和子数字体",
+              "bindKey": "titleFont"
+            },
+            {
+              "type": "input",
+              "layoutType": "inline",
+              "desc": "个数数字",
+              "text": "个数",
+              "bindKey": "titleSub",
+              "default": "1"
+            },
+            {
+              "type": "dataSourceFiledSelect",
+              "layoutType": "inline",
+              "text": "个数字段",
+              "desc": "个数绑定字段",
+              "bindKey": "numField"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "text": "外层样式",
+      "desc": "点击？查看样式设置用法指南",
+      "helpUrl": "",
+      "children": [
+        {
+          "type": "layout",
+          "layoutType": "inline",
+          "text": "栅格布局",
+          "bindKey": "layout",
+          "default": {
+            "display": "flex",
+            "direction": "row",
+            "align": "",
+            "justify": "space-between"
+          }
+        },
+        {
+          "type": "inlineGroup",
+          "text": "宽高",
+          "children": [
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "宽",
+              "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
+              "bindKey": "width",
+              "width": "60px",
+              "default": "auto"
+            },
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "高",
+              "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
+              "bindKey": "height",
+              "width": "60px",
+              "default": "auto"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "layoutType": "block",
+          "text": "内外边距",
+          "bindKey": "ulbox",
+          "default": {
+            "marginTopVal": "",
+            "marginRightVal": "",
+            "marginBottomVal": "",
+            "marginLeftVal": "",
+            "paddingTopVal": "10px",
+            "paddingRightVal": "10px",
+            "paddingBottomVal": "10px",
+            "paddingLeftVal": "10px"
+          }
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "渐变色",
+          "desc": "背景渐变色",
+          "bindKey": "bglinear",
+          "default": ""
+        },
+        {
+          "type": "colorPicker",
+          "layoutType": "inline",
+          "text": "背景色",
+          "bindKey": "bgColor",
+          "placeholder": "请选择颜色",
+          "default": {
+            "hex8": "#FFFFFFFF"
+          }
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "容器阴影",
+          "bindKey": "boxShadow",
+          "default": "0px 0px 10px 0px #ccc"
+        },
+        {
+          "type": "border",
+          "layoutType": "block",
+          "text": "边框",
+          "bindKey": "boxborder"
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "text": "高级",
+      "desc": "点击？查看高级设置用法指南",
+      "children": [
+        {
+          "type": "dataSourceSelect",
+          "layoutType": "inline",
+          "text": "数据源",
+          "bindKey": "dataSource"
+        },
+        {
+          "type": "actionSelect",
+          "layoutType": "block",
+          "text": "自定义参数",
+          "bindKey": "paramsFunc",
+          "desc": "设置数据源自定义参数函数",
+          "multiple": false
+        }
+      ]
     }
   ]
 }

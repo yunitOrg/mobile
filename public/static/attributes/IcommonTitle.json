@@ -237,41 +237,6 @@
           "bindKey": "boxborder"
         }
       ]
-    },
-    {
-      "type": "group",
-      "text": "高级",
-      "desc": "点击？查看高级设置用法指南",
-      "children": [
-        {
-          "type": "dataSourceSelect",
-          "layoutType": "inline",
-          "text": "数据源",
-          "bindKey": "dataSource"
-        },
-        {
-          "type": "actionSelect",
-          "layoutType": "block",
-          "text": "自定义参数",
-          "bindKey": "paramsFunc",
-          "desc": "设置数据源自定义参数函数",
-          "multiple": false
-        },
-        {
-          "type": "group",
-          "text": "字段设置",
-          "desc": "页面数据绑定",
-          "children": [
-            {
-              "type": "textarea",
-              "layoutType": "inline",
-              "text": "数据来源",
-              "bindKey": "pageField",
-              "default": "[{name: '申请入党',open: false,children: [{name: '基本信息',type: 'essentialInformationStatus'},{name: '递交入党申请书',type: 'applicationStatus'},{name: '党组织谈话情况',type: 'conversationInformationStatus'}]}}]"
-            }
-          ]
-        }
-      ]
     }
   ]
 }
