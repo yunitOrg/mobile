@@ -17,6 +17,7 @@
                     finished-text="没有更多了"
                     @load="onLoadMore"
                 >
+                <div>
                     <div
                         v-for="(item, index) in pageData.value"
                         :key="index"
@@ -58,6 +59,8 @@
                             >
                         </div>
                     </div>
+                </div>
+                    
                     <template #finished>
                         {{ propData.isPaging ? '没有更多了' : '' }}
                     </template>
