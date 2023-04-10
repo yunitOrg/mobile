@@ -31,7 +31,7 @@ export default{
   name: 'IDialogDate',
   data () {
     return {
-      show: true,
+      show: false,
       moduleObject: {},
       propData: this.$root.propData.compositeAttr || {
         title: '选择年月日',
