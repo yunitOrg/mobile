@@ -52,6 +52,14 @@
         {
           "type": "input",
           "layoutType": "block",
+          "text": "弹出层高",
+          "desc": "弹出层高度：比如：50%",
+          "bindKey": "popHeight",
+          "default": "50%"
+        },
+        {
+          "type": "input",
+          "layoutType": "block",
           "text": "标题",
           "desc": "标题",
           "bindKey": "title",
