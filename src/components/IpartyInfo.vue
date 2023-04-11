@@ -51,7 +51,11 @@ export default {
       } else if (this.propData[key]) {
         return IDM.url.getWebPath(this.propData[key])
       } else {
-        return IDM.url.getModuleAssetsWebPath(require(`../assets/default-avatar.png`), this.moduleObject)
+        if (this.moduleObject.codeSrc) {
+          return IDM.url.getModuleAssetsWebPath(require(`../assets/default-avatar.png`), this.moduleObject);
+        } else {
+          return require(`../assets/default-avatar.png`)
+        }
       }
     },
     textFilter (text) {
@@ -99,10 +103,10 @@ export default {
           },
           (data) => {
             this.componentData = data;
-            let name = this.propData.nameField;
             let head = this.propData.headField;
+            let name = this.propData.nameField;
+            (this.componentData || {}).head = IDM.url.getContextWebUrl(`${this.propData.imgdataSource}?fileName=${data[head]}`);
             (this.componentData || {}).name = data[name];
-            (this.componentData || {}).head = data[head];
           }
         )
       } else {
@@ -167,7 +171,7 @@ export default {
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .partyinfo-name", nameObject);
     },
     init () {
-      console.log(this.propData, '数据');
+      console.log(this.propData, this.moduleObject, '数据');
       this.handleStyle();
       this.initData();
     }

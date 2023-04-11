@@ -451,18 +451,12 @@
           "multiple": false
         },
         {
-          "type": "group",
-          "text": "字段设置",
-          "desc": "页面数据绑定",
-          "children": [
-            {
-              "type": "textarea",
-              "layoutType": "inline",
-              "text": "数据来源",
-              "bindKey": "pageField",
-              "default": "[{name: '申请入党',open: false,children: [{name: '基本信息',type: 'essentialInformationStatus'},{name: '递交入党申请书',type: 'applicationStatus'},{name: '党组织谈话情况',type: 'conversationInformationStatus'}]}}]"
-            }
-          ]
+          "type": "actionSelect",
+          "layoutType": "block",
+          "text": "请求成功对结果处理",
+          "bindKey": "handleResult",
+          "desc": "请求成功对结果处理函数，拿到接口数据后返回给页面",
+          "multiple": false
         }
       ]
     }
