@@ -14,6 +14,7 @@
                     :immediate-check="false"
                     v-model="isLoading"
                     :finished="finished"
+                    offset=""
                     finished-text="没有更多了"
                     @load="onLoadMore"
                 >

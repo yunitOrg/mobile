@@ -162,7 +162,7 @@ export default {
 
                             if (this.propData.isPaging) {
                                 this.pageData.value = [...this.pageData.value, ...res.data.data.rows]
-                                if (res.data.data.value.length === 0) {
+                                if (res.data.data.rows.length === 0) {
                                     this.finished = true
                                 }
                             } else {
