@@ -194,15 +194,23 @@
         {
           "type": "dataSourceSelect",
           "layoutType": "inline",
-          "text": "数据源",
+          "text": "信息数据源",
           "bindKey": "dataSource"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "头像接口",
+          "desc": "头像接口+fileName",
+          "bindKey": "imgdataSource",
+          "default": ""
         },
         {
           "type": "actionSelect",
           "layoutType": "block",
           "text": "自定义参数",
           "bindKey": "paramsFunc",
-          "desc": "设置数据源自定义参数函数",
+          "desc": "设置数据源自定义参数函数，只适用信息数据源",
           "multiple": false
         },
         {

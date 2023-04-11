@@ -254,6 +254,17 @@ export default {
         }
       ]
     },
+    handleResult (data) {
+      let obj = {};
+      if (this.propData.handleResult && this.propData.handleResult.length > 0) {
+        const funcName = this.propData.handleResult[0].name
+        obj = window[funcName].call(this, {
+          router: IDM.router.getParam(this.moduleObject.routerId),
+          result: data
+        }) || {}
+      }
+      return obj
+    },
     changeOpen (row) {
       let ary = this.list.filter(item => item.name != row.name);
       ary.forEach(item => item.open = false);
@@ -285,7 +296,7 @@ export default {
           },
           (data) => {
             this.componentData = data;
-            this.list = this.propData.pageField;
+            this.list = this.handleResult(data);
             this.list.forEach(item => this.$set(item, 'open', false));
           }
         )
