@@ -24,7 +24,8 @@ import {
     ActionSheet,
     List,
     Cell,
-    Picker 
+    Picker,
+    DatetimePicker
 } from 'vant'
 
 Vue.use(Tab)
@@ -51,3 +52,4 @@ Vue.use(Tab)
     .use(ActionSheet)
     .use(List)
     .use(Picker)
+    .use(DatetimePicker)

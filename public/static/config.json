@@ -346,6 +346,41 @@
       "className": "IinfoList",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.ipartyInfo",
+      "comName": "党员信息",
+      "className": "IpartyInfo",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.iprogressCourse",
+      "comName": "发展过程",
+      "className": "IprogressCourse",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.icommonTitle",
+      "comName": "通用标题样式1",
+      "className": "IcommonTitle",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.icrossFont",
+      "comName": "横向文字",
+      "className": "IcrossFont",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.iDialogDate",
+      "comName": "弹层日期选择",
+      "className": "IDialogDate",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }

@@ -1,0 +1,464 @@
+{
+  "classId": "idm.component.mobile.iprogressCourse",
+  "comName": "发展过程",
+  "className": "IprogressCourse",
+  "comType": "common",
+  "comLangue": "vue",
+  "compositeAttr": [
+    {
+      "type": "input",
+      "layoutType": "inline",
+      "text": "唯一标识",
+      "bindKey": "ctrlId",
+      "disabled": true,
+      "default": "@[packageid]",
+      "desc": "",
+      "helpUrl": ""
+    },
+    {
+      "type": "group",
+      "text": "基本属性",
+      "desc": "提供设置组件能达到展示效果的基本属性设置信息",
+      "children": [
+        {
+          "type": "switch",
+          "layoutType": "inline",
+          "text": "标题显示",
+          "desc": "标题是否显示",
+          "bindKey": "isTitleShow",
+          "default": true
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "标题",
+          "bindKey": "title",
+          "default": "发展过程",
+          "display": "@[isTitleShow]"
+        },
+        {
+          "type": "group",
+          "text": "左侧图标",
+          "desc": "设置标题图标属性，颜色会覆盖主题色",
+          "children": [
+            {
+              "type": "iconSelect",
+              "layoutType": "inline",
+              "text": "选择图标",
+              "bindKey": "titleIcon",
+              "default": ""
+            },
+            {
+              "type": "colorPicker",
+              "layoutType": "inline",
+              "desc": "设置图标颜色，会覆盖主题色",
+              "text": "图标颜色",
+              "bindKey": "titleIconFontColor",
+              "default": {}
+            },
+            {
+              "type": "inputNumber",
+              "layoutType": "inline",
+              "text": "图标大小",
+              "bindKey": "titleIconFontSize",
+              "default": 18
+            },
+            {
+              "type": "box",
+              "layoutType": "block",
+              "text": "图标间距",
+              "bindKey": "leftIconBox",
+              "default": {
+                "marginTopVal": "",
+                "marginRightVal": "",
+                "marginBottomVal": "",
+                "marginLeftVal": "-5px",
+                "paddingTopVal": "",
+                "paddingRightVal": "",
+                "paddingBottomVal": "",
+                "paddingLeftVal": ""
+              }
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "layoutType": "block",
+          "text": "标题间距",
+          "bindKey": "titleBox",
+          "default": {
+            "marginTopVal": "",
+            "marginRightVal": "",
+            "marginBottomVal": "",
+            "marginLeftVal": "",
+            "paddingTopVal": "",
+            "paddingRightVal": "",
+            "paddingBottomVal": "",
+            "paddingLeftVal": ""
+          }
+        },
+        {
+          "type": "font",
+          "layoutType": "block",
+          "text": "标题字体",
+          "bindKey": "titleFont"
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "text": "单项样式",
+      "desc": "点击？查看样式设置用法指南",
+      "helpUrl": "",
+      "children": [
+        {
+          "type": "inlineGroup",
+          "text": "宽高",
+          "children": [
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "宽",
+              "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
+              "bindKey": "itemWidth",
+              "width": "60px",
+              "default": "auto"
+            },
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "高",
+              "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
+              "bindKey": "itemHeight",
+              "width": "60px",
+              "default": "auto"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "layoutType": "block",
+          "text": "内外边距",
+          "bindKey": "itemBox",
+          "default": {
+            "marginTopVal": "",
+            "marginRightVal": "",
+            "marginBottomVal": "10px",
+            "marginLeftVal": "",
+            "paddingTopVal": "10px",
+            "paddingRightVal": "10px",
+            "paddingBottomVal": "10px",
+            "paddingLeftVal": "10px"
+          }
+        },
+        {
+          "type": "colorPicker",
+          "layoutType": "inline",
+          "text": "背景色",
+          "bindKey": "itemBgcolor",
+          "placeholder": "请选择颜色",
+          "default": {
+            "hex8": "#FFFFFFFF"
+          }
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "容器阴影",
+          "bindKey": "itemboxShadow",
+          "default": "0px 0px 10px 0px #ccc"
+        },
+        {
+          "type": "border",
+          "layoutType": "block",
+          "text": "边框",
+          "bindKey": "itemboxborder"
+        },
+        {
+          "type": "group",
+          "text": "数字样式",
+          "desc": "设置标题图标属性，颜色会覆盖主题色",
+          "children": [
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "宽",
+              "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
+              "bindKey": "numWidth",
+              "width": "60px",
+              "default": "30px"
+            },
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "高",
+              "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
+              "bindKey": "numHeight",
+              "width": "60px",
+              "default": "30px"
+            },
+            {
+              "type": "colorPicker",
+              "layoutType": "inline",
+              "text": "背景色",
+              "bindKey": "numBgColor",
+              "placeholder": "请选择颜色",
+              "default": {
+                "hex8": "#ff0000FF"
+              }
+            },
+            {
+              "type": "font",
+              "layoutType": "block",
+              "text": "数字字体",
+              "bindKey": "numFont"
+            },
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "数字距右",
+              "desc": "数字距右的间距",
+              "bindKey": "numRight",
+              "default": "10px"
+            }
+          ]
+        },
+        {
+          "type": "font",
+          "layoutType": "block",
+          "text": "标题字体",
+          "bindKey": "itemNameTitle"
+        },
+        {
+          "type": "group",
+          "text": "右侧箭头",
+          "layoutType": "block",
+          "desc": "设置标题图标属性，颜色会覆盖主题色",
+          "children": [
+            {
+              "type": "colorPicker",
+              "layoutType": "inline",
+              "desc": "设置图标颜色，会覆盖主题色",
+              "text": "图标颜色",
+              "bindKey": "arrowIconColor",
+              "default": {}
+            },
+            {
+              "type": "inputNumber",
+              "layoutType": "inline",
+              "text": "图标大小",
+              "bindKey": "arrowIconSize",
+              "default": 20
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "layoutType": "block",
+          "text": "子集盒子",
+          "bindKey": "subitemBox",
+          "default": {
+            "marginTopVal": "",
+            "marginRightVal": "",
+            "marginBottomVal": "",
+            "marginLeftVal": "",
+            "paddingTopVal": "10px",
+            "paddingRightVal": "",
+            "paddingBottomVal": "",
+            "paddingLeftVal": "30px"
+          }
+        },
+        {
+          "type": "group",
+          "text": "子集样式",
+          "desc": "设置标题图标属性，颜色会覆盖主题色",
+          "children": [
+            {
+              "type": "box",
+              "layoutType": "block",
+              "text": "子集边距",
+              "bindKey": "childrenBox",
+              "default": {
+                "marginTopVal": "",
+                "marginRightVal": "",
+                "marginBottomVal": "10px",
+                "marginLeftVal": "",
+                "paddingTopVal": "5px",
+                "paddingRightVal": "",
+                "paddingBottomVal": "5px",
+                "paddingLeftVal": ""
+              }
+            },
+            {
+              "type": "colorPicker",
+              "layoutType": "inline",
+              "text": "背景色",
+              "bindKey": "childrenColor",
+              "placeholder": "请选择颜色",
+              "default": {
+                "hex8": "#FFF3E8FF"
+              }
+            },
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "图标宽",
+              "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
+              "bindKey": "subiconwidth",
+              "width": "60px",
+              "default": "30px"
+            },
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "图标高",
+              "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
+              "bindKey": "subiconheight",
+              "width": "60px",
+              "default": "22.5px"
+            },
+            {
+              "type": "font",
+              "layoutType": "block",
+              "text": "图标字体",
+              "bindKey": "subiconFont"
+            },
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "图标距右",
+              "desc": "图标距右距离",
+              "bindKey": "subiconright",
+              "width": "60px",
+              "default": "10px"
+            },
+            {
+              "type": "font",
+              "layoutType": "block",
+              "text": "标题字体",
+              "bindKey": "subFont"
+            },
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "对号宽",
+              "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
+              "bindKey": "checkWidth",
+              "width": "60px",
+              "default": "20px"
+            },
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "对号高",
+              "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
+              "bindKey": "checkHeight",
+              "width": "60px",
+              "default": "14px"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "text": "外层样式",
+      "desc": "点击？查看样式设置用法指南",
+      "helpUrl": "",
+      "children": [
+        {
+          "type": "inlineGroup",
+          "text": "宽高",
+          "children": [
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "宽",
+              "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
+              "bindKey": "width",
+              "width": "60px",
+              "default": "auto"
+            },
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "高",
+              "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
+              "bindKey": "height",
+              "width": "60px",
+              "default": "auto"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "layoutType": "block",
+          "text": "内外边距",
+          "bindKey": "ulbox",
+          "default": {
+            "marginTopVal": "",
+            "marginRightVal": "",
+            "marginBottomVal": "",
+            "marginLeftVal": "",
+            "paddingTopVal": "10px",
+            "paddingRightVal": "10px",
+            "paddingBottomVal": "10px",
+            "paddingLeftVal": "10px"
+          }
+        },
+        {
+          "type": "colorPicker",
+          "layoutType": "inline",
+          "text": "背景色",
+          "bindKey": "bgColor",
+          "placeholder": "请选择颜色",
+          "default": {
+            "hex8": "#FFFFFFFF"
+          }
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "容器阴影",
+          "bindKey": "boxShadow",
+          "default": "0px 0px 10px 0px #ccc"
+        },
+        {
+          "type": "border",
+          "layoutType": "block",
+          "text": "边框",
+          "bindKey": "boxborder"
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "text": "高级",
+      "desc": "点击？查看高级设置用法指南",
+      "children": [
+        {
+          "type": "dataSourceSelect",
+          "layoutType": "inline",
+          "text": "数据源",
+          "bindKey": "dataSource"
+        },
+        {
+          "type": "actionSelect",
+          "layoutType": "block",
+          "text": "自定义参数",
+          "bindKey": "paramsFunc",
+          "desc": "设置数据源自定义参数函数",
+          "multiple": false
+        },
+        {
+          "type": "actionSelect",
+          "layoutType": "block",
+          "text": "请求成功对结果处理",
+          "bindKey": "handleResult",
+          "desc": "请求成功对结果处理函数，拿到接口数据后返回给页面",
+          "multiple": false
+        }
+      ]
+    }
+  ]
+}

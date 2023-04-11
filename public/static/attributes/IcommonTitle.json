@@ -1,0 +1,242 @@
+{
+  "classId": "idm.component.mobile.icommonTitle",
+  "comName": "通用标题样式1",
+  "className": "IcommonTitle",
+  "comType": "common",
+  "comLangue": "vue",
+  "compositeAttr": [
+    {
+      "type": "input",
+      "layoutType": "inline",
+      "text": "唯一标识",
+      "bindKey": "ctrlId",
+      "disabled": true,
+      "default": "@[packageid]",
+      "desc": "",
+      "helpUrl": ""
+    },
+    {
+      "type": "group",
+      "text": "基本属性",
+      "desc": "提供设置组件能达到展示效果的基本属性设置信息",
+      "children": [
+        {
+          "type": "radio",
+          "layoutType": "inline",
+          "text": "加载模式",
+          "bindKey": "isDrag",
+          "dictionary": [
+            {
+                "label": "正常加载",
+                "value": "normal"
+            },
+            {
+                "label": "加载容器",
+                "value": "container"
+            }
+          ],
+          "default": "container"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "标题",
+          "bindKey": "title",
+          "default": "办文效能"
+        },
+        {
+          "type": "group",
+          "text": "左侧图标",
+          "desc": "设置标题图标属性，颜色会覆盖主题色",
+          "children": [
+            {
+              "type": "radio",
+              "layoutType": "inline",
+              "text": "加载图标",
+              "bindKey": "loadsvg",
+              "dictionary": [
+                {
+                    "label": "svg",
+                    "value": "svg"
+                },
+                {
+                    "label": "image",
+                    "value": "image"
+                }
+              ],
+              "default": "image"
+            },
+            {
+              "type": "iconSelect",
+              "layoutType": "inline",
+              "text": "选择图标",
+              "bindKey": "titleIcon",
+              "default": "",
+              "display": "@[loadsvg='svg']"
+            },
+            {
+              "type": "colorPicker",
+              "layoutType": "inline",
+              "desc": "设置图标颜色，会覆盖主题色",
+              "text": "图标颜色",
+              "bindKey": "titleIconFontColor",
+              "default": {},
+              "display": "@[loadsvg='svg']"
+            },
+            {
+              "type": "inputNumber",
+              "layoutType": "inline",
+              "text": "图标大小",
+              "bindKey": "titleIconFontSize",
+              "default": 18,
+              "display": "@[loadsvg='svg']"
+            },
+            {
+              "type": "uploadImage",
+              "layoutType": "inline",
+              "text": "图片",
+              "bindKey": "uploadImage",
+              "placeholder": "可输入图片地址或直接上传",
+              "display": "@[loadsvg='image']"
+            },
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "图片宽",
+              "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
+              "bindKey": "imagewidth",
+              "width": "60px",
+              "default": "5px"
+            },
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "图片高",
+              "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
+              "bindKey": "imageheight",
+              "width": "60px",
+              "default": "22px"
+            },
+            {
+              "type": "box",
+              "layoutType": "block",
+              "text": "图标间距",
+              "bindKey": "leftIconBox",
+              "default": {
+                "marginTopVal": "",
+                "marginRightVal": "",
+                "marginBottomVal": "",
+                "marginLeftVal": "-5px",
+                "paddingTopVal": "",
+                "paddingRightVal": "",
+                "paddingBottomVal": "",
+                "paddingLeftVal": ""
+              }
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "layoutType": "block",
+          "text": "标题间距",
+          "bindKey": "titleBox",
+          "default": {
+            "marginTopVal": "",
+            "marginRightVal": "",
+            "marginBottomVal": "",
+            "marginLeftVal": "",
+            "paddingTopVal": "",
+            "paddingRightVal": "",
+            "paddingBottomVal": "20px",
+            "paddingLeftVal": ""
+          }
+        },
+        {
+          "type": "font",
+          "layoutType": "block",
+          "text": "标题字体",
+          "bindKey": "titleFont"
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "text": "外层样式",
+      "desc": "点击？查看样式设置用法指南",
+      "helpUrl": "",
+      "children": [
+        {
+          "type": "inlineGroup",
+          "text": "宽高",
+          "children": [
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "宽",
+              "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
+              "bindKey": "width",
+              "width": "60px",
+              "default": "auto"
+            },
+            {
+              "type": "input",
+              "layoutType": "block",
+              "text": "高",
+              "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
+              "bindKey": "height",
+              "width": "60px",
+              "default": "auto"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "layoutType": "block",
+          "text": "内外边距",
+          "bindKey": "ulbox",
+          "default": {
+            "marginTopVal": "",
+            "marginRightVal": "",
+            "marginBottomVal": "",
+            "marginLeftVal": "",
+            "paddingTopVal": "10px",
+            "paddingRightVal": "10px",
+            "paddingBottomVal": "10px",
+            "paddingLeftVal": "10px"
+          }
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "渐变色",
+          "desc": "背景渐变色",
+          "bindKey": "bglinear",
+          "default": ""
+        },
+        {
+          "type": "colorPicker",
+          "layoutType": "inline",
+          "text": "背景色",
+          "bindKey": "bgColor",
+          "placeholder": "请选择颜色",
+          "default": {
+            "hex8": "#FFFFFFFF"
+          }
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "容器阴影",
+          "bindKey": "boxShadow",
+          "default": "0px 0px 10px 0px #ccc"
+        },
+        {
+          "type": "border",
+          "layoutType": "block",
+          "text": "边框",
+          "bindKey": "boxborder"
+        }
+      ]
+    }
+  ]
+}
