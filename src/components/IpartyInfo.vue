@@ -46,7 +46,8 @@ export default {
       this.init();
     },
     getImageUrl(key) {
-      if (this.componentData.head) {
+      let img = this.propData.headField;
+      if (this.componentData[img]) {
         return this.componentData.head;
       } else if (this.propData[key]) {
         return IDM.url.getWebPath(this.propData[key])
@@ -102,11 +103,23 @@ export default {
             }
           },
           (data) => {
-            this.componentData = data;
-            let head = this.propData.headField;
-            let name = this.propData.nameField;
-            (this.componentData || {}).head = IDM.url.getContextWebUrl(`${this.propData.imgdataSource}?fileName=${data[head]}`);
-            (this.componentData || {}).name = data[name];
+            if (this.propData.handleBackData && this.propData.handleBackData.length > 0) {
+              const funcName = this.propData.handleBackData[0].name
+              let obj = window[funcName].call(this, {
+                data: data
+              }) || {};
+              this.componentData = obj || {};
+              let head = this.propData.headField;
+              let name = this.propData.nameField;
+              (this.componentData || {}).head = IDM.url.getContextWebUrl(`${this.propData.imgdataSource}?fileName=${data[head]}`);
+              (this.componentData || {}).name = data[name];
+            } else {
+              this.componentData = data;
+              let head = this.propData.headField;
+              let name = this.propData.nameField;
+              (this.componentData || {}).head = IDM.url.getContextWebUrl(`${this.propData.imgdataSource}?fileName=${data[head]}`);
+              (this.componentData || {}).name = data[name];
+            }
           }
         )
       } else {
@@ -189,6 +202,7 @@ export default {
     img{
       width: 100%;
       height: 100%;
+      border-radius: 50%;
     }
     .partyinfo-name{
       display: inline-block;

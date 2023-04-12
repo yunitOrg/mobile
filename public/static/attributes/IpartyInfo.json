@@ -194,7 +194,7 @@
         {
           "type": "dataSourceSelect",
           "layoutType": "inline",
-          "text": "信息数据源",
+          "text": "数据源",
           "bindKey": "dataSource"
         },
         {
@@ -210,7 +210,15 @@
           "layoutType": "block",
           "text": "自定义参数",
           "bindKey": "paramsFunc",
-          "desc": "设置数据源自定义参数函数，只适用信息数据源",
+          "desc": "设置数据源自定义参数函数，只适用数据源",
+          "multiple": false
+        },
+        {
+          "type": "actionSelect",
+          "layoutType": "block",
+          "text": "结果数据处理函数",
+          "bindKey": "handleBackData",
+          "desc": "接口请求成功后对数据的处理",
           "multiple": false
         },
         {
