@@ -976,6 +976,7 @@
                     "type": "dataSourceSelect",
                     "layoutType": "inline",
                     "text": "数据源",
+                    "desc": "设置组件数据源，组件内接受参数：{start, limit, 自定义参数函数，chooseTab消息参数 }，数据返回示例：{value: [], count: 0, moreUrl: ''}",
                     "display": "@[dataType === 'dataSource']",
                     "bindKey": "dataSource"
                 },

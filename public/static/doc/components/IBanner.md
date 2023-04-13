@@ -1,231 +1,160 @@
-# 轮播广告
-
-此组件为轮播广告组件，支持高度设置，上下内边距设置，图片 圆角设置，可灵活配置接口显示图片数量
-
-## 组件类名（className）
-
-IBanner
-
-## 组件类 ID（classId）
-
-idm.componet.mobile.ibanner
-
+# 轮播图
+此组件是轮播图，这里是组件简介
+## 组件类ID（IBanner）
+idm.component.mobile.ibanner
 ## 组件开发语言（comLangue）
-
 vue
-
 ## 组件类型（comType）
-
 common
-
 ## 所在代码包版本
-
-mobile@1.0.0
-
+mobile@1.0.1
 ## 组件属性
-
-此章节主要介绍该组件的每个属性的含义以及如何使用说明
-
 ### 唯一标识【ctrlId】
 
-只读属性，不可修改，作为每个组件实例的一个唯一标识
-
--   标识：`ctrlId`
--   默认值：`@[packageid]`
-
+- 标识：`ctrlId`
+- 默认值：`@[packageid]`
 ### 基本属性
+#### 标题【title】
 
-<font color="#CCCCCC">此章节主要用于存放设置组件所需要的一些基本信息的属性，以达到组件具备使用的基础条件</font>
-
-#### 组件标题【title】
-
-<font color="#CCCCCC">当前组件标题，页面中不显示，用来增加组件辨识度</font>
-
--   标识: `title`
--   默认值: 广告轮播
-
+- 标识：`title`
+- 默认值：`轮播图`
+- 显示：`@[false]`
 #### 显示方块【showBullet】
+配置轮播分页器方块显示
+- 标识：`showBullet`
+- 默认值：`true`
+#### 分页位置【pagePosition】
 
-<font color="#CCCCCC">当前组件分页器是否显示，配置环境时不显示</font>
-
--   标识: `showBullet`
--   默认值: `true`显示
-
-#### 跳转方式【jumpStyle】
-
-> 点击事件跳转方式
-
--   标识: `jumpStyle`
--   \_self:当前页跳转
--   \_blank:新开窗口跳转
--   \_auto: 智能跳转打开
-
-```json
-智能跳转打开的方式是依据当前所在的环境并依据以下执行顺序来进行判定打开方式的：
-1、优先判断是否在微信APP环境中，如果是在微信APP则会使用微信内置的新窗口方式打开
-2、其次会执行其他环境的新窗口打开方式
-3、最后如果所在环境不支持则会直接使用当前页跳转方式打开
-```
-
--   默认值：`_self`
-
+- 标识：`pagePosition`
+- 默认值：`center`
+- 选项：	 - 左侧【flex-start】	 - 居中【center】	 - 右侧【right】
+#### 自动播放【autoplay】
+设置点击轮播图片数据模式
+- 标识：`autoplay`
+- 默认值：`true`
+- 选项：	 - 是【true】	 - 否【false】
+#### 停留时间【delay】
+自动播放停留时间，单位：毫秒
+- 标识：`delay`
+- 默认值：`3000`
+- 显示：`@[autoplay == true]`
 #### 显示数量【limit】
-
--   标识: `limit`
--   默认值: `5 `(最大值，如果总数量没有达到默认值，则显示总数量，例如：设置了 5，总共 4 个，则显示 4)
-
+设置显示轮播图片数量，自定义配置轮播时失效
+- 标识：`limit`
+- 默认值：`3`
+- 显示：`@[dataType === 'dataSource' || dataType === 'customInterface']`
+#### 跳转方式【jumpStyle】
+设置点击轮播图片时跳转方式, 链接打开时使用window.open配置的数据源链接
+- 标识：`jumpStyle`
+- 默认值：`_link`
+- 选项：	 - 子页面打开【_child】	 - 链接打开【_link】
+#### 跳转页面【pageList】
+选择要打开的子页面
+- 标识：`pageList`
+- 默认值：空
+- 显示：`@[jumpStyle === '_child']`
 ### 样式设置
-
 #### 大屏高度【maxHeight】
-
--   标识: `maxHeight`
--   默认值: `32vw`
-
+图片高度建议设置为：86-（图片高度/图片宽度*100），单位选择vw即可实现轮播图宽高比例同比放大
+- 标识：`maxHeight`
+- 默认值：```json{
+    "inputVal": 32,
+    "selectVal": "vw"
+}```
 #### 小屏高度【height】
+用于设置再大于分界点的设备显示的轮播高度
+- 标识：`height`
+- 默认值：```json{
+    "inputVal": 180,
+    "selectVal": "px"
+}```
+#### 图片宽度【imageWidth】
 
--   标识: `height`
--   默认值: `180px`
-
-#### 大屏间隔【bigScreenStretch】
-
--   标识: `bigScreenStretch`
--   默认值: `-6%`
-
-#### 小屏间隔【smallScreenStretch】
-
--   标识: `smallScreenStretch`
--   默认值: `-7%`
-
+- 标识：`imageWidth`
+- 默认值：`86%`
 #### 分界点【dividingPoint】
-
--   标识: `smallScreenStretch`
--   默认值: `800`
-
+宽度分界点，用于决定当前轮播图的高度，如果屏幕小于分界点则使用小屏高度的值，反之会使用大屏高度的值
+- 标识：`dividingPoint`
+- 默认值：`800`
 #### 图片圆角【imgBorderRadius】
 
--   标识: `imgBorderRadius`
--   默认值:
-
-```json
-"default": {
-  "inputVal": 8,
-  "selectVal": "px"
-}
-```
-
+- 标识：`imgBorderRadius`
+- 默认值：```json{
+    "inputVal": 8,
+    "selectVal": "px"
+}```
 #### 上外边距【marginTop】
 
--   标识: `marginTop`
--   默认值: `0`
-
+- 标识：`marginTop`
+- 默认值：```json{
+    "inputVal": 10,
+    "selectVal": "px"
+}```
 #### 下外边距【marginBottom】
 
--   标识: `marginBottom`
--   默认值: `0`
-
-#### 标题文字【titleFontStyle】
-
-设置组件的标题文字的字体样式，可设置文字的字体、字重、样式、字体颜色、大小、行高、对齐、修饰等。
-
--   标识：`titleFontStyle`
--   默认值：空
-
+- 标识：`marginBottom`
+- 默认值：```json{
+    "inputVal": 5,
+    "selectVal": "px"
+}```
 ### 主题设置【themeList】
-
-用于设置组件的主题样式表，此处可跟随自身主题进行随意设置，此属性是一个表结构集合的形式属性。
-
--   标识：`themeList`
--   默认值：`[]`
-
-### 高级
-
-<font color="#CCCCCC">用于对组件高级设置的属性的分组。</font>
-
-##### 数据模式【showType】
-
-用于设置轮播组件数据展示模式 可选 数据源 / 自定义上传图片
-
--   标识：`showType`
--   默认值：`dataSource`
-
-##### 轮播配置【bannerTable】
-
-用于设置轮播组件数据上传自定义上传图片
-
--   标识：`bannerTable`
--   默认值：
-
-```json
-{
-    "type": "input",
-    "layoutType": "inline",
-    "text": "轮播标题",
-    "bindKey": "title",
-    "default": "标题"
-},
-{
-    "type": "input",
-    "layoutType": "inline",
-    "text": "跳转链接",
-    "bindKey": "jumpUrl",
-    "default": ""
-},
-{
-    "type": "uploadImage",
-    "layoutType": "block",
-    "text": "小屏图片",
-    "bindKey": "image",
-    "default": ""
-}
-{
-    "type": "uploadImage",
-    "layoutType": "block",
-    "text": "大屏图片",
-    "bindKey": "imagexl",
-    "default": ""
-}
-```
-
-##### 数据源【dataSource】
-
-用于选择数据源
-
--   标识：`dataSource`
--   默认值：`/ctrl/dataSource/getDatasourceByGroup`
-
-##### 数据源接受参数
-
-```js
-// 如果有自定义参数函数
-IDM.datasource.request(this.propData?.dataSource?.[0]?.id, {
-    moduleObject: this.moduleObject,
-    param: {
-        limit: this.propData.limit,
-        start: this.currentPage
-    }
-})
-```
-##### 接口返回数据格式
-
-```js
-{
-    code: 200,
-    data: {
-        value: [
-            {
-                jumpUrl: '',
-                image: IDM.url.getModuleAssetsWebPath(require('../assets/banner1.jpg'), _this.moduleObject)
-            },
-            {
-                jumpUrl: '',
-                image: IDM.url.getModuleAssetsWebPath(require('../assets/banner2.jpg'), _this.moduleObject)
-            },
-            {
-                jumpUrl: '',
-                image: IDM.url.getModuleAssetsWebPath(require('../assets/banner3.jpg'), _this.moduleObject)
-            }
-        ]
+点击？查看主题设置用法指南
+- 标识：`themeList`
+- 默认值：```json[
+    {
+        "key": "blue",
+        "mainColor": {
+            "hex": "#0073CA",
+            "hex8": "#0073CAFF"
+        }
     },
-    message: 'success'
-}
-```
+    {
+        "key": "red",
+        "mainColor": {
+            "hex": "#E21A1A",
+            "hex8": "#E21A1AFF"
+        }
+    },
+    {
+        "key": "green",
+        "mainColor": {
+            "hex": "#0EAF64",
+            "hex8": "#0EAF64FF"
+        }
+    }
+]```
+### 高级
+#### 适配设置
+##### 基准值【baseSize】
+此属性用于标记当前组件在显示效果最完美情况下的宽度大小（px），例如：此组件显示效果最佳宽度为414px，则此处设置为414即可，如果此组件最佳效果为当前配置的屏幕宽（px）的一半则只需要除以2即可。
+- 标识：`baseSize`
+- 默认值：`414`
+##### 适配比例【adaptationRatio】
+与基准值配合使用，如果在实际预览屏幕宽为基准值的两倍，则此组件所有可适配的内容都会基于此处设置的适配比例相对应的进行放大缩小，例如此处设置1.2，则会相对应的放大至1.2倍
+- 标识：`adaptationRatio`
+- 默认值：`1.2`
+#### 数据模式【dataType】
+设置点击轮播图片数据模式，数据源参数：{limit, start}, 返回格式： { value: [] }
+- 标识：`dataType`
+- 默认值：`dataSource`
+- 选项：	 - 数据源【dataSource】	 - 自定义【custom】	 - 自定义接口【customInterface】
+#### 选择栏目【selectColumn】
+
+- 标识：`selectColumn`
+- 默认值：空
+- 显示：`@[dataType === 'customInterface']`
+#### 接口地址【customInterfaceUrl】
+用于获取数据源的接口地址，请按照统一标准的返回格式返回文本数据，格式如下：{"code":"200","data":"",...}
+- 标识：`customInterfaceUrl`
+- 默认值：`/ctrl/website/api/columnlist`
+- 显示：`@[dataType === 'customInterface']`
+#### 轮播配置【bannerTable】
+
+- 标识：`bannerTable`
+- 默认值：空
+- 显示：`@[dataType === 'custom']`
+#### 数据源【dataSource】
+数据返回示例：{value: [{jumpUrl: '', image: '', imagexl: ''}], count: 0, moreUrl: ''},image:标准图片，imagexl：大尺寸图片
+- 标识：`dataSource`
+- 默认值：空
+- 显示：`@[dataType === 'dataSource']`
