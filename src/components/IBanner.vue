@@ -456,7 +456,7 @@ export default {
                     this.initSwiper()
                     break
                 case 'dataSource':
-                    if (this.moduleObject.env === 'develop') {
+                    if (this.moduleObject.env !== 'production') {
                         const data = getBannerData.call(this)
                         this.bannerData = _.cloneDeep(data)
                         this.initSwiper()

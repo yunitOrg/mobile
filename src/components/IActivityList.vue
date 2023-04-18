@@ -96,7 +96,152 @@ export default {
     data() {
         return {
             moduleObject: {},
-            propData: this.$root.propData.compositeAttr || {},
+            propData: this.$root.propData.compositeAttr || {
+                styleType: 'styleOne',
+                isShowTitle: true,
+                isShowLeftContent: true,
+                isShowLeftIcon: true,
+                htmlTitle: '活动列表',
+                timeField: 'time',
+                titleField: 'title',
+                weekField: 'weekDay',
+                tagField: 'tags',
+                locationField: 'location',
+                activityField: 'activityText',
+                signField: 'signStatusText',
+                userField: 'userStatusText',
+                personNumberField: 'personNumber',
+                lineBox: {
+                    marginTopVal: '10px',
+                    marginRightVal: '10px',
+                    marginBottomVal: '10px',
+                    marginLeftVal: '10px',
+                    paddingTopVal: '10px',
+                    paddingRightVal: '10px',
+                    paddingBottomVal: '10px',
+                    paddingLeftVal: '20px'
+                },
+                lineBorder: {
+                    border: {
+                        top: {
+                            style: '0',
+                            width: 0,
+                            widthUnit: '',
+                            colors: {}
+                        },
+                        right: {
+                            style: '0',
+                            width: 0,
+                            widthUnit: '',
+                            colors: {}
+                        },
+                        bottom: {
+                            style: 'dashed',
+                            width: 1,
+                            widthUnit: 'px',
+                            colors: {
+                                hex: '#CECBCB',
+                                hex8: '#CECBCBFF'
+                            }
+                        },
+                        left: {
+                            style: '0',
+                            width: 0,
+                            widthUnit: '',
+                            colors: {}
+                        }
+                    },
+                    radius: {
+                        leftTop: {
+                            radius: 0,
+                            radiusUnit: 'px'
+                        },
+                        rightTop: {
+                            radius: 0,
+                            radiusUnit: 'px'
+                        },
+                        leftBottom: {
+                            radius: 0,
+                            radiusUnit: 'px'
+                        },
+                        rightBottom: {
+                            radius: 0,
+                            radiusUnit: 'px'
+                        }
+                    }
+                },
+                tagBox: {
+                    marginTopVal: '',
+                    marginRightVal: '10px',
+                    marginBottomVal: '',
+                    marginLeftVal: '',
+                    paddingTopVal: '1px',
+                    paddingRightVal: '6px',
+                    paddingBottomVal: '1px',
+                    paddingLeftVal: '6px'
+                },
+                tagBorder: {
+                    border: {
+                        top: {
+                            style: '0',
+                            width: 0,
+                            widthUnit: '',
+                            colors: {}
+                        },
+                        right: {
+                            style: '0',
+                            width: 0,
+                            widthUnit: '',
+                            colors: {}
+                        },
+                        bottom: {
+                            style: '',
+                            width: 0,
+                            widthUnit: 'px',
+                            colors: {
+                                hex: '',
+                                hex8: ''
+                            }
+                        },
+                        left: {
+                            style: '0',
+                            width: 0,
+                            widthUnit: '',
+                            colors: {}
+                        }
+                    },
+                    radius: {
+                        leftTop: {
+                            radius: 3,
+                            radiusUnit: 'px'
+                        },
+                        rightTop: {
+                            radius: 3,
+                            radiusUnit: 'px'
+                        },
+                        leftBottom: {
+                            radius: 3,
+                            radiusUnit: 'px'
+                        },
+                        rightBottom: {
+                            radius: 3,
+                            radiusUnit: 'px'
+                        }
+                    }
+                },
+                tagBgColor: {
+                    hex8: '#2778F5FF'
+                },
+                tagFont: {
+                    fontColors: {
+                        hex: '#FFFFFF',
+                        hex8: '#FFFFFFFF'
+                    },
+                    fontSize: 13,
+                    fontSizeUnit: 'px',
+                    fontWeight: '400'
+                }
+            },
             pageData: { value: [], count: 0, moreUrl: '' }
         }
     },
@@ -406,7 +551,7 @@ export default {
         },
 
         initData() {
-            if (this.moduleObject.env === 'develop') {
+            if (this.moduleObject.env !== 'production') {
                 this.pageData = activityData
                 return
             }

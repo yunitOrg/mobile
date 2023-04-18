@@ -31,7 +31,111 @@ export default {
         return {
             moduleObject: {},
             propData: this.$root.propData.compositeAttr || {
+                iconStyle: 'square',
+                box: {
+                    marginTopVal: '',
+                    marginRightVal: '',
+                    marginBottomVal: '',
+                    marginLeftVal: '',
+                    paddingTopVal: '10px',
+                    paddingRightVal: '10px',
+                    paddingBottomVal: '10px',
+                    paddingLeftVal: '10px'
+                },
+                subBox: {
+                    marginTopVal: '',
+                    marginRightVal: '',
+                    marginBottomVal: '10px',
+                    marginLeftVal: '',
+                    paddingTopVal: '15px',
+                    paddingRightVal: '15px',
+                    paddingBottomVal: '15px',
+                    paddingLeftVal: '15px'
+                },
+                subLineBox: {
+                    marginTopVal: '',
+                    marginRightVal: '',
+                    marginBottomVal: '15px',
+                    marginLeftVal: '',
+                    paddingTopVal: '',
+                    paddingRightVal: '',
+                    paddingBottomVal: '',
+                    paddingLeftVal: ''
+                },
+                subBorder: {
+                    border: {
+                        top: {
+                            style: '',
+                            width: 0,
+                            widthUnit: 'px',
+                            colors: {}
+                        },
+                        right: {
+                            style: '',
+                            width: 0,
+                            widthUnit: 'px',
+                            colors: {}
+                        },
+                        bottom: {
+                            style: '',
+                            width: 0,
+                            widthUnit: 'px',
+                            colors: {}
+                        },
+                        left: {
+                            style: '',
+                            width: 0,
+                            widthUnit: 'px',
+                            colors: {}
+                        }
+                    },
+                    radius: {
+                        leftTop: {
+                            radius: 3,
+                            radiusUnit: 'px'
+                        },
+                        rightTop: {
+                            radius: 3,
+                            radiusUnit: 'px'
+                        },
+                        leftBottom: {
+                            radius: 3,
+                            radiusUnit: 'px'
+                        },
+                        rightBottom: {
+                            radius: 3,
+                            radiusUnit: 'px'
+                        }
+                    }
+                },
+                usernameFont: {
+                    fontColors: {
+                        hex: '#333333',
+                        hex8: '#333333FF'
+                    },
+                    fontSize: 16,
+                    fontSizeUnit: 'px'
+                },
+                iconBox: {
+                    marginTopVal: '12px',
+                    marginRightVal: '15px',
+                    marginBottomVal: '',
+                    marginLeftVal: '',
+                    paddingTopVal: '',
+                    paddingRightVal: '',
+                    paddingBottomVal: '',
+                    paddingLeftVal: ''
+                },
+                avatarWidth: '50px',
+                avatarHeight: '50px',
+                isCheckField: 'isCheck',
+                titleField: 'title',
+                avatarField: 'avatar',
+                usernameField: 'username',
+                timeField: 'time',
+                contentField: 'content',
                 triggerComponents: []
+
             },
             isLoading: false, // page is loading
             isFirst: true, // page is first load

@@ -88,7 +88,81 @@ export default {
     data() {
         return {
             moduleObject: {},
-            propData: this.$root.propData.compositeAttr || {},
+            propData: this.$root.propData.compositeAttr || {
+                styleType: 'styleOne',
+                isShowTitle: true,
+                isShowLeftIcon: true,
+                isShowLeftImage: true,
+                isShowPersonLine: true,
+                htmlTitle: '通用列表',
+                imageField: 'image',
+                titleField: 'title',
+                timeField: 'time',
+                locationField: 'location',
+                personField: 'personNumber',
+                processField: 'process',
+                lineBox: {
+                    marginTopVal: '',
+                    marginRightVal: '',
+                    marginBottomVal: '',
+                    marginLeftVal: '',
+                    paddingTopVal: '10px',
+                    paddingRightVal: '',
+                    paddingBottomVal: '10px',
+                    paddingLeftVal: ''
+                },
+                lineBorder: {
+                    border: {
+                        top: {
+                            style: '0',
+                            width: 0,
+                            widthUnit: '',
+                            colors: {}
+                        },
+                        right: {
+                            style: '0',
+                            width: 0,
+                            widthUnit: '',
+                            colors: {}
+                        },
+                        bottom: {
+                            style: 'dashed',
+                            width: 1,
+                            widthUnit: 'px',
+                            colors: {
+                                hex: '#CECBCB',
+                                hex8: '#CECBCBFF'
+                            }
+                        },
+                        left: {
+                            style: '0',
+                            width: 0,
+                            widthUnit: '',
+                            colors: {}
+                        }
+                    },
+                    radius: {
+                        leftTop: {
+                            radius: 0,
+                            radiusUnit: 'px'
+                        },
+                        rightTop: {
+                            radius: 0,
+                            radiusUnit: 'px'
+                        },
+                        leftBottom: {
+                            radius: 0,
+                            radiusUnit: 'px'
+                        },
+                        rightBottom: {
+                            radius: 0,
+                            radiusUnit: 'px'
+                        }
+                    }
+                },
+                imageWidth: 150,
+                imageHeight: 100
+            },
             pageData: { value: [], count: 0, moreUrl: '' }
         }
     },
@@ -359,7 +433,7 @@ export default {
         },
 
         initData() {
-            if (this.moduleObject.env === 'develop') {
+            if (this.moduleObject.env !== 'production') {
                 const data = getCommonListData.call(this)
                 if (this.propData.styleType === 'styleOne') {
                     data.value = data.value1

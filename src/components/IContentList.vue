@@ -84,7 +84,77 @@ export default {
     data() {
         return {
             moduleObject: {},
-            propData: this.$root.propData.compositeAttr || {},
+            propData: this.$root.propData.compositeAttr || {
+                isShowTitle: true,
+                isShowLeftIcon: true,
+                htmlTitle: '内容列表',
+                dataType: 'dataSource',
+                titleField: 'title',
+                originField: 'origin',
+                imageField: 'images',
+                timeField: 'time',
+                lineBox: {
+                    marginTopVal: '',
+                    marginRightVal: '',
+                    marginBottomVal: '',
+                    marginLeftVal: '',
+                    paddingTopVal: '10px',
+                    paddingRightVal: '',
+                    paddingBottomVal: '10px',
+                    paddingLeftVal: ''
+                },
+                lineBorder: {
+                    border: {
+                        top: {
+                            style: '0',
+                            width: 0,
+                            widthUnit: '',
+                            colors: {}
+                        },
+                        right: {
+                            style: '0',
+                            width: 0,
+                            widthUnit: '',
+                            colors: {}
+                        },
+                        bottom: {
+                            style: 'dashed',
+                            width: 1,
+                            widthUnit: 'px',
+                            colors: {
+                                hex: '#CECBCB',
+                                hex8: '#CECBCBFF'
+                            }
+                        },
+                        left: {
+                            style: '0',
+                            width: 0,
+                            widthUnit: '',
+                            colors: {}
+                        }
+                    },
+                    radius: {
+                        leftTop: {
+                            radius: 0,
+                            radiusUnit: 'px'
+                        },
+                        rightTop: {
+                            radius: 0,
+                            radiusUnit: 'px'
+                        },
+                        leftBottom: {
+                            radius: 0,
+                            radiusUnit: 'px'
+                        },
+                        rightBottom: {
+                            radius: 0,
+                            radiusUnit: 'px'
+                        }
+                    }
+                },
+                imageWidth: 135,
+                imageHeight: 70
+            },
             pageData: { value: [], count: 0, moreUrl: '' }
         }
     },
@@ -200,7 +270,7 @@ export default {
             const hasNotDataSourceId = !this.propData.selectColumn || !this.propData.selectColumn.id
             switch (this.propData.dataType) {
                 case 'dataSource':
-                    if (this.moduleObject.env === 'develop') {
+                    if (this.moduleObject.env !== 'production') {
                         this.pageData = getContentListData.call(this)
                         this.finished = true
                         return
