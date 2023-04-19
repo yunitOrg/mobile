@@ -163,3 +163,136 @@ mobile@1.0.1
 #### 结果数据处理函数【handleResult】
  - 拿到接口请求数据后处理数据使用该函数
 
+请求成功对结果处理案例：name：一级名称 children: 固定字段 type：是否完成和接口返回的数据做对应如果是true或者1 则出现对号
+```js
+export function handleSendResult(ctx) {
+  let ary = [
+        {
+          name: '申请入党',
+          children: [
+            {
+              name: '基本信息',
+              type: 'essentialInformationStatus'
+            },
+            {
+              name: '递交入党申请书',
+              type: 'applicationStatus'
+            },
+            {
+              name: '党组织谈话情况',
+              type: 'conversationInformationStatus'
+            }
+          ]
+        },
+        {
+          name: '入党积极份子的确定和培养',
+          children: [
+            {
+              name: '确定积极分子',
+              type: 'activistStatus'
+            },
+            {
+              name: '向上级党委备案',
+              type: 'superiorFilingStatusOne'
+            },
+            {
+              name: '培养考察情况(4-4)',
+              type: 'appointStatus'
+            },
+            {
+              name: '提交思想汇报(4-4)',
+              type: 'thoughtStatus'
+            }
+          ]
+        },
+        {
+          name: '发展对象的确定和考察',
+          children: [
+            {
+              name: '上级党委指标申请',
+              type: 'superiorFilingStatusTwo'
+            },
+            {
+              name: '支委会研究情况',
+              type: 'branchMeetingStatus'
+            },
+            {
+              name: '政审报告',
+              type: 'politicsStatus'
+            },
+            {
+              name: '培训情况',
+              type: 'trainStatus'
+            },
+            {
+              name: '公示情况',
+              type: 'publicityStatus'
+            },
+          ]
+        },
+        {
+          name: '预备党员接收',
+          children: [
+            {
+              name: '支委会审查',
+              type: 'branchVerificationStatus'
+            },
+            {
+              name: '上级党委预审并发放入党志愿书',
+              type: 'voluntaryLetterStatus'
+            },
+            {
+              name: '召开支部大会讨论',
+              type: 'anAssemblyStatus'
+            },
+            {
+              name: '上级党委谈话',
+              type: 'superiorConversationStatus'
+            },
+            {
+              name: '上级党委审批',
+              type: 'partyConfirmationStatusTwo'
+            },
+            {
+              name: '党费核定',
+              type: 'organizationFilingStatus'
+            }
+          ]
+        },
+        {
+          name: '预备党员的教育考察和转正',
+          children: [
+            {
+              name: '提交思想汇报(4-4)',
+              type: 'thoughtStatus2'
+            },
+            {
+              name: '教育考察内容(4-4)',
+              type: 'educationStatus'
+            },
+            {
+              name: '转正申请',
+              type: 'becomeStatus'
+            },
+            {
+              name: '支部委员会研究',
+              type: 'branchCommitteeStudyStatus'
+            },
+            {
+              name: '召开支部大会讨论',
+              type: 'meetingSubmitStatus'
+            },
+            {
+              name: '上级党委审批',
+              type: 'partyConfirmationStatusThree'
+            },
+            {
+              name: '材料归档',
+              type: 'fileStatus'
+            }
+          ]
+        }
+      ];
+      return ary
+}
+```
