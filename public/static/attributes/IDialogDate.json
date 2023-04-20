@@ -1,0 +1,126 @@
+{
+  "classId": "idm.component.mobile.iDialogDate",
+  "comName": "弹层日期选择",
+  "className": "IDialogDate",
+  "comType": "common",
+  "comLangue": "vue",
+  "compositeAttr": [
+    {
+      "type": "input",
+      "layoutType": "inline",
+      "text": "唯一标识",
+      "bindKey": "ctrlId",
+      "disabled": true,
+      "default": "@[packageid]",
+      "desc": "",
+      "helpUrl": ""
+    },
+    {
+      "type": "group",
+      "text": "基本属性",
+      "desc": "提供设置组件能达到展示效果的基本属性设置信息",
+      "children": [
+        {
+          "type": "select",
+          "layoutType": "inline",
+          "text": "时间类型",
+          "bindKey": "type",
+          "dictionary": [
+            {
+              "label": "年月日",
+              "value": "date"
+            },
+            {
+              "label": "年月",
+              "value": "year-month"
+            },
+            {
+              "label": "月日",
+              "value": "month-day"
+            },
+            {
+              "label": "时间",
+              "value": "time"
+            },
+            {
+              "label": "完整时间",
+              "value": "datetime"
+            }
+          ],
+          "default": "date"
+        },
+        {
+          "type": "input",
+          "layoutType": "block",
+          "text": "弹出层高",
+          "desc": "弹出层高度：比如：50%",
+          "bindKey": "popHeight",
+          "default": "50%"
+        },
+        {
+          "type": "input",
+          "layoutType": "block",
+          "text": "标题",
+          "desc": "标题",
+          "bindKey": "title",
+          "default": "选择年月日"
+        },
+        {
+          "type": "input",
+          "layoutType": "block",
+          "text": "默认时间",
+          "desc": "默认时间：比如：new Date(2020, 0, 1)",
+          "bindKey": "currentDate",
+          "default": "new Date(2020, 0, 1)"
+        },
+        {
+          "type": "input",
+          "layoutType": "block",
+          "text": "最小时间",
+          "desc": "最小时间：比如：new Date(2020, 0, 1)",
+          "bindKey": "minTime",
+          "default": "new Date(2020, 0, 1)"
+        },
+        {
+          "type": "input",
+          "layoutType": "block",
+          "text": "最大时间",
+          "desc": "最大时间：比如：new Date(2025, 10, 1)",
+          "bindKey": "maxDate",
+          "default": "new Date(2025, 10, 1)"
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "text": "高级",
+      "desc": "点击？查看高级设置用法指南",
+      "children": [
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "接收消息key",
+          "desc": "接收消息key",
+          "bindKey": "sendKey",
+          "placeholder": "比如：getParams"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "发消息key",
+          "desc": "发消息的key",
+          "bindKey": "receiveKey",
+          "default": "recivekey"
+        },
+        {
+          "type": "pageModuleSelect",
+          "layoutType": "block",
+          "text": "tag菜单联动组件发送消息",
+          "desc": "选择点击tag需要联动的组件",
+          "bindKey": "triggerComponents",
+          "multiple": true
+        }
+      ]
+    }
+  ]
+}

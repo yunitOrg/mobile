@@ -497,7 +497,8 @@ export default {
           ...this.setCustomParams()
         }
       }, (res) => {
-        const data = res.data;
+        let data = this.formatParams(res.data)
+
         data.forEach((item) => {
           item.level = 1;
           this.infoList.push(item);
@@ -522,6 +523,17 @@ export default {
         })
       }
       return obj
+    },
+    formatParams(data){
+      const func = this.propData.dataFormatFunction?.[0]
+      if(func){
+        data = window[func.name] && window[func.name].call(this,{
+          _this:this,
+          customParams:func.param,
+          data,
+        })
+      }
+      return data
     },
     /**
      * 通用的获取表达式匹配后的结果

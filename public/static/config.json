@@ -374,6 +374,13 @@
       "className": "IcrossFont",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.iDialogDate",
+      "comName": "弹层日期选择",
+      "className": "IDialogDate",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }

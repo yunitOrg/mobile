@@ -38,7 +38,92 @@ export default {
         return {
             moduleObject: {},
             propData: this.$root.propData.compositeAttr || {
-                fontContent: 'Hello Word'
+                avatarWidth:  90,
+                avatarHeight:  90,
+                avatarBox:  {
+                    marginTopVal: '',
+                    marginRightVal: '20px',
+                    marginBottomVal: '',
+                    marginLeftVal: '30px',
+                    paddingTopVal: '',
+                    paddingRightVal: '',
+                    paddingBottomVal: '',
+                    paddingLeftVal: ''
+                },
+                bgColor: {
+                    hex8: '#E21A1AFF'
+                },
+                avatarBorder:  {
+                    border: {
+                        top: {
+                            style: 'solid',
+                            width: 2,
+                            widthUnit: 'px',
+                            colors: {
+                                hex: '#FFFFFF',
+                                hex8: '#FFFFFFFF'
+                            }
+                        },
+                        right: {
+                            style: 'solid',
+                            width: 2,
+                            widthUnit: 'px',
+                            colors: {
+                                hex: '#FFFFFF',
+                                hex8: '#FFFFFFFF'
+                            }
+                        },
+                        bottom: {
+                            style: 'solid',
+                            width: 2,
+                            widthUnit: 'px',
+                            colors: {
+                                hex: '#FFFFFF',
+                                hex8: '#FFFFFFFF'
+                            }
+                        },
+                        left: {
+                            style: 'solid',
+                            width: 2,
+                            widthUnit: 'px',
+                            colors: {
+                                hex: '#FFFFFF',
+                                hex8: '#FFFFFFFF'
+                            }
+                        }
+                    },
+                    radius: {
+                        leftTop: {
+                            radius: 50,
+                            radiusUnit: 'px'
+                        },
+                        rightTop: {
+                            radius: 50,
+                            radiusUnit: 'px'
+                        },
+                        leftBottom: {
+                            radius: 50,
+                            radiusUnit: 'px'
+                        },
+                        rightBottom: {
+                            radius: 50,
+                            radiusUnit: 'px'
+                        }
+                    }
+                },
+                usernameFont:  {
+                    fontSize: 18,
+                    fontSizeUnit: 'px',
+                    fontColors: {
+                        hex: '#FFFFFF',
+                        hex8: '#FFFFFFFF'
+                    }
+                },
+                avatarField: 'avatar',
+                usernameField: 'username',
+                yearField: 'partySeniority',
+                branchField: 'partyBranch',
+
             },
             pageData: {}
         }

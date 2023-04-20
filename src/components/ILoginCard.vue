@@ -20,11 +20,8 @@
     -->
     <div class="login-banner">
       <img
-        :src="
-          IDM.url.getModuleAssetsWebPath(
-            require('../assets/login-logo.png'),
-            moduleObject
-          )
+        :style="`width:${propData.logoWidth};height:${propData.logoHeight}`"
+        :src="setLogoImg() 
         "
         alt=""
       />
@@ -82,6 +79,13 @@ export default {
   mounted() {},
   destroyed() {},
   methods: {
+    setLogoImg(){
+      if(this.propData.logoBgImgUrl){
+        return window.IDM.url.getWebPath(this.propData.logoBgImgUrl)
+      }else{
+        return IDM.url.getModuleAssetsWebPath(require('../assets/login-logo.png'),this.moduleObject)
+      }
+    },
     /**
      * 登录
      */
@@ -137,12 +141,13 @@ export default {
      */
     convertAttrToStyleObject(pageSize = {}) {
       var styleObject = {};
+      var bgStyleObject = {};
 
       const scale = this.getScale(pageSize.width);
       styleObject["--i-login-card-scale"] = scale;
 
       if (this.propData.bgSize && this.propData.bgSize == "custom") {
-        styleObject["background-size"] =
+        bgStyleObject["background-size"] =
           (this.propData.bgSizeWidth
             ? this.propData.bgSizeWidth.inputVal +
               this.propData.bgSizeWidth.selectVal
@@ -153,14 +158,14 @@ export default {
               this.propData.bgSizeHeight.selectVal
             : "auto");
       } else if (this.propData.bgSize) {
-        styleObject["background-size"] = this.propData.bgSize;
+        bgStyleObject["background-size"] = this.propData.bgSize;
       }
       if (this.propData.positionX && this.propData.positionX.inputVal) {
-        styleObject["background-position-x"] =
+        bgStyleObject["background-position-x"] =
           this.propData.positionX.inputVal + this.propData.positionX.selectVal;
       }
       if (this.propData.positionY && this.propData.positionY.inputVal) {
-        styleObject["background-position-y"] =
+        bgStyleObject["background-position-y"] =
           this.propData.positionY.inputVal + this.propData.positionY.selectVal;
       }
       for (const key in this.propData) {
@@ -208,7 +213,7 @@ export default {
               }
               break;
             case "bgImgUrl":
-              styleObject[
+              bgStyleObject[
                 "background-image"
               ] = `url(${window.IDM.url.getWebPath(element)})`;
               break;
@@ -222,11 +227,11 @@ export default {
               break;
             case "bgRepeat":
               //平铺模式
-              styleObject["background-repeat"] = element;
+              bgStyleObject["background-repeat"] = element;
               break;
             case "bgAttachment":
               //背景模式
-              styleObject["background-attachment"] = element;
+              bgStyleObject["background-attachment"] = element;
               break;
             case "border":
               if (element.border.top.width > 0) {
@@ -311,6 +316,7 @@ export default {
         }
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id, styleObject);
+      window.IDM.setStyleToPageHead(this.moduleObject.id + ' .login-banner', bgStyleObject);
     },
     /**
      * 主题颜色

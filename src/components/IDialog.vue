@@ -33,7 +33,12 @@ export default {
     data() {
         return {
             moduleObject: {},
-            propData: this.$root.propData.compositeAttr || {},
+            propData: this.$root.propData.compositeAttr || {
+                styleType: 'politicalBirthday',
+                congratulateText: '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;今天是您的政治生日，祝贺您加入中国共产党@[year]周年！\r\n \r\n@[empName]党支部向您致以真挚的问候！\r\n \r\n希望您不忘初心，牢记使命，永葆共产党员的先进本色',
+                avatarWidth: '80px',
+                avatarHeight: '80px'
+            },
             dialogVisible: false,
             componentData: {}
         }

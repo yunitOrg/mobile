@@ -10,61 +10,63 @@
             @handleClickMore="handleClickMore"
         >
             <template #list>
+            <div class="idm-content-sub-content">
                 <van-list
-                    :immediate-check="false"
-                    v-model="isLoading"
-                    :finished="finished"
-                    finished-text="没有更多了"
-                    @load="onLoadMore"
-                >
-                <div>
-                    <div
-                        v-for="(item, index) in pageData.value"
-                        :key="index"
-                        class="box-line"
-                        @click="handleItemClick(item)"
+                        :immediate-check="false"
+                        v-model="isLoading"
+                        :finished="finished"
+                        offset=""
+                        finished-text="没有更多了"
+                        @load="onLoadMore"
                     >
-                        <div class="d-flex just-b">
-                            <div class="flex-1 common-list-title">
-                                <div class="text-o-e-2">{{ getDataField(propData.titleField, item) }}</div>
+                    <div>
+                        <div
+                            v-for="(item, index) in pageData.value"
+                            :key="index"
+                            class="box-line"
+                            @click="handleItemClick(item)"
+                        >
+                            <div class="d-flex just-b">
+                                <div class="flex-1 common-list-title">
+                                    <div class="text-o-e-2">{{ getDataField(propData.titleField, item) }}</div>
+                                </div>
+                                <img
+                                    v-if="getDataField(propData.imageField, item).length === 1"
+                                    class="one-img"
+                                    :src="
+                                        IDM.url.getWebPath(
+                                            getDataField(propData.imageField, item) &&
+                                                getDataField(propData.imageField, item)[0]
+                                        )
+                                    "
+                                    alt="图片加载失败"
+                                />
                             </div>
-                            <img
-                                v-if="getDataField(propData.imageField, item).length === 1"
-                                class="one-img"
-                                :src="
-                                    IDM.url.getWebPath(
-                                        getDataField(propData.imageField, item) &&
-                                            getDataField(propData.imageField, item)[0]
-                                    )
-                                "
-                                alt="图片加载失败"
-                            />
-                        </div>
-                        <van-row gutter="10" v-if="getDataField(propData.imageField, item).length > 1">
-                            <van-col
-                                :span="getDataField(propData.imageField, item).length == 2 ? 12 : 8"
-                                v-for="(items, indexs) in getDataField(propData.imageField, item) || []"
-                                class="flex-1"
-                                :key="indexs"
-                            >
-                                <img :src="IDM.url.getWebPath(items)" alt="图片加载失败" class="image-list" />
-                            </van-col>
-                        </van-row>
-                        <div class="d-flex just-b content-list-bottom">
-                            <span v-if="getDataField(propData.originField, item)"
-                                >来源：{{ getDataField(propData.originField, item) }}</span
-                            >
-                            <span v-if="getDataField(propData.timeField, item)"
-                                >发布时间：{{ getDataField(propData.timeField, item) }}</span
-                            >
+                            <van-row gutter="10" v-if="getDataField(propData.imageField, item).length > 1">
+                                <van-col
+                                    :span="getDataField(propData.imageField, item).length == 2 ? 12 : 8"
+                                    v-for="(items, indexs) in getDataField(propData.imageField, item) || []"
+                                    class="flex-1"
+                                    :key="indexs"
+                                >
+                                    <img :src="IDM.url.getWebPath(items)" alt="图片加载失败" class="image-list" />
+                                </van-col>
+                            </van-row>
+                            <div class="d-flex just-b content-list-bottom">
+                                <span v-if="getDataField(propData.originField, item)"
+                                    >来源：{{ getDataField(propData.originField, item) }}</span
+                                >
+                                <span v-if="getDataField(propData.timeField, item)"
+                                    >发布时间：{{ getDataField(propData.timeField, item) }}</span
+                                >
+                            </div>
                         </div>
                     </div>
-                </div>
-                    
                     <template #finished>
                         {{ propData.isPaging ? '没有更多了' : '' }}
                     </template>
                 </van-list>
+            </div>
             </template>
         </ICommonListContainer>
     </div>
@@ -82,7 +84,77 @@ export default {
     data() {
         return {
             moduleObject: {},
-            propData: this.$root.propData.compositeAttr || {},
+            propData: this.$root.propData.compositeAttr || {
+                isShowTitle: true,
+                isShowLeftIcon: true,
+                htmlTitle: '内容列表',
+                dataType: 'dataSource',
+                titleField: 'title',
+                originField: 'origin',
+                imageField: 'images',
+                timeField: 'time',
+                lineBox: {
+                    marginTopVal: '',
+                    marginRightVal: '',
+                    marginBottomVal: '',
+                    marginLeftVal: '',
+                    paddingTopVal: '10px',
+                    paddingRightVal: '',
+                    paddingBottomVal: '10px',
+                    paddingLeftVal: ''
+                },
+                lineBorder: {
+                    border: {
+                        top: {
+                            style: '0',
+                            width: 0,
+                            widthUnit: '',
+                            colors: {}
+                        },
+                        right: {
+                            style: '0',
+                            width: 0,
+                            widthUnit: '',
+                            colors: {}
+                        },
+                        bottom: {
+                            style: 'dashed',
+                            width: 1,
+                            widthUnit: 'px',
+                            colors: {
+                                hex: '#CECBCB',
+                                hex8: '#CECBCBFF'
+                            }
+                        },
+                        left: {
+                            style: '0',
+                            width: 0,
+                            widthUnit: '',
+                            colors: {}
+                        }
+                    },
+                    radius: {
+                        leftTop: {
+                            radius: 0,
+                            radiusUnit: 'px'
+                        },
+                        rightTop: {
+                            radius: 0,
+                            radiusUnit: 'px'
+                        },
+                        leftBottom: {
+                            radius: 0,
+                            radiusUnit: 'px'
+                        },
+                        rightBottom: {
+                            radius: 0,
+                            radiusUnit: 'px'
+                        }
+                    }
+                },
+                imageWidth: 135,
+                imageHeight: 70
+            },
             pageData: { value: [], count: 0, moreUrl: '' }
         }
     },
@@ -105,7 +177,8 @@ export default {
                 lineImageObj = {},
                 lineBottomTitleObj = {},
                 lineTitleClampObj = {},
-                oneImageObj = {}
+                oneImageObj = {},
+                subBoxObj = {}
             for (const key in this.propData) {
                 if (this.propData.hasOwnProperty.call(this.propData, key)) {
                     const element = this.propData[key]
@@ -149,9 +222,15 @@ export default {
                             break
                         case 'imageHeight':
                             lineImageObj['height'] = this.getAdaptiveSize(element, 1.8) + 'px'
+                            break
+                        case 'subHeight':
+                            subBoxObj['height'] = element
+                            break
                     }
                 }
             }
+            
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .idm-content-sub-content', subBoxObj)
             // 盒子样式
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .box-line', boxLineStyleObj)
             // 标题样式
@@ -191,7 +270,7 @@ export default {
             const hasNotDataSourceId = !this.propData.selectColumn || !this.propData.selectColumn.id
             switch (this.propData.dataType) {
                 case 'dataSource':
-                    if (this.moduleObject.env === 'develop') {
+                    if (this.moduleObject.env !== 'production') {
                         this.pageData = getContentListData.call(this)
                         this.finished = true
                         return
@@ -231,6 +310,9 @@ export default {
 <style lang="scss" scoped>
 .box-line:last-child {
     border-bottom: 0 !important;
+}
+.idm-content-sub-content{
+    overflow: auto;
 }
 .one-img {
     margin: 0 0 0 10px;

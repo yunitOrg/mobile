@@ -46,12 +46,17 @@ export default {
       this.init();
     },
     getImageUrl(key) {
-      if (this.componentData.head) {
+      let img = this.propData.headField;
+      if (this.componentData[img]) {
         return this.componentData.head;
       } else if (this.propData[key]) {
         return IDM.url.getWebPath(this.propData[key])
       } else {
-        return IDM.url.getModuleAssetsWebPath(require(`../assets/default-avatar.png`), this.moduleObject)
+        if (this.moduleObject.codeSrc) {
+          return IDM.url.getModuleAssetsWebPath(require(`../assets/default-avatar.png`), this.moduleObject);
+        } else {
+          return require(`../assets/default-avatar.png`)
+        }
       }
     },
     textFilter (text) {
@@ -98,11 +103,23 @@ export default {
             }
           },
           (data) => {
-            this.componentData = data;
-            let name = this.propData.nameField;
-            let head = this.propData.headField;
-            (this.componentData || {}).name = data[name];
-            (this.componentData || {}).head = data[head];
+            if (this.propData.handleBackData && this.propData.handleBackData.length > 0) {
+              const funcName = this.propData.handleBackData[0].name
+              let obj = window[funcName].call(this, {
+                data: data
+              }) || {};
+              this.componentData = obj || {};
+              let head = this.propData.headField;
+              let name = this.propData.nameField;
+              (this.componentData || {}).head = IDM.url.getContextWebUrl(`${this.propData.imgdataSource}?fileName=${data[head]}`);
+              (this.componentData || {}).name = data[name];
+            } else {
+              this.componentData = data;
+              let head = this.propData.headField;
+              let name = this.propData.nameField;
+              (this.componentData || {}).head = IDM.url.getContextWebUrl(`${this.propData.imgdataSource}?fileName=${data[head]}`);
+              (this.componentData || {}).name = data[name];
+            }
           }
         )
       } else {
@@ -167,7 +184,7 @@ export default {
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .partyinfo-name", nameObject);
     },
     init () {
-      console.log(this.propData, '数据');
+      console.log(this.propData, this.moduleObject, '数据');
       this.handleStyle();
       this.initData();
     }
@@ -185,6 +202,7 @@ export default {
     img{
       width: 100%;
       height: 100%;
+      border-radius: 50%;
     }
     .partyinfo-name{
       display: inline-block;

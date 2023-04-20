@@ -56,8 +56,74 @@ export default {
         return {
             moduleObject: {},
             propData: this.$root.propData.compositeAttr || {
-                fontContent: 'Hello Word',
-                defaultStatus: ''
+                title: '党史今日',
+                box: {
+                    marginTopVal: '10px',
+                    marginRightVal: '10px',
+                    marginBottomVal: '10px',
+                    marginLeftVal: '10px',
+                    paddingTopVal: '10px',
+                    paddingRightVal: '5px',
+                    paddingBottomVal: '10px',
+                    paddingLeftVal: '15px'
+                },
+                bgColor: {
+                    hex8: '#FFEDDFFF'
+                },
+                border: {
+                    border: {
+                        top: {
+                            style: '',
+                            width: 0,
+                            widthUnit: 'px',
+                            colors: {}
+                        },
+                        right: {
+                            style: '',
+                            width: 0,
+                            widthUnit: 'px',
+                            colors: {}
+                        },
+                        bottom: {
+                            style: '',
+                            width: 0,
+                            widthUnit: 'px',
+                            colors: {}
+                        },
+                        left: {
+                            style: '',
+                            width: 0,
+                            widthUnit: 'px',
+                            colors: {}
+                        }
+                    },
+                    radius: {
+                        leftTop: {
+                            radius: 3,
+                            radiusUnit: 'px'
+                        },
+                        rightTop: {
+                            radius: 3,
+                            radiusUnit: 'px'
+                        },
+                        leftBottom: {
+                            radius: 3,
+                            radiusUnit: 'px'
+                        },
+                        rightBottom: {
+                            radius: 3,
+                            radiusUnit: 'px'
+                        }
+                    }
+                },
+                leftBottomBgColor: {
+                    hex8: '#FFB300FF'
+                },
+                iconColor: {
+                    hex8: '#FFFFFFFF'
+                },
+                iconSize: 17,
+                dateField: 'date'
             },
             componentData: {}
         }
@@ -265,6 +331,7 @@ export default {
         initData() {
             if (this.moduleObject.env !== 'production') {
                 this.componentData = historyTodayData
+                return
             }
             IDM.datasource.request(this.propData?.dataSource?.[0]?.id, {
                 moduleObject: this.moduleObject,
