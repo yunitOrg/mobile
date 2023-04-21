@@ -132,19 +132,67 @@
                     "type": "select",
                     "layoutType": "inline",
                     "text": "跳转方式",
-                    "bindKey": "jumpType",
-                    "desc": "点击栏目跳转方式",
+                    "bindKey": "jumpStyle",
+                    "desc": "点击标签，需要的跳转方式",
                     "dictionary": [
                         {
-                            "label": "当前页跳转",
-                            "value": "_self"
+                            "label": "子页面打开",
+                            "value": "_child"
                         },
                         {
-                            "label": "新窗口打开",
-                            "value": "_blank"
+                            "label": "自定义链接",
+                            "value": "_custom_link"
+                        },
+                        {
+                            "label": "自定义函数",
+                            "value": "_custom_func"
                         }
                     ],
-                    "default": "_self"
+                    "default": "_link"
+                },
+                {
+                    "type": "pageSelect",
+                    "layoutType": "inline",
+                    "text": "子页面",
+                    "display": "@[jumpStyle === '_child']",
+                    "bindKey": "childPage",
+                    "desc": "选择要打开的子页面"
+                },
+                {
+                    "type": "radio",
+                    "styleType": "radio",
+                    "layoutType": "inline",
+                    "text": "显示缓存",
+                    "desc":"跳转子页面时，是否缓存当前页面",
+                    "bindKey": "isKeepCash",
+                    "default": true,
+                    "display":"@[jumpStyle === '_child']",
+                    "dictionary": [
+                        {
+                            "label": "是",
+                            "value": true
+                        },
+                        {
+                            "label": "否",
+                            "value": false
+                        }
+                    ]
+                },
+                {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "跳转地址",
+                    "bindKey": "moreJumpUrl",
+                    "display": "@[jumpStyle === '_custom_link']",
+                    "default": "/ctrl/website/api/columnJump"
+                },
+                {
+                    "type": "actionSelect",
+                    "layoutType": "block",
+                    "text": "自定义跳转函数",
+                    "display": "@[jumpStyle === '_custom_func']",
+                    "bindKey": "jumpCustomFunc",
+                    "multiple": false
                 }
             ]
         },

@@ -110,7 +110,32 @@ export default {
             if ( (!url) || this.moduleObject.env == 'develop' ) {
                 return
             }
-            window.open(IDM.url.getWebPath(url),this.propData.jumpType);
+            switch(this.propData.jumpStyle){
+                case "_child":
+                    IDM.router.push(this.moduleObject.pageid,item.childPage,{
+                        keep:this.propData.isKeepCash,
+                        params:{
+                            columnId: item.id,
+                            ...item
+                        },
+                        enterAnim:"",
+                        quitAnim:""
+                    });
+                    break;
+                case "_custom_link":
+                    let url = IDM.express.replace(this.propData.moreJumpUrl,item)
+                    window.location.href = IDM.url.getWebPath(url)
+                    break;
+                case "_custom_func":
+                    if (this.propData.jumpCustomFunc && this.propData.jumpCustomFunc.length > 0) {
+                        const funcName = this.propData.jumpCustomFunc[0].name
+                        window[funcName] && window[funcName].call(this,{
+                            moduleObject:this.moduleObject,
+                            item: item,
+                            _this: this
+                        })
+                    }
+            }
         },
         /**
          * 提供父级组件调用的刷新prop数据组件
@@ -499,15 +524,6 @@ export default {
     .IMenuSearch_app_search{
         .svg-icon{
             color: #999;
-        }
-        input::-webkit-input-placeholder{
-            // color: red;
-        }
-        .van-search__content{
-            // background: blue;
-        }
-        .van-field__control{
-            // color: red;
         }
     }
 }
