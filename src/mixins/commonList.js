@@ -225,22 +225,16 @@ export default {
                     start: this.currentPage
                 }
             }, (res) => {
-                if (res.code == 200) {
-                    this.pageData.count = res.data.count
-                    this.pageData[this.propData.moreUrlField] = res.data[this.propData.moreUrlField]
-
-                    if (this.propData.isPaging) {
-                        this.pageData.value = [...this.pageData.value, ...res.data.value]
-                        if (res.data.value.length === 0) {
-                            this.finished = true
-                        }
-                    } else {
-                        this.pageData.value = res.data.value
+                this.pageData.count = res.count
+                this.pageData[this.propData.moreUrlField] = res[this.propData.moreUrlField]
+                if (this.propData.isPaging) {
+                    this.pageData.value = [...this.pageData.value, ...res.value]
+                    if (res.value.length === 0) {
                         this.finished = true
                     }
                 } else {
+                    this.pageData.value = res.value
                     this.finished = true
-                    IDM.message.error(res.message)
                 }
             }, (err) => {
                 this.finished = true
