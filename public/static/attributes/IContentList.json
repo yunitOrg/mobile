@@ -270,7 +270,8 @@
                 {
                     "type": "actionSelect",
                     "layoutType": "block",
-                    "text": "自定义单项跳转函数，接受参数：{_this: 组件实例，itemData: 当前列表单项数据}",
+                    "text": "自定义单项跳转函数",
+                    "desc": "自定义单项跳转函数,接受参数：{_this: 组件实例，itemData: 当前列表单项数据}",
                     "display": "@[itemJumpStyle === '_custom_func']",
                     "bindKey": "jumpItemCustomFunc",
                     "multiple": false

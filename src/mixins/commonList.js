@@ -79,7 +79,7 @@ export default {
                 case '_custom_func':
                     if (this.propData.jumpItemCustomFunc && this.propData.jumpItemCustomFunc.length > 0) {
                         const funcName = this.propData.jumpItemCustomFunc[0].name
-                        window[funcName] && window[funcName].call({
+                        window[funcName] && window[funcName].call(this, {
                             _this: this,
                             itemData: item
                         })
