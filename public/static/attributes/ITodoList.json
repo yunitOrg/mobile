@@ -882,9 +882,17 @@
                 {
                     "type": "actionSelect",
                     "layoutType": "block",
+                    "text": "标题内容函数",
+                    "bindKey": "titleContentFunction",
+                    "desc": "自定义标题风格样式显示函数，根据函数返回的html决定显示内容，如果设置了此项配置，则组件自带的标题不显示，接受参数：{item:列表项数据， _this: 当前组件vue实例}",
+                    "multiple": false
+                },
+                {
+                    "type": "actionSelect",
+                    "layoutType": "block",
                     "text": "标题下方内容函数",
                     "bindKey": "titleBottomContentFunction",
-                    "desc": "自定义风格样式显示函数，根据函数返回的html决定显示内容",
+                    "desc": "自定义风格样式显示函数，根据函数返回的html决定显示内容, 接受参数：{item:列表项数据， _this: 当前组件vue实例}",
                     "multiple": false
                 },
                 {

@@ -18,7 +18,8 @@
                     :class="[getReadStatus(item) ? 'has-read-text' : 'no-read-text']"
                     @click="handleItemClick(item)"
                 >
-                    <div class="text-o-e-2">
+                    <div v-if="propData.titleContentFunction && propData.titleContentFunction.length > 0" v-html="titleContentFunctionContent(item)"></div>
+                    <div v-else class="text-o-e-2">
                         <span
                             class="module-name"
                             v-if="getDataField(propData.moduleField, item)"
@@ -146,7 +147,15 @@ export default {
             let html = ''
             const func = this.propData?.titleBottomContentFunction?.[0]
             if (func) {
-                html = window?.[func.name]?.call(this, Object.assign(item, func.param))
+                html = window?.[func.name]?.call(this, Object.assign({ },func.param, { item: item, _this: this }))
+            }
+            return html
+        },
+        titleContentFunctionContent(item) {
+            let html = ''
+            const func = this.propData?.titleContentFunction?.[0]
+            if (func) {
+                html = window?.[func.name]?.call(this, Object.assign({ },func.param, { item: item, _this: this }))
             }
             return html
         },
