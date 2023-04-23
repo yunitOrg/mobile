@@ -16,7 +16,7 @@
                     :key="index"
                     class="box-line"
                     :class="[getReadStatus(item) ? 'has-read-text' : 'no-read-text']"
-                    @click="handleItemClick(item)"
+                    @click="handleItemClick(item, index)"
                 >
                     <div v-if="propData.titleContentFunction && propData.titleContentFunction.length > 0" v-html="titleContentFunctionContent(item)"></div>
                     <div v-else class="text-o-e-2">
@@ -27,7 +27,7 @@
                             >[{{ getDataField(propData.moduleField, item) }}]</span
                         >{{ getDataField(propData.titleField, item) }}
                     </div>
-                    <div v-html="customFunctionContent(item)"></div>
+                    <div v-html="customFunctionContent(item, index)"></div>
                 </div>
             </template>
         </ICommonListContainer>
@@ -143,19 +143,19 @@ export default {
     },
     methods: {
         // 自定义显示
-        customFunctionContent(item) {
+        customFunctionContent(item, index) {
             let html = ''
             const func = this.propData?.titleBottomContentFunction?.[0]
             if (func) {
-                html = window?.[func.name]?.call(this, Object.assign({ },func.param, { item: item, _this: this }))
+                html = window?.[func.name]?.call(this, Object.assign({ },func.param, { item: item, _this: this, index }))
             }
             return html
         },
-        titleContentFunctionContent(item) {
+        titleContentFunctionContent(item, index) {
             let html = ''
             const func = this.propData?.titleContentFunction?.[0]
             if (func) {
-                html = window?.[func.name]?.call(this, Object.assign({ },func.param, { item: item, _this: this }))
+                html = window?.[func.name]?.call(this, Object.assign({ },func.param, { item: item, _this: this, index }))
             }
             return html
         },
