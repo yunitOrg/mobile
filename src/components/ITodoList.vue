@@ -18,7 +18,7 @@
                     :class="[getReadStatus(item) ? 'has-read-text' : 'no-read-text']"
                     @click="handleItemClick(item, index)"
                 >
-                    <div v-if="propData.titleContentFunction && propData.titleContentFunction.length > 0" v-html="titleContentFunctionContent(item)"></div>
+                    <div v-if="propData.titleContentFunction && propData.titleContentFunction.length > 0" v-html="titleContentFunctionContent(item, index)"></div>
                     <div v-else class="text-o-e-2">
                         <span
                             class="module-name"
