@@ -370,6 +370,8 @@ export default {
           const name = this.propData.judgeBtnShow[0].name;
           let result = window[name] && window[name].call(this, this.propData.tableComponent);
           this.list = result;
+        } else {
+          this.list = this.propData.tableComponent;
         }
       } else {
         this.list = this.propData.tableComponent;
