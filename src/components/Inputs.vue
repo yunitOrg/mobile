@@ -17,7 +17,7 @@
         {{showTitle}}
       </div> 
       <InputFactory
-        v-for="item in propData.tableComponent"
+        v-for="item in list"
         :key="item.key"
         :id="moduleObject.id"
         :type="item.type"
@@ -45,6 +45,7 @@ export default {
   },
   data () {
     return {
+      list: [],
       formData: {}, // 表单数据
       moduleObject: {},
       propData: this.$root.propData.compositeAttr||{
@@ -364,6 +365,15 @@ export default {
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .form-btn-box", styleObject);
     },
     init () {
+      if (this.moduleObject.env == "production") { // 权限函数
+        if (this.propData.judgeBtnShow && this.propData.judgeBtnShow.length > 0) {
+          const name = this.propData.judgeBtnShow[0].name;
+          let result = window[name] && window[name].call(this, this.propData.tableComponent);
+          this.list = result;
+        }
+      } else {
+        this.list = this.propData.tableComponent;
+      }
       this.footBtnStyle();
       console.log(this.propData, this.formData, '数据源')
       let styleObject = {};
