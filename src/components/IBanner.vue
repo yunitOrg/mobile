@@ -515,7 +515,15 @@ export default {
          * 轮播点击事件
          */
         handleClick(item, index) {
-            if (this.moduleObject.env === 'develop') {
+            if (this.moduleObject.env !== 'production') {
+                return
+            }
+            if(this.propData?.customClickFunction?.length > 0) {
+                const func = this.propData.customClickFunction[0]
+                window[func.name].call(this, {
+                    ...func.param,
+                    itemData: item,
+                })
                 return
             }
             switch (this.propData.jumpStyle) {

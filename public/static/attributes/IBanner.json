@@ -422,6 +422,12 @@
                             "default": ""
                         },
                         {
+                            "type": "pageSelect",
+                            "layoutType": "inline",
+                            "text": "跳转页面",
+                            "bindKey": "jumpPage"
+                        },
+                        {
                             "type": "uploadImage",
                             "layoutType": "block",
                             "text": "小屏图片",
@@ -446,6 +452,14 @@
                     "bindKey": "dataSource",
                     "dataSourceUrl":"/ctrl/dataSource/getDatasourceByGroup",
                     "display": "@[dataType === 'dataSource']"
+                },
+                {
+                    "type": "actionSelect",
+                    "layoutType": "block",
+                    "text": "自定义点击函数",
+                    "bindKey": "customClickFunction",
+                    "desc": "配置自定义点击轮播的函数，如果设置了此项，默认的点击事件不生效",
+                    "multiple": false
                 }
             ]
         }
