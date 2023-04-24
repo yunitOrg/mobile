@@ -123,8 +123,8 @@ export default {
                     });
                     break;
                 case "_custom_link":
-                    let url = IDM.express.replace(this.propData.moreJumpUrl,item)
-                    window.location.href = IDM.url.getWebPath(url)
+                    let custom_url = IDM.express.replace(this.propData.moreJumpUrl,item)
+                    window.location.href = IDM.url.getWebPath(custom_url)
                     break;
                 case "_custom_func":
                     if (this.propData.jumpCustomFunc && this.propData.jumpCustomFunc.length > 0) {
