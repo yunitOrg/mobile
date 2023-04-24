@@ -107,6 +107,7 @@ export default {
         clickGrid(item) {
             console.log(item);
             let url = item[this.propData.dataFiledShortJumpUrl ? this.propData.dataFiledShortJumpUrl : 'jumpUrl'];
+            let custom_url = ''
             if ( (!url) || this.moduleObject.env == 'develop' ) {
                 return
             }
@@ -123,8 +124,8 @@ export default {
                     });
                     break;
                 case "_custom_link":
-                    let url = IDM.express.replace(this.propData.moreJumpUrl,item)
-                    window.location.href = IDM.url.getWebPath(url)
+                    custom_url = IDM.express.replace(this.propData.moreJumpUrl,item)
+                    window.location.href = IDM.url.getWebPath(custom_url)
                     break;
                 case "_custom_func":
                     if (this.propData.jumpCustomFunc && this.propData.jumpCustomFunc.length > 0) {
