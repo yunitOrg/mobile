@@ -1,5 +1,5 @@
 <template>
-    <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id" :title="propData.htmlTitle">
+    <div idm-ctrl="idm_module" :id="moduleObject.id" v-if="authorityShow" :idm-ctrl-id="moduleObject.id" :title="propData.htmlTitle">
         <ICommonListContainer
             :moduleObject="moduleObject"
             :ref="'listContainerRef-' + moduleObject.id"
@@ -142,6 +142,18 @@ export default {
         this.convertThemeListAttrToStyleObject()
     },
     methods: {
+        authorityShow() {
+            if(this.propData.isAuthority) {
+                let bool = false
+                const func = this.propData?.authorityFunction?.[0]
+                if (func) {
+                    bool = window?.[func.name]?.call(this, Object.assign({},func.param, { _this: this }))
+                }
+                return bool
+            }else {
+                return true
+            }
+        },
         // 自定义显示
         customFunctionContent(item, index) {
             let html = ''
