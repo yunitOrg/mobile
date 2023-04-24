@@ -1127,6 +1127,14 @@
             "multiple": false
           },
           {
+            "type": "actionSelect",
+            "layoutType": "block",
+            "text": "组件权限显示函数",
+            "bindKey": "judgeBtnShow",
+            "desc": "组件权限显示函数",
+            "multiple": false
+          },
+          {
             "type": "dataSourceSelect",
             "layoutType": "inline",
             "text": "form数据源",
