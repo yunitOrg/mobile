@@ -225,6 +225,10 @@ export default {
                     start: this.currentPage
                 }
             }, (res) => {
+                // 适配数据结构类型
+                if(res?.data?.value) {
+                    res = res.data
+                }
                 this.pageData.count = res.count
                 this.pageData[this.propData.moreUrlField] = res[this.propData.moreUrlField]
                 if (this.propData.isPaging) {
