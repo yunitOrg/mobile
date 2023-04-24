@@ -141,8 +141,9 @@ export default {
         this.convertAttrToStyleObject()
         this.convertThemeListAttrToStyleObject()
     },
-    methods: {
+    computed: {
         authorityShow() {
+            if(this.moduleObject.env !== 'production') return true
             if(this.propData.isAuthority) {
                 let bool = false
                 const func = this.propData?.authorityFunction?.[0]
@@ -154,6 +155,8 @@ export default {
                 return true
             }
         },
+    },
+    methods: {
         // 自定义显示
         customFunctionContent(item, index) {
             let html = ''
