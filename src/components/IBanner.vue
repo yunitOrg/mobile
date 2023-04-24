@@ -522,6 +522,7 @@ export default {
                 const func = this.propData.customClickFunction[0]
                 window[func.name].call(this, {
                     ...func.param,
+                    index,
                     itemData: item,
                 })
                 return

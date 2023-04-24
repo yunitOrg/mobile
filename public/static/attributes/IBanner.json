@@ -458,7 +458,7 @@
                     "layoutType": "block",
                     "text": "自定义点击函数",
                     "bindKey": "customClickFunction",
-                    "desc": "配置自定义点击轮播的函数，如果设置了此项，默认的点击事件不生效",
+                    "desc": "配置自定义点击轮播的函数，如果设置了此项，默认的点击事件不生效， 接受参数：{itemData: 当前轮播项, index: 索引}",
                     "multiple": false
                 }
             ]
