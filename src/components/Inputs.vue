@@ -238,6 +238,16 @@ export default {
             tagWidth: '80px',
             tagHeight: '32px',
             tagSplitWidth: '10px'
+          },
+          {
+            key: '10',
+            type: 'customDom',
+            labelShow: true,
+            labelBlock: true,
+            showAlign: 'left',
+            labelWidth: '100px',
+            labelHeight: 'auto',
+            label: '证明材料'
           }
         ]
       }
@@ -376,6 +386,7 @@ export default {
       } else {
         this.list = this.propData.tableComponent;
       }
+      this.handleBackData();
       this.footBtnStyle();
       console.log(this.propData, this.formData, '数据源')
       let styleObject = {};
@@ -437,7 +448,6 @@ export default {
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .idm-form", styleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .form-title", styleTitleObj);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .form-icon", styleIconObj);
-
       // 组件传递数据给其他组件方法、1：消息 sendBroadcastMessage   2：传递到上下文 getContextValue
       if (this.propData.triggerComponents && this.propData.triggerComponents.length > 0) {
         this.sendBroadcastMessage({
@@ -446,8 +456,6 @@ export default {
           message: this.formData
         })
       }
-      
-      this.handleBackData();
       if (!this.propData.labelBorderShow) {
         window.IDM.setStyleToPageHead(this.moduleObject.id + " .idm-form .input-component:last-child", {
           "border": 0
@@ -461,7 +469,7 @@ export default {
     // 回填从router获取到的数据
     getPrevPageRouterParams () {
       const obj = this.getRouterParams() || {};
-      console.log(obj,"路由数据")
+      console.log(obj, "路由数据");
       if (!obj.$el) {
         this.formData = obj
       }

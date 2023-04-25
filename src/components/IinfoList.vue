@@ -100,7 +100,6 @@ export default {
     },
     textFilter(text) {
       if (!text) return ''
-      console.log(text, this.componentData)
       text = text.replace(/\r/gi, '').replace(/\n/gi, '<br/>')
       text = text.replace(/@\[.*\]/gi, (str) => {
           if (str.length < 4) return str

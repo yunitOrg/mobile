@@ -7,7 +7,7 @@
     </div>
     <van-field
       class="form-cel"
-      v-model="formData[field]"
+      v-model="textval"
       :rows="params[rows]"
       :autosize="params[autosize]"
       type="textarea"
@@ -35,10 +35,22 @@ export default{
   },
   data () {
     return {
-      fieldCheck: true
+      fieldCheck: true,
+      textval: ''
+    }
+  },
+  watch: {
+    formComputed: {
+      handler: function (val) {
+        this.textval = this.formData[this.field] ? this.formData[this.field].replace(/<[^<]+?>/g, '') : '';
+      },
+      immediate: true
     }
   },
   computed: {
+    formComputed () {
+      return this.formData[this.field]
+    },
     computedStyle () {
       let obj = {}
       obj['width'] = this.params['labelWidth'];
@@ -74,6 +86,7 @@ export default{
   },
   methods: {
     handleBlur (event) {
+      this.formData[this.field] = this.textval;
       const val = event.target.value;
       const func = this.params['checkField'];
       if (func && func[0] && func[0].name) {

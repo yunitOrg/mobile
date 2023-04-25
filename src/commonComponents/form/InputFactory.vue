@@ -25,6 +25,7 @@ import VantsendPws from "./VantsendPws.vue";
 import Vantcalendar from "./Vantcalendar.vue";
 import VantactionSheet from "./VantactionSheet.vue";
 import VantchooseTag from "./VantchooseTag.vue";
+import VantcustomDom from "./VantcustomDom.vue";
 const inputMap = {
   Vantinput,
   Vantpassword,
@@ -34,7 +35,8 @@ const inputMap = {
   VantsendPws,
   Vantcalendar,
   VantactionSheet,
-  VantchooseTag
+  VantchooseTag,
+  VantcustomDom
 }
 export default{
   name: "InputFactory",
