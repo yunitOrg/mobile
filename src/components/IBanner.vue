@@ -524,6 +524,7 @@ export default {
                     ...func.param,
                     index,
                     itemData: item,
+                    _this: this
                 })
                 return
             }
