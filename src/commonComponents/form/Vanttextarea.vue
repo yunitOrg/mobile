@@ -8,8 +8,8 @@
     <van-field
       class="form-cel"
       v-model="textval"
-      :rows="params[rows]"
-      :autosize="params[autosize]"
+      :rows="params['rows']"
+      :autosize="params['autosize']"
       type="textarea"
       :disabled="params['disabled']"
       :placeholder="params['placeholder']"
