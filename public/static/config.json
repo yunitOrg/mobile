@@ -381,6 +381,13 @@
       "className": "IDialogDate",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.iPreviewFile",
+      "comName": "预览文件",
+      "className": "IpreviewFile",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }
