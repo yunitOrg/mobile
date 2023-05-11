@@ -217,6 +217,7 @@ export default {
     justify-content: center;
     padding: 10px;
     height: 100%;
+    width: 100%;
     position: fixed;
     img{
       width: 100%;
