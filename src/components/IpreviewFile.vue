@@ -10,8 +10,8 @@
       <iframe v-if="propData.renderStyle == 'iframe'" class="preview-iframe" :src="iframeUrl" frameborder="0" name="ipreviewFile"></iframe>
       <template v-if="propData.renderStyle == 'interfaceImg'">
         <div v-for="(item, index) in list" :key="index" class="preview-li">
-          <span class="preview-num">{{index+1}}/{{list.length}}</span>
-          <img :src="handleImgUrl(item.url)" alt="">
+          <span v-show="imgLoadFlag" class="preview-num">{{index+1}}/{{list.length}}</span>
+          <img ref="imgRef" :src="handleImgUrl(item.url)" alt="">
         </div>
       </template>
     </div>
@@ -25,6 +25,9 @@ export default {
     return {
       iframeUrl: '',
       list: [],
+      num: 0,
+      imgLoadFlag: false,
+      timer: null,
       moduleObject: {},
       propData: this.$root.propData.compositeAttr || {
         renderStyle: 'interfaceImg',
@@ -37,7 +40,32 @@ export default {
     this.moduleObject = this.$root.moduleObject;
     this.init()
   },
+  watch: {
+    list(val) {
+      this.$nextTick(function () {
+        let list = this.$refs.imgRef;
+        for (let i in list) {
+          this.imgLoad(list[i], () => {
+            if (this.num == list.length-1) {
+              console.log("图片加载完成")
+              this.imgLoadFlag = true
+            }
+          })
+        }
+      })
+    }
+  },
   methods: {
+    imgLoad(img, callback) {
+      let _this = this;
+      var timer = setInterval(() => {
+        if (img.complete) {
+          _this.num++;
+          callback(img);
+          clearInterval(timer);
+        }
+      }, 100)
+    },
     propDataWatchHandle(propData) {
       this.propData = propData.compositeAttr || {};
       this.init();
@@ -206,7 +234,7 @@ export default {
       border: 0;
       box-shadow: 0 1px 3px 0 #a9a9a9;
       width: 100%;
-      height: 90vw;
+      height: 100%;
       box-sizing: border-box;
     }
   }
