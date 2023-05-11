@@ -156,6 +156,24 @@
             "display": "@[renderStyle=='iframe']"
           },
           {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "渲染前校验",
+            "desc": "渲染前校验是为了区分png 直接预览 不用调用接口，如果是word、fdf等等就调用接口, 只会阻止 渲染方式是：接口返回图片渲染",
+            "bindKey": "isBefore",
+            "default": false,
+            "display": "@[renderStyle=='interfaceImg']"
+          },
+          {
+            "type": "actionSelect",
+            "layoutType": "block",
+            "text": "校验函数",
+            "desc": "渲染前校验，校验函数",
+            "bindKey": "hanldeCheck",
+            "display": "@[renderStyle=='interfaceImg']",
+            "multiple": false
+          },
+          {
             "type": "dataSourceSelect",
             "layoutType": "inline",
             "text": "数据源",

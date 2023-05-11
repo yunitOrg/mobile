@@ -9,10 +9,15 @@
     <div class="previewfile-wrap">
       <iframe v-if="propData.renderStyle == 'iframe'" class="preview-iframe" :src="iframeUrl" frameborder="0" name="ipreviewFile"></iframe>
       <template v-if="propData.renderStyle == 'interfaceImg'">
-        <div v-for="(item, index) in list" :key="index" class="preview-li">
-          <span v-show="imgLoadFlag" class="preview-num">{{index+1}}/{{list.length}}</span>
-          <img ref="imgRef" :src="handleImgUrl(item.url)" alt="">
+        <div v-if="imgUrl" class="previewimg">
+          <img :src="imgUrl" alt="" >
         </div>
+        <template v-else>
+          <div v-for="(item, index) in list" :key="index" class="preview-li">
+            <span v-show="imgLoadFlag" class="preview-num">{{index+1}}/{{list.length}}</span>
+            <img ref="imgRef" :src="handleImgUrl(item.url)" alt="">
+          </div>
+        </template>
       </template>
     </div>
   </div>
@@ -28,6 +33,7 @@ export default {
       num: 0,
       imgLoadFlag: false,
       timer: null,
+      imgUrl: '',
       moduleObject: {},
       propData: this.$root.propData.compositeAttr || {
         renderStyle: 'interfaceImg',
@@ -155,8 +161,20 @@ export default {
         this.iframeUrl = this.propData.iframeUrl
       } else if (this.propData.renderStyle == 'interfaceImg') {
         if (this.moduleObject.env !== 'production') {
+          // this.imgUrl = IDM.url.getModuleAssetsWebPath(require("../assets/banner1.jpg"), this.moduleObject);
           this.getMockData();
           return
+        }
+        if (this.propData.isBefore) { // 校验文件格式
+          if (this.propData.hanldeCheck && this.propData.hanldeCheck.length > 0) {
+            const funcName = this.propData.hanldeCheck[0].name;
+            this.imgUrl = window[funcName].call(this, {
+              router: IDM.router.getParam(this.moduleObject.routerId)
+            })
+            if (this.imgUrl) {
+              return
+            }
+          }
         }
         let params = {}
         if (this.propData.handleResult && this.propData.handleResult.length > 0) {
@@ -193,6 +211,18 @@ export default {
 
 <style lang="scss" scoped>
 .previewfile-wrap{
+  .previewimg{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    height: 100%;
+    position: fixed;
+    img{
+      width: 100%;
+      box-shadow: 0 1px 3px 0 #a9a9a9;
+    }
+  }
   .preview-li{
     position: relative;
     display: flex;
