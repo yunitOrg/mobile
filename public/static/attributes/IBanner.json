@@ -97,6 +97,13 @@
                     "display": "@[dataType === 'dataSource' || dataType === 'customInterface']"
                 },
                 {
+                    "type": "input",
+                    "layoutType": "inline",
+                    "text": "图片填充",
+                    "bindKey": "imageObjectFit",
+                    "desc": "设置点击轮播图片img标签的object-fit属性"
+                },
+                {
                     "type": "select",
                     "layoutType": "inline",
                     "text": "跳转方式",

@@ -24,9 +24,10 @@
                         v-if="isSmallScreen || !item.imagexl"
                         :src="item.image && getImageUrl(item.image)"
                         class="slider-img"
+                        :style="{objectFit: propData.imageObjectFit}"
                         alt=""
                     />
-                    <img v-else :src="getImageUrl(item.imagexl) || getImageUrl(item.image)" class="slider-img" alt="" />
+                    <img v-else :style="{objectFit: propData.imageObjectFit}" :src="getImageUrl(item.imagexl) || getImageUrl(item.image)" class="slider-img" alt="" />
                     <span class="idm-banner-box-swiper-text" v-if="item.title">{{ item.title }}</span>
                 </swiper-slide>
                 <div v-show="propData.showBullet" class="idm-banner-swiper-pagination" slot="pagination"></div>
