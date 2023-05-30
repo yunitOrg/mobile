@@ -270,7 +270,6 @@ export default {
       let tem = this.propData.titleFile,
         str = '';
       try {
-        console.log(tem, this.formData, this.formData[tem], '测试');
         if (this.formData[tem]) {
           str = this.formData[tem]
         } else {
@@ -485,7 +484,7 @@ export default {
             param: {...routerParams}
           }, (data) => {
             if (data) {
-              this.formData = data;
+              this.formData = Object.assign({}, this.formData, data);
             }
           })
         }
