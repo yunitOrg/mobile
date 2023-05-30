@@ -715,6 +715,7 @@ export default {
         }
         .color{
           padding: 3px 5px;
+          display: inline-block;
         }
         .color1{
           padding: 3px 5px;
