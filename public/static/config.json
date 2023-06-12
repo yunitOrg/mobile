@@ -388,6 +388,20 @@
       "className": "IpreviewFile",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.iHeadToplan",
+      "comName": "顶部通栏",
+      "className": "IHeadToplan",
+      "comType": "common",
+      "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.iCrossProgress",
+      "comName": "横向进度条",
+      "className": "ICrossProgress",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }

@@ -1,0 +1,133 @@
+{
+  "classId": "idm.component.mobile.iheadlist",
+  "comName": "头像列表",
+  "className": "IHeadList",
+  "comType": "common",
+  "comLangue": "vue",
+  "compositeAttr": [
+    {
+      "type": "input",
+      "layoutType": "inline",
+      "text": "唯一标识",
+      "bindKey": "ctrlId",
+      "disabled": true,
+      "default": "@[packageid]",
+      "desc": "",
+      "helpUrl": ""
+    },
+    {
+      "type": "group",
+      "text": "基本属性",
+      "desc": "提供设置组件能达到展示效果的基本属性设置信息",
+      "children": [
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "导航栏标题",
+          "desc": "导航栏标题",
+          "bindKey": "navTitle",
+          "default": "会议统计"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "标题",
+          "desc": "标题",
+          "bindKey": "title",
+          "default": "会议概况"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "文字",
+          "desc": "文字",
+          "bindKey": "tipTitle",
+          "default": "会议室使用率"
+        },
+        {
+          "type": "colorPicker",
+          "layoutType": "inline",
+          "desc": "圆环颜色",
+          "text": "圆环轨道颜色",
+          "bindKey": "layerColor"
+        },
+        {
+          "type": "colorPicker",
+          "layoutType": "inline",
+          "desc": "进度条颜色",
+          "text": "进度条颜色",
+          "bindKey": "proColor"
+        },
+        {
+          "type": "inputNumber",
+          "layoutType": "inline",
+          "text": "进度条宽度",
+          "bindKey": "proWidth",
+          "default": 80
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "text": "外层容器样式",
+      "desc": "点击？查看样式设置用法指南",
+      "helpUrl": "",
+      "children": [
+          {
+            "type": "inlineGroup",
+            "text": "宽高",
+            "children": [
+                {
+                    "type": "input",
+                    "layoutType": "block",
+                    "text": "宽",
+                    "desc": "填写auto则为自适应，或者使用px、%、vw等单位，比如100%、100px、100vw等等",
+                    "bindKey": "width",
+                    "width": "60px",
+                    "default": "100%"
+                },
+                {
+                    "type": "input",
+                    "layoutType": "block",
+                    "text": "高",
+                    "desc": "填写auto则为自适应，或者使用px、%、vh等单位，比如100%、100px、100vh等等",
+                    "bindKey": "height",
+                    "width": "60px",
+                    "default": "357px"
+                }
+            ]
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "text": "高级",
+      "desc": "点击？查看高级设置用法指南",
+      "children": [
+        {
+          "type": "actionSelect",
+          "layoutType": "block",
+          "text": "导航返回",
+          "desc": "导航返回",
+          "bindKey": "customBack",
+          "multiple": false
+        },
+        {
+          "type": "actionSelect",
+          "layoutType": "block",
+          "text": "请求参数自定义函数",
+          "desc": "请求参数自定义函数",
+          "bindKey": "paramsFunc",
+          "multiple": false
+        },
+        {
+          "type": "dataSourceSelect",
+          "layoutType": "inline",
+          "text": "数据源",
+          "desc": "获取数据",
+          "bindKey": "dataSource"
+        }
+      ]
+    }
+  ]
+}
