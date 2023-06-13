@@ -1,0 +1,58 @@
+{
+  "classId": "idm.component.mobile.iCrossProgress",
+  "comName": "横向进度条",
+  "className": "ICrossProgress",
+  "comType": "common",
+  "comLangue": "vue",
+  "compositeAttr": [
+    {
+      "type": "input",
+      "layoutType": "inline",
+      "text": "唯一标识",
+      "bindKey": "ctrlId",
+      "disabled": true,
+      "default": "@[packageid]",
+      "desc": "",
+      "helpUrl": ""
+    },
+    {
+      "type": "group",
+      "text": "基本属性",
+      "desc": "提供设置组件能达到展示效果的基本属性设置信息",
+      "children": [
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "每个进度条高度",
+          "desc": "每个进度条高度",
+          "bindKey": "progressHeight",
+          "default": "25px"
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "text": "外层样式",
+      "desc": "点击？查看样式设置用法指南",
+      "helpUrl": "",
+      "children": [
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "最小高度",
+          "desc": "最小高度",
+          "bindKey": "minHeight",
+          "default": "100px"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "最大高度",
+          "desc": "最大高度",
+          "bindKey": "maxHeight",
+          "default": "400px"
+        }
+      ]
+    }
+  ]
+}

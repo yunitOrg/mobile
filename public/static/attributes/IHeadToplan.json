@@ -1,7 +1,7 @@
 {
-  "classId": "idm.component.mobile.iheadlist",
-  "comName": "头像列表",
-  "className": "IHeadList",
+  "classId": "idm.component.mobile.iHeadToplan",
+  "comName": "顶部通栏",
+  "className": "IHeadToplan",
   "comType": "common",
   "comLangue": "vue",
   "compositeAttr": [
