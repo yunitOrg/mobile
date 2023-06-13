@@ -9,6 +9,7 @@
   :id="moduleObject.id" 
   :idm-ctrl-id="moduleObject.id" 
   >
+    <!--暂时搁浅-->
     <div class="crossProgress-wrap">
       <div class="li" v-for="(item, index) in options.yAxis" :key="index">
         <span class="li-title">{{item}}</span>
@@ -18,6 +19,13 @@
               {{options.series[i].data[index]}}
             </div>
           </template>
+        </div>
+        <span class="li-total">{{total[index]}}</span>
+      </div>
+      <div class="li-legend">
+        <div class="liegn-li" v-for="(item, index) in options.series" :key="index">
+          <span class="li-legend-ico" :style="handleSetColor(item)"></span>
+          <span class="li-lengend-title">{{item.name}}</span>
         </div>
       </div>
     </div>
@@ -83,6 +91,11 @@ export default {
     this.init()
   },
   methods: {
+    handleSetColor(row) {
+      let obj = {}
+      obj.backgroundColor = row.color;
+      return obj
+    },
     setStyleObject(row, index, cur) {
       let obj = {}, spli = this.options.series.length - 1;
       obj.backgroundColor = row.color
@@ -90,9 +103,9 @@ export default {
      
       let minnum = this.widthUnit.minNum;
       let num = minnum<5 ? minnum : 5;
-      
-      obj.left = cur >0 && (saveLeft - num + 'px')
-      saveLeft = cur<spli && row.data[index];
+      obj.marginLeft = cur >0 && (-num + 'px')
+      // obj.left = cur >0 && (saveLeft - num + 'px')
+      // saveLeft = cur<spli && row.data[index];
       return obj
     },
     propDataWatchHandle(propData) {
@@ -158,23 +171,49 @@ export default {
   .li-title{
     color: #666666;
     font-size: 16px;
+    width: 68px;
   }
   .li-progress{
     display: flex;
     margin-left: 10px;
-    height: 100%;
-    position: relative;
+    height: 20px;
+    // position: relative;
     .li-line:nth-child(1){
       z-index: 1;
       // left: 0 !important;
     }
     .li-line{
-      position: absolute;
+      // position: absolute;
       color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 50px;
+    }
+  }
+  .li-total{
+    margin-left: 10px;
+  }
+  .li-legend{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    .liegn-li{
+      display: flex;
+      align-items: center;
+    }
+    .liegn-li+.liegn-li{
+      margin-left: 10px;
+    }
+    span{
+      display: inline-block;
+    }
+    .li-legend-ico{
+      width: 10px;
+      height: 5px;
+      border-radius: 5px;
+      margin-right: 10px;
     }
   }
 }

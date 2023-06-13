@@ -33,25 +33,25 @@
           <div class="ihead-san">
             <div>
               <img src="../assets/icon2.png" alt="">
-              <span class="ihead-ti">{{(pageobj['obj1'] || {}).name}}</span>
+              <span class="ihead-ti">{{(pageobj['obj2'] || {}).name}}</span>
             </div>
-            <span class="ihead-num">{{(pageobj['obj1'] || {}).num}} <i> {{(pageobj['obj1'] || {}).unit}}</i></span>
+            <span class="ihead-num">{{(pageobj['obj2'] || {}).num}} <i> {{(pageobj['obj2'] || {}).unit}}</i></span>
           </div>
         </div>
         <div class="ihead-line">
           <div class="ihead-san">
             <div>
               <img src="../assets/icon3.png" alt="">
-              <span class="ihead-ti">{{(pageobj['obj1'] || {}).name}}</span>
+              <span class="ihead-ti">{{(pageobj['obj3'] || {}).name}}</span>
             </div>
-            <span class="ihead-num">{{(pageobj['obj1'] || {}).num}} <i> {{(pageobj['obj1'] || {}).unit}}</i></span>
+            <span class="ihead-num">{{(pageobj['obj3'] || {}).num}} <i> {{(pageobj['obj3'] || {}).unit}}</i></span>
           </div>
           <div class="ihead-san">
             <div>
               <img src="../assets/icon4.png" alt="">
-              <span class="ihead-ti">{{(pageobj['obj1'] || {}).name}}</span>
+              <span class="ihead-ti">{{(pageobj['obj4'] || {}).name}}</span>
             </div>
-            <span class="ihead-num">{{(pageobj['obj1'] || {}).num}} <i> {{(pageobj['obj1'] || {}).unit}}</i></span>
+            <span class="ihead-num">{{(pageobj['obj4'] || {}).num}} <i> {{(pageobj['obj4'] || {}).unit}}</i></span>
           </div>
         </div>
       </div> 
@@ -65,7 +65,7 @@
             <van-circle
               class="ihead-circle"
               v-model="currentRate"
-              :rate="propData.rate"
+              :rate="pageobj.rate"
               :color="(propData.proColor||{}).hex8"
               :layer-color="(propData.layerColor||{}).hex8"
               :stroke-width="propData.proWidth"
@@ -110,6 +110,7 @@ export default {
     }
   },
   mounted() {
+    this.moduleObject = this.$root.moduleObject;
     this.init()
   },
   methods: {
@@ -118,7 +119,6 @@ export default {
       if (this.propData.customBack && this.propData.customBack.length > 0) {
         const funcName = this.propData.customBack[0].name
         window[funcName].call(this, {
-          params: this.propData.paramsFunc[0].param,
           _this: this
         }) || {}
       }
@@ -159,17 +159,17 @@ export default {
         },
         obj2: {
           name: '会议人次',
-          num: '234',
-          unit: '个'
+          num: '948',
+          unit: '人次'
         },
         obj3: {
           name: '会议时长',
-          num: '234',
-          unit: '个'
+          num: '767',
+          unit: '小时'
         },
         obj4: {
           name: '会议室总数',
-          num: '234',
+          num: '22',
           unit: '个'
         },
         rate: '30'
@@ -254,6 +254,8 @@ export default {
     top: 63px;
     width: 100%;
     padding: 0 20px;
+    display: flex;
+    align-items: center;
     img{
       display: inline-block;
       width: 5px;
@@ -263,6 +265,7 @@ export default {
     .pro-title{
       font-size: 16px;
       color: #2B5288;
+      font-weight: 600;
     }
   }
   .ihead-cen{
@@ -274,7 +277,7 @@ export default {
     display: flex;
     flex-direction: column;
     .ihead-line:nth-child(1){
-      border-bottom: 1px solid #C6DCE9;
+      border-bottom: 1px solid rgba(198,220,233,0.7);
      .ihead-san{
       margin-top:10px;padding-bottom:10px
      }  
@@ -288,27 +291,27 @@ export default {
       width: 100%;
       display: flex;
       .ihead-san:nth-child(1){
-        border-right: 1px solid #C6DCE9;
+        border-right: 1px solid rgba(198,220,233,0.7);
       }
       .ihead-san:nth-child(3){
-        border-right: 1px solid #C6DCE9;
+        border-right: 1px solid rgba(198,220,233,0.7);
       }
       .ihead-san{
         width: 50%;
         margin-left: 8%;
         img{
-          width: 30px;
-          height: 30px;
+          width: 28px;
+          height: 28px;
         }
       }
       .ihead-ti{
         font-size: 16px;
         color: #5B6879;
-        margin-left: 10px;
+        margin-left: 8px;
       }
       .ihead-num{
         display: inline-block;
-        font-size: 22px;
+        font-size: 26px;
         color: #333333;
         margin-top: 4px;
         font-weight: 600;
@@ -322,7 +325,7 @@ export default {
   }
   .ihead-fot{
     width: 100%;
-    height: 73px;
+    height: 80px;
     position: absolute;
     bottom: 0;
     left: 0;
