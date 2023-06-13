@@ -172,7 +172,7 @@ export default {
           num: '22',
           unit: '个'
         },
-        rate: '30'
+        rate: '40'
       }
     },
     initData() {
@@ -215,6 +215,7 @@ export default {
 .ihead-circle{
   .van-circle__text{
     color: #fff;
+    font-size: 12px;
   }
 }
 </style>
@@ -334,7 +335,7 @@ export default {
     justify-content: center;
     .iheadtop-hei{
       width: 80%;
-      height: 80%;
+      height: 66%;
       background-color: #9CC3F8;
       border-radius: 5px;
       padding: 10px 20px;
@@ -359,8 +360,7 @@ export default {
   }
   .ihead-circle{
     color: #fff;
-    width: 50px;
-    height: 50px;
+    width: 38px;
   }
 }
 </style>
