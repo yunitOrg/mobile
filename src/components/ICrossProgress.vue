@@ -154,7 +154,17 @@ export default {
                 }
             },
             (data) => {
-              this.canHandSign = data
+              if (this.propData.handleParams && this.propData.handleParams.length > 0) {
+                let result = {}
+                let name = this.propData.handleParams[0].name;
+                result = window[name] && window[name].call(this, {
+                  _this: this,
+                  params: data
+                });
+                this.options = result
+              } else {
+                this.options = data
+              }
             }
         )
       }

@@ -158,6 +158,14 @@
           "multiple": false
         },
         {
+          "type": "actionSelect",
+          "layoutType": "block",
+          "text": "数据接口返回处理函数",
+          "bindKey": "handleParams",
+          "desc": "数据接口返回处理函数",
+          "multiple": false
+        },
+        {
           "type": "dataSourceSelect",
           "layoutType": "inline",
           "text": "数据源",
