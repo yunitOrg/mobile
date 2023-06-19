@@ -26,7 +26,97 @@
           "text": "每个进度条高度",
           "desc": "每个进度条高度",
           "bindKey": "progressHeight",
-          "default": "25px"
+          "default": "20px"
+        },
+        {
+          "type": "font",
+          "layoutType": "block",
+          "text": "标题字体",
+          "bindKey": "titleFont"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "总数字体",
+          "desc": "总数字体",
+          "bindKey": "totalFont"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "标题宽度",
+          "desc": "标题宽度",
+          "bindKey": "titleWidth",
+          "default": "70px"
+        },
+        {
+          "type": "box",
+          "layoutType": "block",
+          "text": "进度条间距",
+          "bindKey": "libox",
+          "default": {
+            "marginTopVal": "",
+            "marginRightVal": "",
+            "marginBottomVal": "",
+            "marginLeftVal": "",
+            "paddingTopVal": "5px",
+            "paddingRightVal": "5px",
+            "paddingBottomVal": "5px",
+            "paddingLeftVal": "5px"
+          }
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "相邻进度条间距",
+          "desc": "相邻进度条间距",
+          "bindKey": "proMarTop",
+          "default": "10px"
+        },
+        {
+          "type": "inputNumber",
+          "layoutType": "inline",
+          "text": "被卷入数值",
+          "desc": "被卷入数值：页面会是负值",
+          "bindKey": "inwidth",
+          "default": 5
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "text": "图例属性",
+      "desc": "提供设置组件能达到展示效果的基本属性设置信息",
+      "children": [
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "宽",
+          "desc": "图例宽",
+          "bindKey": "legendWidth",
+          "default": "24px"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "高",
+          "desc": "图例高",
+          "bindKey": "legendHeight",
+          "default": "14px"
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "圆角",
+          "desc": "圆角数值",
+          "bindKey": "legendRadui",
+          "default": "10px"
+        },
+        {
+          "type": "font",
+          "layoutType": "block",
+          "text": "图例字体",
+          "bindKey": "agendFont"
         }
       ]
     },
@@ -51,6 +141,27 @@
           "desc": "最大高度",
           "bindKey": "maxHeight",
           "default": "400px"
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "text": "高级",
+      "desc": "点击？查看高级设置用法指南",
+      "children": [
+        {
+          "type": "actionSelect",
+          "layoutType": "block",
+          "text": "数据源自定义参数",
+          "bindKey": "paramsFunc",
+          "desc": "设置数据源自定义参数函数",
+          "multiple": false
+        },
+        {
+          "type": "dataSourceSelect",
+          "layoutType": "inline",
+          "text": "数据源",
+          "bindKey": "dataSource"
         }
       ]
     }

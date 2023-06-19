@@ -9,18 +9,19 @@
   :id="moduleObject.id" 
   :idm-ctrl-id="moduleObject.id" 
   >
-    <!--暂时搁浅-->
     <div class="crossProgress-wrap">
-      <div class="li" v-for="(item, index) in options.yAxis" :key="index">
-        <span class="li-title">{{item}}</span>
-        <div class="li-progress">
-          <template v-for="(k, i) in options.series.length" >
-            <div class="li-line" :key="i" :style="setStyleObject(options.series[i], index, i)">
-              {{options.series[i].data[index]}}
-            </div>
-          </template>
+      <div class="crossProgress-box">
+        <div class="li" v-for="(item, index) in options.yAxis" :key="index">
+          <span class="li-title">{{item}}</span>
+          <div class="li-progress">
+            <template v-for="(k, i) in options.series.length">
+              <div class="li-line" :key="i"  :style="setStyleObject(options.series[i], index, i)" v-if="Number(options.series[i].data[index])">
+                {{options.series[i].data[index]}}
+              </div>
+            </template>
+            <span class="li-total">{{total[index]}}</span>
+          </div>
         </div>
-        <span class="li-total">{{total[index]}}</span>
       </div>
       <div class="li-legend">
         <div class="liegn-li" v-for="(item, index) in options.series" :key="index">
@@ -41,24 +42,26 @@ export default {
       moduleObject:{},
       propData:this.$root.propData.compositeAttr||{
         minHeight: '100px',
-        maxHeight: '400px',
-        progressHeight: '25px'
+        maxHeight: '200px',
+        progressHeight: '20px',
+        legendWidth: '24px',
+        legendHeight: '14px',
+        inwidth: 5,
+        titleWidth: '70px',
+        legendRadui: '10px',
+        proMarTop: '10px',
+        libox: {
+          marginTopVal: "",
+          marginRightVal: "",
+          marginBottomVal: "",
+          marginLeftVal: "",
+          paddingTopVal: "5px",
+          paddingRightVal: "5px",
+          paddingBottomVal: "5px",
+          paddingLeftVal: "5px"
+        }
       },
-      options: {
-        yAxis: ['办公室', '人事处', '财务处', '调研室', '保密处'],
-        series: [
-          {
-            name: '发起会议',
-            color: '#2BCECB',
-            data: ['137', '51', '40', '20', '34']
-          },
-          {
-            name: '受邀会议',
-            color: '#2D8ED8',
-            data: ['158', '16', '28', '180', '76']
-          }
-        ],
-      },
+      options: {},
     }
   },
   computed: {
@@ -80,7 +83,6 @@ export default {
       })
       let maxNum = Math.max.apply(null, ary);
       let minNum = Math.min.apply(null, ary);
-      console.log(maxNum, minNum)
       return {
         maxNum: maxNum,
         minNum: minNum
@@ -99,11 +101,12 @@ export default {
     setStyleObject(row, index, cur) {
       let obj = {}, spli = this.options.series.length - 1;
       obj.backgroundColor = row.color
-      obj.width = row.data[index] + 'px'
+      let screenWidth = document.documentElement.clientWidth - 70;
+      let px = Number(row.data[index]);
+      let pren = px / (screenWidth/100)
+      obj.width =  pren + '%'
      
-      let minnum = this.widthUnit.minNum;
-      let num = minnum<5 ? minnum : 5;
-      obj.marginLeft = cur >0 && (-num + 'px')
+      obj.marginLeft = cur >0 && (-this.propData.inwidth + 'px')
       // obj.left = cur >0 && (saveLeft - num + 'px')
       // saveLeft = cur<spli && row.data[index];
       return obj
@@ -113,21 +116,57 @@ export default {
       this.init();
     },
     getMockData() {
-      this.list = [
-        {
-          name: '办公室',
-          
-        }
-      ]
+      this.options = {
+        yAxis: ['办公室', '人事处', '财务处', '调研室', '保密处', '财务处', '调研室', '保密处'],
+        series: [
+          {
+            name: '发起会议',
+            color: '#2BCECB',
+            data: ['0', '51', '40', '20', '34', '40', '20', '34']
+          },
+          {
+            name: '受邀会议',
+            color: '#2D8ED8',
+            data: ['158', '16', '28', '180', '76', '28', '180', '76']
+          }
+        ],
+      }
     },
     initData() {
       if (this.moduleObject.env !== 'production') {
         this.getMockData();
         return
       }
+      let params = {}
+      if (this.propData.paramsFunc && this.propData.paramsFunc.length > 0) {
+        let name = this.propData.paramsFunc[0].name;
+        params = window[name] && window[name].call(this, {
+          _this: this
+        });
+      }
+      if ( this.propData.dataSource && this.propData.dataSource[0] ) {
+          IDM.datasource.request(
+            this.propData.dataSource[0]?.id,
+            {
+                moduleObject: this.moduleObject,
+                param: {
+                    ...params
+                }
+            },
+            (data) => {
+              this.canHandSign = data
+            }
+        )
+      }
     },
     handleStyle() {
       let styleObject = {},
+        legendObject = {},
+        libox = {},
+        titleObject = {},
+        totalFont = {},
+        agendFont = {},
+        litop = {},
         liObject = {};
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
@@ -141,15 +180,51 @@ export default {
               break
             case 'maxHeight':
               styleObject['max-height'] = element
+              styleObject['overflow-y'] = 'scroll'
               break
             case 'progressHeight':
               liObject['height'] = element
               break
+            case 'legendWidth':
+              legendObject['width'] = element
+              break
+            case 'legendHeight':
+              legendObject['height'] = element
+              break
+            case 'legendRadui':
+              legendObject['border-radius'] = element
+              break
+            case 'titleFont':
+              IDM.style.setFontStyle(titleObject, element)
+              break
+            case 'titleWidth':
+              titleObject['width'] = element
+              break
+            case 'proMarTop':
+              litop['margin-top'] = element
+              break
+            case 'libox':
+              IDM.style.setBoxStyle(libox, element);
+              break
+            case 'totalFont':
+              IDM.style.setFontStyle(totalFont, element)
+              break
+            case 'agendFont':
+              IDM.style.setFontStyle(agendFont, element)
+              break
           }
         }
       }
-      window.IDM.setStyleToPageHead(".crossProgress-wrap", styleObject);
-      window.IDM.setStyleToPageHead(".crossProgress-wrap .li", liObject);
+      window.IDM.setStyleToPageHead(".crossProgress-wrap .crossProgress-box", styleObject);
+      window.IDM.setStyleToPageHead(".crossProgress-wrap .li", libox);
+      window.IDM.setStyleToPageHead(".crossProgress-wrap .li .li-total", totalFont);
+      window.IDM.setStyleToPageHead(".crossProgress-wrap .li+.li", litop);
+      window.IDM.setStyleToPageHead(".crossProgress-wrap .li .li-line", liObject);
+      window.IDM.setStyleToPageHead(".crossProgress-wrap .li .li-title", titleObject);
+      window.IDM.setStyleToPageHead(".crossProgress-wrap .li .li-title", titleObject);
+      window.IDM.setStyleToPageHead(".crossProgress-wrap .li-legend .li-legend-ico", legendObject);
+      window.IDM.setStyleToPageHead(".crossProgress-wrap .li-legend .li-lengend-title", agendFont);
+      
     },
     init() {
       this.initData()
@@ -165,18 +240,16 @@ export default {
     display: flex;
     align-items: center;
   }
-  .li+.li{
-    margin-top: 20px;
-  }
   .li-title{
-    color: #666666;
-    font-size: 16px;
-    width: 68px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   .li-progress{
+    width: 100%;
     display: flex;
+    align-items: center;
     margin-left: 10px;
-    height: 20px;
     // position: relative;
     .li-line:nth-child(1){
       z-index: 1;
@@ -210,9 +283,6 @@ export default {
       display: inline-block;
     }
     .li-legend-ico{
-      width: 10px;
-      height: 5px;
-      border-radius: 5px;
       margin-right: 10px;
     }
   }

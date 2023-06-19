@@ -11,7 +11,7 @@
   >
     <div class="iheadtoplan-wrap">
       <div class="iheadplan-bg"></div>
-      <div class="plan-top">
+      <div class="plan-top" v-if="propData.isNav">
         <div @click="goback">
           <svg-icon icon-class="arrowLeft" class-name="plan-svg"></svg-icon>
         </div>
@@ -90,8 +90,10 @@ export default {
       propData:this.$root.propData.compositeAttr||{
         navTitle: '会议统计',
         title: '会议概况',
+        isNav: true,
         tipTitle: '会议室使用率',
         rate: '30',
+        titleMar: '0',
         layerColor: {
           hex8: '#ffffff'
         },
@@ -131,7 +133,8 @@ export default {
       this.init();
     },
     handleStyle() {
-      let styleObject = {};
+      let styleObject = {},
+        navObject = {};
       for (const key in this.propData) {
         if (this.propData.hasOwnProperty.call(this.propData, key)) {
           const element = this.propData[key]
@@ -145,9 +148,13 @@ export default {
             case 'height':
               styleObject['height'] = element
               break
+            case 'titleMar':
+              navObject['margin-top'] = element
+              break
           }
         }
       }
+      window.IDM.setStyleToPageHead(".iheadtoplan-wrap .iheadplan-bg", navObject);
       window.IDM.setStyleToPageHead(".iheadtoplan-wrap", styleObject);
     },
     getMockData() {
