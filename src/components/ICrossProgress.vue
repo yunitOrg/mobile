@@ -90,6 +90,7 @@ export default {
     }
   },
   mounted() {
+    this.moduleObject = this.$root.moduleObject;
     this.init()
   },
   methods: {
