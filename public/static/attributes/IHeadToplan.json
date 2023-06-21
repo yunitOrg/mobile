@@ -37,6 +37,22 @@
           "default": "会议概况"
         },
         {
+          "type": "switch",
+          "layoutType": "inline",
+          "text": "导航是否显示",
+          "desc":"导航是否显示",
+          "bindKey": "navShow",
+          "default": true
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "导航距离顶部",
+          "desc": "导航距离顶部：可以为负值 -10px",
+          "bindKey": "navMarTop",
+          "default": "0px"
+        },
+        {
           "type": "input",
           "layoutType": "inline",
           "text": "文字",

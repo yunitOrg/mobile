@@ -10,8 +10,8 @@
   :idm-ctrl-id="moduleObject.id" 
   >
     <div class="iheadtoplan-wrap">
-      <div class="iheadplan-bg"></div>
-      <div class="plan-top">
+      <div class="iheadplan-bg" :style="`margin-top: ${propData.navMarTop}`"></div>
+      <div class="plan-top" v-if="propData.navShow">
         <div @click="goback">
           <svg-icon icon-class="arrowLeft" class-name="plan-svg"></svg-icon>
         </div>
@@ -92,6 +92,8 @@ export default {
         title: '会议概况',
         tipTitle: '会议室使用率',
         rate: '30',
+        navShow: false,
+        navMarTop: '-10px',
         layerColor: {
           hex8: '#ffffff'
         },
