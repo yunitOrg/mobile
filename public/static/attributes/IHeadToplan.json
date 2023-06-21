@@ -29,6 +29,22 @@
           "default": "会议统计"
         },
         {
+          "type": "switch",
+          "layoutType": "inline",
+          "text": "标题栏",
+          "desc": "标题栏是否显示",
+          "bindKey": "isNav",
+          "default": true
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "标题栏卷入距离",
+          "desc": "标题栏卷入距离",
+          "bindKey": "titleMar",
+          "default": "-40px"
+        },
+        {
           "type": "input",
           "layoutType": "inline",
           "text": "标题",
