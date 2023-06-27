@@ -18,11 +18,12 @@
       </div>
       <div class="progress-ul">
         <div class="progress-li" v-for="(item, index) in list" :key="index" @click="changeOpen(item)">
-          <div class="progress-line">
-            <div>
+          <div class="progress-line" >
+            <div class="progress-left">
               <span class="progress-numspan">{{index+1}}</span>
               <span class="progress-ti">{{ item.name }}</span>
             </div>
+            <div class="progressico progress-dui" v-if="handleShow(item)"></div>
             <div class="progressli-right" :class="item.open ? 'arrow-down' : 'arrow-right'">
               <svg-icon icon-class="arrowRight2" className="progress-icon" ></svg-icon>
             </div>
@@ -252,7 +253,24 @@ export default {
             }
           ]
         }
-      ]
+      ];
+      this.componentData = {
+        essentialInformationStatus: '1',
+        applicationStatus: '1',
+        conversationInformationStatus: '1',
+        activistStatus: '1',
+        superiorFilingStatusOne: '1',
+        appointStatus: '1',
+        thoughtStatus: '1'
+      }
+
+    },
+    handleShow(item) {
+      if (item && item.children && item.children.length > 0) {
+        let flag = item.children.length == item.children.filter(k => this.componentData[k.type] == '1').length
+        return flag
+      }
+      return false
     },
     handleResult (data) {
       let obj = {};
@@ -470,10 +488,23 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: relative;
     .progress-numspan{
       display: inline-block;
       box-sizing: border-box;
       border-radius: 50%;
+    }
+    .progress-left{
+      display: flex;
+      width: 80%;
+      align-items: center;
+    }
+    .progress-ti{
+      flex: 1;
+      white-space: nowrap;
+      display: inline-block;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
   }
   .arrow-down{
@@ -494,10 +525,10 @@ export default {
     .subli-font{
       flex: 1;
     }
-    .progress-dui{
-      background: url('../assets/complate.png') no-repeat;
-      background-size: 100% 100%;
-    }
+  }
+  .progress-dui{
+    background: url('../assets/complate.png') no-repeat;
+    background-size: 100% 100%;
   }
 }
 </style>
