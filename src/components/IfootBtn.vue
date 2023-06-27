@@ -10,9 +10,12 @@
   :idm-ctrl-id="moduleObject.id" 
   >
     <div class="idm-footbtn">
-      <van-checkbox v-model="checked" class="footbtn-check" shape="square" @click="handleChange">{{allData.selectNumber}}/{{allData.total}}</van-checkbox>
+      <van-checkbox v-if="propData.isCheckbox" v-model="checked" class="footbtn-check" shape="square" @click="handleChange">{{allData.selectNumber}}/{{allData.total}}</van-checkbox>
       <div class="footbtn-flex">
-        <div class="footbtn-btn" v-for="(item, index) in propData.table" :key="index" :style="computedStyle(item)" @click="handleClick(item)">{{item.tab}}</div>
+        <div class="footbtn-btn" v-for="(item, index) in propData.table" :key="index" :style="computedStyle(item)" @click="handleClick(item)">
+          <div v-html="handleCustomDom(item)"></div>
+          {{item.tab}}
+        </div>
       </div>
     </div>
   </div>
@@ -31,6 +34,7 @@ export default {
       },
       propData:this.$root.propData.compositeAttr||{
         positionTop: 'auto',
+        isCheckbox: false,
         positionRight: 'auto',
         positionBottom: '0',
         positionLeft: 'auto',
@@ -59,7 +63,7 @@ export default {
           {
             key: "1",
             tab: "拒绝",
-            itemWidth: "100px",
+            itemWidth: "100%",
             itemHeight: "40px",
             btnSplit: "10px",
             itemFontStyle: {
@@ -71,24 +75,24 @@ export default {
               hex8: "FFFFFFFF"
             }
           },
-          {
-            key: "2",
-            tab: "同意",
-            itemWidth: "100px",
-            btnSplit: "10px",
-            itemHeight: "40px",
-            itemFontStyle: {
-              fontColors: {
-                hex: "#000000"
-              },
-              fontSize: 16,
-              fontSizeUnit: "px"
-            },
-            itemBg: {
-              hex: "#FFFFFF",
-              hex8: "FFFFFFFF"
-            }
-          }
+          // {
+          //   key: "2",
+          //   tab: "同意",
+          //   itemWidth: "100px",
+          //   btnSplit: "10px",
+          //   itemHeight: "40px",
+          //   itemFontStyle: {
+          //     fontColors: {
+          //       hex: "#000000"
+          //     },
+          //     fontSize: 16,
+          //     fontSizeUnit: "px"
+          //   },
+          //   itemBg: {
+          //     hex: "#FFFFFF",
+          //     hex8: "FFFFFFFF"
+          //   }
+          // }
         ]
       }
     }
@@ -99,6 +103,13 @@ export default {
   },
 
   methods: {
+    handleCustomDom(item) {
+      let {customDom} = item;
+      if (customDom && customDom.length > 0) {
+        const funcName = customDom[0].name
+        return window[funcName] && window[funcName].call(this);
+      }
+    },
     computedStyle (item) {
       let obj = {}
       for (const key in item) {
@@ -193,6 +204,9 @@ export default {
               break
           }
         }
+      }
+      if (!this.propData.isCheckbox) {
+        window.IDM.setStyleToPageHead(this.moduleObject.id + " .idm-footbtn .footbtn-flex", {width: '100%'});
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .idm-footbtn", styleObject);
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .van-checkbox__label", numStyleObject);
@@ -308,6 +322,9 @@ export default {
     align-items: center;
   }
   .footbtn-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
   }
 }

@@ -21,6 +21,14 @@
         "desc": "提供设置组件能达到展示效果的基本属性设置信息",
         "children": [
           {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "复选框",
+            "desc": "复选框是否展示",
+            "bindKey": "isCheckbox",
+            "default": true
+          },
+          {
             "type": "table",
             "text": "页签选项设置",
             "bindKey": "table",
@@ -31,6 +39,14 @@
                 "layoutType": "inline",
                 "text": "tab标识",
                 "bindKey": "key"
+              },
+              {
+                "type": "actionSelect",
+                "layoutType": "block",
+                "text": "左侧Dom",
+                "bindKey": "customDom",
+                "desc": "左侧Dom自定义函数：比如可以增加图标",
+                "multiple": false
               },
               {
                 "type": "input",
