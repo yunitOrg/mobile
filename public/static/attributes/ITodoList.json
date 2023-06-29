@@ -837,6 +837,15 @@
                 {
                     "type": "actionSelect",
                     "layoutType": "block",
+                    "text": "数据处理函数",
+                    "bindKey": "handleDetailData",
+                    "desc": "获取数据后该函数可以处理数据",
+                    "display": "@[dataType === 'dataSource']",
+                    "multiple": false
+                },
+                {
+                    "type": "actionSelect",
+                    "layoutType": "block",
                     "text": "自定义函数",
                     "bindKey": "customFunction",
                     "desc": "设置数据自定义函数",

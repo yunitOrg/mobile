@@ -237,6 +237,12 @@ export default {
                         this.finished = true
                     }
                 } else {
+                    if (this.propData.handleDetailData && this.propData.handleDetailData.length > 0) {
+                        const funcName = this.propData.handleDetailData[0].name
+                        window[funcName].call(this, {
+                            data: res
+                        }) || {}
+                    }
                     this.pageData.value = res.value
                     this.finished = true
                 }
