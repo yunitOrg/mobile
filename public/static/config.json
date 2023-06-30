@@ -402,6 +402,13 @@
       "className": "ICrossProgress",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.iCircleProgress",
+      "comName": "环形进度条",
+      "className": "ICircleProgress",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }
