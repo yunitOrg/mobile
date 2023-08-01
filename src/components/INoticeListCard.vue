@@ -58,7 +58,7 @@
         </ul>
         <p
             class="loading-more"
-            v-if="infoList.length < total"
+            v-if="showMore"
             @click="loadData"
         >
           {{ isLoadingMore ? "加载中..." : "加载更多" }}
@@ -77,12 +77,12 @@
         </template>
       </van-empty>
     </div>
-    <div
+    <!-- <div
         class="i-notice-list-card-mask"
         v-if="moduleObject.env !== 'production' && !propData.dataSource"
     >
       <span>！未绑定数据源</span>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -132,6 +132,8 @@ export default {
       isLoadingMore: false,
       infoList: [],
       total: 0,
+      page: 1,
+      showMore: true
     };
   },
   filters: {
@@ -178,6 +180,7 @@ export default {
         return;
       }
       this.isLoadingMore = true;
+      this.page = this.page + 1
       this.initData(true);
     },
     /**
@@ -247,19 +250,23 @@ export default {
       IDM.datasource.request(this.propData.dataSource[0]?.id, {
         moduleObject: this.moduleObject,
         param: {
-          start: this.infoList.length,
+          start: this.page,
           limit: this.propData.defaultNumber,
         }
       }, (res) => {
         const result = res;
         this.total = result.total;
+        let list = result[this.propData.listInterface];
         if (loadMore) {
           this.infoList = [
             ...this.infoList,
-            ...result[this.propData.listInterface],
+            ...list,
           ];
         } else {
-          this.infoList = result[this.propData.listInterface];
+          this.infoList = list;
+        }
+        if (this.infoList.length >= this.total) {
+          this.showMore = false
         }
         this.isLoading = false;
         this.isLoadingMore = false;
