@@ -13,20 +13,35 @@
       v-show="propData.defaultStatus != 'hidden'"
   >
     <div v-show="propData.isShowTitleBar" class="i-notice-list-card-header">
-      <div
-          class="header-icon"
-          v-if="propData.showIcon && propData.titleIconPosition == 'left'"
-      >
-        <svg-icon icon-class="shu"/>
+      <div class="header-flex">
+        <div
+            class="header-icon"
+            v-if="propData.showIcon && propData.titleIconPosition == 'left'"
+        >
+          <svg-icon icon-class="shu"/>
+        </div>
+        <div class="header-text">
+          {{ propData.title }}
+        </div>
+        <div
+            class="header-icon"
+            v-if="propData.showIcon && propData.titleIconPosition == 'right'"
+        >
+          <svg-icon icon-class="shu"/>
+        </div>
       </div>
-      <div class="header-text">
-        {{ propData.title }}
-      </div>
-      <div
-          class="header-icon"
-          v-if="propData.showIcon && propData.titleIconPosition == 'right'"
-      >
-        <svg-icon icon-class="shu"/>
+       <div class="header-flex" v-if="propData.titleRightContent" @click="handleJumpMore">
+        <div class="common-header-right-text" v-if="isShowText">更多</div>
+        <template v-if="isShowIcon">
+          <svg
+              v-if="propData.rightTitleIcon && propData.rightTitleIcon.length"
+              class="common-header-right-icon"
+              aria-hidden="true"
+          >
+              <use :xlink:href="`#${propData.rightTitleIcon[0]}`"></use>
+          </svg>
+          <svg-icon v-else iconClass="arrowRight" className="common-header-right-icon"></svg-icon>
+        </template>
       </div>
     </div>
     <van-loading v-if="isLoading" size="24px" vertical>加载中...</van-loading>
@@ -56,13 +71,15 @@
             </div>
           </li>
         </ul>
-        <p
-            class="loading-more"
-            v-if="showMore"
-            @click="loadData"
-        >
-          {{ isLoadingMore ? "加载中..." : "加载更多" }}
-        </p>
+        <template v-if="propData.showMore">
+          <p
+              class="loading-more"
+              v-if="showMore"
+              @click="loadData"
+          >
+            {{ isLoadingMore ? "加载中..." : "加载更多" }}
+          </p>
+        </template>
       </template>
       <van-empty v-else :description="propData.emptyDescription">
         <template #image>
@@ -122,19 +139,41 @@ export default {
         emptyDescription: "暂无数据",
         defaultNumber: 4,
         isShowTitleBar: true,
+        titleRightContent: 'textAndIcon',
         showIcon: true,
         titleIconPosition: "left",
         listInterface: "list",
         dateInterface: "date",
         btInterface: "bt",
+        showMore: true,
+        rightTitleIconFontSize: 18,
+        rightIconBox: {
+          marginTopVal: "",
+          marginRightVal: "",
+          marginBottomVal: "",
+          marginLeftVal: "4px",
+          paddingTopVal: "",
+          paddingRightVal: "",
+          paddingBottomVal: "",
+          paddingLeftVal: ""
+        }
       },
       isLoading: true,
       isLoadingMore: false,
       infoList: [],
       total: 0,
+      moreUrl: '',
       page: 1,
       showMore: true
     };
+  },
+  computed: {
+    isShowText() {
+      return ['text', 'textAndIcon'].includes(this.propData.titleRightContent)
+    },
+    isShowIcon() {
+      return ['icon', 'textAndIcon'].includes(this.propData.titleRightContent)
+    }
   },
   filters: {
     dayFilter(value) {
@@ -157,6 +196,42 @@ export default {
   destroyed() {
   },
   methods: {
+    // 更多跳转
+    handleJumpMore() {
+      switch(this.propData.jumpStyle) {
+        case '_child':
+          if (this.propData.morePageList && this.propData.morePageList.length > 0) {
+              IDM.router.push(
+                  this.moduleObject.pageid,
+                  this.propData.morePageList[0].id,
+                  this.propData.isMoreKeep,
+                  this,
+                  '',
+                  ''
+              )
+          } else {
+              IDM.message.warning('请选择要跳转的子页面')
+          }
+          break
+        case '_link': {
+          let url = IDM.url.getWebPath(this.moreUrl)
+          window.location.href = IDM.url.getWebPath(url)
+        }
+          break
+        case '_custom_link':{
+          let url = this.propData.customMoreLink
+          if (!url) return
+          window.location.href = IDM.url.getWebPath(url)
+        }
+          break
+        case '_custom_func':
+          if (this.propData.jumpMoreCustomFunc && this.propData.jumpMoreCustomFunc.length > 0) {
+              const funcName = this.propData.jumpCustomFunc[0].name
+              window[funcName] && window[funcName].call(this)
+          }
+          break
+      }
+    },
     noticeClick(notice) {
       if (this.propData.replyJump && this.propData.replyJump.length > 0) {
         IDM.router.push(
@@ -256,6 +331,7 @@ export default {
       }, (res) => {
         const result = res;
         this.total = result.total;
+        this.moreUrl = res[this.propData.moreUrl]
         let list = result[this.propData.listInterface];
         if (loadMore) {
           this.infoList = [
@@ -302,6 +378,8 @@ export default {
       var titleFontStyleObject = {};
       var outerCircleStyleObject = {};
       var innerStyleObject = {};
+      let rightHeaderStyleObject = {};
+      let rightIconObj = {};
 
       const scale = this.getScale(pageSize.width);
       styleObject["--i-notice-list-card-scale"] = scale;
@@ -381,6 +459,22 @@ export default {
                 styleObject["padding-left"] = `${element.paddingLeftVal}`;
               }
               break;
+            case 'rightTitleFontStyle':
+              IDM.style.setFontStyle(rightHeaderStyleObject, element, true)
+              break
+            case 'rightTitleIconFontColor':
+              if (element && element.hex8) {
+                  rightIconObj['fill'] = IDM.hex8ToRgbaString(element.hex8) + ' !important'
+              }
+              break
+            case 'rightTitleIconFontSize':
+              rightIconObj['width'] = element + 'px'
+              rightIconObj['height'] = element + 'px'
+              rightIconObj['font-size'] = element + 'px'
+              break
+            case 'rightIconBox':
+              IDM.style.setBoxStyle(rightIconObj, element)
+              break
             case "innerBox":
               if (element.marginTopVal) {
                 innerStyleObject["margin-top"] = `${element.marginTopVal}`;
@@ -611,6 +705,16 @@ export default {
           ` .i-notice-list-card-content .i-notice-list-item`,
           innerStyleObject
       );
+      window.IDM.setStyleToPageHead(
+        this.moduleObject.id +
+          ` .i-notice-list-card-header .common-header-right-text`,
+          rightHeaderStyleObject
+      )
+      window.IDM.setStyleToPageHead(
+        this.moduleObject.id +
+          ` .i-notice-list-card-header .common-header-right-icon`,
+          rightIconObj
+      )
     },
     /**
      * 主题颜色
@@ -666,6 +770,32 @@ export default {
             " .i-notice-list-card-content .i-notice-list-item .item-main-circle",
             {
               "background-color": item.mainColor
+                  ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+                  : "",
+            }
+        );
+        IDM.setStyleToPageHead(
+            "." +
+            themeNamePrefix +
+            item.key +
+            " #" +
+            (this.moduleObject.packageid || "module_demo") +
+            " .i-notice-list-card-header .common-header-right-text",
+            {
+              "color": item.mainColor
+                  ? IDM.hex8ToRgbaString(item.mainColor.hex8)
+                  : "",
+            }
+        );
+        IDM.setStyleToPageHead(
+            "." +
+            themeNamePrefix +
+            item.key +
+            " #" +
+            (this.moduleObject.packageid || "module_demo") +
+            " .i-notice-list-card-header .common-header-right-icon",
+            {
+              "color": item.mainColor
                   ? IDM.hex8ToRgbaString(item.mainColor.hex8)
                   : "",
             }
@@ -801,8 +931,14 @@ $scale: var(--i-notice-list-card-scale);
 
   .i-notice-list-card-header {
     display: flex;
+    justify-content: space-between;
     color: #cd0502;
-
+    align-items: center;
+    .header-flex{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
     .header-icon {
       color: #cd0502;
 

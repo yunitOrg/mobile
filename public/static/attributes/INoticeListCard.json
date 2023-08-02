@@ -48,10 +48,170 @@
         {
           "type": "inputNumber",
           "layoutType": "inline",
-          "text": "默认条数",
+          "text": "默认条数1",
           "desc": "默认请求条数",
           "bindKey": "defaultNumber",
           "default": 4
+        },
+        {
+          "type": "switch",
+          "layoutType": "inline",
+          "text": "加载更多",
+          "desc": "是否显示加载更多",
+          "bindKey": "isShowMore",
+          "default": true
+        },
+        {
+          "type": "select",
+          "layoutType": "inline",
+          "text": "标题右侧",
+          "bindKey": "titleRightContent",
+          "desc": "选择标题右侧展示内容",
+          "default": "textAndIcon",
+          "dictionary": [
+              {
+                  "label": "文字+图标",
+                  "value": "textAndIcon"
+              },
+              {
+                  "label": "文字",
+                  "value": "text"
+              },
+              {
+                  "label": "图标",
+                  "value": "icon"
+              },
+              {
+                  "label": "不显示",
+                  "value": false
+              }
+          ]
+        },
+        {
+          "type": "group",
+          "text": "右侧图标",
+          "desc": "设置标题图标属性，颜色会覆盖主题色",
+          "display": "@[titleRightContent == 'text' || titleRightContent == 'textAndIcon' || titleRightContent == 'icon']",
+          "helpUrl": "",
+          "children": [
+            {
+              "type": "font",
+              "layoutType": "block",
+              "text": "文字字体",
+              "desc": "文本颜色默认为主题色,如果设置了颜色,会覆盖主题色",
+              "bindKey": "rightTitleFontStyle"
+            },
+            {
+              "type": "iconSelect",
+              "layoutType": "inline",
+              "text": "选择图标",
+              "bindKey": "rightTitleIcon",
+              "default": ""
+            },
+            {
+                "type": "colorPicker",
+                "layoutType": "inline",
+                "desc": "设置图标颜色，会覆盖主题色",
+                "text": "图标颜色",
+                "bindKey": "rightTitleIconFontColor",
+                "default": {}
+            },
+            {
+                "type": "inputNumber",
+                "layoutType": "inline",
+                "text": "图标大小",
+                "bindKey": "rightTitleIconFontSize",
+                "default": 18
+            },
+            {
+                "type": "box",
+                "layoutType": "block",
+                "text": "内外边距",
+                "bindKey": "rightIconBox",
+                "default": {
+                    "marginTopVal": "",
+                    "marginRightVal": "",
+                    "marginBottomVal": "",
+                    "marginLeftVal": "4px",
+                    "paddingTopVal": "",
+                    "paddingRightVal": "",
+                    "paddingBottomVal": "",
+                    "paddingLeftVal": ""
+                }
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "layoutType": "inline",
+          "text": "更多跳转",
+          "display": "@[titleRightContent]",
+          "bindKey": "jumpStyle",
+          "desc": "设置点击更多跳转方式",
+          "dictionary": [
+              {
+                  "label": "子页面打开",
+                  "value": "_child"
+              },
+              {
+                  "label": "接口链接打开",
+                  "value": "_link"
+              },
+              {
+                  "label": "自定义链接",
+                  "value": "_custom_link"
+              },
+              {
+                  "label": "自定义函数",
+                  "value": "_custom_func"
+              }
+          ],
+          "default": "_link"
+        },
+        {
+          "type": "pageSelect",
+          "layoutType": "inline",
+          "text": "更多页面",
+          "display": "@[jumpStyle === '_child']",
+          "bindKey": "morePageList",
+          "desc": "选择要打开的子页面"
+        },
+        {
+          "type": "radio",
+          "styleType": "radio",
+          "layoutType": "inline",
+          "text": "是否缓存",
+          "display": "@[jumpStyle === '_child']",
+          "bindKey": "isMoreKeep",
+          "desc": "点击更多跳转子页面时，是否缓存本页面",
+          "default": true,
+          "dictionary": [
+              {
+                  "label": "是",
+                  "value": true
+              },
+              {
+                  "label": "否",
+                  "value": false
+              }
+          ]
+        },
+        {
+          "type": "input",
+          "layoutType": "inline",
+          "text": "更多链接",
+          "desc": "自定义更多链接",
+          "defaultValRegExp": false,
+          "display": "@[jumpStyle === '_custom_link']",
+          "bindKey": "customMoreLink"
+        },
+        {
+          "type": "actionSelect",
+          "layoutType": "block",
+          "text": "自定义更多跳转函数",
+          "display": "@[jumpStyle === '_custom_func']",
+          "bindKey": "jumpMoreCustomFunc",
+          "multiple": false
         },
         {
           "type": "input",
@@ -545,6 +705,13 @@
               "text": "公告标题",
               "bindKey": "btInterface",
               "default": "bt"
+            },
+            {
+              "type": "dataSourceFiledSelect",
+              "layoutType": "inline",
+              "text": "更多链接",
+              "bindKey": "moreUrl",
+              "default": "moreUrl"
             }
           ]
         },
