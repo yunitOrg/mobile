@@ -37,10 +37,13 @@
         </div>
       </div>
       <div
-        v-if="propData.contentField"
+        v-if="propData.contentField&&getExpressData('data', propData.contentField, articleData)"
         class="i-articleDetails-content"
         v-html="getExpressData('data', propData.contentField, articleData)"
       ></div>
+      <div v-if="propData.isShowDragContainer" class="drag_container" :idm-ctrl-id="moduleObject.id" idm-container-index="1">
+    
+      </div>
     </div>
     <van-empty
       v-else

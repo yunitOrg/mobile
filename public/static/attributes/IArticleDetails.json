@@ -21,6 +21,25 @@
       "desc": "提供设置组件能达到展示效果的基本属性设置信息",
       "children": [
         {
+          "type": "radio",
+          "styleType": "radio",
+          "layoutType": "inline",
+          "text": "拖拽容器",
+          "bindKey": "isShowDragContainer",
+          "desc":"是否显示底部拖拽容器",
+          "default": false,
+          "dictionary": [
+              {
+                  "label": "开",
+                  "value": true
+              },
+              {
+                  "label": "关",
+                  "value": false
+              }
+          ]
+        },
+        {
           "type": "dataSourceFiledSelect",
           "layoutType": "inline",
           "text": "标题字段",
