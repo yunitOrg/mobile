@@ -26,7 +26,8 @@ import {
     Cell,
     Picker,
     DatetimePicker,
-    Circle
+    Circle,
+    Button
 } from 'vant'
 
 Vue.use(Tab)
@@ -55,3 +56,4 @@ Vue.use(Tab)
     .use(Picker)
     .use(DatetimePicker)
     .use(Circle)
+    .use(Button)

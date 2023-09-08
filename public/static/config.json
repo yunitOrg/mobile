@@ -409,6 +409,13 @@
       "className": "ICircleProgress",
       "comType": "common",
       "comLangue": "vue"
+    },
+    {
+      "classId": "idm.component.mobile.signinform",
+      "comName": "签到表单",
+      "className": "ISignInForm",
+      "comType": "common",
+      "comLangue": "vue"
     }
   ]
 }
