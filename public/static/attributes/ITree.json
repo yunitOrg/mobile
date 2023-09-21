@@ -43,8 +43,8 @@
                     "type": "radio",
                     "styleType": "radio",
                     "layoutType": "inline",
-                    "text": "显示图标",
-                    "desc":"是否显示图标",
+                    "text": "左侧图标",
+                    "desc":"是否显示左侧折叠按钮图标",
                     "bindKey": "showIcon",
                     "default": true,
                     "dictionary": [
@@ -57,6 +57,25 @@
                             "value": false
                         }
                     ]
+                },
+                {
+                  "type": "radio",
+                  "styleType": "radio",
+                  "layoutType": "inline",
+                  "text": "右侧图标",
+                  "desc":"是否展示右侧的折叠标识图标",
+                  "bindKey": "showRightIcon",
+                  "default": true,
+                  "dictionary": [
+                      {
+                          "label": "是",
+                          "value": true
+                      },
+                      {
+                          "label": "否",
+                          "value": false
+                      }
+                  ]
                 },
                 {
                     "type": "select",
@@ -94,7 +113,13 @@
                     "bindKey": "closeIconClass",
                     "default": ""
                 },
-                
+                {
+                  "type": "iconSelect",
+                  "layoutType": "inline",
+                  "text": "右侧图标",
+                  "bindKey": "rightIconClass",
+                  "default": ""
+                },
                 {
                     "type": "inputNumber",
                     "layoutType": "inline",

@@ -1,7 +1,7 @@
 <template>
     <div class="ITreeItem_app">
         <div v-for="(item,index) in tree_data" :key="index">
-            <div @click="clickNode(item)" class="header flex_between header_border">
+            <div @click="clickNode(item)" class="header flex_between header_border" :class="item.key == active_item.active ? 'active' : ''">
                 <div class="header_left flex_start">
                     <div @click.stop="clickIcon(item)" v-if="propData.showIcon && item.children && item.children.length" class="icon">
                         <span v-if="item.showChildren" class="open icon_block">
@@ -21,14 +21,21 @@
                     </div>
                     <div class="text">{{ item[propData.dataFieldTitle || 'title'] }}</div>
                 </div>
-                <div @click.stop="clickIcon(item)" class="header_right">
+                <div @click.stop="clickIcon(item)" v-if="propData.showRightIcon" class="header_right">
+                  <template v-if="propData.rightIconClass&&propData.rightIconClass.length">
+                    <svg v-if="propData.rightIconClass && propData.rightIconClass.length" class="idm_filed_svg_icon" aria-hidden="true" >
+                        <use :xlink:href="`#${propData.rightIconClass[0]}`"></use>
+                    </svg>
+                  </template>
+                  <template v-else>
                     <SvgIcon v-if="item.children && item.children.length && item.showChildren" icon-class="minus"></SvgIcon>
                     <SvgIcon v-else-if="item.children && item.children.length && !item.showChildren" icon-class="plus"></SvgIcon>
                     <SvgIcon v-else icon-class="right-arrow55"></SvgIcon>
+                  </template>
                 </div>
             </div>
             <div v-if="item.children && item.children.length && item.showChildren" class="main">
-                <ITreeItem :tree_data="item.children" :propData="propData" :moduleObject="moduleObject"></ITreeItem>
+                <ITreeItem :tree_data="item.children" :propData="propData" :moduleObject="moduleObject" :active_item="active_item"></ITreeItem>
             </div>
         </div>
     </div>
@@ -39,7 +46,7 @@ import adaptationScreenMixin from '../mixins/adaptationScreen'
 
 export default {
     name: 'ITreeItem',
-    props: [ 'tree_data','propData','moduleObject' ],
+    props: [ 'tree_data','propData','moduleObject','active_item' ],
     components: {
         SvgIcon
     },
@@ -54,7 +61,7 @@ export default {
     mixins: [adaptationScreenMixin],
     data() {
         return {
-
+          
         }
     },
     created() {
@@ -70,6 +77,7 @@ export default {
         },
         clickNode(item) {
             console.log('点击节点',item)
+            this.active_item.active = item.key;
             if ( item.children && item.children.length ) {
                 item.showChildren = !item.showChildren;
             } else {
@@ -149,6 +157,8 @@ export default {
                         case "fontIconRight":
                             IDM.style.setFontStyle(styleObjectIconRight,element)
                             this.adaptiveFontSize(styleObjectIconRight,element)
+                            styleObjectIconRight['width'] = element.fontSize + element.fontSizeUnit;
+                            styleObjectIconRight['height'] = element.fontSize + element.fontSizeUnit;
                             break;
                         case "boxIconRight":
                             IDM.style.setBoxStyle(styleObjectIconRight,element)
@@ -168,6 +178,8 @@ export default {
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .ITreeItem_app .header .header_left .icon .idm_filed_svg_icon', styleObjectIconLeft);
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .ITreeItem_app .header .header_left .icon .icon_block', styleObjectIconLeft);
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .ITreeItem_app .header .header_right .svg-icon', styleObjectIconRight);
+            window.IDM.setStyleToPageHead(this.moduleObject.id + ' .ITreeItem_app .header .header_right .idm_filed_svg_icon', styleObjectIconRight);
+            
             window.IDM.setStyleToPageHead(this.moduleObject.id + ' .ITreeItem_app .main', styleObjectMain);
         },
     }
@@ -210,6 +222,11 @@ export default {
             width: 20px;
             flex-shrink: 0;
             margin-left: 15px;
+            .idm_filed_svg_icon{
+                width: 12px;
+                height: 12px;
+                fill: currentColor;
+            }
         }
     }
     .header_border{

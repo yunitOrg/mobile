@@ -1,6 +1,6 @@
 <template>
     <div idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id" class="ITree_app">
-        <ITreeItem :tree_data="data_list" :propData="propData" :moduleObject="moduleObject"></ITreeItem>
+        <ITreeItem :tree_data="data_list" :propData="propData" :moduleObject="moduleObject" :active_item="active_item"></ITreeItem>
     </div>
 </template>
   
@@ -15,7 +15,10 @@ export default {
             moduleObject: {},
             propData: this.$root.propData.compositeAttr || {
                 showIcon: true,
-                defaultOpen: true
+                defaultOpen: true,
+            },
+            active_item: {
+              active: ''
             },
             data_list: [],
             demand_params: {},
@@ -317,10 +320,13 @@ export default {
     }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .ITree_app{
     height: 100%;
     padding: 0 15px;
+    .active{
+      color: red;
+    }
     // overflow-y: auto;
 }
 
