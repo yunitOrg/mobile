@@ -53,6 +53,23 @@ export default {
             }
             return data
         },
+        doGetDataAfter() {
+            let that = this;
+            if(this.moduleObject.env=="develop"){
+                return;
+            }
+            let urlObject = window.IDM.url.queryObject(),
+            pageId = window.IDM.broadcast&&window.IDM.broadcast.pageModule?window.IDM.broadcast.pageModule.id:"";
+            var clickFunction = this.propData.getDataAfterFunction;
+            clickFunction&&clickFunction.forEach(item=>{
+                window[item.name]&&window[item.name].call(this,{
+                    urlData:urlObject,
+                    pageId,
+                    customParam:item.param,
+                    _this:this
+                });
+            })
+        },
         initData() {
             var params = this.commonParam();
             //接收其他组件联动参数
@@ -100,6 +117,7 @@ export default {
                     if ( res && res.length ) {
                         that.data_list = res;
                         that.changeOpenStatus(that.data_list)
+                        that.doGetDataAfter()
                     }
                 },function(error){
                     //这里是请求失败的返回结果

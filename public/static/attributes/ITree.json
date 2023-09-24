@@ -593,6 +593,22 @@
                     "bindKey": "clickNodeFunction",
                     "desc": "点击节点时，触发自定义函数",
                     "multiple": false
+                },
+                {
+                    "type": "actionSelect",
+                    "layoutType": "block",
+                    "text": "数据初始化自定义函数",
+                    "bindKey": "getDataAfterFunction",
+                    "desc": "获取数据后，触发自定义函数",
+                    "multiple": false
+                },
+                {
+                    "type": "pageModuleSelect",
+                    "layoutType": "block",
+                    "text": "tab菜单联动组件",
+                    "desc": "选择点击节点需要联动的组件",
+                    "bindKey": "triggerComponents",
+                    "multiple": true
                 }
             ]
         }
