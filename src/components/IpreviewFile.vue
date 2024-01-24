@@ -218,7 +218,7 @@ export default {
     padding: 10px;
     height: 100%;
     width: 100%;
-    position: fixed;
+    // position: fixed;
     img{
       width: 100%;
       box-shadow: 0 1px 3px 0 #a9a9a9;
