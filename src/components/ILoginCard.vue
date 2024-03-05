@@ -30,7 +30,7 @@
       <div class="mobile-container">
         <div class="pre-icon"><svg-icon icon-class="mobile" /></div>
         <div class="input-box">
-          <input v-model="mobile" type="text" placeholder="请输入手机号码" />
+          <input v-model="mobile" type="text" :placeholder="propData.phonePlaceholder" />
           <div class="msg-error">{{ mobileTip }}</div>
         </div>
       </div>
@@ -40,7 +40,7 @@
           <input
             v-model="password"
             :type="pwdHidden ? 'password' : 'text'"
-            placeholder="请输入密码"
+            :placeholder="propData.pwdPlaceholder"
           />
           <div class="msg-error">{{ passwordTip }}</div>
         </div>

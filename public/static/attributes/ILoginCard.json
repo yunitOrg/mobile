@@ -36,6 +36,22 @@
             }
           ],
           "default": "default"
+        },
+        {
+          "type": "input",
+          "layoutType": "block",
+          "text": "手机号Placeholder",
+          "desc": "手机号默认placeholder",
+          "bindKey": "phonePlaceholder",
+          "default": "请输入手机号码"
+        },
+        {
+          "type": "input",
+          "layoutType": "block",
+          "text": "密码Placeholder",
+          "desc": "密码默认placeholder",
+          "bindKey": "pwdPlaceholder",
+          "default": "请输入密码"
         }
       ]
     },
