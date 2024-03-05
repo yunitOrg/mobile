@@ -73,6 +73,7 @@
           "default": "记住密码"
         },
         {
+          "type": "input",
           "text": "密码Placeholder",
           "layoutType": "block",
           "desc": "密码默认placeholder",

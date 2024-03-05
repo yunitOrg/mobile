@@ -49,7 +49,7 @@
         </div>
       </div>
       <div v-if="propData.showSavePassword" class="row checkbox_block">
-        <van-checkbox v-model="isSavePassword" :checked-color="propData.selectColor" :icon-size="propData.savePasswordSize" shape="square">{{ propData.savePasswordLabel }}</van-checkbox>
+        <van-checkbox v-model="isSavePassword" :checked-color="propData.selectColor?propData.selectColor.hex8:''" :icon-size="propData.savePasswordSize" shape="square">{{ propData.savePasswordLabel }}</van-checkbox>
       </div>
       <div class="btn-container">
         <button @click="login">登录</button>
