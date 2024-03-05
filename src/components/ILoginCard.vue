@@ -48,6 +48,9 @@
           <svg-icon :icon-class="pwdHidden ? 'hidden' : 'visiable'" />
         </div>
       </div>
+      <div v-if="propData.showSavePassword" class="row checkbox_block">
+        <van-checkbox v-model="isSavePassword" :checked-color="propData.selectColor" :icon-size="propData.savePasswordSize" shape="square">{{ propData.savePasswordLabel }}</van-checkbox>
+      </div>
       <div class="btn-container">
         <button @click="login">登录</button>
       </div>
@@ -62,23 +65,45 @@ export default {
   data() {
     return {
       moduleObject: {},
-      propData: this.$root.propData.compositeAttr || {},
+      propData: this.$root.propData.compositeAttr || {
+        showSavePassword: true,
+        savePasswordLabel: '记住密码'
+      },
       pwdHidden: true,
       mobile: "",
       password: "",
       mobileTip: "",
       passwordTip: "",
+      isSavePassword: false
     };
   },
   props: {},
   created() {
     this.moduleObject = this.$root.moduleObject;
+    this.takeCreatedCustomFunction()
     this.convertAttrToStyleObject();
     this.convertThemeListAttrToStyleObject();
   },
   mounted() {},
   destroyed() {},
   methods: {
+    takeCreatedCustomFunction() {
+      let that = this;
+      if(this.moduleObject.env=="develop"){
+        return;
+      }
+      let urlObject = window.IDM.url.queryObject(),
+      pageId = window.IDM.broadcast&&window.IDM.broadcast.pageModule?window.IDM.broadcast.pageModule.id:"";
+      var clickFunction = this.propData.createdCustomFunction;
+      clickFunction&&clickFunction.forEach(e=>{
+        window[e.name]&&window[e.name].call(this,{
+          urlData:urlObject,
+          pageId,
+          customParam:e.param,
+          _this:this,
+        });
+      })
+    },
     setLogoImg(){
       if(this.propData.logoBgImgUrl){
         return window.IDM.url.getWebPath(this.propData.logoBgImgUrl)
@@ -584,5 +609,13 @@ $scale: var(--i-login-card-scale);
     color: #fff;
     margin: calc($scale * 40px) 0;
   }
+}
+</style>
+<style lang="scss">
+.checkbox_block{
+  margin-top: 15px;
+  .van-checkbox__label{
+    color: #666;
+  } 
 }
 </style>
