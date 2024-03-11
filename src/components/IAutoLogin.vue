@@ -1,8 +1,12 @@
 <template>
   <div class="IAutoLogin_app" idm-ctrl="idm_module" :id="moduleObject.id" :idm-ctrl-id="moduleObject.id">
-    <div class="loading_block flex_center">
+    <div v-if="showLoading" class="loading_block flex_center">
       <a-spin :tip="propData.tip">
       </a-spin>
+    </div>
+    <div v-else class="result_block flex_column_center">
+      <svg-icon icon-class="noPower"/>
+      <span class="text">{{ resultMessage }}</span>
     </div>
   </div>
 </template>
@@ -17,6 +21,8 @@ export default {
       propData: this.$root.propData.compositeAttr || {
         tip: 'Loading...'
       },
+      showLoading: true,
+      resultMessage: '暂无权限'
     };
   },
   props: {},
@@ -457,6 +463,16 @@ export default {
   height: 100vh;
   .loading_block{
     height: 100%;
+  }
+  .result_block{
+    height: 100%;
+    .svg-icon{
+      font-size: 180px;
+    }
+    .text{
+      position: relative;
+      top: -30px;
+    }
   }
 }
 </style>
