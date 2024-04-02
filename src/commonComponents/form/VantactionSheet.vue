@@ -133,6 +133,7 @@ export default{
       let temp = this.params.selectValue;
       this.$set(this.formData, this.field, item[temp] || item.value)
       this.sheetShow = false
+      this.$emit('callFunc', { type: 'VantactionSheet', data: this.formData, eventName: this.params['actionSelectEvent']})
     }
   },
   mounted () {

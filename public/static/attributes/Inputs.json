@@ -374,6 +374,15 @@
                 "multiple": false
               },
               {
+                "type": "actionSelect",
+                "layoutType": "block",
+                "text": "输入框变化时触发",
+                "display": "@[type=='input']",
+                "bindKey": "inputEvent",
+                "desc": "输入框内容变化时触发",
+                "multiple": false
+              },
+              {
                 "type": "input",
                 "layoutType": "inline",
                 "text": "错误提示",
@@ -571,6 +580,15 @@
                     "default": "bottom"
                   }
                 ]
+              },
+              {
+                "type": "actionSelect",
+                "layoutType": "block",
+                "text": "动作面板切换事件",
+                "display": "@[type=='actionSheet']",
+                "bindKey": "actionSelectEvent",
+                "desc": "动作面板切换事件",
+                "multiple": false
               },
               {
                 "type": "select",

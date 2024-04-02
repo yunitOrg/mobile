@@ -17,6 +17,7 @@
       :disabled="params['disabled']"
       :type="params['inputType']"
       @blur="handleBlur"
+      @input="handleInput"
       :error-message="!fieldCheck ? params['errorFont'] : ''"
       :error-message-align="params['inputAlign']"
     />
@@ -94,6 +95,9 @@ export default{
       if (func && func[0] && func[0].name) {
         this.fieldCheck = window[func[0].name] && window[func[0].name].call(this, val, {params: this.formData, data: this.params})
       }
+    },
+    handleInput(val) {
+      this.$emit('callFunc', { type: 'VantInput', data: this.formData, eventName: this.params['inputEvent']})
     }
   }
 }

@@ -541,11 +541,31 @@ export default {
       });
     },
     handleClickCall (val) {
-      switch (val) {
+      switch (val.type) {
+        // 发送密码
         case 'VantsendPws':
           this.changeEventFunHandle("sendBtnClick", "", {data: val});
           break
+        // 输入框
+        case 'VantInput':{
+          if (val.eventName && val.eventName.length > 0) {
+              let name = val.eventName[0]?.name
+              window[name] && window[name].call(this, {msg: val.data, otherData: this.handleGetModuleContextValue()});
+            }
+        }
+          break
+        // 动作面板
+        case 'VantactionSheet':{
+          if (val.eventName && val.eventName.length > 0) {
+              let name = val.eventName[0]?.name
+              window[name] && window[name].call(this, {msg: val.data, otherData: this.handleGetModuleContextValue()});
+            }
+          }
+          break
       }
+    },
+    handleGetModuleContextValue() {
+      return window.IDM.broadcast.getModuleContextValue(this.propData.triggerComponents,this.propData.formFiledKey);
     },
     // 按钮
     handleSubmit (row) {
