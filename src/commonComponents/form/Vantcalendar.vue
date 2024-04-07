@@ -109,6 +109,7 @@ export default{
       } else {
         this.formData[field] = value(date)
       }
+      this.$emit('callFunc', { type: 'Vantcalendar', data: this.formData, eventName: this.params['calendarFunc']})
       this.showCalendar = false;
     }
   }

@@ -562,6 +562,13 @@ export default {
             }
           }
           break
+        // 日期
+        case 'Vantcalendar': {
+          if (val.eventName && val.eventName.length > 0) {
+            let name = val.eventName[0]?.name
+            window[name] && window[name].call(this, {msg: val.data, otherData: this.handleGetModuleContextValue()});
+          }
+        }
       }
     },
     handleGetModuleContextValue() {

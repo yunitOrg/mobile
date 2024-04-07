@@ -578,6 +578,14 @@
                       }
                     ],
                     "default": "bottom"
+                  },
+                  {
+                    "type": "actionSelect",
+                    "layoutType": "block",
+                    "text": "日历确定回调",
+                    "bindKey": "calendarFunc",
+                    "desc": "日历确定回调",
+                    "multiple": false
                   }
                 ]
               },
