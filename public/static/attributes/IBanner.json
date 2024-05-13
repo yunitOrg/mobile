@@ -447,6 +447,14 @@
                             "text": "大屏图片",
                             "bindKey": "imagexl",
                             "default": ""
+                        },
+                        {
+                            "type": "actionSelect",
+                            "layoutType": "block",
+                            "text": "自定义图片函数",
+                            "bindKey": "customImageFunc",
+                            "desc": "自定义DOM返回,适用于图片加请求数字结合 接受参数：{_this: this, item: 当前轮播项}",
+                            "multiple": false
                         }
                     ],
                     "display": "@[dataType === 'custom']"

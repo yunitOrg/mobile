@@ -29,6 +29,9 @@
                     />
                     <img v-else :style="{objectFit: propData.imageObjectFit}" :src="getImageUrl(item.imagexl) || getImageUrl(item.image)" class="slider-img" alt="" />
                     <span class="idm-banner-box-swiper-text" v-if="item.title">{{ item.title }}</span>
+                    <template v-if="item.customImageFunc && item.customImageFunc.length > 0">
+                        <div v-html="handleCustomDom(item)"></div>
+                    </template>
                 </swiper-slide>
                 <div v-show="propData.showBullet" class="idm-banner-swiper-pagination" slot="pagination"></div>
             </swiper>
@@ -126,6 +129,20 @@ export default {
         this.convertThemeListAttrToStyleObject()
     },
     methods: {
+        handleCustomDom (item) {
+        let customFun = item.customImageFunc, html = '';
+        if (customFun && customFun.length > 0) {
+            const func = customFun[0];
+            if (func) {
+            let name = func.name;
+            html = window[name] && window[name].call(this, {
+                    _this: this,
+                    item: item
+                });
+            }
+        }
+        return html
+        },
         getImageUrl(url) {
             if (url && url.indexOf('/DreamWeb') == -1) {
                 return IDM.url.getWebPath(url)
