@@ -417,7 +417,6 @@ export default {
         ]
       };
       option = this.customFunctionHandle(this.propData.customChartOptionFunction, {option, chartData: this.chartData}) || option;
-      console.log(option,123, this.customFunctionHandle(this.propData.customChartOptionFunction, {option, chartData: this.chartData}))
       this.chart.setOption(option);
     },
     /**
