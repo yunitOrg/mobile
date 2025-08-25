@@ -5,7 +5,7 @@
                 <van-image
                     width="60"
                     height="60"
-                    :src="IDM.url.getModuleAssetsWebPath(require('../assets/empty-default.png'), moduleObject)"
+                    :src="propData.emptyImgUrl ? IDM.url.getContextWebUrl(propData.emptyImgUrl) : IDM.url.getModuleAssetsWebPath(require('../assets/empty-default.png'), moduleObject)"
                 />
             </template>
         </van-empty>

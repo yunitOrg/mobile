@@ -66,6 +66,31 @@
             "desc":"个人页签是否显示",
             "bindKey": "selfShow",
             "default": true
+          },
+          {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "显示标题",
+            "desc":"标题是否显示",
+            "bindKey": "showTitle",
+            "default": false
+          },
+          {
+            "type": "input",
+            "layoutType": "inline",
+            "text": "标题文字",
+            "bindKey": "title",
+            "default": "党员奖励",
+            "display": "@[showTitle]"
+          },
+          {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "显示统计",
+            "desc":"标题右侧显示统计排名数量",
+            "bindKey": "showTitleTotal",
+            "default": true,
+            "display": "@[showTitle]"
           }
         ]
       },
@@ -195,6 +220,14 @@
         "desc": "点击？查看高级设置用法指南",
         "children": [
           {
+            "type": "switch",
+            "layoutType": "inline",
+            "text": "初次加载",
+            "desc":"组件自动请求数据源获取数据",
+            "bindKey": "autoInit",
+            "default": true
+          },
+          {
             "type": "dataSourceSelect",
             "layoutType": "inline",
             "text": "数据源",
@@ -241,6 +274,14 @@
                 "default": "money"
               }
             ]
+          },
+          {
+            "type": "actionSelect",
+            "layoutType": "block",
+            "text": "排名内容自定义函数",
+            "bindKey": "customContentFunction",
+            "desc": "请返回html格式字符串，参数为{commonParam: 组件信息, customParam: 用户自定义参数, item: 条目信息}",
+            "multiple": false
           }
         ]
       }

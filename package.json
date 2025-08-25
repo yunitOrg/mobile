@@ -4,11 +4,13 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build && npm run zip",
     "gen": "idm-generate vue",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "zip": "idm zip"
   },
   "dependencies": {
+    "@idm-modules/core": "^1.0.71",
     "@ant-design/icons-vue": "^6.1.0",
     "ant-design-vue": "^1.7.8",
     "core-js": "^3.6.5",
@@ -20,6 +22,7 @@
     "vue-awesome-swiper": "^4.1.1"
   },
   "devDependencies": {
+    "@idm-modules/cli": "latest",
     "@idm-modules/cli-generate": "^1.0.33",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",

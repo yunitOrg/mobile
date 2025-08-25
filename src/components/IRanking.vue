@@ -11,9 +11,10 @@
   >
     <div class="idm-iranking">
       <div class="irank-img" :style="`width:${propData.imgWidth};height:${propData.imgHeight}`" v-if="propData.showImg">
-        <img :src="propData.topImgUrl || topimgUrl" alt="">
+        <img :src="IDM.url.getContextWebUrl(propData.topImgUrl) || topimgUrl" alt="">
       </div>
       <div class="irank-ul">
+        <div class="irank-header" v-if="propData.showTitle"><span>{{propData.title}}</span><span v-if="propData.showTitleTotal">{{pageDataList.length}}个</span></div>
         <div class="irank-self" v-if="propData.selfShow">
           <div class="irank-index">
           {{currentObj.index}}
@@ -31,22 +32,25 @@
         </div>
         <div class="irank-content">
           <li v-for="(item, index) in pageDataList.length > 0 ? pageDataList : list" :key="index">
-            <div class="irank-index">
-              <img :src="rankObj.rank1" alt="" v-if="index===0">
-              <img :src="rankObj.rank2" alt="" v-else-if="index===1">
-              <img :src="rankObj.rank3" alt="" v-else-if="index===2">
-              <template v-else>{{index+1}}</template>
-            </div>
-            <div class="irank-center">
-              <div class="irank-icon">
-                <img :src="item[propData.ImgInterface] || item.headImg" alt="">
+            <div v-if="getContent(item,index)" v-html="getContent(item,index)"></div>
+            <template v-else>
+              <div class="irank-index">
+                <img :src="rankObj.rank1" alt="" v-if="index===0">
+                <img :src="rankObj.rank2" alt="" v-else-if="index===1">
+                <img :src="rankObj.rank3" alt="" v-else-if="index===2">
+                <template v-else>{{index+1}}</template>
               </div>
-              <div class="irank-desc">
-                <div class="irank-title">{{item[propData.titleInterface] || item.title}}</div>
-                <div class="irank-tip">{{item[propData.descInterface] || item.desc}}</div>
+              <div class="irank-center">
+                <div class="irank-icon">
+                  <img :src="item[propData.ImgInterface] || item.headImg" alt="">
+                </div>
+                <div class="irank-desc">
+                  <div class="irank-title">{{item[propData.titleInterface] || item.title}}</div>
+                  <div class="irank-tip">{{item[propData.descInterface] || item.desc}}</div>
+                </div>
               </div>
-            </div>
-            <div class="irank-right">{{item[propData.moneyInterface] || item.money}}</div>
+              <div class="irank-right">{{item[propData.moneyInterface] || item.money}}</div>
+            </template>
           </li>
         </div>
       </div>
@@ -76,36 +80,13 @@ export default {
         money: 10000
       },
       pageDataList: [],
-      list: [
-        {
-          headImg: 'http://116.236.111.158:8086/DreamWeb/resource/img/body-bg-shanghai.png',
-          title: 'The shy',
-          desc: '河南省办公厅党支部',
-          money: 10000
-        },
-        {
-          headImg: 'http://116.236.111.158:8086/DreamWeb/resource/img/body-bg-shanghai.png',
-          title: 'The shy',
-          desc: '河南省办公厅党支部',
-          money: 10000
-        },
-        {
-          headImg: 'http://116.236.111.158:8086/DreamWeb/resource/img/body-bg-shanghai.png',
-          title: 'The shy',
-          desc: '河南省办公厅党支部',
-          money: 10000
-        },
-        {
-          headImg: 'http://116.236.111.158:8086/DreamWeb/resource/img/body-bg-shanghai.png',
-          title: 'The shy',
-          desc: '河南省办公厅党支部',
-          money: 10000
-        }
-      ],
+      list: [],
       moduleObject:{},
       propData:this.$root.propData.compositeAttr||{
-          showImg: true,
-          selfShow: true,
+          showImg: false,
+          selfShow: false,
+          showTitle: true,
+          title: "党员奖励",
           imgWidth: '100%',
           imgHeight: '200px',
           selfSlice: '10px',
@@ -129,7 +110,8 @@ export default {
             paddingBottomVal: "10px",
             paddingLeftVal: ""
           }
-      }
+      },
+      customParams:{}
     }
   },
   created () {
@@ -137,16 +119,51 @@ export default {
     this.init();
   },
   methods: {
+    getContent(item,index){
+      return this.customFunctionHandle(this.propData.customContentFunction, {item,index})
+    },
+    customFunctionHandle(customFunction, param = {}) {
+      if (customFunction && customFunction[0] && customFunction[0].name) {
+        return window[customFunction[0].name] &&
+          window[customFunction[0].name].call(this, {
+            customParam: customFunction[0].param,
+            moduleObject: this.moduleObject,
+            urlObject: IDM.url.queryObject(),
+            pageId:
+              window.IDM.broadcast && window.IDM.broadcast.pageModule
+                ? window.IDM.broadcast.pageModule.id
+                : '',
+            ...param
+          });
+      }
+    },
     propDataWatchHandle (propData) {
       this.propData = propData.compositeAttr||{};
       this.init();
+    },
+    /**
+     * 通用的url参数对象
+     * 所有地址的url参数转换
+     */
+    commonParam() {
+      let urlObject = IDM.url.queryObject();
+      var params = {
+        pageId:
+            window.IDM.broadcast && window.IDM.broadcast.pageModule
+                ? window.IDM.broadcast.pageModule.id
+                : "",
+        urlData: JSON.stringify(urlObject),
+      };
+      return params;
     },
     initData () {
       let that = this;
       if (this.moduleObject.env == "production") {
         if (this.propData.dataSource) {
           IDM.datasource.request(this.propData.dataSource[0]?.id, {
-            moduleObject: this.moduleObject
+            moduleObject: this.moduleObject,
+            ...this.commonParam,
+            ...this.customParams
           }, (data) => {
             if (data) {
               that.pageDataList = data;
@@ -157,7 +174,7 @@ export default {
       }
     },
     init () {
-      this.initData();
+      if(this.propData.autoInit) this.initData();
       this.convertAttrToStyleObject();
       this.convertTitleStyleObject();
       this.convertMoneyStyleObject();
@@ -391,7 +408,39 @@ export default {
           element.radius.rightBottom.radiusUnit;
       }
       window.IDM.setStyleToPageHead(this.moduleObject.id + " .irank-ul li", styleObject);
-    }
+    },
+    /**
+     * 组件通信：接收消息的方法
+     * @param {
+     *  type:"发送消息的时候定义的类型，这里可以自己用来要具体做什么，统一规定的type：linkageResult（组件联动传结果值）、linkageDemand（组件联动传需求值）、linkageReload（联动组件重新加载）
+     * 、linkageOpenDialog（打开弹窗）、linkageCloseDialog（关闭弹窗）、linkageShowModule（显示组件）、linkageHideModule（隐藏组件）、linkageResetDefaultValue（重置默认值）"
+     *  message:{发送的时候传输的消息对象数据}
+     *  messageKey:"消息数据的key值，代表数据类型是什么，常用于表单交互上，比如通过这个key判断是什么数据"
+     *  isAcross:如果为true则代表发送来源是其他页面的组件，默认为false
+     * } object
+     */
+    receiveBroadcastMessage(messageObject) {
+      console.log("组件收到消息", messageObject);
+      switch (messageObject.type) {
+        case 'linkageReload':
+          this.initData()
+          break;
+        case 'pageResize':
+          this.convertAttrToStyleObject(messageObject.message);
+          this.convertTitleStyleObject(messageObject.message);
+          this.convertMoneyStyleObject(messageObject.message);
+          this.convertDescStyleObject(messageObject.message);
+          this.converSplitStyleObject(messageObject.message);
+          break;
+        case 'linkageDemand':
+          this.customParams = {
+            ...this.customParams,
+            [messageObject.messageKey]:  messageObject.message.value || messageObject.message
+          }
+          this.initData()
+          break;
+      }
+    },
   }
 }
 </script>

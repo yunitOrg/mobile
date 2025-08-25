@@ -348,7 +348,7 @@ export default {
     drawChart() {
       this.chart.clear();
       const legendData = this.chartData?.map(item => item.name);
-      const option = {
+      let option = {
         color: this.colors,
         legend: {
           show: this.propData.showLegend,
@@ -416,6 +416,8 @@ export default {
           }
         ]
       };
+      option = this.customFunctionHandle(this.propData.customChartOptionFunction, {option, chartData: this.chartData}) || option;
+      console.log(option,123, this.customFunctionHandle(this.propData.customChartOptionFunction, {option, chartData: this.chartData}))
       this.chart.setOption(option);
     },
     /**
@@ -452,7 +454,7 @@ export default {
     },
     customFunctionHandle(customFunction, param = {}) {
       if (customFunction && customFunction[0] && customFunction[0].name) {
-        window[customFunction[0].name] &&
+        return window[customFunction[0].name] &&
           window[customFunction[0].name].call(this, {
             customParam: customFunction[0].param,
             moduleObject: this.moduleObject,

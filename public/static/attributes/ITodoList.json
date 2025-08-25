@@ -276,6 +276,13 @@
                     "display": "@[itemJumpStyle === '_custom_func']",
                     "bindKey": "jumpItemCustomFunc",
                     "multiple": false
+                },
+                {
+                    "type": "uploadImage",
+                    "layoutType": "inline",
+                    "text": "为空图片",
+                    "bindKey": "emptyImgUrl",
+                    "placeholder": "数据为空时展示的图片"
                 }
             ]
         },

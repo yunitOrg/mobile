@@ -279,7 +279,7 @@ export default {
           }
         }
       ];
-      const option = {
+      let option = {
         title: {
           show: !!this.propData.chartTitle,
           text: this.propData.chartTitle,
@@ -349,6 +349,7 @@ export default {
           }
         ]
       };
+      option = this.customFunctionHandle(this.propData.customChartOptionFunction, {option, chartData: this.chartData}) || option;
       this.chart.setOption(option);
     },
     /**
@@ -385,7 +386,7 @@ export default {
     },
     customFunctionHandle(customFunction, param = {}) {
       if (customFunction && customFunction[0] && customFunction[0].name) {
-        window[customFunction[0].name] &&
+        return window[customFunction[0].name] &&
           window[customFunction[0].name].call(this, {
             customParam: customFunction[0].param,
             moduleObject: this.moduleObject,

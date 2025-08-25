@@ -495,7 +495,7 @@ export default {
         return;
       }
       if (this.propData.itemJumpTarget && this.propData.itemJumpTarget === 'custom') {
-        this.customFunctionHandle(this.propData.customItemJumpFunction, { item });
+        this.customFunctionHandle(this.propData.customItemJumpFunction, { item,_this: this });
       } else if (
         this.propData.itemJumpTarget &&
         (this.propData.itemJumpTarget === 'router' || this.propData.itemJumpTarget === 'feild')
